@@ -1,26 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {SquareWithText} from "./SquareWithText";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <svg width={1300} height={650} style={{backgroundColor: 'gray'}}>
+            <circle cx="50" cy="50" r="40" stroke="black" strokeWidth="3" fill="blue"/>
+            <SquareWithText x={0} y={0} width={150} height={150} fill={'white'}/>
+            <SquareWithText x={150} y={0} width={150} height={150} fill={'red'}/>
+        </svg>
+    );
 }
 
 export default App;

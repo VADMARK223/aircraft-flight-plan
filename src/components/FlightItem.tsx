@@ -32,13 +32,13 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
             .attr('fill', fill)
 
         svg.append('text')
-            .attr('x', x + width * 0.5)
-            .attr('y', y + height * 0.5)
+            .attr('x', x + 5)
+            .attr('y', y + 5)
             .attr('fill', 'black')
-            .attr('text-anchor', 'middle')
-            .attr('dominant-baseline', 'middle')
+            .attr('font-weight', 'bold')
+            .attr('text-anchor', 'start')
+            .attr('dominant-baseline', 'hanging')
             .text(data.name)
-
     }, [data.name, x, y, width, height, fill])
 
     return (

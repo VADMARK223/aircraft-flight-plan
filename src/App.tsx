@@ -3,6 +3,7 @@ import {DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, dates, FLIGHT_ITEM_HEIGHT, FLIGHT_ITE
 import DateItem from "./components/DateItem";
 import FlightItem from "./components/FlightItem";
 import Trips from "./components/Trips";
+import Background from "./components/Background";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                           data={value}
                           x={FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
                           y={0}/>))}
+            <Background/>
             <Trips/>
         </svg>
     );

@@ -24,7 +24,6 @@ const Trips = (): JSX.Element => {
     const y = DATE_ITEM_HEIGHT
     const width = DATE_ITEM_WIDTH * dates.length
     const height = FLIGHT_ITEM_HEIGHT * flights.length
-    const fill = 'white'
     const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()
     const [tripViewModels, setTripViewModels] = useState<TripViewModel[]>()
     const [startPos, setStartPos] = useState({x: 0, y: 0})
@@ -78,28 +77,6 @@ const Trips = (): JSX.Element => {
 
         // Очищаем все
         svg.selectAll('*').remove()
-        // Рисуем подложку
-        for (let j = 0; j < flights.length; j++) {
-            for (let i = 0; i < dates.length; i++) {
-                svg.append('rect')
-                    .attr('x', x + DATE_ITEM_WIDTH * i)
-                    .attr('y', y + FLIGHT_ITEM_HEIGHT * j)
-                    .attr('width', DATE_ITEM_WIDTH)
-                    .attr('height', FLIGHT_ITEM_HEIGHT)
-                    .attr('stroke', 'black')
-                    .attr('stroke-dasharray', [2, 3])
-                    .attr('fill', fill)
-            }
-        }
-
-        svg.append('rect')
-            .attr('x', x)
-            .attr('y', y)
-            .attr('width', width)
-            .attr('height', height)
-            .attr('stroke', 'black')
-            .attr('stroke-width', 3)
-            .attr('fill', 'transparent')
 
         const temp: TripViewModel[] = []
         flights.forEach((value, index) => {

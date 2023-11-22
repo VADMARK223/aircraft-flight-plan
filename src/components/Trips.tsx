@@ -25,17 +25,24 @@ const Trips = (): JSX.Element => {
     const width = DATE_ITEM_WIDTH * dates.length
     const height = FLIGHT_ITEM_HEIGHT * flights.length
     const fill = 'white'
-    const [startPos, setStartPos] = useState({x: 0, y: 0})
     const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()
     const [tripViewModels, setTripViewModels] = useState<TripViewModel[]>()
+    const [startPos, setStartPos] = useState({x: 0, y: 0})
+
+    const [shifts, setShifts] = useState({x: 0, y: 0})
+    const shiftsRef = useRef(shifts);
+
+    useEffect(() => {
+        shiftsRef.current = shifts
+    }, [shifts]);
 
     useEffect(() => {
         const svg = d3.select(svgRef.current)
         svg.call(d3.drag()
             .on('drag', event => {
                 setStartPos({
-                    x: startPos.x + event.x,
-                    y: startPos.y + event.y
+                    x: event.x + shiftsRef.current.x,
+                    y: event.y + shiftsRef.current.y
                 });
             })
             .on('start', event => {
@@ -48,6 +55,10 @@ const Trips = (): JSX.Element => {
                         setStartPos({
                             x: value.x,
                             y: value.y
+                        })
+                        setShifts({
+                            x: value.x - event.x,
+                            y: value.y - event.y
                         })
                     }
                 })
@@ -120,7 +131,7 @@ const Trips = (): JSX.Element => {
                     .attr('height', tripHeight)
                     .attr('stroke', 'green')
                     .attr('fill', tripModel.id === currentDragItem?.id ? 'red' : 'green')
-                    .attr('cursor', 'pointer')
+                    .attr('cursor', 'move')
 
                 svg.append('text')
                     .attr('x', tripX + 5)
@@ -128,7 +139,7 @@ const Trips = (): JSX.Element => {
                     .attr('fill', 'white')
                     .attr('text-anchor', 'start')
                     .attr('dominant-baseline', 'hanging')
-                    .attr('cursor', 'pointer')
+                    .attr('cursor', 'move')
                     .text(tripModel.id)
             })
         })

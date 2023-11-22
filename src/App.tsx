@@ -1,5 +1,4 @@
 import React from 'react';
-import Background from "./components/Background";
 import {DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, dates, FLIGHT_ITEM_HEIGHT, FLIGHT_ITEM_WIDTH, flights} from "./utils/consts";
 import DateItem from "./components/DateItem";
 import FlightItem from "./components/FlightItem";
@@ -23,7 +22,6 @@ function App() {
                           data={value}
                           x={FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
                           y={0}/>))}
-            <Background/>
             <Trips/>
         </svg>
     );

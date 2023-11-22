@@ -8,65 +8,136 @@ import React, {JSX, LegacyRef, useEffect, useRef, useState} from 'react';
 import {
     DATE_ITEM_HEIGHT,
     DATE_ITEM_WIDTH,
+    dates,
     FLIGHT_ITEM_HEIGHT,
     FLIGHT_ITEM_WIDTH,
     flights,
     HOURS_IN_CELL
 } from "../utils/consts";
 import dayjs from "dayjs";
-import TripItem from "./TripItem";
 import * as d3 from "d3";
+import {TripViewModel} from "../models/TripViewModel";
 
 const Trips = (): JSX.Element => {
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
-    const [position, setPosition] = useState({x: 0, y: 0})
-    const [currentDragItem, setCurrentDragItem] = useState<string>()
+    const x = FLIGHT_ITEM_WIDTH
+    const y = DATE_ITEM_HEIGHT
+    const width = DATE_ITEM_WIDTH * dates.length
+    const height = FLIGHT_ITEM_HEIGHT * flights.length
+    const fill = 'white'
+    const [startPos, setStartPos] = useState({x: 0, y: 0})
+    const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()
+    const [tripViewModels, setTripViewModels] = useState<TripViewModel[]>()
 
     useEffect(() => {
         const svg = d3.select(svgRef.current)
         svg.call(d3.drag()
             .on('drag', event => {
-                setPosition({
-                    x: position.x + event.dx,
-                    y: position.y + event.dy,
+                setStartPos({
+                    x: startPos.x + event.x,
+                    y: startPos.y + event.y
                 });
             })
             .on('start', event => {
-                setCurrentDragItem('13')
+                tripViewModels?.forEach(value => {
+                    if (
+                        event.x >= value.x && event.x <= value.x + value.width &&
+                        event.y >= value.y && event.y <= value.y + value.height
+                    ) {
+                        setCurrentDragItem(value)
+                        setStartPos({
+                            x: value.x,
+                            y: value.y
+                        })
+                    }
+                })
             })
-            .on('end', event => {
-                console.log('End', event)
+            .on('end', _ => {
+                setCurrentDragItem(undefined)
+                setStartPos({
+                    x: 0,
+                    y: 0
+                })
             })
         )
-    }, [position.x, position.y])
+    }, [startPos.x, startPos.y, tripViewModels]);
+
+    useEffect(() => {
+        const svg = d3.select(svgRef.current)
+
+        // Очищаем все
+        svg.selectAll('*').remove()
+        // Рисуем подложку
+        for (let j = 0; j < flights.length; j++) {
+            for (let i = 0; i < dates.length; i++) {
+                svg.append('rect')
+                    .attr('x', x + DATE_ITEM_WIDTH * i)
+                    .attr('y', y + FLIGHT_ITEM_HEIGHT * j)
+                    .attr('width', DATE_ITEM_WIDTH)
+                    .attr('height', FLIGHT_ITEM_HEIGHT)
+                    .attr('stroke', 'black')
+                    .attr('stroke-dasharray', [2, 3])
+                    .attr('fill', fill)
+            }
+        }
+
+        svg.append('rect')
+            .attr('x', x)
+            .attr('y', y)
+            .attr('width', width)
+            .attr('height', height)
+            .attr('stroke', 'black')
+            .attr('stroke-width', 3)
+            .attr('fill', 'transparent')
+
+        const temp: TripViewModel[] = []
+        flights.forEach((value, index) => {
+            if (!value.trips) {
+                return undefined
+            }
+            const startDay = dayjs().startOf('day')
+            value.trips.forEach(tripModel => {
+                const diffHours = tripModel.startDate.diff(startDay, 'hours')
+                const tripDuration = tripModel.endDate.diff(tripModel.startDate, 'hours')
+
+                const tripWidth = DATE_ITEM_WIDTH / HOURS_IN_CELL * tripDuration
+                const tripHeight = FLIGHT_ITEM_HEIGHT * 0.3
+                let tripX
+                let tripY
+                if (tripModel.id === currentDragItem?.id) {
+                    tripX = startPos.x
+                    tripY = startPos.y
+                } else {
+                    tripX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / HOURS_IN_CELL * diffHours
+                    tripY = DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - tripHeight) * 0.5
+                }
+
+                temp.push({id: tripModel.id, x: tripX, y: tripY, width: tripWidth, height: tripHeight})
+                svg.append('rect')
+                    .attr('x', tripX)
+                    .attr('y', tripY)
+                    .attr('width', tripWidth)
+                    .attr('height', tripHeight)
+                    .attr('stroke', 'green')
+                    .attr('fill', tripModel.id === currentDragItem?.id ? 'red' : 'green')
+                    .attr('cursor', 'pointer')
+
+                svg.append('text')
+                    .attr('x', tripX + 5)
+                    .attr('y', tripY)
+                    .attr('fill', 'white')
+                    .attr('text-anchor', 'start')
+                    .attr('dominant-baseline', 'hanging')
+                    .attr('cursor', 'pointer')
+                    .text(tripModel.id)
+            })
+        })
+        setTripViewModels(temp)
+
+    }, [x, y, height, width, startPos.x, startPos.y, currentDragItem])
 
     return (
-        <svg ref={svgRef}>
-            {flights.map((value, index) => {
-                if (!value.trips) {
-                    return undefined
-                }
-                const tripsItems: JSX.Element[] = []
-                const startDay = dayjs().startOf('day')
-                value.trips.forEach(trip => {
-                    const diffHours = trip.startDate.diff(startDay, 'hours')
-                    const tripDuration = trip.endDate.diff(trip.startDate, 'hours')
-                    const startX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / HOURS_IN_CELL * diffHours
-                    const tripWidth = DATE_ITEM_WIDTH / HOURS_IN_CELL * tripDuration
-                    tripsItems.push(<TripItem key={trip.id}
-                                              data={trip}
-                                              x={startX}
-                                              y={DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index}
-                                              width={tripWidth}
-                                              dragging={trip.id === currentDragItem}
-                    />)
-                })
-
-                return (
-                    <g key={`trips_items_${value.id}`}>{tripsItems}</g>
-                )
-            })}
-        </svg>
+        <svg ref={svgRef}></svg>
     )
 }
 

@@ -17,9 +17,9 @@ export const DATE_ITEM_HEIGHT = 45
 
 export const HOURS_IN_CELL = 6
 
-export const flights: FlightModel[] = [
+export const defaultFlights: FlightModel[] = [
     {
-        id: '1',
+        id: 1,
         name: '82044 M',
         trips: [
             {
@@ -39,7 +39,7 @@ export const flights: FlightModel[] = [
         ]
     },
     {
-        id: '2',
+        id: 2,
         name: '82047 М',
         trips: [
             {
@@ -59,7 +59,7 @@ export const flights: FlightModel[] = [
         ]
     },
     {
-        id: '3',
+        id: 3,
         name: '82068',
         type: 'red',
         trips: [
@@ -73,7 +73,7 @@ export const flights: FlightModel[] = [
         ]
     },
     {
-        id: '4',
+        id: 4,
         name: '82074 M',
         type: 'red',
         trips: [
@@ -87,7 +87,7 @@ export const flights: FlightModel[] = [
         ]
     },
     {
-        id: '5',
+        id: 5,
         name: '82077 M',
         type: 'red',
         trips: [
@@ -101,7 +101,7 @@ export const flights: FlightModel[] = [
         ]
     },
     {
-        id: '6',
+        id: 6,
         name: '82079 M',
         trips: [
             {
@@ -121,7 +121,7 @@ export const flights: FlightModel[] = [
         ]
     },
     {
-        id: '7',
+        id: 7,
         name: '82081 M',
         type:'red',
         trips: [

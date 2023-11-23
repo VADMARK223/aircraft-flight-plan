@@ -12,11 +12,13 @@ import {
     dates,
     FLIGHT_ITEM_HEIGHT,
     FLIGHT_ITEM_WIDTH,
-    flights,
     HEADER_HEIGHT
 } from "../utils/consts";
+import {useStore} from "effector-react";
+import {$flights} from "../api/flight";
 
 const Background = (): JSX.Element => {
+    const flights = useStore($flights)
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
     const x = FLIGHT_ITEM_WIDTH
     const y = HEADER_HEIGHT + DATE_ITEM_HEIGHT
@@ -26,6 +28,7 @@ const Background = (): JSX.Element => {
 
     useEffect(() => {
         const svg = d3.select(svgRef.current)
+        svg.selectAll('*').remove()
         for (let j = 0; j < flights.length; j++) {
             for (let i = 0; i < dates.length; i++) {
                 svg.append('rect')
@@ -39,7 +42,7 @@ const Background = (): JSX.Element => {
             }
         }
 
-    }, [x, y, width, height]);
+    }, [x, y, width, height, flights]);
 
     return (
         <svg ref={svgRef}></svg>

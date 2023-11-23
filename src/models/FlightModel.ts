@@ -5,7 +5,7 @@ import {TripModel} from "./TripModel";
  * @since 22.11.2023
  */
 export interface FlightModel {
-    id: string
+    id: number
     name: string
     trips?: TripModel[]
     type?: string

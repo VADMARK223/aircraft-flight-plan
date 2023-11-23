@@ -10,17 +10,19 @@ import {
     DATE_ITEM_WIDTH,
     FLIGHT_ITEM_HEIGHT,
     FLIGHT_ITEM_WIDTH,
-    flights,
     HEADER_HEIGHT,
     HOURS_IN_CELL
 } from "../utils/consts";
 import dayjs from "dayjs";
 import * as d3 from "d3";
 import {TripViewModel} from "../models/TripViewModel";
-import TripItem from "./TripItem";
 import {TripType} from "../models/TripType";
+import {useStore} from "effector-react";
+import {$flights} from "../api/flight";
 
 const Trips = (): JSX.Element => {
+    const flights = useStore($flights)
+
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
     const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()
     const [tripViewModels, setTripViewModels] = useState<TripViewModel[]>()
@@ -145,7 +147,7 @@ const Trips = (): JSX.Element => {
         })
         setTripViewModels(temp)
 
-    }, [startPos.x, startPos.y, currentDragItem])
+    }, [flights, startPos.x, startPos.y, currentDragItem])
 
     const appendDateText = (svg: any, translateX: number, translateY: number, date: dayjs.Dayjs) => {
         const endDateContainer = svg.append('g')
@@ -159,7 +161,7 @@ const Trips = (): JSX.Element => {
 
     return (
         <svg ref={svgRef}>
-            <g>
+            {/*<g>
                 {flights.map((value, index) => {
                     if (!value.trips) {
                         return undefined
@@ -183,7 +185,7 @@ const Trips = (): JSX.Element => {
                         <g key={`trips_items_${value.id}`}>{tripsItems}</g>
                     )
                 })}
-            </g>
+            </g>*/}
         </svg>
     )
 }

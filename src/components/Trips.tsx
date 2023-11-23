@@ -18,6 +18,7 @@ import dayjs from "dayjs";
 import * as d3 from "d3";
 import {TripViewModel} from "../models/TripViewModel";
 import TripItem from "./TripItem";
+import {TripType} from "../models/TripType";
 
 const Trips = (): JSX.Element => {
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
@@ -97,29 +98,64 @@ const Trips = (): JSX.Element => {
                     tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - tripHeight) * 0.5
                 }
 
-                temp.push({id: tripModel.id, x: tripX, y: tripY, width: tripWidth, height: tripHeight})
-                svg.append('rect')
-                    .attr('x', tripX)
-                    .attr('y', tripY)
-                    .attr('width', tripWidth)
-                    .attr('height', tripHeight)
-                    .attr('stroke', 'green')
-                    .attr('fill', tripModel.id === currentDragItem?.id ? 'red' : 'green')
-                    .attr('cursor', 'move')
+                if (tripModel.type === TripType.DEFAULT) {
+                    svg.append('rect')
+                        .attr('x', tripX)
+                        .attr('y', tripY)
+                        .attr('width', tripWidth)
+                        .attr('height', tripHeight)
+                        .attr('stroke', 'green')
+                        .attr('fill', tripModel.id === currentDragItem?.id ? 'red' : 'lightgreen')
+                        .attr('cursor', 'move')
 
-                svg.append('text')
-                    .attr('x', tripX + 5)
-                    .attr('y', tripY)
-                    .attr('fill', 'white')
-                    .attr('text-anchor', 'start')
-                    .attr('dominant-baseline', 'hanging')
-                    .attr('cursor', 'move')
-                    .text(tripModel.id)
+                    svg.append('text')
+                        .attr('x', tripX + 5)
+                        .attr('y', tripY)
+                        .attr('fill', 'white')
+                        .attr('text-anchor', 'start')
+                        .attr('dominant-baseline', 'hanging')
+                        .attr('cursor', 'move')
+                        .text(tripModel.id)
+
+                    appendDateText(svg, tripX, tripY, tripModel.startDate)
+                    appendDateText(svg, tripX + tripWidth, tripY, tripModel.endDate)
+                    temp.push({id: tripModel.id, x: tripX, y: tripY, width: tripWidth, height: tripHeight})
+                } else if (tripModel.type === TripType.ROUTINE_MAINTENANCE) {
+                    svg.append('rect')
+                        .attr('x', tripX)
+                        .attr('y', tripY)
+                        .attr('width', tripWidth)
+                        .attr('height', tripHeight)
+                        .attr('stroke', 'orange')
+                        .attr('fill', 'orange')
+
+                    svg.append('text')
+                        .attr('x', tripX + tripWidth * 0.5)
+                        .attr('y', tripY + tripHeight * 0.5)
+                        .attr('fill', 'black')
+                        .attr('font-weight', 'bold')
+                        .attr('text-anchor', 'middle')
+                        .attr('dominant-baseline', 'middle')
+                        .text('Routine maintenance')
+
+                    appendDateText(svg, tripX, tripY, tripModel.startDate)
+                    appendDateText(svg, tripX + tripWidth, tripY, tripModel.endDate)
+                }
             })
         })
         setTripViewModels(temp)
 
     }, [startPos.x, startPos.y, currentDragItem])
+
+    const appendDateText = (svg: any, translateX: number, translateY: number, date: dayjs.Dayjs) => {
+        const endDateContainer = svg.append('g')
+        endDateContainer.attr('transform', `translate(${translateX},${translateY})`)
+        endDateContainer.append('text')
+            .attr('font-size', 14)
+            .attr('fill', 'black')
+            .attr('transform', `rotate(-16)`)
+            .text(date.format('HH:mm'))
+    }
 
     return (
         <svg ref={svgRef}>

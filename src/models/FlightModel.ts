@@ -8,4 +8,5 @@ export interface FlightModel {
     id: string
     name: string
     trips?: TripModel[]
+    type?: string
 }

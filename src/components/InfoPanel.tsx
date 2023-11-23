@@ -38,10 +38,11 @@ const InfoPanel = (): JSX.Element => {
             .text(now.format('DD.MM.YYYY HH:mm'))
         svg.append('text')
             .attr('x', x + width * 0.5)
-            .attr('y', y + height - 10)
+            .attr('y', y + height - 8)
             .attr('fill', 'black')
             .attr('text-anchor', 'middle')
             .attr('dominant-baseline', 'auto')
+            .attr('font-size', 14)
             .text(`Week ${getWeekCount(now)}`)
     }, [x, y, width, height, now]);
 

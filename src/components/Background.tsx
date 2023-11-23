@@ -39,14 +39,6 @@ const Background = (): JSX.Element => {
             }
         }
 
-        svg.append('rect')
-            .attr('x', x)
-            .attr('y', y)
-            .attr('width', width)
-            .attr('height', height)
-            .attr('stroke', 'black')
-            .attr('stroke-width', 3)
-            .attr('fill', 'transparent')
     }, [x, y, width, height]);
 
     return (

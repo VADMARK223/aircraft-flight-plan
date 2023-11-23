@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import {TripType} from "./TripType";
 
 /**
  * @author Markitanov Vadim
@@ -9,4 +10,5 @@ export interface TripModel {
     flightId: string
     startDate: dayjs.Dayjs
     endDate: dayjs.Dayjs
+    type: TripType
 }

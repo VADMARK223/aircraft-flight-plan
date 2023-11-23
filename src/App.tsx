@@ -14,6 +14,7 @@ import Trips from "./components/Trips";
 import Background from "./components/Background";
 import InfoPanel from "./components/InfoPanel";
 import Header from "./components/Header";
+import Border from "./components/Border";
 
 function App() {
     return (
@@ -37,6 +38,7 @@ function App() {
                           y={HEADER_HEIGHT}/>))}
             <Background/>
             <Trips/>
+            <Border/>
         </svg>
     );
 }

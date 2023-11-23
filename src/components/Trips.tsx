@@ -8,22 +8,19 @@ import React, {JSX, LegacyRef, useEffect, useRef, useState} from 'react';
 import {
     DATE_ITEM_HEIGHT,
     DATE_ITEM_WIDTH,
-    dates,
     FLIGHT_ITEM_HEIGHT,
     FLIGHT_ITEM_WIDTH,
     flights,
+    HEADER_HEIGHT,
     HOURS_IN_CELL
 } from "../utils/consts";
 import dayjs from "dayjs";
 import * as d3 from "d3";
 import {TripViewModel} from "../models/TripViewModel";
+import TripItem from "./TripItem";
 
 const Trips = (): JSX.Element => {
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
-    const x = FLIGHT_ITEM_WIDTH
-    const y = DATE_ITEM_HEIGHT
-    const width = DATE_ITEM_WIDTH * dates.length
-    const height = FLIGHT_ITEM_HEIGHT * flights.length
     const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()
     const [tripViewModels, setTripViewModels] = useState<TripViewModel[]>()
     const [startPos, setStartPos] = useState({x: 0, y: 0})
@@ -97,7 +94,7 @@ const Trips = (): JSX.Element => {
                     tripY = startPos.y
                 } else {
                     tripX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / HOURS_IN_CELL * diffHours
-                    tripY = DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - tripHeight) * 0.5
+                    tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - tripHeight) * 0.5
                 }
 
                 temp.push({id: tripModel.id, x: tripX, y: tripY, width: tripWidth, height: tripHeight})
@@ -122,10 +119,36 @@ const Trips = (): JSX.Element => {
         })
         setTripViewModels(temp)
 
-    }, [x, y, height, width, startPos.x, startPos.y, currentDragItem])
+    }, [startPos.x, startPos.y, currentDragItem])
 
     return (
-        <svg ref={svgRef}></svg>
+        <svg ref={svgRef}>
+            <g>
+                {flights.map((value, index) => {
+                    if (!value.trips) {
+                        return undefined
+                    }
+                    const tripsItems: JSX.Element[] = []
+                    const startDay = dayjs().startOf('day')
+                    value.trips.forEach(trip => {
+                        const diffHours = trip.startDate.diff(startDay, 'hours')
+                        const tripDuration = trip.endDate.diff(trip.startDate, 'hours')
+                        const startX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / HOURS_IN_CELL * diffHours
+                        const tripWidth = DATE_ITEM_WIDTH / HOURS_IN_CELL * tripDuration
+                        tripsItems.push(<TripItem key={trip.id}
+                                                  x={startX}
+                                                  y={DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index}
+                                                  width={tripWidth}
+                                                  data={trip}
+                        />)
+                    })
+
+                    return (
+                        <g key={`trips_items_${value.id}`}>{tripsItems}</g>
+                    )
+                })}
+            </g>
+        </svg>
     )
 }
 

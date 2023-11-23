@@ -1,15 +1,17 @@
 import {FlightModel} from "../models/FlightModel";
 import {DateModel} from "../models/DateModel";
 import dayjs from "dayjs";
+import {getWeekCount} from "./utils";
 
 /**
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const FLIGHT_ITEM_WIDTH = 100
+export const HEADER_HEIGHT = 30
+export const FLIGHT_ITEM_WIDTH = 140
 export const FLIGHT_ITEM_HEIGHT = 60
 
-export const DATE_ITEM_WIDTH = 200
+export const DATE_ITEM_WIDTH = 190
 export const DATE_ITEM_HEIGHT = 45
 
 export const HOURS_IN_CELL = 6
@@ -84,7 +86,7 @@ const generateDates = (): DateModel[] => {
         const newDate = startDate.add(i * HOURS_IN_CELL, 'hours')
         result.push({
             date: newDate,
-            title: `(W47 / 31${i})`
+            title: `(W${getWeekCount(newDate)} / 31${i})`
         })
     }
 

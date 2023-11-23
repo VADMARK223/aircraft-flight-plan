@@ -12,13 +12,14 @@ import {
     dates,
     FLIGHT_ITEM_HEIGHT,
     FLIGHT_ITEM_WIDTH,
-    flights
+    flights,
+    HEADER_HEIGHT
 } from "../utils/consts";
 
 const Background = (): JSX.Element => {
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
     const x = FLIGHT_ITEM_WIDTH
-    const y = DATE_ITEM_HEIGHT
+    const y = HEADER_HEIGHT + DATE_ITEM_HEIGHT
     const width = DATE_ITEM_WIDTH * dates.length
     const height = FLIGHT_ITEM_HEIGHT * flights.length
     const fill = 'white'
@@ -46,7 +47,7 @@ const Background = (): JSX.Element => {
             .attr('stroke', 'black')
             .attr('stroke-width', 3)
             .attr('fill', 'transparent')
-    }, []);
+    }, [x, y, width, height]);
 
     return (
         <svg ref={svgRef}></svg>

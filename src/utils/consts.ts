@@ -17,6 +17,8 @@ export const DATE_ITEM_HEIGHT = 45
 
 export const HOURS_IN_CELL = 6
 
+export const DATE_FORMAT = 'DD.MM.YYYY'
+
 export const defaultFlights: FlightModel[] = [
     {
         id: 1,
@@ -24,14 +26,14 @@ export const defaultFlights: FlightModel[] = [
         trips: [
             {
                 id: '11',
-                flightId: '1',
+                flightId: 1,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(0, 'hours'),
                 endDate: dayjs().startOf('day').add(1, 'hours')
             },
             {
                 id: '21',
-                flightId: '1',
+                flightId: 1,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(8, 'hours'),
                 endDate: dayjs().startOf('day').add(12, 'hours')
@@ -44,14 +46,14 @@ export const defaultFlights: FlightModel[] = [
         trips: [
             {
                 id: '12',
-                flightId: '2',
+                flightId: 2,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(1, 'hours'),
                 endDate: dayjs().startOf('day').add(3, 'hours')
             },
             {
                 id: '22',
-                flightId: '2',
+                flightId: 2,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(5, 'hours'),
                 endDate: dayjs().startOf('day').add(6, 'hours')
@@ -65,7 +67,7 @@ export const defaultFlights: FlightModel[] = [
         trips: [
             {
                 id: '13',
-                flightId: '3',
+                flightId: 3,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(3, 'hours'),
                 endDate: dayjs().startOf('day').add(6, 'hours')
@@ -79,7 +81,7 @@ export const defaultFlights: FlightModel[] = [
         trips: [
             {
                 id: '14',
-                flightId: '4',
+                flightId: 4,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(5, 'hours'),
                 endDate: dayjs().startOf('day').add(16, 'hours')
@@ -93,7 +95,7 @@ export const defaultFlights: FlightModel[] = [
         trips: [
             {
                 id: '15',
-                flightId: '5',
+                flightId: 5,
                 type: TripType.ROUTINE_MAINTENANCE,
                 startDate: dayjs().startOf('day').add(15, 'hours'),
                 endDate: dayjs().startOf('day').add(30, 'hours')
@@ -106,14 +108,14 @@ export const defaultFlights: FlightModel[] = [
         trips: [
             {
                 id: '16',
-                flightId: '6',
+                flightId: 6,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(11, 'hours'),
                 endDate: dayjs().startOf('day').add(14, 'hours')
             },
             {
                 id: '26',
-                flightId: '6',
+                flightId: 6,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(32, 'hours'),
                 endDate: dayjs().startOf('day').add(35, 'hours')
@@ -127,7 +129,7 @@ export const defaultFlights: FlightModel[] = [
         trips: [
             {
                 id: '17',
-                flightId: '7',
+                flightId: 7,
                 type: TripType.ROUTINE_MAINTENANCE,
                 startDate: dayjs().startOf('day').add(0, 'hours'),
                 endDate: dayjs().startOf('day').add(42, 'hours')

@@ -7,7 +7,7 @@ import {TripType} from "./TripType";
  */
 export interface TripModel {
     id: string
-    flightId: string
+    flightId: number
     startDate: dayjs.Dayjs
     endDate: dayjs.Dayjs
     type: TripType

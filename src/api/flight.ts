@@ -18,10 +18,20 @@ export const $flights = createStore<FlightModel[]>(defaultFlights)
 
         return [...state, payload]
     })
-    .on(addTripFx, (state, payload) => {
-        const findFlight = state.find(value => value.id === payload.flightId)
-        if (findFlight !== undefined) {
-            findFlight.trips?.push(payload)
+    .on(addTripFx, (flights, trip) => {
+        const findFlight = flights.find(value => value.id === trip.flightId)
+        if (findFlight === undefined) {
+            return flights
         }
-        return state
+        const flightIndex = flights.indexOf(findFlight)
+        if (flightIndex === -1) {
+            return flights
+        }
+        if (findFlight.trips === undefined) {
+            return flights
+        }
+        findFlight.trips = [...findFlight.trips, trip]
+        const newFlights = [...flights]
+        newFlights[flightIndex] = findFlight
+        return newFlights
     })

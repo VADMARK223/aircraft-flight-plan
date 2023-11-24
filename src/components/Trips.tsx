@@ -19,9 +19,12 @@ import {TripViewModel} from "../models/TripViewModel";
 import {TripType} from "../models/TripType";
 import {useStore} from "effector-react";
 import {$flights} from "../api/flight";
+import {FlightModel} from "../models/FlightModel";
 
 const Trips = (): JSX.Element => {
-    const flights = useStore($flights)
+    const flights: FlightModel[] = useStore($flights)
+
+    console.log('flights', flights)
 
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
     const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()

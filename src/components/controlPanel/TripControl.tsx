@@ -64,7 +64,8 @@ const TripControl = (): JSX.Element => {
                     allowClear
             />
             <DatePicker.RangePicker onChange={handlerDateChange}
-                                    format={DATE_FORMAT}
+                                    // format={DATE_FORMAT}
+                                    picker={'time'}
                 // value={[startDetectionDate, endDetectionDate]}
             />
             <Button type={'primary'}

@@ -23,9 +23,6 @@ import {FlightModel} from "../models/FlightModel";
 
 const Trips = (): JSX.Element => {
     const flights: FlightModel[] = useStore($flights)
-
-    console.log('flights', flights)
-
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
     const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()
     const [tripViewModels, setTripViewModels] = useState<TripViewModel[]>()

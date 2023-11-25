@@ -7,6 +7,6 @@ import {TripModel} from "./TripModel";
 export interface FlightModel {
     id: number
     name: string
-    trips?: TripModel[]
+    trips: TripModel[]
     type?: string
 }

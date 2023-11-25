@@ -20,7 +20,8 @@ const FlightsControl = (): JSX.Element => {
     const handlerAddFlight = (): void => {
         const newFlight: FlightModel = {
             id: -1,
-            name: flightName
+            name: flightName,
+            trips: []
         }
         addFlightFx(newFlight)
     }

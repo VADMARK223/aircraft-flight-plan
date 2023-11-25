@@ -21,17 +21,17 @@ export const $flights = createStore<FlightModel[]>(defaultFlights)
     .on(addTripFx, (flights, trip) => {
         const findFlight = flights.find(value => value.id === trip.flightId)
         if (findFlight === undefined) {
+            console.log('1')
             return flights
         }
         const flightIndex = flights.indexOf(findFlight)
         if (flightIndex === -1) {
-            return flights
-        }
-        if (findFlight.trips === undefined) {
+            console.log('2')
             return flights
         }
         findFlight.trips = [...findFlight.trips, trip]
         const newFlights = [...flights]
         newFlights[flightIndex] = findFlight
+        console.log('4')
         return newFlights
     })

@@ -12,9 +12,10 @@ import TripControl from "./TripControl";
 const ControlPanel = (): JSX.Element => {
     return (
         <div style={{paddingTop: '5px', paddingLeft: '5px'}}>
-            <Space>
+            <Space direction={'vertical'} style={{width: '100%'}}>
+                <Divider type={'horizontal'} orientation={'left'} style={{margin: '0'}}>Добавление рейса</Divider>
                 <FlightsControl/>
-                <Divider type={'vertical'}/>
+                <Divider type={'horizontal'} orientation={'left'} style={{margin: '0'}}>Добавление полета</Divider>
                 <TripControl/>
             </Space>
         </div>

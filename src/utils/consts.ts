@@ -17,7 +17,11 @@ export const DATE_ITEM_HEIGHT = 45
 
 export const HOURS_IN_CELL = 6
 
+export const MINUTES_IN_CELL = HOURS_IN_CELL * 60
+
 export const DATE_FORMAT = 'DD.MM.YYYY'
+
+export const SHOW_TRIP_ID = false
 
 export const defaultFlights: FlightModel[] = [
     {
@@ -135,6 +139,32 @@ export const defaultFlights: FlightModel[] = [
                 endDate: dayjs().startOf('day').add(42, 'hours')
             }
         ]
+    },
+    {
+        id: 8,
+        name: '76503 M',
+        trips: [
+            {
+                id: '18',
+                flightId: 1,
+                type: TripType.DEFAULT,
+                startDate: dayjs().startOf('day').add(0.5, 'hours'),
+                endDate: dayjs().startOf('day').add(3.5, 'hours')
+            }
+        ]
+    },
+    {
+        id: 9,
+        name: '76511 M',
+        trips: [
+            {
+                id: '19',
+                flightId: 1,
+                type: TripType.DEFAULT,
+                startDate: dayjs().startOf('day').add(1, 'hours'),
+                endDate: dayjs().startOf('day').add(3, 'hours')
+            }
+        ]
     }
 ]
 
@@ -145,7 +175,7 @@ const generateDates = (): DateModel[] => {
         const newDate = startDate.add(i * HOURS_IN_CELL, 'hours')
         result.push({
             date: newDate,
-            title: `(W${getWeekCount(newDate)} / 31${i})`
+            title: `(Н${getWeekCount(newDate)} / 31${i})`
         })
     }
 

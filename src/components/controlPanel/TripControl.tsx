@@ -44,7 +44,6 @@ const TripControl = (): JSX.Element => {
     }
 
     const handlerTimeChange = (values: RangeValue<dayjs.Dayjs> | null, formatString: [string, string]): void => {
-        console.log('formatString', formatString)
         setStartTime(formatString[0])
         setEndTime(formatString[1])
     }
@@ -74,6 +73,10 @@ const TripControl = (): JSX.Element => {
                     style={{minWidth: '150px'}}
                     onChange={handlerFlightSelectChange}
                     allowClear
+                    showSearch
+                    filterOption={(input, opt) => {
+                        return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+                    }}
             />
             <span>Дата:</span>
             <DatePicker.RangePicker onChange={handlerDateChange}

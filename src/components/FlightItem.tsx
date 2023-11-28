@@ -7,6 +7,7 @@
 import {JSX, LegacyRef, useEffect, useRef} from 'react';
 import * as d3 from "d3";
 import {FlightModel} from "../models/FlightModel";
+import {FLIGHT_ITEM_WIDTH} from "../utils/consts";
 
 interface FlightItemProps {
     data: FlightModel
@@ -39,6 +40,18 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
             .attr('text-anchor', 'start')
             .attr('dominant-baseline', 'hanging')
             .text(data.name)
+
+        const lineShiftX = 5
+        const lineShiftY = 25
+        svg.append('line')
+            .attr('stroke', 'red')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1)
+            .attr('x1', x + lineShiftX)
+            .attr('y1', y + lineShiftY)
+            .attr('x2', x + FLIGHT_ITEM_WIDTH - 2 * lineShiftX)
+            .attr('y2', y + lineShiftY)
+
     }, [data.name, x, y, width, height, fill, data.type])
 
     return (

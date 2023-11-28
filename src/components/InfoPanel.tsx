@@ -43,7 +43,7 @@ const InfoPanel = (): JSX.Element => {
             .attr('text-anchor', 'middle')
             .attr('dominant-baseline', 'auto')
             .attr('font-size', 14)
-            .text(`Week ${getWeekCount(now)}`)
+            .text(`Неделя ${getWeekCount(now)}`)
     }, [x, y, width, height, now]);
 
     return (

@@ -29,11 +29,13 @@ const Background = (): JSX.Element => {
     useEffect(() => {
         const svg = d3.select(svgRef.current)
         svg.selectAll('*').remove()
+        const container = svg.append('g')
+        container.attr('transform', `translate(${x},${y})`)
         for (let j = 0; j < flights.length; j++) {
             for (let i = 0; i < dates.length; i++) {
-                svg.append('rect')
-                    .attr('x', x + DATE_ITEM_WIDTH * i)
-                    .attr('y', y + FLIGHT_ITEM_HEIGHT * j)
+                container.append('rect')
+                    .attr('x', DATE_ITEM_WIDTH * i)
+                    .attr('y', FLIGHT_ITEM_HEIGHT * j)
                     .attr('width', DATE_ITEM_WIDTH)
                     .attr('height', FLIGHT_ITEM_HEIGHT)
                     .attr('stroke', 'black')

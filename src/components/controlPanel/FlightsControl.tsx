@@ -5,7 +5,7 @@
  * @since 23.11.2023
  */
 import React, {ChangeEvent, JSX, useEffect, useState} from 'react';
-import {Button, Input, Space} from "antd";
+import {Button, Input, Select, Space} from "antd";
 import {FlightModel} from "../../models/FlightModel";
 import {addFlightFx} from "../../api/flight";
 
@@ -32,11 +32,14 @@ const FlightsControl = (): JSX.Element => {
 
     return (
         <Space>
+            <span>Название рейса:</span>
             <Input placeholder={'Введите название рейса'}
                    onChange={changeFlightName}
                    value={flightName}
                    allowClear
             />
+            <span>Тип рейса:</span>
+            <Select placeholder={'Тип рейса'} disabled/>
             <Button type={'primary'}
                     disabled={addFlightButtonDisable}
                     onClick={handlerAddFlight}>Добавить рейс</Button>

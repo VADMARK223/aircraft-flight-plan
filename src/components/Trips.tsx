@@ -11,7 +11,8 @@ import {
     FLIGHT_ITEM_HEIGHT,
     FLIGHT_ITEM_WIDTH,
     HEADER_HEIGHT,
-    HOURS_IN_CELL
+    MINUTES_IN_CELL,
+    SHOW_TRIP_ID
 } from "../utils/consts";
 import dayjs from "dayjs";
 import * as d3 from "d3";
@@ -85,10 +86,8 @@ const Trips = (): JSX.Element => {
             }
             const startDay = dayjs().startOf('day')
             value.trips.forEach(tripModel => {
-                const diffHours = tripModel.startDate.diff(startDay, 'hours')
-                const tripDuration = tripModel.endDate.diff(tripModel.startDate, 'hours')
-
-                const tripWidth = DATE_ITEM_WIDTH / HOURS_IN_CELL * tripDuration
+                const tripDurationMinutes = tripModel.endDate.diff(tripModel.startDate, 'minutes')
+                const tripWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * tripDurationMinutes
                 const tripHeight = FLIGHT_ITEM_HEIGHT * 0.3
                 let tripX
                 let tripY
@@ -96,7 +95,8 @@ const Trips = (): JSX.Element => {
                     tripX = startPos.x
                     tripY = startPos.y
                 } else {
-                    tripX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / HOURS_IN_CELL * diffHours
+                    const diffMinutes = tripModel.startDate.diff(startDay, 'minutes')
+                    tripX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * diffMinutes
                     tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - tripHeight) * 0.5
                 }
 
@@ -110,14 +110,16 @@ const Trips = (): JSX.Element => {
                         .attr('fill', tripModel.id === currentDragItem?.id ? 'red' : 'lightgreen')
                         .attr('cursor', 'move')
 
-                    svg.append('text')
-                        .attr('x', tripX + 5)
-                        .attr('y', tripY)
-                        .attr('fill', 'white')
-                        .attr('text-anchor', 'start')
-                        .attr('dominant-baseline', 'hanging')
-                        .attr('cursor', 'move')
-                        .text(tripModel.id)
+                    if (SHOW_TRIP_ID) {
+                        svg.append('text')
+                            .attr('x', tripX + 5)
+                            .attr('y', tripY)
+                            .attr('fill', 'white')
+                            .attr('text-anchor', 'start')
+                            .attr('dominant-baseline', 'hanging')
+                            .attr('cursor', 'move')
+                            .text(tripModel.id)
+                    }
 
                     appendDateText(svg, tripX, tripY, tripModel.startDate)
                     appendDateText(svg, tripX + tripWidth, tripY, tripModel.endDate)

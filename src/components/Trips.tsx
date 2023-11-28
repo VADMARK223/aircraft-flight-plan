@@ -32,6 +32,9 @@ const Trips = (): JSX.Element => {
     const [shifts, setShifts] = useState({x: 0, y: 0})
     const shiftsRef = useRef(shifts);
 
+    // const height = FLIGHT_ITEM_HEIGHT * flights.length
+
+
     useEffect(() => {
         shiftsRef.current = shifts
     }, [shifts]);
@@ -40,10 +43,22 @@ const Trips = (): JSX.Element => {
         const svg = d3.select(svgRef.current)
         svg.call(d3.drag()
             .on('drag', event => {
-                setStartPos({
-                    x: event.x + shiftsRef.current.x,
-                    y: event.y + shiftsRef.current.y
-                });
+                let newPosX = event.x + shiftsRef.current.x
+                let newPosY = event.y + shiftsRef.current.y
+
+                if (newPosX <= FLIGHT_ITEM_WIDTH) {
+                    newPosX = FLIGHT_ITEM_WIDTH
+                }
+
+                if (newPosY <= HEADER_HEIGHT + DATE_ITEM_HEIGHT) {
+                    newPosY = HEADER_HEIGHT + DATE_ITEM_HEIGHT
+                }
+
+                // if (newPosY >= height) {
+                //     newPosY = height
+                // }
+
+                setStartPos({x: newPosX, y: newPosY});
             })
             .on('start', event => {
                 tripViewModels?.forEach(value => {
@@ -71,7 +86,7 @@ const Trips = (): JSX.Element => {
                 })
             })
         )
-    }, [startPos.x, startPos.y, tripViewModels]);
+    }, [startPos.x, startPos.y, tripViewModels, shiftsRef]);
 
     useEffect(() => {
         const svg = d3.select(svgRef.current)

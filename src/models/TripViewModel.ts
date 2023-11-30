@@ -9,4 +9,5 @@ export interface TripViewModel {
     x: number
     y: number
     width: number
+    index: number
 }

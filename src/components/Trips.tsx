@@ -90,14 +90,14 @@ const Trips = (): JSX.Element => {
                         console.log('Move left.')
 
                         if (cur) {
-                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width)
+                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width, cur.index)
                         }
                         break
 
                     case DragType.CENTER:
                         console.log('Move center.')
                         if (cur) {
-                            updateCurDragTrip(cur.model, newPosX, newPosY, cur.width)
+                            updateCurDragTrip(cur.model, newPosX, newPosY, cur.width,  cur.index)
                         }
 
                         break
@@ -106,7 +106,7 @@ const Trips = (): JSX.Element => {
                         console.log('Move right.')
 
                         if (cur) {
-                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width)
+                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width, cur.index)
                         }
 
                         break
@@ -119,7 +119,7 @@ const Trips = (): JSX.Element => {
                         event.y >= value.y && event.y <= value.y + TRIP_ITEM_HEIGHT
                     ) {
                         setDragModel({trip: value, type: dragModelRef.current?.type as DragType})
-                        updateCurDragTrip(value.model, value.x, value.y, value.width)
+                        updateCurDragTrip(value.model, value.x, value.y, value.width, value.index)
                         setShifts({x: value.x - event.x, y: value.y - event.y})
                     }
                 })
@@ -141,99 +141,107 @@ const Trips = (): JSX.Element => {
     }, [tripViewModels, shiftsRef, height, width, flights, curDragTrip]);
 
     useEffect(() => {
-        const svg = d3.select(svgRef.current)
-
-        // Очищаем все
-        svg.selectAll('*').remove()
-
         const temp: TripViewModel[] = []
         flights.forEach((value, index) => {
             if (!value.trips) {
                 return undefined
             }
-            value.trips.forEach(tripModel => {
-                const tripDurationMinutes = tripModel.endDate.diff(tripModel.startDate, 'minutes')
-                const tripWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * tripDurationMinutes
-                let tripX1: number = 0
-                let tripX2: number = 0
-                let tripY: number = 0
-                const isDragging = tripModel.id === dragModelRef.current?.trip.model.id
-                const cursor: string = isDragging ? 'grabbing' : 'grab'
-                const isDefault = tripModel.type === TripType.DEFAULT
-
-                if (isDragging) {
-                    if (curDragTripRef.current) {
-                        tripX1 = curDragTripRef.current.x
-                        tripX2 = dateToX(tripModel.endDate)
-                        tripY = curDragTripRef.current.y
-                    }
-                } else {
-                    tripX1 = dateToX(tripModel.startDate)
-                    tripX2 = dateToX(tripModel.endDate)
-                    tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - TRIP_ITEM_HEIGHT) * 0.5
-                }
-
+            value.trips.forEach((tripModel) => {
                 const tripViewModel: TripViewModel = {
                     model: tripModel,
-                    x: tripX1,
-                    y: tripY,
-                    width: tripWidth
+                    index: index,
+                    x: 0,
+                    y: 0,
+                    width: 0
                 }
 
-                svg.append('rect')
-                    .attr('x', tripX1)
-                    .attr('y', tripY)
-                    .attr('width', tripWidth)
-                    .attr('height', TRIP_ITEM_HEIGHT)
-                    .attr('stroke', isDefault ? 'green' : 'orange')
-                    .attr('fill', isDragging ? 'red' : isDefault ? 'lightgreen' : 'orange')
-                    .attr('cursor', cursor)
-                    .on('mousedown', function (event: any) {
-                        // updateCurDragTrip(tripModel, tripViewModel.x,tripViewModel.y, tripViewModel.width)
-                        const shiftX = tripViewModel.x - event.x
-                        const shiftY = tripViewModel.y - event.y
-                        setShifts({x: shiftX, y: shiftY})
-                        setDragModel({trip: tripViewModel, type: DragType.CENTER})
-                    })
-
-                if (SHOW_TRIP_ID) {
-                    svg.append('text')
-                        .attr('x', tripX1 + 5)
-                        .attr('y', tripY)
-                        .attr('fill', 'white')
-                        .attr('text-anchor', 'start')
-                        .attr('dominant-baseline', 'hanging')
-                        .attr('cursor', cursor)
-                        .text(tripModel.id)
-                }
-
-                if (!isDefault) {
-                    drawText(svg, 'Тех. обслуживание', tripX1 + tripWidth * 0.5, tripY + TRIP_ITEM_HEIGHT * 0.5 + 1, cursor)
-                }
-
-                const leftStick: any = drawRect(svg, tripX1, tripY, RESIZE_STICK_WIDTH, TRIP_ITEM_HEIGHT, 'blue', 'blue', 'ew-resize')
-                leftStick.on('mousedown', function () {
-                    setDragModel({trip: tripViewModel, type: DragType.LEFT})
-                })
-                const rightStick: any = drawRect(svg, tripX1 + tripWidth - RESIZE_STICK_WIDTH, tripY, RESIZE_STICK_WIDTH, TRIP_ITEM_HEIGHT, 'blue', 'blue', 'ew-resize')
-                rightStick.on('mousedown', function () {
-                    setDragModel({trip: tripViewModel, type: DragType.RIGHT})
-                })
-
-                drawRect(svg, tripX1, tripY, RESIZE_STICK_WIDTH * 0.5, TRIP_ITEM_HEIGHT, 'red', 'red', 'auto')
-                drawRect(svg, tripX2, tripY, RESIZE_STICK_WIDTH * 0.5, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
-
-                appendDateText(svg, tripX1, tripY, tripModel.startDate)
-                appendDateText(svg, tripX1 + tripWidth, tripY, tripModel.endDate)
                 temp.push(tripViewModel)
             })
         })
         setTripViewModels(temp)
 
-    }, [flights, curDragTrip])
+    }, [flights])
 
-    const updateCurDragTrip = (model: TripModel, x: number, y: number, width: number): void => {
-        setCurDragTrip({model: model, x: x, y: y, width: width})
+    useEffect(() => {
+        const svg = d3.select(svgRef.current)
+        svg.selectAll('*').remove()
+        tripViewModels?.forEach(tripModel => {
+            const tripDurationMinutes = tripModel.model.endDate.diff(tripModel.model.startDate, 'minutes')
+            const tripWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * tripDurationMinutes
+            let tripX1: number = 0
+            let tripX2: number = 0
+            let tripY: number = 0
+            const isDragging = tripModel.model.id === dragModelRef.current?.trip.model.id
+            const cursor: string = isDragging ? 'grabbing' : 'grab'
+            const isDefault = tripModel.model.type === TripType.DEFAULT
+
+            if (isDragging) {
+                if (curDragTripRef.current) {
+                    tripX1 = curDragTripRef.current.x
+                    tripX2 = dateToX(tripModel.model.endDate)
+                    tripY = curDragTripRef.current.y
+                }
+            } else {
+                tripX1 = dateToX(tripModel.model.startDate)
+                tripX2 = dateToX(tripModel.model.endDate)
+                tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * tripModel.index + (FLIGHT_ITEM_HEIGHT - TRIP_ITEM_HEIGHT) * 0.5
+            }
+
+            tripModel.x = tripX1
+            tripModel.y = tripY
+            tripModel.width = tripWidth
+
+            svg.append('rect')
+                .attr('x', tripX1)
+                .attr('y', tripY)
+                .attr('width', tripWidth)
+                .attr('height', TRIP_ITEM_HEIGHT)
+                .attr('stroke', isDefault ? 'green' : 'orange')
+                .attr('fill', isDragging ? 'red' : isDefault ? 'lightgreen' : 'orange')
+                .attr('cursor', cursor)
+                .on('mousedown', function (event: any) {
+                    // updateCurDragTrip(tripModel, tripViewModel.x,tripViewModel.y, tripViewModel.width)
+                    const shiftX = tripModel.x - event.x
+                    const shiftY = tripModel.y - event.y
+                    setShifts({x: shiftX, y: shiftY})
+                    setDragModel({trip: tripModel, type: DragType.CENTER})
+                })
+
+            if (SHOW_TRIP_ID) {
+                svg.append('text')
+                    .attr('x', tripX1 + 5)
+                    .attr('y', tripY)
+                    .attr('fill', 'white')
+                    .attr('text-anchor', 'start')
+                    .attr('dominant-baseline', 'hanging')
+                    .attr('cursor', cursor)
+                    .text(tripModel.model.id)
+            }
+
+            if (!isDefault) {
+                drawText(svg, 'Тех. обслуживание', tripX1 + tripWidth * 0.5, tripY + TRIP_ITEM_HEIGHT * 0.5 + 1, cursor)
+            }
+
+            const leftStick: any = drawRect(svg, tripX1, tripY, RESIZE_STICK_WIDTH, TRIP_ITEM_HEIGHT, 'blue', 'blue', 'ew-resize')
+            leftStick.on('mousedown', function () {
+                setDragModel({trip: tripModel, type: DragType.LEFT})
+            })
+            const rightStick: any = drawRect(svg, tripX1 + tripWidth - RESIZE_STICK_WIDTH, tripY, RESIZE_STICK_WIDTH, TRIP_ITEM_HEIGHT, 'blue', 'blue', 'ew-resize')
+            rightStick.on('mousedown', function () {
+                setDragModel({trip: tripModel, type: DragType.RIGHT})
+            })
+
+            drawRect(svg, tripX1, tripY, RESIZE_STICK_WIDTH * 0.5, TRIP_ITEM_HEIGHT, 'red', 'red', 'auto')
+            drawRect(svg, tripX2, tripY, RESIZE_STICK_WIDTH * 0.5, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
+
+            appendDateText(svg, tripX1, tripY, tripModel.model.startDate)
+            appendDateText(svg, tripX1 + tripWidth, tripY, tripModel.model.endDate)
+        })
+
+    }, [tripViewModels, curDragTrip])
+
+    const updateCurDragTrip = (model: TripModel, x: number, y: number, width: number, index: number): void => {
+        setCurDragTrip({model: model, x: x, y: y, width: width, index: index})
     }
 
     return (

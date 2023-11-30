@@ -48,7 +48,7 @@ export const defaultFlights: FlightModel[] = [
                 endDate: dayjs().startOf('day').add(12, 'hours')
             }
         ]
-    },
+    }/*,
     {
         id: 2,
         name: '82047 М',
@@ -170,7 +170,7 @@ export const defaultFlights: FlightModel[] = [
                 endDate: dayjs().startOf('day').add(3, 'hours')
             }
         ]
-    }
+    }*/
 ]
 
 const generateDates = (): DateModel[] => {

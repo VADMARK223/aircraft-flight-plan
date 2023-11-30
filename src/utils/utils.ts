@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import {DATE_ITEM_WIDTH, FLIGHT_ITEM_WIDTH, MINUTES_IN_CELL} from "./consts";
 
 /**
  * @author Markitanov Vadim
@@ -51,4 +52,9 @@ export const appendDateText = (svg: any, translateX: number, translateY: number,
         .attr('fill', 'black')
         .attr('transform', `rotate(-16)`)
         .text(date.format('HH:mm'))
+}
+
+export const dateToX = (date: dayjs.Dayjs) => {
+    const startDay = dayjs().startOf('day')
+    return FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
 }

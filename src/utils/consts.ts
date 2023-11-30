@@ -26,7 +26,7 @@ export const DATE_FORMAT = 'DD.MM.YYYY'
 
 export const SHOW_TRIP_ID = false
 
-export const RESIZE_STICK_WIDTH = 5
+export const RESIZE_STICK_WIDTH = 10
 
 export const defaultFlights: FlightModel[] = [
     {

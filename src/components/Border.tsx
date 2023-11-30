@@ -16,6 +16,7 @@ import {
 import * as d3 from "d3";
 import {useStore} from "effector-react";
 import {$flights} from "../api/flight";
+import {drawLine} from "../utils/utils";
 
 const Border = (): JSX.Element => {
     const flights = useStore($flights)
@@ -34,17 +35,6 @@ const Border = (): JSX.Element => {
         drawLine(svg, x, height, x, y)
 
     }, [x, y, width, height]);
-
-    const drawLine = (svg: any, x1: number, y1: number, x2: number, y2: number): void => {
-        svg.append('line')
-            .attr('stroke', 'red')
-            .attr('stroke', 'black')
-            .attr('stroke-width', 3)
-            .attr('x1', x1)
-            .attr('y1', y1)
-            .attr('x2', x2)
-            .attr('y2', y2)
-    }
 
     return (
         <svg ref={svgRef}></svg>

@@ -3,6 +3,7 @@ import {DateModel} from "../models/DateModel";
 import dayjs from "dayjs";
 import {getWeekCount} from "./utils";
 import {TripType} from "../models/TripType";
+import {TripModel} from "../models/TripModel";
 
 /**
  * @author Markitanov Vadim
@@ -133,7 +134,7 @@ export const defaultFlights: FlightModel[] = [
     {
         id: 7,
         name: '82081 M',
-        type:'red',
+        type: 'red',
         trips: [
             {
                 id: '17',
@@ -187,3 +188,17 @@ const generateDates = (): DateModel[] => {
 }
 
 export const dates: DateModel[] = generateDates()
+
+export const findTripById = (id: string | undefined, flights: FlightModel[]): TripModel | undefined => {
+    let currentTrip: TripModel | undefined
+    for (let i = 0; i < flights.length; i++) {
+        currentTrip = flights[i].trips.find(value => {
+            return value.id === id
+        })
+        if (currentTrip !== undefined) {
+            break
+        }
+    }
+
+    return currentTrip
+}

@@ -24,7 +24,6 @@ import {TripType} from "../models/TripType";
 import {useStore} from "effector-react";
 import {$flights} from "../api/flight";
 import {FlightModel} from "../models/FlightModel";
-import {TripModel} from "../models/TripModel";
 import {drawRect, drawText} from "../utils/utils";
 import {DragModel} from "../models/DragModel";
 import {DragType} from "../models/DragType";
@@ -87,19 +86,29 @@ const Trips = (): JSX.Element => {
                 switch (dragType) {
                     case DragType.LEFT:
                         console.log('Move left.')
+
+                        const currentTrip = dragModelRef.current?.trip.data
+                        const newStartX = startPosRef.current.x - FLIGHT_ITEM_WIDTH
+                        const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
+
+                        if (currentTrip) {
+                            currentTrip.startDate = dayjs().startOf('day').add(newStartMinutes, 'minutes')
+                        }
+
+                        setStartPos({x: newPosX, y: startPosRef.current.y});
                         break
 
                     case DragType.CENTER:
                         console.log('Move center.')
+                        setStartPos({x: newPosX, y: newPosY});
                         break
 
                     case DragType.RIGHT:
                         console.log('Move right.')
+
+                        setStartPos({x: newPosX, y: startPosRef.current.y});
                         break
                 }
-
-
-                setStartPos({x: newPosX, y: newPosY});
             })
             .on('start', event => {
                 tripViewModels?.forEach(value => {
@@ -114,17 +123,7 @@ const Trips = (): JSX.Element => {
                 })
             })
             .on('end', _ => {
-                const currentDragItemId = dragModelRef.current?.trip.id
-                let currentTrip: TripModel | undefined
-                for (let i = 0; i < flights.length; i++) {
-                    currentTrip = flights[i].trips.find(value => {
-                        return value.id === currentDragItemId
-                    })
-                    if (currentTrip !== undefined) {
-                        break
-                    }
-                }
-
+                const currentTrip = dragModelRef.current?.trip.data
                 const newStartX = startPosRef.current.x - FLIGHT_ITEM_WIDTH
                 const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
 
@@ -157,7 +156,7 @@ const Trips = (): JSX.Element => {
                 const tripWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * tripDurationMinutes
                 let tripX
                 let tripY
-                const isDragging = tripModel.id === dragModelRef.current?.trip.id
+                const isDragging = tripModel.id === dragModelRef.current?.trip.data.id
                 const cursor: string = isDragging ? 'grabbing' : 'grab'
                 const isDefault = tripModel.type === TripType.DEFAULT
                 if (isDragging) {
@@ -170,7 +169,7 @@ const Trips = (): JSX.Element => {
                 }
 
                 const tripViewModel: TripViewModel = {
-                    id: tripModel.id,
+                    data: tripModel,
                     x: tripX,
                     y: tripY,
                     width: tripWidth,
@@ -205,7 +204,7 @@ const Trips = (): JSX.Element => {
                 }
 
                 if (!isDefault) {
-                    drawText(svg, 'Тех. обслуживание', tripX + tripWidth * 0.5,tripY + TRIP_ITEM_HEIGHT * 0.5 + 1, cursor)
+                    drawText(svg, 'Тех. обслуживание', tripX + tripWidth * 0.5, tripY + TRIP_ITEM_HEIGHT * 0.5 + 1, cursor)
                 }
 
                 const leftStick: any = drawRect(svg, tripX, tripY, RESIZE_STICK_WIDTH, TRIP_ITEM_HEIGHT, 'blue', 'blue', 'ew-resize')

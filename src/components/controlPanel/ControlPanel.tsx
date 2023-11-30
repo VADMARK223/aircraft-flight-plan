@@ -13,7 +13,7 @@ const ControlPanel = (): JSX.Element => {
     return (
         <div style={{paddingTop: '5px', paddingLeft: '5px'}}>
             <Space direction={'vertical'} style={{width: '100%'}}>
-                <Divider type={'horizontal'} orientation={'left'} style={{margin: '0'}}>Добавление рейса</Divider>
+                <Divider type={'horizontal'} orientation={'left'} style={{margin: '0'}}>Добавление борта</Divider>
                 <FlightsControl/>
                 <Divider type={'horizontal'} orientation={'left'} style={{margin: '0'}}>Добавление полета</Divider>
                 <TripControl/>

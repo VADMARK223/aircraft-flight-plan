@@ -32,17 +32,17 @@ const FlightsControl = (): JSX.Element => {
 
     return (
         <Space>
-            <span>Название рейса:</span>
-            <Input placeholder={'Введите название рейса'}
+            <span>Название борта:</span>
+            <Input placeholder={'Введите название борта'}
                    onChange={changeFlightName}
                    value={flightName}
                    allowClear
             />
-            <span>Тип рейса:</span>
-            <Select placeholder={'Тип рейса'} disabled/>
+            <span>Тип борта:</span>
+            <Select placeholder={'Тип борта'} disabled/>
             <Button type={'primary'}
                     disabled={addFlightButtonDisable}
-                    onClick={handlerAddFlight}>Добавить рейс</Button>
+                    onClick={handlerAddFlight}>Добавить борт</Button>
         </Space>
     );
 }

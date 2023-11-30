@@ -67,8 +67,8 @@ const TripControl = (): JSX.Element => {
 
     return (
         <Space>
-            <span>Рейс:</span>
-            <Select placeholder={'Выберите рейс'}
+            <span>Борт:</span>
+            <Select placeholder={'Выберите борт'}
                     options={options}
                     style={{minWidth: '150px'}}
                     onChange={handlerFlightSelectChange}

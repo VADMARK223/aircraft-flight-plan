@@ -8,11 +8,13 @@ import React, {JSX, LegacyRef, useEffect, useRef, useState} from 'react';
 import {
     DATE_ITEM_HEIGHT,
     DATE_ITEM_WIDTH,
+    dates,
     FLIGHT_ITEM_HEIGHT,
     FLIGHT_ITEM_WIDTH,
     HEADER_HEIGHT,
     MINUTES_IN_CELL,
-    SHOW_TRIP_ID
+    SHOW_TRIP_ID,
+    TRIP_ITEM_HEIGHT
 } from "../utils/consts";
 import dayjs from "dayjs";
 import * as d3 from "d3";
@@ -26,18 +28,23 @@ const Trips = (): JSX.Element => {
     const flights: FlightModel[] = useStore($flights)
     const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
     const [currentDragItem, setCurrentDragItem] = useState<TripViewModel>()
+    const currentDragItemRef = useRef(currentDragItem)
     const [tripViewModels, setTripViewModels] = useState<TripViewModel[]>()
     const [startPos, setStartPos] = useState({x: 0, y: 0})
 
     const [shifts, setShifts] = useState({x: 0, y: 0})
     const shiftsRef = useRef(shifts);
 
-    // const height = FLIGHT_ITEM_HEIGHT * flights.length
-
+    const height = FLIGHT_ITEM_HEIGHT * flights.length + HEADER_HEIGHT + DATE_ITEM_HEIGHT
+    const width = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length
 
     useEffect(() => {
         shiftsRef.current = shifts
     }, [shifts]);
+
+    useEffect(() => {
+        currentDragItemRef.current = currentDragItem
+    }, [currentDragItem]);
 
     useEffect(() => {
         const svg = d3.select(svgRef.current)
@@ -50,13 +57,19 @@ const Trips = (): JSX.Element => {
                     newPosX = FLIGHT_ITEM_WIDTH
                 }
 
+                if (currentDragItemRef.current) {
+                    if (newPosX >= width - currentDragItemRef.current.width) {
+                        newPosX = width - currentDragItemRef.current.width
+                    }
+                }
+
                 if (newPosY <= HEADER_HEIGHT + DATE_ITEM_HEIGHT) {
                     newPosY = HEADER_HEIGHT + DATE_ITEM_HEIGHT
                 }
 
-                // if (newPosY >= height) {
-                //     newPosY = height
-                // }
+                if (newPosY >= height - TRIP_ITEM_HEIGHT) {
+                    newPosY = height - TRIP_ITEM_HEIGHT
+                }
 
                 setStartPos({x: newPosX, y: newPosY});
             })
@@ -86,7 +99,7 @@ const Trips = (): JSX.Element => {
                 })
             })
         )
-    }, [startPos.x, startPos.y, tripViewModels, shiftsRef]);
+    }, [startPos.x, startPos.y, tripViewModels, shiftsRef, height, width]);
 
     useEffect(() => {
         const svg = d3.select(svgRef.current)
@@ -103,7 +116,6 @@ const Trips = (): JSX.Element => {
             value.trips.forEach(tripModel => {
                 const tripDurationMinutes = tripModel.endDate.diff(tripModel.startDate, 'minutes')
                 const tripWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * tripDurationMinutes
-                const tripHeight = FLIGHT_ITEM_HEIGHT * 0.3
                 let tripX
                 let tripY
                 if (tripModel.id === currentDragItem?.id) {
@@ -112,7 +124,7 @@ const Trips = (): JSX.Element => {
                 } else {
                     const diffMinutes = tripModel.startDate.diff(startDay, 'minutes')
                     tripX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * diffMinutes
-                    tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - tripHeight) * 0.5
+                    tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - TRIP_ITEM_HEIGHT) * 0.5
                 }
 
                 if (tripModel.type === TripType.DEFAULT) {
@@ -120,7 +132,7 @@ const Trips = (): JSX.Element => {
                         .attr('x', tripX)
                         .attr('y', tripY)
                         .attr('width', tripWidth)
-                        .attr('height', tripHeight)
+                        .attr('height', TRIP_ITEM_HEIGHT)
                         .attr('stroke', 'green')
                         .attr('fill', tripModel.id === currentDragItem?.id ? 'red' : 'lightgreen')
                         .attr('cursor', 'move')
@@ -138,19 +150,19 @@ const Trips = (): JSX.Element => {
 
                     appendDateText(svg, tripX, tripY, tripModel.startDate)
                     appendDateText(svg, tripX + tripWidth, tripY, tripModel.endDate)
-                    temp.push({id: tripModel.id, x: tripX, y: tripY, width: tripWidth, height: tripHeight})
+                    temp.push({id: tripModel.id, x: tripX, y: tripY, width: tripWidth, height: TRIP_ITEM_HEIGHT})
                 } else if (tripModel.type === TripType.ROUTINE_MAINTENANCE) {
                     svg.append('rect')
                         .attr('x', tripX)
                         .attr('y', tripY)
                         .attr('width', tripWidth)
-                        .attr('height', tripHeight)
+                        .attr('height', TRIP_ITEM_HEIGHT)
                         .attr('stroke', 'orange')
                         .attr('fill', 'orange')
 
                     svg.append('text')
                         .attr('x', tripX + tripWidth * 0.5)
-                        .attr('y', tripY + tripHeight * 0.5)
+                        .attr('y', tripY + TRIP_ITEM_HEIGHT * 0.5)
                         .attr('fill', 'black')
                         .attr('font-weight', 'bold')
                         .attr('text-anchor', 'middle')

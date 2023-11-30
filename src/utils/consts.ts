@@ -12,6 +12,8 @@ export const HEADER_HEIGHT = 30
 export const FLIGHT_ITEM_WIDTH = 140
 export const FLIGHT_ITEM_HEIGHT = 60
 
+export const TRIP_ITEM_HEIGHT = FLIGHT_ITEM_HEIGHT * 0.3
+
 export const DATE_ITEM_WIDTH = 190
 export const DATE_ITEM_HEIGHT = 45
 

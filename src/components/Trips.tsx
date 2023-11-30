@@ -13,6 +13,7 @@ import {
     FLIGHT_ITEM_WIDTH,
     HEADER_HEIGHT,
     MINUTES_IN_CELL,
+    RESIZE_STICK_WIDTH,
     SHOW_TRIP_ID,
     TRIP_ITEM_HEIGHT
 } from "../utils/consts";
@@ -24,7 +25,7 @@ import {useStore} from "effector-react";
 import {$flights} from "../api/flight";
 import {FlightModel} from "../models/FlightModel";
 import {TripModel} from "../models/TripModel";
-import {drawLine} from "../utils/utils";
+import {drawRect, drawText} from "../utils/utils";
 import {DragModel} from "../models/DragModel";
 import {DragType} from "../models/DragType";
 
@@ -50,7 +51,6 @@ const Trips = (): JSX.Element => {
     }, [shifts])
 
     useEffect(() => {
-        // currentDragItemRef.current = currentDragItem
         dragModelRef.current = dragModel
     }, [dragModel])
 
@@ -83,6 +83,22 @@ const Trips = (): JSX.Element => {
                     newPosY = height - TRIP_ITEM_HEIGHT
                 }
 
+                const dragType = dragModelRef.current?.type
+                switch (dragType) {
+                    case DragType.LEFT:
+                        console.log('Move left.')
+                        break
+
+                    case DragType.CENTER:
+                        console.log('Move center.')
+                        break
+
+                    case DragType.RIGHT:
+                        console.log('Move right.')
+                        break
+                }
+
+
                 setStartPos({x: newPosX, y: newPosY});
             })
             .on('start', event => {
@@ -91,7 +107,7 @@ const Trips = (): JSX.Element => {
                         event.x >= value.x && event.x <= value.x + value.width &&
                         event.y >= value.y && event.y <= value.y + value.height
                     ) {
-                        setDragModel({trip: value, type: DragType.CENTER})
+                        setDragModel({trip: value, type: dragModelRef.current?.type as DragType})
                         setStartPos({x: value.x, y: value.y})
                         setShifts({x: value.x - event.x, y: value.y - event.y})
                     }
@@ -118,7 +134,6 @@ const Trips = (): JSX.Element => {
                     currentTrip.endDate = dayjs().startOf('day').add(newStartMinutes + diffMinutes, 'minutes')
                 }
 
-                // setCurrentDragItem(undefined)
                 setDragModel(undefined)
                 setStartPos({x: 0, y: 0})
             })
@@ -154,6 +169,14 @@ const Trips = (): JSX.Element => {
                     tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index + (FLIGHT_ITEM_HEIGHT - TRIP_ITEM_HEIGHT) * 0.5
                 }
 
+                const tripViewModel: TripViewModel = {
+                    id: tripModel.id,
+                    x: tripX,
+                    y: tripY,
+                    width: tripWidth,
+                    height: TRIP_ITEM_HEIGHT
+                }
+
                 svg.append('rect')
                     .attr('x', tripX)
                     .attr('y', tripY)
@@ -162,6 +185,13 @@ const Trips = (): JSX.Element => {
                     .attr('stroke', isDefault ? 'green' : 'orange')
                     .attr('fill', isDragging ? 'red' : isDefault ? 'lightgreen' : 'orange')
                     .attr('cursor', cursor)
+                    .on('mousedown', function (event: any) {
+                        setStartPos({x: tripViewModel.x, y: tripViewModel.y})
+                        const shiftX = tripViewModel.x - event.x
+                        const shiftY = tripViewModel.y - event.y
+                        setShifts({x: shiftX, y: shiftY})
+                        setDragModel({trip: tripViewModel, type: DragType.CENTER})
+                    })
 
                 if (SHOW_TRIP_ID) {
                     svg.append('text')
@@ -175,29 +205,21 @@ const Trips = (): JSX.Element => {
                 }
 
                 if (!isDefault) {
-                    svg.append('text')
-                        .attr('x', tripX + tripWidth * 0.5)
-                        .attr('y', tripY + TRIP_ITEM_HEIGHT * 0.5)
-                        .attr('fill', 'black')
-                        .attr('font-weight', 'bold')
-                        .attr('text-anchor', 'middle')
-                        .attr('dominant-baseline', 'middle')
-                        .attr('cursor', cursor)
-                        .text('Тех. обслуживание')
+                    drawText(svg, 'Тех. обслуживание', tripX + tripWidth * 0.5,tripY + TRIP_ITEM_HEIGHT * 0.5 + 1, cursor)
                 }
 
-                // Left
-                const leftLine = drawLine(svg, tripX, tripY, tripX, tripY + TRIP_ITEM_HEIGHT)
-                leftLine.attr('stroke', 'red')
-                leftLine.attr('cursor', 'ew-resize')
-                // Right
-                const rightLine = drawLine(svg, tripX + tripWidth, tripY, tripX + tripWidth, tripY + TRIP_ITEM_HEIGHT)
-                rightLine.attr('stroke', 'red')
-                rightLine.attr('cursor', 'ew-resize')
+                const leftStick: any = drawRect(svg, tripX, tripY, RESIZE_STICK_WIDTH, TRIP_ITEM_HEIGHT, 'blue', 'blue', 'ew-resize')
+                leftStick.on('mousedown', function () {
+                    setDragModel({trip: tripViewModel, type: DragType.LEFT})
+                })
+                const rightStick: any = drawRect(svg, tripX + tripWidth - RESIZE_STICK_WIDTH, tripY, RESIZE_STICK_WIDTH, TRIP_ITEM_HEIGHT, 'blue', 'blue', 'ew-resize')
+                rightStick.on('mousedown', function () {
+                    setDragModel({trip: tripViewModel, type: DragType.RIGHT})
+                })
 
                 appendDateText(svg, tripX, tripY, tripModel.startDate)
                 appendDateText(svg, tripX + tripWidth, tripY, tripModel.endDate)
-                temp.push({id: tripModel.id, x: tripX, y: tripY, width: tripWidth, height: TRIP_ITEM_HEIGHT})
+                temp.push(tripViewModel)
             })
         })
         setTripViewModels(temp)

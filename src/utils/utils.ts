@@ -42,3 +42,13 @@ export const drawText = (svg: any, text: string, x: number, y: number, cursor: s
         .attr('cursor', cursor)
         .text(text)
 }
+
+export const appendDateText = (svg: any, translateX: number, translateY: number, date: dayjs.Dayjs) => {
+    const endDateContainer = svg.append('g')
+    endDateContainer.attr('transform', `translate(${translateX},${translateY})`)
+    endDateContainer.append('text')
+        .attr('font-size', 14)
+        .attr('fill', 'black')
+        .attr('transform', `rotate(-16)`)
+        .text(date.format('HH:mm'))
+}

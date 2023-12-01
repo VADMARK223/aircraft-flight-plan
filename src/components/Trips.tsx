@@ -90,14 +90,14 @@ const Trips = (): JSX.Element => {
                         console.log('Move left.')
 
                         if (cur) {
-                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width, cur.index)
+                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width, cur.index, cur.oldX1, cur.oldX2)
                         }
                         break
 
                     case DragType.CENTER:
                         console.log('Move center.')
                         if (cur) {
-                            updateCurDragTrip(cur.model, newPosX, newPosY, cur.width,  cur.index)
+                            updateCurDragTrip(cur.model, newPosX, newPosY, cur.width, cur.index, cur.oldX1, cur.oldX2)
                         }
 
                         break
@@ -106,7 +106,9 @@ const Trips = (): JSX.Element => {
                         console.log('Move right.')
 
                         if (cur) {
-                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width, cur.index)
+                            // const newWidth = cur.oldX1 + newPosX + cur.width
+                            // updateCurDragTrip(cur.model, cur.oldX1, cur.y, newWidth, cur.index, cur.oldX1, cur.oldX2)
+                            updateCurDragTrip(cur.model, newPosX, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
                         }
 
                         break
@@ -119,7 +121,7 @@ const Trips = (): JSX.Element => {
                         event.y >= value.y && event.y <= value.y + TRIP_ITEM_HEIGHT
                     ) {
                         setDragModel({trip: value, type: dragModelRef.current?.type as DragType})
-                        updateCurDragTrip(value.model, value.x, value.y, value.width, value.index)
+                        updateCurDragTrip(value.model, value.x, value.y, value.width, value.index, value.oldX1, value.oldX2)
                         setShifts({x: value.x - event.x, y: value.y - event.y})
                     }
                 })
@@ -152,7 +154,9 @@ const Trips = (): JSX.Element => {
                     index: index,
                     x: 0,
                     y: 0,
-                    width: 0
+                    width: 0,
+                    oldX1: 0,
+                    oldX2: 0
                 }
 
                 temp.push(tripViewModel)
@@ -168,8 +172,9 @@ const Trips = (): JSX.Element => {
         tripViewModels?.forEach(tripModel => {
             const tripDurationMinutes = tripModel.model.endDate.diff(tripModel.model.startDate, 'minutes')
             const tripWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * tripDurationMinutes
+            const oldX1: number = dateToX(tripModel.model.startDate)
+            const oldX2: number = dateToX(tripModel.model.endDate)
             let tripX1: number = 0
-            let tripX2: number = 0
             let tripY: number = 0
             const isDragging = tripModel.model.id === dragModelRef.current?.trip.model.id
             const cursor: string = isDragging ? 'grabbing' : 'grab'
@@ -178,18 +183,18 @@ const Trips = (): JSX.Element => {
             if (isDragging) {
                 if (curDragTripRef.current) {
                     tripX1 = curDragTripRef.current.x
-                    tripX2 = dateToX(tripModel.model.endDate)
                     tripY = curDragTripRef.current.y
                 }
             } else {
                 tripX1 = dateToX(tripModel.model.startDate)
-                tripX2 = dateToX(tripModel.model.endDate)
                 tripY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * tripModel.index + (FLIGHT_ITEM_HEIGHT - TRIP_ITEM_HEIGHT) * 0.5
             }
 
             tripModel.x = tripX1
             tripModel.y = tripY
             tripModel.width = tripWidth
+            tripModel.oldX1 = oldX1
+            tripModel.oldX2 = oldX2
 
             svg.append('rect')
                 .attr('x', tripX1)
@@ -200,7 +205,6 @@ const Trips = (): JSX.Element => {
                 .attr('fill', isDragging ? 'red' : isDefault ? 'lightgreen' : 'orange')
                 .attr('cursor', cursor)
                 .on('mousedown', function (event: any) {
-                    // updateCurDragTrip(tripModel, tripViewModel.x,tripViewModel.y, tripViewModel.width)
                     const shiftX = tripModel.x - event.x
                     const shiftY = tripModel.y - event.y
                     setShifts({x: shiftX, y: shiftY})
@@ -231,8 +235,8 @@ const Trips = (): JSX.Element => {
                 setDragModel({trip: tripModel, type: DragType.RIGHT})
             })
 
-            drawRect(svg, tripX1, tripY, RESIZE_STICK_WIDTH * 0.5, TRIP_ITEM_HEIGHT, 'red', 'red', 'auto')
-            drawRect(svg, tripX2, tripY, RESIZE_STICK_WIDTH * 0.5, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
+            drawRect(svg, oldX1, tripY, RESIZE_STICK_WIDTH * 0.4, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
+            drawRect(svg, oldX2, tripY, RESIZE_STICK_WIDTH * 0.4, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
 
             appendDateText(svg, tripX1, tripY, tripModel.model.startDate)
             appendDateText(svg, tripX1 + tripWidth, tripY, tripModel.model.endDate)
@@ -240,8 +244,8 @@ const Trips = (): JSX.Element => {
 
     }, [tripViewModels, curDragTrip])
 
-    const updateCurDragTrip = (model: TripModel, x: number, y: number, width: number, index: number): void => {
-        setCurDragTrip({model: model, x: x, y: y, width: width, index: index})
+    const updateCurDragTrip = (model: TripModel, x: number, y: number, width: number, index: number, oldX1: number, oldX2: number): void => {
+        setCurDragTrip({model: model, x: x, y: y, width: width, index: index, oldX1: oldX1, oldX2: oldX2})
     }
 
     return (

@@ -54,7 +54,13 @@ export const appendDateText = (svg: any, translateX: number, translateY: number,
         .text(date.format('HH:mm'))
 }
 
-export const dateToX = (date: dayjs.Dayjs) => {
+export const dateToX = (date: dayjs.Dayjs): number => {
     const startDay = dayjs().startOf('day')
     return FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
+}
+
+export const xToDate = (x: number): dayjs.Dayjs => {
+    const newStartX = x - FLIGHT_ITEM_WIDTH
+    const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
+    return dayjs().startOf('day').add(newStartMinutes, 'minutes')
 }

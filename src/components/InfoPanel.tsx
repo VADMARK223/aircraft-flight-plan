@@ -6,7 +6,7 @@
  */
 import React, {JSX, LegacyRef, useEffect, useRef} from 'react';
 import * as d3 from "d3";
-import {DATE_ITEM_HEIGHT, FLIGHT_ITEM_WIDTH, HEADER_HEIGHT} from "../utils/consts";
+import {DATE_ITEM_HEIGHT, FLIGHT_ITEM_WIDTH, FULL_TIME_FORMAT, HEADER_HEIGHT} from "../utils/consts";
 import dayjs from "dayjs";
 import {getWeekCount} from "../utils/utils";
 
@@ -35,7 +35,7 @@ const InfoPanel = (): JSX.Element => {
             .attr('fill', 'black')
             .attr('text-anchor', 'middle')
             .attr('dominant-baseline', 'middle')
-            .text(now.format('DD.MM.YYYY HH:mm'))
+            .text(now.format(FULL_TIME_FORMAT))
         svg.append('text')
             .attr('x', x + width * 0.5)
             .attr('y', y + height - 8)

@@ -13,7 +13,7 @@ import {
     FLIGHT_ITEM_WIDTH,
     HEADER_HEIGHT,
     MINUTES_IN_CELL,
-    RESIZE_STICK_WIDTH,
+    RESIZE_STICK_WIDTH, SHOW_OLD_STICKS,
     SHOW_TRIP_ID,
     TRIP_ITEM_HEIGHT
 } from "../utils/consts";
@@ -24,7 +24,7 @@ import {TripType} from "../models/TripType";
 import {useStore} from "effector-react";
 import {$flights} from "../api/flight";
 import {FlightModel} from "../models/FlightModel";
-import {appendDateText, dateToX, drawRect, drawText} from "../utils/utils";
+import {appendDateText, dateToX, drawRect, drawText, xToDate} from "../utils/utils";
 import {DragModel} from "../models/DragModel";
 import {DragType} from "../models/DragType";
 import {TripModel} from "../models/TripModel";
@@ -87,28 +87,29 @@ const Trips = (): JSX.Element => {
                 const cur = curDragTripRef.current
                 switch (dragType) {
                     case DragType.LEFT:
-                        console.log('Move left.')
-
                         if (cur) {
-                            updateCurDragTrip(cur.model, newPosX, cur.y, cur.width, cur.index, cur.oldX1, cur.oldX2)
+                            cur.model.startDate = xToDate(newPosX)
+                            updateCurDragTrip(cur.model, newPosX, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
                         }
                         break
 
                     case DragType.CENTER:
-                        console.log('Move center.')
                         if (cur) {
+                            const newStartX = cur.x - FLIGHT_ITEM_WIDTH
+                            const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
+                            const model = cur.model
+                            const diffMinutes = dayjs(model.endDate).diff(model.startDate, 'minutes')
+                            model.startDate = dayjs().startOf('day').add(newStartMinutes, 'minutes')
+                            model.endDate = dayjs().startOf('day').add(newStartMinutes + diffMinutes, 'minutes')
                             updateCurDragTrip(cur.model, newPosX, newPosY, cur.width, cur.index, cur.oldX1, cur.oldX2)
                         }
 
                         break
 
                     case DragType.RIGHT:
-                        console.log('Move right.')
-
                         if (cur) {
-                            // const newWidth = cur.oldX1 + newPosX + cur.width
-                            // updateCurDragTrip(cur.model, cur.oldX1, cur.y, newWidth, cur.index, cur.oldX1, cur.oldX2)
-                            updateCurDragTrip(cur.model, newPosX, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
+                            cur.model.endDate = xToDate(newPosX - shiftsRef.current.x)
+                            updateCurDragTrip(cur.model, cur.oldX1, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
                         }
 
                         break
@@ -235,8 +236,10 @@ const Trips = (): JSX.Element => {
                 setDragModel({trip: tripModel, type: DragType.RIGHT})
             })
 
-            drawRect(svg, oldX1, tripY, RESIZE_STICK_WIDTH * 0.4, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
-            drawRect(svg, oldX2, tripY, RESIZE_STICK_WIDTH * 0.4, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
+            if (SHOW_OLD_STICKS) {
+                drawRect(svg, oldX1, tripY, RESIZE_STICK_WIDTH * 0.4, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
+                drawRect(svg, oldX2, tripY, RESIZE_STICK_WIDTH * 0.4, TRIP_ITEM_HEIGHT, 'brown', 'brown', 'auto')
+            }
 
             appendDateText(svg, tripX1, tripY, tripModel.model.startDate)
             appendDateText(svg, tripX1 + tripWidth, tripY, tripModel.model.endDate)

@@ -24,9 +24,13 @@ export const MINUTES_IN_CELL = HOURS_IN_CELL * 60
 
 export const DATE_FORMAT = 'DD.MM.YYYY'
 
+export const FULL_TIME_FORMAT = 'DD.MM.YYYY HH:mm'
+
 export const SHOW_TRIP_ID = false
 
-export const RESIZE_STICK_WIDTH = 10
+export const SHOW_OLD_STICKS = false
+
+export const RESIZE_STICK_WIDTH = 5
 
 export const defaultFlights: FlightModel[] = [
     {

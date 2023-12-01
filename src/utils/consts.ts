@@ -41,16 +41,16 @@ export const defaultFlights: FlightModel[] = [
                 id: '11',
                 flightId: 1,
                 type: TripType.DEFAULT,
-                startDate: dayjs().startOf('day').add(0, 'hours'),
-                endDate: dayjs().startOf('day').add(1, 'hours')
-            },
+                startDate: dayjs().startOf('day').add(1, 'hours'),
+                endDate: dayjs().startOf('day').add(2, 'hours')
+            }/*,
             {
                 id: '21',
                 flightId: 1,
                 type: TripType.DEFAULT,
                 startDate: dayjs().startOf('day').add(8, 'hours'),
                 endDate: dayjs().startOf('day').add(12, 'hours')
-            }
+            }*/
         ]
     }/*,
     {
@@ -180,7 +180,7 @@ export const defaultFlights: FlightModel[] = [
 const generateDates = (): DateModel[] => {
     const startDate = dayjs().startOf('day')
     const result: DateModel[] = []
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 2; i++) {
         const newDate = startDate.add(i * HOURS_IN_CELL, 'hours')
         result.push({
             date: newDate,

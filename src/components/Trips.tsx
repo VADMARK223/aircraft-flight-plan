@@ -13,7 +13,8 @@ import {
     FLIGHT_ITEM_WIDTH,
     HEADER_HEIGHT,
     MINUTES_IN_CELL,
-    RESIZE_STICK_WIDTH, SHOW_OLD_STICKS,
+    RESIZE_STICK_WIDTH,
+    SHOW_OLD_STICKS,
     SHOW_TRIP_ID,
     TRIP_ITEM_HEIGHT
 } from "../utils/consts";
@@ -65,28 +66,14 @@ const Trips = (): JSX.Element => {
                 let newPosX = event.x + shiftsRef.current.x
                 let newPosY = event.y + shiftsRef.current.y
 
-                if (newPosX <= FLIGHT_ITEM_WIDTH) {
-                    newPosX = FLIGHT_ITEM_WIDTH
-                }
-
-                if (dragModelRef.current && dragModelRef.current.trip) {
-                    if (newPosX >= width - dragModelRef.current.trip.width) {
-                        newPosX = width - dragModelRef.current.trip.width
-                    }
-                }
-
-                if (newPosY <= HEADER_HEIGHT + DATE_ITEM_HEIGHT) {
-                    newPosY = HEADER_HEIGHT + DATE_ITEM_HEIGHT
-                }
-
-                if (newPosY >= height - TRIP_ITEM_HEIGHT) {
-                    newPosY = height - TRIP_ITEM_HEIGHT
-                }
-
                 const dragType = dragModelRef.current?.type
                 const cur = curDragTripRef.current
                 switch (dragType) {
                     case DragType.LEFT:
+                        if (newPosX <= FLIGHT_ITEM_WIDTH) {
+                            newPosX = FLIGHT_ITEM_WIDTH
+                        }
+
                         if (cur) {
                             cur.model.startDate = xToDate(newPosX)
                             updateCurDragTrip(cur.model, newPosX, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
@@ -94,6 +81,24 @@ const Trips = (): JSX.Element => {
                         break
 
                     case DragType.CENTER:
+                        if (newPosX <= FLIGHT_ITEM_WIDTH) {
+                            newPosX = FLIGHT_ITEM_WIDTH
+                        }
+
+                        if (dragModelRef.current && dragModelRef.current.trip) {
+                            if (newPosX >= width - dragModelRef.current.trip.width) {
+                                newPosX = width - dragModelRef.current.trip.width
+                            }
+                        }
+
+                        if (newPosY <= HEADER_HEIGHT + DATE_ITEM_HEIGHT) {
+                            newPosY = HEADER_HEIGHT + DATE_ITEM_HEIGHT
+                        }
+
+                        if (newPosY >= height - TRIP_ITEM_HEIGHT) {
+                            newPosY = height - TRIP_ITEM_HEIGHT
+                        }
+
                         if (cur) {
                             const newStartX = cur.x - FLIGHT_ITEM_WIDTH
                             const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
@@ -107,7 +112,13 @@ const Trips = (): JSX.Element => {
                         break
 
                     case DragType.RIGHT:
-                        if (cur) {
+                        if (dragModelRef.current && dragModelRef.current.trip && cur) {
+                            const endDate = dragModelRef.current?.trip.model.endDate
+
+                            if (dateToX(endDate) > FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length) {
+                                newPosX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length + shiftsRef.current.x
+                            }
+
                             cur.model.endDate = xToDate(newPosX - shiftsRef.current.x)
                             updateCurDragTrip(cur.model, cur.oldX1, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
                         }
@@ -134,7 +145,14 @@ const Trips = (): JSX.Element => {
                     const model = curDragTripRef.current?.model
                     const diffMinutes = dayjs(model.endDate).diff(model.startDate, 'minutes')
                     model.startDate = dayjs().startOf('day').add(newStartMinutes, 'minutes')
-                    model.endDate = dayjs().startOf('day').add(newStartMinutes + diffMinutes, 'minutes')
+                    const newEndDate = dayjs().startOf('day').add(newStartMinutes + diffMinutes, 'minutes')
+                    if (dateToX(newEndDate) >= FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length) {
+                        console.log('BAD')
+                        model.endDate = xToDate(FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length)
+                    } else {
+                        console.log('GOOD')
+                        model.endDate = newEndDate
+                    }
                 }
 
                 setDragModel(undefined)

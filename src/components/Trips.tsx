@@ -75,7 +75,16 @@ const Trips = (): JSX.Element => {
                         }
 
                         if (cur) {
-                            cur.model.startDate = xToDate(newPosX)
+                            const newStartDate = xToDate(newPosX)
+                            const oldEndDate = cur.model.endDate
+
+                            if (newStartDate.isBefore(oldEndDate)) {
+                                cur.model.startDate = newStartDate
+                            } else {
+                                cur.model.startDate = oldEndDate
+                                cur.model.endDate = newStartDate
+                            }
+
                             updateCurDragTrip(cur.model, newPosX, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
                         }
                         break
@@ -119,7 +128,16 @@ const Trips = (): JSX.Element => {
                                 newPosX = FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length + shiftsRef.current.x
                             }
 
-                            cur.model.endDate = xToDate(newPosX - shiftsRef.current.x)
+                            const oldStartDate = cur.model.startDate
+                            const newEndDate = xToDate(newPosX - shiftsRef.current.x)
+
+                            if (oldStartDate.isAfter(newEndDate)) {
+                                cur.model.startDate = newEndDate
+                                cur.model.endDate = oldStartDate
+                            } else {
+                                cur.model.endDate = newEndDate
+                            }
+
                             updateCurDragTrip(cur.model, cur.oldX1, cur.y, 140, cur.index, cur.oldX1, cur.oldX2)
                         }
 
@@ -147,10 +165,8 @@ const Trips = (): JSX.Element => {
                     model.startDate = dayjs().startOf('day').add(newStartMinutes, 'minutes')
                     const newEndDate = dayjs().startOf('day').add(newStartMinutes + diffMinutes, 'minutes')
                     if (dateToX(newEndDate) >= FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length) {
-                        console.log('BAD')
                         model.endDate = xToDate(FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length)
                     } else {
-                        console.log('GOOD')
                         model.endDate = newEndDate
                     }
                 }

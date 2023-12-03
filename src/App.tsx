@@ -1,54 +1,58 @@
-import React from 'react';
+import React from 'react'
 import {
-    DATE_ITEM_HEIGHT,
-    DATE_ITEM_WIDTH,
-    dates,
-    FLIGHT_ITEM_HEIGHT,
-    FLIGHT_ITEM_WIDTH,
-    HEADER_HEIGHT
-} from "./utils/consts";
-import DateItem from "./components/DateItem";
-import FlightItem from "./components/FlightItem";
-import Trips from "./components/Trips";
-import Background from "./components/Background";
-import InfoPanel from "./components/InfoPanel";
-import Header from "./components/Header";
-import Border from "./components/Border";
-import {$flights} from "./api/flight";
-import {useStore} from 'effector-react'
-import {Space} from 'antd'
-import ControlPanel from "./components/controlPanel/ControlPanel";
+	BOARD_ITEM_HEIGHT,
+	BOARD_ITEM_WIDTH,
+	DATE_ITEM_HEIGHT,
+	DATE_ITEM_WIDTH,
+	dates,
+	HEADER_HEIGHT
+} from './utils/consts'
+import DateItem from './components/DateItem'
+import BoardItem from './components/BoardItem'
+import Flights from './components/Flights'
+import Background from './components/Background'
+import InfoPanel from './components/InfoPanel'
+import Header from './components/Header'
+import Border from './components/Border'
+import { useStore } from 'effector-react'
+import { Space } from 'antd'
+import ControlPanel from './components/controlPanel/ControlPanel'
+import { $boards } from './api/board'
 
-function App() {
-    const flights = useStore($flights)
+function App () {
+	const boards = useStore($boards)
 
-    return (
-        <Space direction={'vertical'}>
-            <ControlPanel/>
-            <svg width={1530}
-                 height={650}
-                 style={{backgroundColor: 'gray'}}
-            >
-                <InfoPanel/>
-                <Header/>
-                {flights.map((value, index) => (
-                    <FlightItem key={value.id}
-                                data={value}
-                                x={0}
-                                y={HEADER_HEIGHT + DATE_ITEM_HEIGHT + FLIGHT_ITEM_HEIGHT * index}
-                                width={FLIGHT_ITEM_WIDTH}
-                                height={FLIGHT_ITEM_HEIGHT}/>))}
-                {dates.map((value, index) => (
-                    <DateItem key={index}
-                              data={value}
-                              x={FLIGHT_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
-                              y={HEADER_HEIGHT}/>))}
-                <Background/>
-                <Trips/>
-                <Border/>
-            </svg>
-        </Space>
-    )
+	// useEffect(() => {
+	//     fetchBoardsFx()
+	// }, []);
+
+	return (
+		<Space direction={'vertical'}>
+			<ControlPanel/>
+			<svg width={1730}
+				 height={750}
+				 style={{ backgroundColor: 'white' }}
+			>
+				<InfoPanel/>
+				<Header/>
+				{boards.map((value, index) => (
+					<BoardItem key={value.id}
+							   data={value}
+							   x={0}
+							   y={HEADER_HEIGHT + DATE_ITEM_HEIGHT + BOARD_ITEM_HEIGHT * index}
+							   width={BOARD_ITEM_WIDTH}
+							   height={BOARD_ITEM_HEIGHT}/>))}
+				{dates.map((value, index) => (
+					<DateItem key={index}
+							  data={value}
+							  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
+							  y={HEADER_HEIGHT}/>))}
+				<Background/>
+				<Flights/>
+				<Border/>
+			</svg>
+		</Space>
+	)
 }
 
-export default App;
+export default App

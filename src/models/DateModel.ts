@@ -5,6 +5,6 @@
 import dayjs from 'dayjs'
 
 export interface DateModel {
-    date: dayjs.Dayjs
-    title: string
+	date: dayjs.Dayjs
+	title: string
 }

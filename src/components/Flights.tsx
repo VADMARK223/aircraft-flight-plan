@@ -85,8 +85,9 @@ const Flights = (): JSX.Element => {
 				.attr('y', flightY)
 				.attr('width', flightWidth)
 				.attr('height', FLIGHT_ITEM_HEIGHT)
-				.attr('stroke', isDefault ? 'green' : 'orange')
-				.attr('fill', isSelect ? 'red' : isDefault ? 'lightgreen' : 'orange')
+				.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
+				.attr('stroke-width', isSelect ? '3' : '1')
+				.attr('fill', isDefault ? 'lightgreen' : 'orange')
 				.attr('cursor', cursor)
 
 			if (SHOW_FLIGHT_ID) {
@@ -101,7 +102,7 @@ const Flights = (): JSX.Element => {
 			}
 
 			if (!isDefault) {
-				drawText(svg, 'Тех. обслуживание', flightX1 + flightWidth * 0.5, flightY + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
+				drawText(container, 'Тех. обслуживание', flightX1 + flightWidth * 0.5, flightY + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
 			}
 
 			appendDateText(svg, flightX1, flightY, flightModel.model.startDate)

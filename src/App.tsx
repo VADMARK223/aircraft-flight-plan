@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	BOARD_ITEM_HEIGHT,
 	BOARD_ITEM_WIDTH,
@@ -21,17 +21,19 @@ import { $boards } from './store/board'
 
 function App () {
 	const boards = useStore($boards)
+	const [canvasHeight, setCanvasHeight] = useState(HEADER_HEIGHT + DATE_ITEM_HEIGHT + boards.length * BOARD_ITEM_HEIGHT)
 
-	// useEffect(() => {
-	//     fetchBoardsFx()
-	// }, []);
+	useEffect(() => {
+		setCanvasHeight(HEADER_HEIGHT + DATE_ITEM_HEIGHT + boards.length * BOARD_ITEM_HEIGHT)
+	}, [boards])
+	const canvasWidth = dates.length * DATE_ITEM_WIDTH + BOARD_ITEM_WIDTH
 
 	return (
 		<Space direction={'vertical'}>
 			<ControlPanel/>
-			<svg width={1730}
-				 height={750}
-				 style={{ backgroundColor: 'white' }}
+			<svg width={canvasWidth}
+				 height={canvasHeight + 1}
+				 style={{ backgroundColor: 'gray' }}
 			>
 				<InfoPanel/>
 				<Header/>

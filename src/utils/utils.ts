@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
 
 /**
@@ -63,4 +63,22 @@ export const xToDate = (x: number): dayjs.Dayjs => {
 	const newStartX = x - BOARD_ITEM_WIDTH
 	const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
 	return dayjs().startOf('day').add(newStartMinutes, 'minutes')
+}
+
+export /**
+ * Метод объединяет объект даты и объект времени в одну временную метку.
+ * @param {dayjs.Dayjs | null} date - дата для объединения.
+ * @param {dayjs.Dayjs | null} time - время для объединения.
+ * @returns {dayjs.Dayjs} результатирующая дата.
+ */
+const combineDateTime = (date: Dayjs | null, time: Dayjs | null): Dayjs => {
+	if (date === null || time === null) {
+		throw new Error('Wrong date or time.')
+	}
+	return dayjs()
+		.set('year', date.year())
+		.set('month', date.month())
+		.set('day', date.day())
+		.set('hour', time.hour())
+		.set('minute', time.minute())
 }

@@ -7,21 +7,22 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { Flight } from '../../../models/Flight'
 import { FlightType } from '../../../models/FlightType'
 import { DATE_FORMAT } from '../../../utils/consts'
 import type { RangeValue } from 'rc-picker/lib/interface'
 import { $boards, addFlightFx } from '../../../store/board'
+import { toast } from 'react-toastify'
+import { combineDateTime } from '../../../utils/utils'
+import { PlusOutlined } from '@ant-design/icons';
 
 const AddFlightPanel = (): JSX.Element => {
 	const boards = useStore($boards)
 	const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
 	const [selectedFlightId, setSelectedFlightId] = useState<number>()
-	const [startDate, setStartDate] = useState<string>('')
-	const [endDate, setEndDate] = useState<string>('')
-	const [startTime, setStartTime] = useState<string>('')
-	const [endTime, setEndTime] = useState<string>('')
+	const [dateRangeValue, setDateRangeValue] = useState<RangeValue<Dayjs> | null>(null)
+	const [timeRangeValue, setTimeRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	let options: SelectProps['options'] = []
 
 	boards.forEach(value => {
@@ -29,66 +30,84 @@ const AddFlightPanel = (): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setAddFlightButtonDisable(selectedFlightId === undefined || startDate === '' || endDate === '' || startTime === '' || endTime === '')
-	}, [selectedFlightId, startDate, endDate, startTime, endTime])
+		setAddFlightButtonDisable(selectedFlightId === undefined || dateRangeValue === null || timeRangeValue === null)
+	}, [selectedFlightId, dateRangeValue, timeRangeValue])
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
 		setSelectedFlightId(value)
 	}
 
-	const handlerDateChange = (values: RangeValue<dayjs.Dayjs> | null, formatString: [string, string]): void => {
-		setStartDate(formatString[0])
-		setEndDate(formatString[1])
+	const handlerDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
+		setDateRangeValue(values)
 	}
 
-	const handlerTimeChange = (values: RangeValue<dayjs.Dayjs> | null, formatString: [string, string]): void => {
-		setStartTime(formatString[0])
-		setEndTime(formatString[1])
+	const handlerTimeChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
+		setTimeRangeValue(values)
 	}
 
 	const handlerAddFlight = (): void => {
 		if (selectedFlightId === undefined) {
 			return
 		}
-		const combinedStartString = `${startDate} ${startTime}`
-		const combinedEndString = `${endDate} ${endTime}`
-		const newFlight: Flight = {
-			id: 'new',
-			flightId: selectedFlightId,
-			startDate: dayjs(combinedStartString, 'DD.MM.YYYY HH:mm:ss'),
-			endDate: dayjs(combinedEndString, 'DD.MM.YYYY HH:mm:ss'),
-			type: FlightType.DEFAULT
-		}
+		if (dateRangeValue != null && timeRangeValue != null) {
+			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
+			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-		addFlightFx(newFlight)
+			if (newStartDate.isBefore(newEndDate)) {
+				const newFlight: Flight = {
+					id: 'new',
+					flightId: selectedFlightId,
+					startDate: newStartDate,
+					endDate: newEndDate,
+					type: FlightType.DEFAULT
+				}
+
+				addFlightFx(newFlight)
+			} else {
+				toast.warn('Время вылета превышает или совпадает с временем прилета.')
+			}
+		}
 	}
 
 	return (
 		<Space direction={'vertical'}>
 			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Добавление полета</Divider>
-			<Space>
-				<span>Борт:</span>
-				<Select placeholder={'Выберите борт'}
-						options={options}
-						style={{ minWidth: '150px' }}
-						onChange={handlerBoardSelectChange}
-						allowClear
-						showSearch
-						filterOption={(input, opt) => {
-							return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
-						}}
-				/>
-				<span>Дата:</span>
-				<DatePicker.RangePicker onChange={handlerDateChange}
-										format={DATE_FORMAT}
-										picker={'date'}
-				/>
-				<span>Время:</span>
-				<DatePicker.RangePicker onChange={handlerTimeChange}
-										picker={'time'}
-				/>
-
+			<Space align={'start'}>
+				<Space>
+					<span>Борт:</span>
+					<Select placeholder={'Выберите борт'}
+							options={options}
+							style={{ minWidth: '150px' }}
+							onChange={handlerBoardSelectChange}
+							allowClear
+							showSearch
+							filterOption={(input, opt) => {
+								return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+							}}
+					/>
+				</Space>
+				<Space direction={'vertical'} align={'end'}>
+					<Space>
+						<span>Дата:</span>
+						<DatePicker.RangePicker value={dateRangeValue}
+												onChange={handlerDateChange}
+												style={{ minWidth: '300px' }}
+												format={DATE_FORMAT}
+												picker={'date'}
+						/>
+					</Space>
+					<Space>
+						<span>Время:</span>
+						<DatePicker.RangePicker value={timeRangeValue}
+												onChange={handlerTimeChange}
+												style={{ minWidth: '300px' }}
+												picker={'time'}
+												format={'HH:mm'}
+						/>
+					</Space>
+				</Space>
 				<Button type={'primary'}
+						icon={<PlusOutlined/>}
 						disabled={addFlightButtonDisable}
 						onClick={handlerAddFlight}
 				>Добавить полет</Button>

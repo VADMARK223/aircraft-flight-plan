@@ -14,6 +14,8 @@ import type { RangeValue } from 'rc-picker/lib/interface'
 import { editFlightFx } from '../../../store/flight'
 import { toast } from 'react-toastify'
 import { $boards } from '../../../store/board'
+import { combineDateTime } from '../../../utils/utils'
+import { EditOutlined } from '@ant-design/icons';
 
 interface EditFlightPanelProps {
 	data: Flight
@@ -69,24 +71,6 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 		}
 	}
 
-	/**
-	 * Метод объединяет объект даты и объект времени в одну временную метку.
-	 * @param {dayjs.Dayjs | null} date - дата для объединения.
-	 * @param {dayjs.Dayjs | null} time - время для объединения.
-	 * @returns {dayjs.Dayjs} результатирующая дата.
-	 */
-	const combineDateTime = (date: Dayjs | null, time: Dayjs | null): Dayjs => {
-		if (date === null || time === null) {
-			throw new Error('Wrong date or time.')
-		}
-		return dayjs()
-			.set('year', date.year())
-			.set('month', date.month())
-			.set('day', date.day())
-			.set('hour', time.hour())
-			.set('minute', time.minute())
-	}
-
 	return (
 		<Space direction={'vertical'}>
 			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Изменение полета</Divider>
@@ -127,6 +111,7 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 				</Space>
 
 				<Button type={'primary'}
+						icon={<EditOutlined/>}
 						disabled={editFlightButtonDisable}
 						onClick={handlerEditFlight}
 				>Изменить полет</Button>

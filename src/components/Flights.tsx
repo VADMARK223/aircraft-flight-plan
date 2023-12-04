@@ -15,12 +15,10 @@ import {
 	FLIGHT_ITEM_HEIGHT,
 	HEADER_HEIGHT,
 	MINUTES_IN_CELL,
-	RESIZE_STICK_WIDTH,
-	SHOW_FLIGHT_ID,
-	SHOW_OLD_STICKS
+	SHOW_FLIGHT_ID
 } from '../utils/consts'
 import * as d3 from 'd3'
-import { appendDateText, dateToX, drawRect, drawText } from '../utils/utils'
+import { appendDateText, dateToX, drawText } from '../utils/utils'
 import { FlightType } from '../models/FlightType'
 import { $flightsSelect, flightClickFx } from '../store/flight'
 import { $boards } from '../store/board'
@@ -77,7 +75,12 @@ const Flights = (): JSX.Element => {
 			flightModel.oldX1 = oldX1
 			flightModel.oldX2 = oldX2
 
-			svg.append('rect')
+			const container = svg.append('g')
+				.on('click', function (_: PointerEvent) {
+					flightClickFx(flightModel.model)
+				})
+
+			container.append('rect')
 				.attr('x', flightX1)
 				.attr('y', flightY)
 				.attr('width', flightWidth)
@@ -85,12 +88,9 @@ const Flights = (): JSX.Element => {
 				.attr('stroke', isDefault ? 'green' : 'orange')
 				.attr('fill', isSelect ? 'red' : isDefault ? 'lightgreen' : 'orange')
 				.attr('cursor', cursor)
-				.on('click', function (_: PointerEvent) {
-					flightClickFx(flightModel.model)
-				})
 
 			if (SHOW_FLIGHT_ID) {
-				svg.append('text')
+				container.append('text')
 					.attr('x', flightX1 + 5)
 					.attr('y', flightY)
 					.attr('fill', 'white')
@@ -104,25 +104,10 @@ const Flights = (): JSX.Element => {
 				drawText(svg, 'Тех. обслуживание', flightX1 + flightWidth * 0.5, flightY + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
 			}
 
-			if (SHOW_OLD_STICKS) {
-				drawRect(svg, oldX1, flightY, RESIZE_STICK_WIDTH * 0.4, FLIGHT_ITEM_HEIGHT, 'brown', 'brown', 'auto')
-				drawRect(svg, oldX2, flightY, RESIZE_STICK_WIDTH * 0.4, FLIGHT_ITEM_HEIGHT, 'brown', 'brown', 'auto')
-			}
-
 			appendDateText(svg, flightX1, flightY, flightModel.model.startDate)
 			appendDateText(svg, flightX1 + flightWidth, flightY, flightModel.model.endDate)
 		})
-
-		// flightClickFx(boards[0].flights[0])
-
 	}, [flightViewModels, flightsSelect])
-
-	// TODO: remove after test
-	// useEffect(() => {
-	// 	if (flightViewModels !== undefined) {
-	// 		flightClickFx(boards[0].flights[1])
-	// 	}
-	// }, [flightViewModels, boards])
 
 	return (
 		<svg ref={svgRef}>

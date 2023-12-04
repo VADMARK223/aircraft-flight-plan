@@ -10,7 +10,6 @@ import {
 	BOARD_ITEM_WIDTH,
 	DATE_ITEM_HEIGHT,
 	DATE_ITEM_WIDTH,
-	dates,
 	FLIGHT_ITEM_HEIGHT,
 	HEADER_HEIGHT,
 	MINUTES_IN_CELL,
@@ -29,8 +28,10 @@ import { DragType } from '../models/DragType'
 import { Flight } from '../models/Flight'
 import { Board } from '../models/Board'
 import { $boards } from '../store/board'
+import { $dates } from '../store/date'
 
 const FlightsDrag = (): JSX.Element => {
+	const dates = useStore($dates)
 	const boards: Board[] = useStore($boards)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 

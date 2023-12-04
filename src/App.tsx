@@ -4,7 +4,6 @@ import {
 	BOARD_ITEM_WIDTH,
 	DATE_ITEM_HEIGHT,
 	DATE_ITEM_WIDTH,
-	dates,
 	HEADER_HEIGHT
 } from './utils/consts'
 import DateItem from './components/DateItem'
@@ -18,8 +17,10 @@ import { Space } from 'antd'
 import ControlPanel from './components/controlPanel/ControlPanel'
 import Flights from './components/Flights'
 import { $boards } from './store/board'
+import { $dates } from './store/date'
 
 function App () {
+	const dates = useStore($dates)
 	const boards = useStore($boards)
 	const [canvasHeight, setCanvasHeight] = useState(HEADER_HEIGHT + DATE_ITEM_HEIGHT + boards.length * BOARD_ITEM_HEIGHT)
 

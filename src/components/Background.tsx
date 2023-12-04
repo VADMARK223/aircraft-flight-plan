@@ -11,13 +11,14 @@ import {
 	BOARD_ITEM_WIDTH,
 	DATE_ITEM_HEIGHT,
 	DATE_ITEM_WIDTH,
-	dates,
 	HEADER_HEIGHT
 } from '../utils/consts'
 import { useStore } from 'effector-react'
 import { $boards } from '../store/board'
+import { $dates } from '../store/date'
 
 const Background = (): JSX.Element => {
+	const dates = useStore($dates)
 	const boards = useStore($boards)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 	const x = BOARD_ITEM_WIDTH

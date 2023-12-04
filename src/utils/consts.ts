@@ -1,6 +1,3 @@
-import { DateModel } from '../models/DateModel'
-import dayjs from 'dayjs'
-import { getWeekCount } from './utils'
 import { Flight } from '../models/Flight'
 import { Board } from '../models/Board'
 
@@ -21,22 +18,6 @@ export const FULL_TIME_FORMAT = 'DD.MM.YYYY HH:mm'
 export const SHOW_FLIGHT_ID = false
 export const SHOW_OLD_STICKS = false
 export const RESIZE_STICK_WIDTH = 5
-
-const generateDates = (): DateModel[] => {
-	const startDate = dayjs().startOf('day')
-	const result: DateModel[] = []
-	for (let i = 0; i < 8; i++) {
-		const newDate = startDate.add(i * HOURS_IN_CELL, 'hours')
-		result.push({
-			date: newDate,
-			title: `(Н${getWeekCount(newDate)} / 31${i})`
-		})
-	}
-
-	return result
-}
-
-export const dates: DateModel[] = generateDates()
 
 export const findFlightById = (id: string | undefined, boards: Board[]): Flight | undefined => {
 	let currentFlight: Flight | undefined

@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
-import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
+import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, HOURS_IN_CELL, MINUTES_IN_CELL } from './consts'
+import { DateModel } from '../models/DateModel'
 
 /**
  * @author Markitanov Vadim
@@ -82,3 +83,18 @@ const combineDateTime = (date: Dayjs | null, time: Dayjs | null): Dayjs => {
 		.set('hour', time.hour())
 		.set('minute', time.minute())
 }
+
+/*
+export const generateDates = (): DateModel[] => {
+	const startDate = dayjs().startOf('day')
+	const result: DateModel[] = []
+	for (let i = 0; i < 8; i++) {
+		const newDate = startDate.add(i * HOURS_IN_CELL, 'hours')
+		result.push({
+			date: newDate,
+			title: `(Н${getWeekCount(newDate)} / ${Math.floor(Math.random() * 1000)})`
+		})
+	}
+
+	return result
+}*/

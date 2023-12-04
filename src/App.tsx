@@ -9,7 +9,6 @@ import {
 } from './utils/consts'
 import DateItem from './components/DateItem'
 import BoardItem from './components/BoardItem'
-import Flights from './components/Flights'
 import Background from './components/Background'
 import InfoPanel from './components/InfoPanel'
 import Header from './components/Header'
@@ -18,6 +17,7 @@ import { useStore } from 'effector-react'
 import { Space } from 'antd'
 import ControlPanel from './components/controlPanel/ControlPanel'
 import { $boards } from './api/board'
+import Flights from './components/Flights'
 
 function App () {
 	const boards = useStore($boards)

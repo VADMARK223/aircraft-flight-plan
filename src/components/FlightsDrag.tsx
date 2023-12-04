@@ -22,7 +22,7 @@ import * as d3 from 'd3'
 import { FlightViewModel } from '../models/FlightViewModel'
 import { FlightType } from '../models/FlightType'
 import { useStore } from 'effector-react'
-import { appendDateText, dateToX, drawRect, drawText, xToDate } from '../utils/utils'
+import { appendRotateText, dateToX, drawRect, drawText, xToDate } from '../utils/utils'
 import { DragModel } from '../models/DragModel'
 import { DragType } from '../models/DragType'
 import { Flight } from '../models/Flight'
@@ -276,8 +276,8 @@ const FlightsDrag = (): JSX.Element => {
 				drawRect(svg, oldX2, flightY, RESIZE_STICK_WIDTH * 0.4, FLIGHT_ITEM_HEIGHT, 'brown', 'brown', 'auto')
 			}
 
-			appendDateText(svg, flightX1, flightY, flightModel.model.startDate)
-			appendDateText(svg, flightX1 + flightWidth, flightY, flightModel.model.endDate)
+			appendRotateText(svg, flightX1, flightY, flightModel.model.startDate.format('HH:mm'), -16)
+			appendRotateText(svg, flightX1 + flightWidth, flightY, flightModel.model.endDate.format('HH:mm'), -16)
 		})
 
 	}, [flightViewModels, curDragFlight])

@@ -10,6 +10,7 @@ import { useStore } from 'effector-react'
 import { FlightViewModel } from '../models/FlightViewModel'
 import {
 	BOARD_ITEM_HEIGHT,
+	BOARD_ITEM_WIDTH,
 	DATE_ITEM_HEIGHT,
 	DATE_ITEM_WIDTH,
 	FLIGHT_ITEM_HEIGHT,
@@ -18,12 +19,15 @@ import {
 	SHOW_FLIGHT_ID
 } from '../utils/consts'
 import * as d3 from 'd3'
-import { appendDateText, dateToX, drawText } from '../utils/utils'
+import { appendRotateText, dateToNew, dateToX, drawText } from '../utils/utils'
 import { FlightType } from '../models/FlightType'
 import { $flightsSelect, flightClickFx } from '../store/flight'
 import { $boards } from '../store/board'
+import { $datesRange } from '../store/date'
+import { Dayjs } from 'dayjs'
 
 const Flights = (): JSX.Element => {
+	const datesRange = useStore($datesRange)
 	const boards: Board[] = useStore($boards)
 	const flightsSelect = useStore($flightsSelect)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
@@ -66,7 +70,10 @@ const Flights = (): JSX.Element => {
 			const cursor: string = 'pointer'
 			const isDefault = flightModel.model.type === FlightType.DEFAULT
 
-			const flightX1 = dateToX(flightModel.model.startDate)
+			let flightX1 = dateToNew(datesRange, flightModel.model.startDate)
+			if (flightX1 <= BOARD_ITEM_WIDTH) {
+				flightX1 = BOARD_ITEM_WIDTH
+			}
 			const flightY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + BOARD_ITEM_HEIGHT * flightModel.index + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
 
 			flightModel.x = flightX1
@@ -105,10 +112,17 @@ const Flights = (): JSX.Element => {
 				drawText(container, 'Тех. обслуживание', flightX1 + flightWidth * 0.5, flightY + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
 			}
 
-			appendDateText(svg, flightX1, flightY, flightModel.model.startDate)
-			appendDateText(svg, flightX1 + flightWidth, flightY, flightModel.model.endDate)
+			const startDate: Dayjs = flightModel.model.startDate
+			const endDate: Dayjs = flightModel.model.endDate
+			const timeRotate: number = -19
+			appendRotateText(svg, flightX1, flightY, startDate.format('HH:mm'), timeRotate)
+			appendRotateText(svg, flightX1 + flightWidth, flightY, endDate.format('HH:mm'), timeRotate)
+
+			const dateRotate: number = 19
+			appendRotateText(svg, flightX1, flightY + FLIGHT_ITEM_HEIGHT, startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+			appendRotateText(svg, flightX1 + flightWidth, flightY + FLIGHT_ITEM_HEIGHT, endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		})
-	}, [flightViewModels, flightsSelect])
+	}, [datesRange, flightViewModels, flightsSelect])
 
 	return (
 		<svg ref={svgRef}>

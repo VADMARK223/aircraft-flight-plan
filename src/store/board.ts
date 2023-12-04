@@ -27,8 +27,15 @@ export const defaultBoards: Board[] = [
 				id: '21',
 				flightId: 1,
 				type: FlightType.DEFAULT,
-				startDate: dayjs().startOf('day').add(8, 'hours'),
-				endDate: dayjs().startOf('day').add(30, 'hours')
+				startDate: dayjs().startOf('day').add(23, 'hours'),
+				endDate: dayjs().startOf('day').add(25, 'hours')
+			},
+			{
+				id: '31',
+				flightId: 1,
+				type: FlightType.DEFAULT,
+				startDate: dayjs().startOf('day').add(28, 'hours'),
+				endDate: dayjs().startOf('day').add(29, 'hours')
 			}
 		]
 	},

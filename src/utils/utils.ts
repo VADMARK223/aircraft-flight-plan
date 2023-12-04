@@ -1,6 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
-import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, HOURS_IN_CELL, MINUTES_IN_CELL } from './consts'
-import { DateModel } from '../models/DateModel'
+import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
+import type { RangeValue } from 'rc-picker/lib/interface'
 
 /**
  * @author Markitanov Vadim
@@ -45,18 +45,28 @@ export const drawText = (svg: any, text: string, x: number, y: number, cursor: s
 		.text(text)
 }
 
-export const appendDateText = (svg: any, translateX: number, translateY: number, date: dayjs.Dayjs) => {
+export const appendRotateText = (svg: any, translateX: number, translateY: number, text: string, rotate: number, dominantBaseline: string = 'auto') => {
 	const endDateContainer = svg.append('g')
 	endDateContainer.attr('transform', `translate(${translateX},${translateY})`)
 	endDateContainer.append('text')
-		.attr('font-size', 14)
+		.attr('font-size', 12)
 		.attr('fill', 'black')
-		.attr('transform', `rotate(-16)`)
-		.text(date.format('HH:mm'))
+		.attr('transform', `rotate(${rotate})`)
+		.attr('dominant-baseline', dominantBaseline)
+		.text(text)
 }
 
 export const dateToX = (date: dayjs.Dayjs): number => {
 	const startDay = dayjs().startOf('day')
+	return BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
+}
+
+export const dateToNew = (datesRange: RangeValue<Dayjs>, date: Dayjs): number => {
+	if (datesRange === null) {
+		throw new Error('Dates range is null')
+	}
+
+	const startDay = datesRange[0]
 	return BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
 }
 

@@ -15,7 +15,7 @@ import {
 	HEADER_HEIGHT
 } from '../utils/consts'
 import { useStore } from 'effector-react'
-import { $boards } from '../api/board'
+import { $boards } from '../store/board'
 
 const Background = (): JSX.Element => {
 	const boards = useStore($boards)

@@ -7,7 +7,6 @@
 import React, { JSX, LegacyRef, useEffect, useRef, useState } from 'react'
 import { Board } from '../models/Board'
 import { useStore } from 'effector-react'
-import { $boards } from '../api/board'
 import { FlightViewModel } from '../models/FlightViewModel'
 import {
 	BOARD_ITEM_HEIGHT,
@@ -24,11 +23,11 @@ import * as d3 from 'd3'
 import { appendDateText, dateToX, drawRect, drawText } from '../utils/utils'
 import { FlightType } from '../models/FlightType'
 import { $flightsSelect, flightClickFx } from '../store/flight'
+import { $boards } from '../store/board'
 
 const Flights = (): JSX.Element => {
 	const boards: Board[] = useStore($boards)
 	const flightsSelect = useStore($flightsSelect)
-	console.log('flightsSelect', flightsSelect)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 
 	const [flightViewModels, setFlightViewModels] = useState<FlightViewModel[]>()
@@ -114,7 +113,16 @@ const Flights = (): JSX.Element => {
 			appendDateText(svg, flightX1 + flightWidth, flightY, flightModel.model.endDate)
 		})
 
+		// flightClickFx(boards[0].flights[0])
+
 	}, [flightViewModels, flightsSelect])
+
+	// TODO: remove after test
+	// useEffect(() => {
+	// 	if (flightViewModels !== undefined) {
+	// 		flightClickFx(boards[0].flights[1])
+	// 	}
+	// }, [flightViewModels, boards])
 
 	return (
 		<svg ref={svgRef}>

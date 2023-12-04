@@ -16,8 +16,8 @@ import Border from './components/Border'
 import { useStore } from 'effector-react'
 import { Space } from 'antd'
 import ControlPanel from './components/controlPanel/ControlPanel'
-import { $boards } from './api/board'
 import Flights from './components/Flights'
+import { $boards } from './store/board'
 
 function App () {
 	const boards = useStore($boards)

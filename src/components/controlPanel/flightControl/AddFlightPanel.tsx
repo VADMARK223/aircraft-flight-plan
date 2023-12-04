@@ -1,25 +1,23 @@
 /**
- * Компонент управлением полета
+ * Компонент
  *
  * @author Markitanov Vadim
- * @since 23.11.2023
+ * @since 04.12.2023
  */
 import React, { JSX, useEffect, useState } from 'react'
-import { Button, DatePicker, Select, SelectProps, Space } from 'antd'
 import { useStore } from 'effector-react'
+import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
 import dayjs from 'dayjs'
+import { Flight } from '../../../models/Flight'
+import { FlightType } from '../../../models/FlightType'
+import { DATE_FORMAT } from '../../../utils/consts'
 import type { RangeValue } from 'rc-picker/lib/interface'
-import { Flight } from '../../models/Flight'
-import { FlightType } from '../../models/FlightType'
-import { DATE_FORMAT } from '../../utils/consts'
-import { $boards, addFlightFx } from '../../api/board'
+import { $boards, addFlightFx } from '../../../store/board'
 
-const FlightControl = (): JSX.Element => {
+const AddFlightPanel = (): JSX.Element => {
 	const boards = useStore($boards)
 	const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
 	const [selectedFlightId, setSelectedFlightId] = useState<number>()
-	// const [startDetectionDate, setStartDetectionDate] = useState(dayjs())
-	// const [endDetectionDate, setEndDetectionDate] = useState(dayjs().add(1, 'days'))
 	const [startDate, setStartDate] = useState<string>('')
 	const [endDate, setEndDate] = useState<string>('')
 	const [startTime, setStartTime] = useState<string>('')
@@ -66,37 +64,37 @@ const FlightControl = (): JSX.Element => {
 	}
 
 	return (
-		<Space>
-			<span>Борт:</span>
-			<Select placeholder={'Выберите борт'}
-					options={options}
-					style={{ minWidth: '150px' }}
-					onChange={handlerBoardSelectChange}
-					allowClear
-					showSearch
-					filterOption={(input, opt) => {
-						return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
-					}}
-			/>
-			<span>Дата:</span>
-			<DatePicker.RangePicker onChange={handlerDateChange}
-									format={DATE_FORMAT}
-									picker={'date'}
-				// value={[startDetectionDate, endDetectionDate]}
-			/>
-			<span>Время:</span>
-			<DatePicker.RangePicker onChange={handlerTimeChange}
-				// format={DATE_FORMAT}
-									picker={'time'}
-				// value={[startDetectionDate, endDetectionDate]}
-			/>
+		<Space direction={'vertical'}>
+			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Добавление полета</Divider>
+			<Space>
+				<span>Борт:</span>
+				<Select placeholder={'Выберите борт'}
+						options={options}
+						style={{ minWidth: '150px' }}
+						onChange={handlerBoardSelectChange}
+						allowClear
+						showSearch
+						filterOption={(input, opt) => {
+							return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+						}}
+				/>
+				<span>Дата:</span>
+				<DatePicker.RangePicker onChange={handlerDateChange}
+										format={DATE_FORMAT}
+										picker={'date'}
+				/>
+				<span>Время:</span>
+				<DatePicker.RangePicker onChange={handlerTimeChange}
+										picker={'time'}
+				/>
 
-			<Button type={'primary'}
-					disabled={addFlightButtonDisable}
-					onClick={handlerAddFlight}
-			>Добавить полет</Button>
+				<Button type={'primary'}
+						disabled={addFlightButtonDisable}
+						onClick={handlerAddFlight}
+				>Добавить полет</Button>
+			</Space>
 		</Space>
 	)
 }
 
-export default FlightControl
+export default AddFlightPanel

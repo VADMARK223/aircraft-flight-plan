@@ -28,7 +28,7 @@ import { DragModel } from '../models/DragModel'
 import { DragType } from '../models/DragType'
 import { Flight } from '../models/Flight'
 import { Board } from '../models/Board'
-import { $boards } from '../api/board'
+import { $boards } from '../store/board'
 
 const FlightsDrag = (): JSX.Element => {
 	const boards: Board[] = useStore($boards)

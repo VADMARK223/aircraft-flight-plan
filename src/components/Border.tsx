@@ -16,7 +16,7 @@ import {
 import * as d3 from 'd3'
 import { useStore } from 'effector-react'
 import { drawLine } from '../utils/utils'
-import { $boards } from '../api/board'
+import { $boards } from '../store/board'
 
 const Border = (): JSX.Element => {
 	const boards = useStore($boards)

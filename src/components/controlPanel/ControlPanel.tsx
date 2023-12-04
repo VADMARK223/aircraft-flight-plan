@@ -7,7 +7,7 @@
 import React, { JSX } from 'react'
 import { Divider, Space } from 'antd'
 import BoardControl from './BoardControl'
-import FlightControl from './FlightControl'
+import FlightControl from './flightControl/FlightControl'
 
 const ControlPanel = (): JSX.Element => {
 	return (
@@ -15,7 +15,6 @@ const ControlPanel = (): JSX.Element => {
 			<Space direction={'vertical'} style={{ width: '100%' }}>
 				<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Добавление борта</Divider>
 				<BoardControl/>
-				<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Добавление полета</Divider>
 				<FlightControl/>
 			</Space>
 		</div>

@@ -1,6 +1,7 @@
 import { createStore } from 'effector'
 import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
+import { Board } from '../models/Board'
 
 /**
  * @author Markitanov Vadim
@@ -15,3 +16,5 @@ export const $flightsSelect = createStore<Flight | null>(null)
 		}
 		return payload
 	})
+
+export const editFlightFx = createEffect<Flight, Board[]>()

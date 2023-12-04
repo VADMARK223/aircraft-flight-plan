@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import { Dayjs } from 'dayjs'
 import { FlightType } from './FlightType'
 
 /**
@@ -8,7 +8,7 @@ import { FlightType } from './FlightType'
 export interface Flight {
 	id: string
 	flightId: number
-	startDate: dayjs.Dayjs
-	endDate: dayjs.Dayjs
+	startDate: Dayjs
+	endDate: Dayjs
 	type: FlightType
 }

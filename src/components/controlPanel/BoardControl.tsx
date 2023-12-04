@@ -7,7 +7,7 @@
 import React, { ChangeEvent, JSX, useEffect, useState } from 'react'
 import { Button, Input, Select, Space } from 'antd'
 import { Board } from '../../models/Board'
-import { addBoardFx } from '../../api/board'
+import { addBoardFx } from '../../store/board'
 
 const BoardControl = (): JSX.Element => {
 	const [flightName, setFlightName] = useState<string>('')

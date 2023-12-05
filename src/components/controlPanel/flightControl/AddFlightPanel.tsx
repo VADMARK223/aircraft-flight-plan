@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
-import dayjs, { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs'
 import { Flight } from '../../../models/Flight'
 import { FlightType } from '../../../models/FlightType'
 import { DATE_FORMAT } from '../../../utils/consts'
@@ -15,7 +15,7 @@ import type { RangeValue } from 'rc-picker/lib/interface'
 import { $boards, addFlightFx } from '../../../store/board'
 import { toast } from 'react-toastify'
 import { combineDateTime } from '../../../utils/utils'
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons'
 
 const AddFlightPanel = (): JSX.Element => {
 	const boards = useStore($boards)
@@ -37,13 +37,13 @@ const AddFlightPanel = (): JSX.Element => {
 		setSelectedFlightId(value)
 	}
 
-	const handlerDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
+	/*const handlerDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
 		setDateRangeValue(values)
 	}
 
 	const handlerTimeChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
 		setTimeRangeValue(values)
-	}
+	}*/
 
 	const handlerAddFlight = (): void => {
 		if (selectedFlightId === undefined) {
@@ -90,7 +90,7 @@ const AddFlightPanel = (): JSX.Element => {
 					<Space>
 						<span>Дата:</span>
 						<DatePicker.RangePicker value={dateRangeValue}
-												onChange={handlerDateChange}
+												onChange={setDateRangeValue}
 												style={{ minWidth: '300px' }}
 												format={DATE_FORMAT}
 												picker={'date'}
@@ -99,7 +99,7 @@ const AddFlightPanel = (): JSX.Element => {
 					<Space>
 						<span>Время:</span>
 						<DatePicker.RangePicker value={timeRangeValue}
-												onChange={handlerTimeChange}
+												onChange={setTimeRangeValue}
 												style={{ minWidth: '300px' }}
 												picker={'time'}
 												format={'HH:mm'}

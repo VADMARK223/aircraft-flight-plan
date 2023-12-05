@@ -56,6 +56,20 @@ export const defaultBoards: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
 				endDate: dayjs().startOf('day').add(6, 'hours')
+			},
+			{
+				id: '23',
+				flightId: 2,
+				type: FlightType.DEFAULT,
+				startDate: dayjs().startOf('day').add(18, 'hours'),
+				endDate: dayjs().startOf('day').add(30, 'hours')
+			},
+			{
+				id: '24',
+				flightId: 2,
+				type: FlightType.DEFAULT,
+				startDate: dayjs().startOf('day').add(32, 'hours'),
+				endDate: dayjs().startOf('day').add(33, 'hours')
 			}
 		]
 	},
@@ -162,6 +176,8 @@ export const defaultBoards: Board[] = [
 		]
 	}
 ]
+
+export const $boardSelect = createStore<Board | null>(null)
 
 export const addBoardFx = createEffect<Board, Board[]>()
 export const addFlightFx = createEffect<Flight, Board[]>()

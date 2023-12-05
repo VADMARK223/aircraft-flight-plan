@@ -36,6 +36,7 @@ const Header = (): JSX.Element => {
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
 			.attr('font-weight', 'bold')
+			.attr('font-size', 18)
 			.text('ПЛАН ПОЛЕТОВ ВОЗДУШНЫХ СУДОВ')
 	}, [x, y, width, height])
 

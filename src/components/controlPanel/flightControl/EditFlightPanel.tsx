@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
-import dayjs, { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs'
 import { Flight } from '../../../models/Flight'
 import { DATE_FORMAT } from '../../../utils/consts'
 import type { RangeValue } from 'rc-picker/lib/interface'
@@ -15,7 +15,7 @@ import { editFlightFx } from '../../../store/flight'
 import { toast } from 'react-toastify'
 import { $boards } from '../../../store/board'
 import { combineDateTime } from '../../../utils/utils'
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
 interface EditFlightPanelProps {
 	data: Flight
@@ -46,14 +46,6 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
 		setSelectedFlightId(value)
-	}
-
-	const handlerDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
-		setDateRangeValue(values)
-	}
-
-	const handlerTimeChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
-		setTimeRangeValue(values)
 	}
 
 	/**
@@ -94,7 +86,7 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 						<span>Дата:</span>
 						<DatePicker.RangePicker value={dateRangeValue}
 												style={{ minWidth: '300px' }}
-												onChange={handlerDateChange}
+												onChange={setDateRangeValue}
 												format={DATE_FORMAT}
 												picker={'date'}
 						/>
@@ -103,7 +95,7 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 						<span>Время:</span>
 						<DatePicker.RangePicker value={timeRangeValue}
 												style={{ minWidth: '300px' }}
-												onChange={handlerTimeChange}
+												onChange={setTimeRangeValue}
 												picker={'time'}
 												format={'HH:mm'}
 						/>
@@ -115,6 +107,13 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 						disabled={editFlightButtonDisable}
 						onClick={handlerEditFlight}
 				>Изменить полет</Button>
+				<Button type={'primary'}
+						danger
+						icon={<DeleteOutlined/>}
+						onClick={() => {
+							console.log('Delete')
+						}}
+				>Удалить полет полет</Button>
 			</Space>
 		</Space>
 	)

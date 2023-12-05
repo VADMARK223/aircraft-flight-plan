@@ -94,17 +94,24 @@ const combineDateTime = (date: Dayjs | null, time: Dayjs | null): Dayjs => {
 		.set('minute', time.minute())
 }
 
-/*
-export const generateDates = (): DateModel[] => {
-	const startDate = dayjs().startOf('day')
-	const result: DateModel[] = []
-	for (let i = 0; i < 8; i++) {
-		const newDate = startDate.add(i * HOURS_IN_CELL, 'hours')
-		result.push({
-			date: newDate,
-			title: `(Н${getWeekCount(newDate)} / ${Math.floor(Math.random() * 1000)})`
-		})
+export const getDayNameByCount = (count: number): string => {
+	switch (count) {
+		case 1:
+			return 'Понедельник'
+		case 2:
+			return 'Вторник'
+		case 3:
+			return 'Среда'
+		case 4:
+			return 'Четверг'
+		case 5:
+			return 'Пятница'
+		case 6:
+			return 'Суббота'
+		case 7:
+			return 'Воскресенье'
+		default:
+			return 'Неизвестно'
 	}
+}
 
-	return result
-}*/

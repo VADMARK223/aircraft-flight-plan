@@ -19,7 +19,7 @@ import {
 	SHOW_FLIGHT_ID
 } from '../utils/consts'
 import * as d3 from 'd3'
-import { appendRotateText, dateToNew, dateToX, drawText } from '../utils/utils'
+import { appendRotateText, dateToNew, dateToX, drawText, xToDate } from '../utils/utils'
 import { FlightType } from '../models/FlightType'
 import { $flightsSelect, flightClickFx } from '../store/flight'
 import { $boards } from '../store/board'
@@ -35,6 +35,15 @@ const Flights = (): JSX.Element => {
 	const [flightViewModels, setFlightViewModels] = useState<FlightViewModel[]>()
 
 	useEffect(() => {
+		if (datesRange === null) {
+			return
+		}
+
+		const startRange = datesRange[0]
+		if (startRange === null) {
+			return
+		}
+
 		const temp: FlightViewModel[] = []
 		boards.forEach((value, index) => {
 			if (!value.flights) {
@@ -51,19 +60,22 @@ const Flights = (): JSX.Element => {
 					oldX2: 0
 				}
 
-				temp.push(flightViewModel)
+				const endDate = flightViewModel.model.endDate
+				// console.log('Нач', startRange.format(FULL_TIME_FORMAT), 'en', endDate.format(FULL_TIME_FORMAT))
+				if (endDate.isAfter(startRange)) {
+					temp.push(flightViewModel)
+				}
 			})
 		})
+		// console.log('temp', temp.length)
 		setFlightViewModels(temp)
 
-	}, [boards])
+	}, [boards, datesRange])
 
 	useEffect(() => {
 		const svg = d3.select(svgRef.current)
 		svg.selectAll('*').remove()
 		flightViewModels?.forEach(flightModel => {
-			const flightDurationMinutes = flightModel.model.endDate.diff(flightModel.model.startDate, 'minutes')
-			const flightWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * flightDurationMinutes
 			const oldX1: number = dateToX(flightModel.model.startDate)
 			const oldX2: number = dateToX(flightModel.model.endDate)
 			const isSelect = flightModel.model.id === flightsSelect?.id
@@ -74,53 +86,61 @@ const Flights = (): JSX.Element => {
 			if (flightX1 <= BOARD_ITEM_WIDTH) {
 				flightX1 = BOARD_ITEM_WIDTH
 			}
-			const flightY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + BOARD_ITEM_HEIGHT * flightModel.index + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
 
-			flightModel.x = flightX1
-			flightModel.y = flightY
-			flightModel.width = flightWidth
-			flightModel.oldX1 = oldX1
-			flightModel.oldX2 = oldX2
+			let endX = dateToNew(datesRange, flightModel.model.endDate)
 
-			const container = svg.append('g')
-				.on('click', function (_: PointerEvent) {
-					flightClickFx(flightModel.model)
-				})
+			const flightDurationMinutes = xToDate(endX).diff(xToDate(flightX1), 'minutes')
+			const flightWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * flightDurationMinutes
+			// TODO: Поправить костыль!
+			if (flightWidth > 0) {
+				const flightY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + BOARD_ITEM_HEIGHT * flightModel.index + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
 
-			container.append('rect')
-				.attr('x', flightX1)
-				.attr('y', flightY)
-				.attr('width', flightWidth)
-				.attr('height', FLIGHT_ITEM_HEIGHT)
-				.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
-				.attr('stroke-width', isSelect ? '3' : '1')
-				.attr('fill', isDefault ? 'lightgreen' : 'orange')
-				.attr('cursor', cursor)
+				flightModel.x = flightX1
+				flightModel.y = flightY
+				flightModel.width = flightWidth
+				flightModel.oldX1 = oldX1
+				flightModel.oldX2 = oldX2
 
-			if (SHOW_FLIGHT_ID) {
-				container.append('text')
-					.attr('x', flightX1 + 5)
+				const container = svg.append('g')
+					.on('click', function (_: PointerEvent) {
+						flightClickFx(flightModel.model)
+					})
+
+				container.append('rect')
+					.attr('x', flightX1)
 					.attr('y', flightY)
-					.attr('fill', 'white')
-					.attr('text-anchor', 'start')
-					.attr('dominant-baseline', 'hanging')
+					.attr('width', flightWidth)
+					.attr('height', FLIGHT_ITEM_HEIGHT)
+					.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
+					.attr('stroke-width', isSelect ? '3' : '1')
+					.attr('fill', isDefault ? 'lightgreen' : 'orange')
 					.attr('cursor', cursor)
-					.text(flightModel.model.id)
+
+				if (SHOW_FLIGHT_ID) {
+					container.append('text')
+						.attr('x', flightX1 + 5)
+						.attr('y', flightY)
+						.attr('fill', 'white')
+						.attr('text-anchor', 'start')
+						.attr('dominant-baseline', 'hanging')
+						.attr('cursor', cursor)
+						.text(flightModel.model.id)
+				}
+
+				if (!isDefault) {
+					drawText(container, 'Тех. обслуживание', flightX1 + flightWidth * 0.5, flightY + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
+				}
+
+				const startDate: Dayjs = flightModel.model.startDate
+				const endDate: Dayjs = flightModel.model.endDate
+				const timeRotate: number = -19
+				appendRotateText(svg, flightX1, flightY, startDate.format('HH:mm'), timeRotate)
+				appendRotateText(svg, flightX1 + flightWidth, flightY, endDate.format('HH:mm'), timeRotate)
+
+				const dateRotate: number = 19
+				appendRotateText(svg, flightX1, flightY + FLIGHT_ITEM_HEIGHT, startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+				appendRotateText(svg, flightX1 + flightWidth, flightY + FLIGHT_ITEM_HEIGHT, endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 			}
-
-			if (!isDefault) {
-				drawText(container, 'Тех. обслуживание', flightX1 + flightWidth * 0.5, flightY + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
-			}
-
-			const startDate: Dayjs = flightModel.model.startDate
-			const endDate: Dayjs = flightModel.model.endDate
-			const timeRotate: number = -19
-			appendRotateText(svg, flightX1, flightY, startDate.format('HH:mm'), timeRotate)
-			appendRotateText(svg, flightX1 + flightWidth, flightY, endDate.format('HH:mm'), timeRotate)
-
-			const dateRotate: number = 19
-			appendRotateText(svg, flightX1, flightY + FLIGHT_ITEM_HEIGHT, startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-			appendRotateText(svg, flightX1 + flightWidth, flightY + FLIGHT_ITEM_HEIGHT, endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		})
 	}, [datesRange, flightViewModels, flightsSelect])
 

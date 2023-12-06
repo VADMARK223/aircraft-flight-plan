@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
+import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { Dayjs } from 'dayjs'
 import { Flight } from '../../../models/Flight'
 import { FlightType } from '../../../models/FlightType'
@@ -21,6 +21,7 @@ const AddFlightPanel = (): JSX.Element => {
 	const boards = useStore($boards)
 	const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
 	const [boardId, setBoardId] = useState<number>()
+	const [flightId, setFlightId] = useState<string | undefined>()
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	let options: SelectProps['options'] = []
@@ -30,8 +31,8 @@ const AddFlightPanel = (): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setAddFlightButtonDisable(boardId === undefined || dateRangeValue === null || timeRangeValue === null)
-	}, [boardId, dateRangeValue, timeRangeValue])
+		setAddFlightButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null)
+	}, [boardId, flightId, dateRangeValue, timeRangeValue])
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
 		setBoardId(value)
@@ -45,9 +46,12 @@ const AddFlightPanel = (): JSX.Element => {
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
+		if (flightId === undefined || flightId === '') {
+			return
+		}
 		if (newStartDate.isBefore(newEndDate)) {
 			const newFlight: Flight = {
-				id: 'new',
+				id: flightId,
 				boardId: boardId,
 				startDate: newStartDate,
 				endDate: newEndDate,
@@ -60,27 +64,43 @@ const AddFlightPanel = (): JSX.Element => {
 		}
 
 		setBoardId(undefined)
+		setFlightId(undefined)
 		setDateRangeValue(null)
 		setTimeRangeValue(null)
 	}
 
 	return (
 		<Space direction={'vertical'}>
-			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Добавление полета</Divider>
+			<Divider type={'horizontal'}
+					 orientation={'left'}
+					 className={'control-panel-divider'}>Добавление полета</Divider>
 			<Space align={'start'}>
-				<Space>
-					<span>Борт:</span>
-					<Select placeholder={'Выберите борт'}
-							value={boardId}
-							options={options}
-							style={{ minWidth: '150px' }}
-							onChange={handlerBoardSelectChange}
-							allowClear
-							showSearch
-							filterOption={(input, opt) => {
-								return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+				<Space direction={'vertical'} align={'end'}>
+					<Space>
+						<span>Борт:</span>
+						<Select placeholder={'Выберите борт'}
+								value={boardId}
+								options={options}
+								style={{ minWidth: '150px' }}
+								onChange={handlerBoardSelectChange}
+								allowClear
+								showSearch
+								filterOption={(input, opt) => {
+									return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+								}}
+						/>
+					</Space>
+					<Space>
+						<span>Полет:</span>
+						<Input
+							value={flightId}
+							onChange={(event) => {
+								setFlightId(event.target.value)
 							}}
-					/>
+							style={{ width: '150px' }}
+							allowClear
+						/>
+					</Space>
 				</Space>
 				<Space direction={'vertical'} align={'end'}>
 					<Space>

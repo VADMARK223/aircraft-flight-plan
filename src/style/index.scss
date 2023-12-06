@@ -29,4 +29,9 @@ body {
     width: calc(100vw - 3 * var(--globalMargin));
     justify-content: space-between;
   }
+
+  .control-panel-divider {
+    margin: 0;
+    width: 70vw;
+  }
 }

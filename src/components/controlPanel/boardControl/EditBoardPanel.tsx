@@ -33,7 +33,7 @@ const EditBoardPanel = (): JSX.Element => {
 
 	return (
 		<Space direction={'vertical'}>
-			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Изменение борта</Divider>
+			<Divider type={'horizontal'} orientation={'left'} className={'control-panel-divider'}>Изменение борта</Divider>
 			<Space>
 				<span>Название борта:</span>
 				<Input placeholder={'Введите название борта'}

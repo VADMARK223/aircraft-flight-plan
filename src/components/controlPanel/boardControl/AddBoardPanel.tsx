@@ -33,7 +33,7 @@ const AddBoardPanel = (): JSX.Element => {
 
 	return (
 		<Space direction={'vertical'}>
-			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Добавление борта</Divider>
+			<Divider type={'horizontal'} orientation={'left'} className={'control-panel-divider'}>Добавление борта</Divider>
 			<Space>
 				<span>Название борта:</span>
 				<Input placeholder={'Введите название борта'}

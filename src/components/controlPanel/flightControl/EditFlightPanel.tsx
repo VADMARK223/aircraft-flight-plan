@@ -69,7 +69,9 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 
 	return (
 		<Space direction={'vertical'}>
-			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Изменение полета</Divider>
+			<Divider type={'horizontal'}
+					 orientation={'left'}
+					 className={'control-panel-divider'}>Изменение полета</Divider>
 			<Space align={'start'}>
 				<Space direction={'vertical'} align={'end'}>
 					<Space>

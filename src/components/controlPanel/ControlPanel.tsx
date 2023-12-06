@@ -7,9 +7,9 @@
 import React, { JSX } from 'react'
 import { Space } from 'antd'
 import FlightControl from './flightControl/FlightControl'
-import DateControl from './DateControl'
 import BoardControl from './boardControl/BoardControl'
 import ThemeControl from './ThemeControl'
+import PlanControl from './planControl/PlanControl'
 
 const ControlPanel = (): JSX.Element => {
 	return (
@@ -17,7 +17,7 @@ const ControlPanel = (): JSX.Element => {
 			<Space direction={'vertical'}>
 				<BoardControl/>
 				<FlightControl/>
-				<DateControl/>
+				<PlanControl/>
 			</Space>
 			<ThemeControl/>
 		</Space>

@@ -42,6 +42,7 @@ const BoardItem = (props: BoardItemProps): JSX.Element => {
 			.attr('y', y)
 			.attr('width', width)
 			.attr('height', height)
+			.attr('stroke', style.lineColor)
 			.attr('fill', style.backgroundColor)
 
 		container.append('text')

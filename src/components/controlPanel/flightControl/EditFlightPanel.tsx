@@ -11,7 +11,7 @@ import { Dayjs } from 'dayjs'
 import { Flight } from '../../../models/Flight'
 import { DATE_FORMAT } from '../../../utils/consts'
 import type { RangeValue } from 'rc-picker/lib/interface'
-import { deleteFlightFx, editFlightFx, resetSelectFlightFx } from '../../../store/flight'
+import { deleteFlightFx, editFlightFx, resetFlightSelectFx } from '../../../store/flight'
 import { toast } from 'react-toastify'
 import { $boards } from '../../../store/board'
 import { combineDateTime } from '../../../utils/utils'
@@ -131,7 +131,7 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 						icon={<DeleteOutlined/>}
 						onClick={() => {
 							deleteFlightFx(data.id)
-							resetSelectFlightFx()
+							resetFlightSelectFx()
 						}}
 				>Удалить полет</Button>
 			</Space>

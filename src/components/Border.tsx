@@ -5,20 +5,16 @@
  * @since 23.11.2023
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
-import {
-	BOARD_ITEM_HEIGHT,
-	BOARD_ITEM_WIDTH,
-	DATE_ITEM_HEIGHT,
-	DATE_ITEM_WIDTH,
-	HEADER_HEIGHT
-} from '../utils/consts'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../utils/consts'
 import * as d3 from 'd3'
 import { useStore } from 'effector-react'
 import { drawLine } from '../utils/utils'
 import { $boards } from '../store/board'
 import { $dates } from '../store/date'
+import { $style } from '../store/style'
 
 const Border = (): JSX.Element => {
+	const style = useStore($style)
 	const dates = useStore($dates)
 	const boards = useStore($boards)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
@@ -30,12 +26,12 @@ const Border = (): JSX.Element => {
 	useEffect(() => {
 		const svg = d3.select(svgRef.current)
 		svg.selectAll('*').remove()
-		drawLine(svg, x, y, width, y)
-		drawLine(svg, width, y, width, height)
-		drawLine(svg, width, height, x, height)
-		drawLine(svg, x, height, x, y)
+		drawLine(svg, style.lineColor, x, y, width, y)
+		drawLine(svg, style.lineColor, width, y, width, height)
+		drawLine(svg, style.lineColor, width, height, x, height)
+		drawLine(svg, style.lineColor, x, height, x, y)
 
-	}, [x, y, width, height])
+	}, [style,x, y, width, height])
 
 	return (
 		<svg ref={svgRef}></svg>

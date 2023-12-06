@@ -20,7 +20,9 @@ const ControlPanel = (): JSX.Element => {
 					<FlightControl/>
 					<DateControl/>
 				</Space>
-				<div style={{ display: 'none' }}>
+				<div
+					// style={{ display: 'none' }}
+				>
 					<ThemeControl/>
 				</div>
 			</Space>

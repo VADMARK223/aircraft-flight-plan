@@ -8,3 +8,14 @@ body {
   -webkit-font-smoothing: antialiased; // Сглаживание шрифтов (для браузеров использующих движок WebKit, таких как Google Chrome и Safari)
   -moz-osx-font-smoothing: grayscale; // Сглаживание шрифтов (для браузеров использующих движок Gecko, таких как Firefox)
 }
+
+.app {
+  &.light-theme {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+  }
+  &.dark-theme {
+    background-color: var(--backgroundColor-dark);
+    color: var(--textColor-dark);
+  }
+}

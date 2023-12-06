@@ -9,9 +9,11 @@ import * as d3 from 'd3'
 import { BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, FULL_TIME_FORMAT, HEADER_HEIGHT } from '../utils/consts'
 import dayjs from 'dayjs'
 import { getWeekCount } from '../utils/utils'
-import { backgroundColor, lineColor, textColor } from '../utils/style'
+import { useStore } from 'effector-react'
+import { $style } from '../store/style'
 
 const InfoPanel = (): JSX.Element => {
+	const style = useStore($style)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 	const width = BOARD_ITEM_WIDTH
 	const height = DATE_ITEM_HEIGHT + HEADER_HEIGHT
@@ -23,24 +25,24 @@ const InfoPanel = (): JSX.Element => {
 		svg.append('rect')
 			.attr('width', width)
 			.attr('height', height)
-			.attr('stroke', lineColor)
-			.attr('fill', backgroundColor)
+			.attr('stroke', style.lineColor)
+			.attr('fill', style.backgroundColor)
 		svg.append('text')
 			.attr('x', width * 0.5)
 			.attr('y', height * 0.5)
-			.attr('fill', textColor)
+			.attr('fill', style.textColor)
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'middle')
 			.text(now.format(FULL_TIME_FORMAT))
 		svg.append('text')
 			.attr('x', width * 0.5)
 			.attr('y', height - 8)
-			.attr('fill', textColor)
+			.attr('fill', style.textColor)
 			.attr('text-anchor', 'middle')
 			.attr('dominant-baseline', 'auto')
 			.attr('font-size', 14)
 			.text(`Неделя ${getWeekCount(now)}`)
-	}, [width, height, now])
+	}, [style, width, height, now])
 
 	return (
 		<svg ref={svgRef}></svg>

@@ -1,7 +1,6 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
 import type { RangeValue } from 'rc-picker/lib/interface'
-import { lineColor, textColor } from './style'
 
 /**
  * @author Markitanov Vadim
@@ -12,7 +11,7 @@ export const getWeekCount = (current: dayjs.Dayjs): number => {
 	return current.diff(startOfYear, 'weeks')
 }
 
-export const drawLine = (svg: any, x1: number, y1: number, x2: number, y2: number): any => {
+export const drawLine = (svg: any, lineColor: string, x1: number, y1: number, x2: number, y2: number): any => {
 	const result = svg.append('line')
 	result.attr('stroke', lineColor)
 	result.attr('stroke-width', 3)
@@ -46,7 +45,7 @@ export const drawText = (svg: any, text: string, x: number, y: number, cursor: s
 		.text(text)
 }
 
-export const appendRotateText = (svg: any, translateX: number, translateY: number, text: string, rotate: number, dominantBaseline: string = 'auto') => {
+export const appendRotateText = (svg: any, textColor:string, translateX: number, translateY: number, text: string, rotate: number, dominantBaseline: string = 'auto') => {
 	const endDateContainer = svg.append('g')
 	endDateContainer.attr('transform', `translate(${translateX},${translateY})`)
 	endDateContainer.append('text')

@@ -1,55 +1,42 @@
-import React, { useEffect, useState } from 'react'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from './utils/consts'
-import DateItem from './components/DateItem'
-import BoardItem from './components/BoardItem'
-import Background from './components/Background'
-import InfoPanel from './components/InfoPanel'
-import Header from './components/Header'
-import Border from './components/Border'
+import React, { useEffect } from 'react'
+import { ConfigProvider, theme } from 'antd'
+import ruRu from 'antd/locale/ru_RU'
+import Main from './Main'
 import { useStore } from 'effector-react'
-import { Space } from 'antd'
-import ControlPanel from './components/controlPanel/ControlPanel'
-import Flights from './components/Flights'
-import { $boards } from './store/board'
-import { $dates } from './store/date'
-import { isDarkTheme } from './utils/style'
+import { $style, setBackgroundColorFx, setLineColorFx, setTextColorFx } from './store/style'
 
 function App () {
-	const dates = useStore($dates)
-	const boards = useStore($boards)
-	const [canvasHeight, setCanvasHeight] = useState(HEADER_HEIGHT + DATE_ITEM_HEIGHT + boards.length * BOARD_ITEM_HEIGHT)
+	const style = useStore($style)
+
+	const getComputedStyleByPropertyValue = (property: string, isDark: boolean) => {
+		return getComputedStyle(document.documentElement).getPropertyValue(`--${property}${isDark ? '-dark' : ''}`)
+	}
 
 	useEffect(() => {
-		setCanvasHeight(HEADER_HEIGHT + DATE_ITEM_HEIGHT + boards.length * BOARD_ITEM_HEIGHT)
-	}, [boards])
-	const canvasWidth = dates.length * DATE_ITEM_WIDTH + BOARD_ITEM_WIDTH
+		setBackgroundColorFx(getComputedStyleByPropertyValue('backgroundColor', style.isDarkTheme))
+		setTextColorFx(getComputedStyleByPropertyValue('textColor', style.isDarkTheme))
+		setLineColorFx(getComputedStyleByPropertyValue('lineColor', style.isDarkTheme))
+	}, [style.isDarkTheme])
 
 	return (
-		<Space direction={'vertical'}>
-			<ControlPanel/>
-			<svg width={canvasWidth}
-				 height={canvasHeight + 1}
-				 style={{ backgroundColor: '$backgroundColor' }}
+		<>
+			<ConfigProvider
+				locale={ruRu}
+				theme={{
+					algorithm: style.isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
+
+					token: {
+						motion: true // Настройка анимаций
+						// colorPrimary: '#57965c',
+						// colorBgContainer: '#f6ffed',
+					}
+				}}
 			>
-				<InfoPanel/>
-				<Header/>
-				{boards.map((value, index) => (
-					<BoardItem key={value.id}
-							   data={value}
-							   x={0}
-							   y={HEADER_HEIGHT + DATE_ITEM_HEIGHT + BOARD_ITEM_HEIGHT * index}
-							   width={BOARD_ITEM_WIDTH}
-							   height={BOARD_ITEM_HEIGHT}/>))}
-				{dates.map((value, index) => (
-					<DateItem key={index}
-							  data={value}
-							  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
-							  y={HEADER_HEIGHT}/>))}
-				<Background/>
-				<Flights/>
-				<Border/>
-			</svg>
-		</Space>
+				<div className={`app ${style.isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
+					<Main/>
+				</div>
+			</ConfigProvider>
+		</>
 	)
 }
 

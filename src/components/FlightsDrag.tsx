@@ -276,8 +276,8 @@ const FlightsDrag = (): JSX.Element => {
 				drawRect(svg, oldX2, flightY, RESIZE_STICK_WIDTH * 0.4, FLIGHT_ITEM_HEIGHT, 'brown', 'brown', 'auto')
 			}
 
-			appendRotateText(svg, flightX1, flightY, flightModel.model.startDate.format('HH:mm'), -16)
-			appendRotateText(svg, flightX1 + flightWidth, flightY, flightModel.model.endDate.format('HH:mm'), -16)
+			// appendRotateText(svg, flightX1, flightY, flightModel.model.startDate.format('HH:mm'), -16)
+			// appendRotateText(svg, flightX1 + flightWidth, flightY, flightModel.model.endDate.format('HH:mm'), -16)
 		})
 
 	}, [flightViewModels, curDragFlight])

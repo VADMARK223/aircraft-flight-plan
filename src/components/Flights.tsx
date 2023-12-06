@@ -25,9 +25,11 @@ import { $flightsSelect, flightClickFx } from '../store/flight'
 import { $boards } from '../store/board'
 import { $datesRange } from '../store/date'
 import { Dayjs } from 'dayjs'
-import { greenColor, textColor } from '../utils/style'
+import { greenColor } from '../utils/style'
+import { $style } from '../store/style'
 
 const Flights = (): JSX.Element => {
+	const style = useStore($style)
 	const datesRange = useStore($datesRange)
 	const boards: Board[] = useStore($boards)
 	const flightsSelect = useStore($flightsSelect)
@@ -128,7 +130,7 @@ const Flights = (): JSX.Element => {
 				container.append('text')
 					.attr('x', flightX1 + 5)
 					.attr('y', flightY)
-					.attr('fill', textColor)
+					.attr('fill', style.textColor)
 					.attr('text-anchor', 'start')
 					.attr('dominant-baseline', 'hanging')
 					.attr('cursor', cursor)
@@ -142,15 +144,15 @@ const Flights = (): JSX.Element => {
 			const startDate: Dayjs = flightModel.model.startDate
 			const endDate: Dayjs = flightModel.model.endDate
 			const timeRotate: number = -19
-			appendRotateText(svg, flightX1, flightY, startDate.format('HH:mm'), timeRotate)
-			appendRotateText(svg, flightX1 + flightWidth, flightY, endDate.format('HH:mm'), timeRotate)
+			appendRotateText(svg, style.textColor, flightX1, flightY, startDate.format('HH:mm'), timeRotate)
+			appendRotateText(svg, style.textColor, flightX1 + flightWidth, flightY, endDate.format('HH:mm'), timeRotate)
 
 			const dateRotate: number = 19
-			appendRotateText(svg, flightX1, flightY + FLIGHT_ITEM_HEIGHT, startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-			appendRotateText(svg, flightX1 + flightWidth, flightY + FLIGHT_ITEM_HEIGHT, endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+			appendRotateText(svg, style.textColor, flightX1, flightY + FLIGHT_ITEM_HEIGHT, startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+			appendRotateText(svg, style.textColor, flightX1 + flightWidth, flightY + FLIGHT_ITEM_HEIGHT, endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [flightViewModels, flightsSelect])
+	}, [style, flightViewModels, flightsSelect])
 
 	return (
 		<svg ref={svgRef}>

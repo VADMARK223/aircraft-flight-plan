@@ -3,10 +3,11 @@ import { FlightType } from '../models/FlightType'
 import dayjs from 'dayjs'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
-import { createStore } from 'effector'
+import { createEvent, createStore } from 'effector'
 import { deleteFlightFx, editFlightFx } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { redColor } from '../utils/style'
+import { toast } from 'react-toastify'
 
 /**
  * @author Markitanov Vadim
@@ -179,9 +180,20 @@ export const defaultBoards: Board[] = [
 	}
 ]
 
+export const boardClickFx = createEffect<Board, Board>('Событие клика по борту')
+export const resetBoardSelectFx = createEvent()
 export const $boardSelect = createStore<Board | null>(null)
+	.on(boardClickFx, (board, newBoard) => {
+		if (board?.id === newBoard.id) {
+			return null
+		}
+		return newBoard
+	})
+	.reset(resetBoardSelectFx)
 
 export const addBoardFx = createEffect<Board, Board[]>()
+export const editBoardFx = createEffect<Board, Board[]>()
+export const deleteBoardFx = createEffect<Board, Board[]>()
 export const addFlightFx = createEffect<Flight, Board[]>()
 
 export const $boards = createStore<Board[]>(defaultBoards)
@@ -193,6 +205,23 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		}
 
 		return [...state, payload]
+	})
+	.on(editBoardFx, (boards, board) => {
+		const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
+		if (findBoardIndex === -1) {
+			toast.warn(`Ошибка редактирования борта: ${board.id}`)
+		} else {
+			const newBoards = [...boards]
+			newBoards[findBoardIndex] = board
+			return newBoards
+		}
+	}).on(deleteBoardFx, (boards, board) => {
+		const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
+		if (findBoardIndex === -1) {
+
+		} else {
+			return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]
+		}
 	})
 	.on(addFlightFx, (boards, flight) => {
 		const findBoard = boards.find(value => value.id === flight.boardId)
@@ -251,22 +280,17 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		return newBoards
 	})
 
-/* Удаление всего борта
-let findBoardIndex = -1
-let stop = false
-for (let i = 0; i < boards.length; i++) {
-	if (stop) {
-		break
-	}
-	const board = boards[i]
-	for (let j = 0; j < board.flights.length; j++) {
-		const flight = board.flights[j]
-		stop = flight.id === flightId
+const getBoardIndexByBoardId = (boards: Board[], boardId: number): number => {
+	let findBoardIndex = -1
+	let stop = false
+	for (let i = 0; i < boards.length; i++) {
+		const board = boards[i]
+		stop = board.id === boardId
 		if (stop) {
 			findBoardIndex = boards.indexOf(board)
 			break
 		}
 	}
-}
 
-return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]*/
+	return findBoardIndex
+}

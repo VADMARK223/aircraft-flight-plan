@@ -133,7 +133,7 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 							deleteFlightFx(data.id)
 							resetSelectFlightFx()
 						}}
-				>Удалить полет полет</Button>
+				>Удалить полет</Button>
 			</Space>
 		</Space>
 	)

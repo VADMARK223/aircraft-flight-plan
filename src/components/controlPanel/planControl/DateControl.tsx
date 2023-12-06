@@ -8,8 +8,8 @@ import React, { JSX } from 'react'
 import { Button, DatePicker, Space } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValue } from 'rc-picker/lib/interface'
-import { DATE_FORMAT } from '../../utils/consts'
-import { $datesRange, updateDatesRangeFx } from '../../store/date'
+import { DATE_FORMAT } from '../../../utils/consts'
+import { $datesRange, updateDatesRangeFx } from '../../../store/date'
 import { useStore } from 'effector-react'
 
 const DateControl = (): JSX.Element => {

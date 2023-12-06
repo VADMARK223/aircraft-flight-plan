@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
 import type { RangeValue } from 'rc-picker/lib/interface'
+import { lineColor, textColor } from './style'
 
 /**
  * @author Markitanov Vadim
@@ -13,7 +14,7 @@ export const getWeekCount = (current: dayjs.Dayjs): number => {
 
 export const drawLine = (svg: any, x1: number, y1: number, x2: number, y2: number): any => {
 	const result = svg.append('line')
-	result.attr('stroke', 'black')
+	result.attr('stroke', lineColor)
 	result.attr('stroke-width', 3)
 	result.attr('x1', x1)
 	result.attr('y1', y1)
@@ -50,7 +51,7 @@ export const appendRotateText = (svg: any, translateX: number, translateY: numbe
 	endDateContainer.attr('transform', `translate(${translateX},${translateY})`)
 	endDateContainer.append('text')
 		.attr('font-size', 12)
-		.attr('fill', 'black')
+		.attr('fill', textColor)
 		.attr('transform', `rotate(${rotate})`)
 		.attr('dominant-baseline', dominantBaseline)
 		.text(text)

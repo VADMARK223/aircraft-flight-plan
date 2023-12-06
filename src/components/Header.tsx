@@ -9,6 +9,7 @@ import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../utils/const
 import * as d3 from 'd3'
 import { useStore } from 'effector-react'
 import { $dates } from '../store/date'
+import { backgroundColor, lineColor, textColor } from '../utils/style'
 
 const Header = (): JSX.Element => {
 	const dates = useStore($dates)
@@ -17,7 +18,6 @@ const Header = (): JSX.Element => {
 	const y = 0
 	const width = DATE_ITEM_WIDTH * dates.length
 	const height = HEADER_HEIGHT
-	const fill = 'white'
 
 	useEffect(() => {
 		const svg = d3.select(svgRef.current)
@@ -27,12 +27,12 @@ const Header = (): JSX.Element => {
 			.attr('y', y)
 			.attr('width', width)
 			.attr('height', height)
-			.attr('stroke', 'black')
-			.attr('fill', fill)
+			.attr('stroke', lineColor)
+			.attr('fill', backgroundColor)
 		svg.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + 7)
-			.attr('fill', 'black')
+			.attr('fill', textColor)
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
 			.attr('font-weight', 'bold')

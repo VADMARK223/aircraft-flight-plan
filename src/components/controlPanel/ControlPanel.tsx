@@ -9,14 +9,20 @@ import { Space } from 'antd'
 import FlightControl from './flightControl/FlightControl'
 import DateControl from './DateControl'
 import BoardControl from './boardControl/BoardControl'
+import ThemeControl from './ThemeControl'
 
 const ControlPanel = (): JSX.Element => {
 	return (
 		<div style={{ paddingTop: '5px', paddingLeft: '5px' }}>
-			<Space direction={'vertical'} style={{ width: '100%' }}>
-				<BoardControl/>
-				<FlightControl/>
-				<DateControl/>
+			<Space align={'start'}>
+				<Space direction={'vertical'}>
+					<BoardControl/>
+					<FlightControl/>
+					<DateControl/>
+				</Space>
+				<div style={{ display: 'none' }}>
+					<ThemeControl/>
+				</div>
 			</Space>
 		</div>
 	)

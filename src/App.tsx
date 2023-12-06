@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-	BOARD_ITEM_HEIGHT,
-	BOARD_ITEM_WIDTH,
-	DATE_ITEM_HEIGHT,
-	DATE_ITEM_WIDTH,
-	HEADER_HEIGHT
-} from './utils/consts'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from './utils/consts'
 import DateItem from './components/DateItem'
 import BoardItem from './components/BoardItem'
 import Background from './components/Background'
@@ -18,6 +12,7 @@ import ControlPanel from './components/controlPanel/ControlPanel'
 import Flights from './components/Flights'
 import { $boards } from './store/board'
 import { $dates } from './store/date'
+import { isDarkTheme } from './utils/style'
 
 function App () {
 	const dates = useStore($dates)
@@ -34,7 +29,7 @@ function App () {
 			<ControlPanel/>
 			<svg width={canvasWidth}
 				 height={canvasHeight + 1}
-				 style={{ backgroundColor: 'gray' }}
+				 style={{ backgroundColor: '$backgroundColor' }}
 			>
 				<InfoPanel/>
 				<Header/>

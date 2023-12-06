@@ -6,6 +6,7 @@ import { Flight } from '../models/Flight'
 import { createStore } from 'effector'
 import { editFlightFx } from './flight'
 import { fetchBoardsFx } from '../api/board'
+import { redColor } from '../utils/style'
 
 /**
  * @author Markitanov Vadim
@@ -76,7 +77,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 3,
 		name: 'Борт 3',
-		type: 'red',
+		type: redColor,
 		flights: [
 			{
 				id: '13',
@@ -90,7 +91,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 4,
 		name: 'Борт 4',
-		type: 'red',
+		type: redColor,
 		flights: [
 			{
 				id: '14',
@@ -104,7 +105,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 5,
 		name: 'Борт 5',
-		type: 'red',
+		type: redColor,
 		flights: [
 			{
 				id: '15',
@@ -138,7 +139,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 7,
 		name: 'Борт 7',
-		type: 'red',
+		type: redColor,
 		flights: [
 			{
 				id: '17',

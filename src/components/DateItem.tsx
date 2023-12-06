@@ -9,6 +9,7 @@ import { DateModel } from '../models/DateModel'
 import { DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../utils/consts'
 import * as d3 from 'd3'
 import { getDayNameByCount } from '../utils/utils'
+import { backgroundColor, lineColor, textColor } from '../utils/style'
 
 interface DateItemProps {
 	data: DateModel
@@ -20,7 +21,6 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 	const { data, x, y } = props
 	const width = DATE_ITEM_WIDTH
 	const height = DATE_ITEM_HEIGHT
-	const fill = 'white'
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 	const date = data.date.format('DD.MM.YYYY')
 	const time = data.date.format('HH:mm')
@@ -32,13 +32,13 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 			.attr('y', y)
 			.attr('width', width)
 			.attr('height', height)
-			.attr('stroke', 'black')
-			.attr('fill', fill)
+			.attr('stroke', lineColor)
+			.attr('fill', backgroundColor)
 
 		svg.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + 5)
-			.attr('fill', 'black')
+			.attr('fill', textColor)
 			.attr('font-weight', 'bold')
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
@@ -47,7 +47,7 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 		svg.append('text')
 			.attr('x', x + width - 5)
 			.attr('y', y + 5)
-			.attr('fill', 'black')
+			.attr('fill', textColor)
 			.attr('text-anchor', 'end')
 			.attr('dominant-baseline', 'hanging')
 			.text(data.title)
@@ -55,7 +55,7 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 		svg.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + height - 5)
-			.attr('fill', 'black')
+			.attr('fill', textColor)
 			.attr('font-weight', 'bold')
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'auto')
@@ -64,12 +64,12 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 		svg.append('text')
 			.attr('x', x + width - 5)
 			.attr('y', y + height - 5)
-			.attr('fill', 'black')
+			.attr('fill', textColor)
 			.attr('text-anchor', 'end')
 			.attr('dominant-baseline', 'auto')
 			.text(getDayNameByCount(data.date.day()))
 
-	}, [date, data.date, time, data.title, x, y, width, height, fill])
+	}, [date, data.date, time, data.title, x, y, width, height])
 
 	return (
 		<g ref={svgRef}/>

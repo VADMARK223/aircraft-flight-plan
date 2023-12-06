@@ -25,6 +25,7 @@ import { $flightsSelect, flightClickFx } from '../store/flight'
 import { $boards } from '../store/board'
 import { $datesRange } from '../store/date'
 import { Dayjs } from 'dayjs'
+import { greenColor, textColor } from '../utils/style'
 
 const Flights = (): JSX.Element => {
 	const datesRange = useStore($datesRange)
@@ -120,14 +121,14 @@ const Flights = (): JSX.Element => {
 				.attr('height', FLIGHT_ITEM_HEIGHT)
 				.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
 				.attr('stroke-width', isSelect ? '3' : '1')
-				.attr('fill', isDefault ? 'lightgreen' : 'orange')
+				.attr('fill', isDefault ? greenColor : 'orange')
 				.attr('cursor', cursor)
 
 			if (SHOW_FLIGHT_ID) {
 				container.append('text')
 					.attr('x', flightX1 + 5)
 					.attr('y', flightY)
-					.attr('fill', 'white')
+					.attr('fill', textColor)
 					.attr('text-anchor', 'start')
 					.attr('dominant-baseline', 'hanging')
 					.attr('cursor', cursor)

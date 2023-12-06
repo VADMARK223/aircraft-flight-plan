@@ -16,6 +16,7 @@ import {
 import { useStore } from 'effector-react'
 import { $boards } from '../store/board'
 import { $dates } from '../store/date'
+import { lineColor } from '../utils/style'
 
 const Background = (): JSX.Element => {
 	const dates = useStore($dates)
@@ -25,9 +26,9 @@ const Background = (): JSX.Element => {
 	const y = HEADER_HEIGHT + DATE_ITEM_HEIGHT
 	const width = DATE_ITEM_WIDTH * dates.length
 	const height = BOARD_ITEM_HEIGHT * boards.length
-	const fill = 'white'
 
 	useEffect(() => {
+		const fill = getComputedStyle(document.documentElement).getPropertyValue('--backgroundColor')
 		const svg = d3.select(svgRef.current)
 		svg.selectAll('*').remove()
 		const container = svg.append('g')
@@ -39,13 +40,13 @@ const Background = (): JSX.Element => {
 					.attr('y', BOARD_ITEM_HEIGHT * j)
 					.attr('width', DATE_ITEM_WIDTH)
 					.attr('height', BOARD_ITEM_HEIGHT)
-					.attr('stroke', 'black')
+					.attr('stroke', lineColor)
 					.attr('stroke-dasharray', [2, 3])
 					.attr('fill', fill)
 			}
 		}
 
-	}, [x, y, width, height, boards])
+	}, [x, y, width, height, boards, dates])
 
 	return (
 		<svg ref={svgRef}></svg>

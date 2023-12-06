@@ -1,0 +1,17 @@
+$isDark: false;
+:root {
+  --greenColor: #57965c;
+  --redColor: #c94f4f;
+
+  @if $isDark {
+    --isDarkTheme: true;
+    --backgroundColor: #1e1f22;
+    --textColor: #ced0d6;
+    --lineColor: #393b40;
+  } @else {
+    --isDarkTheme: false;
+    --backgroundColor: white;
+    --textColor: black;
+    --lineColor: black;
+  }
+}

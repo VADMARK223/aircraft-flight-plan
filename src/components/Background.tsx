@@ -42,7 +42,6 @@ const Background = (): JSX.Element => {
 		}
 
 		container.on('click', function (_: PointerEvent) {
-			console.log('CLICK')
 			resetBoardSelectFx()
 			resetFlightSelectFx()
 		})

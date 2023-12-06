@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 06.12.2023
  */
-import React, { JSX, useEffect, useState } from 'react'
+import React, { JSX, useEffect, useRef, useState } from 'react'
 import ControlPanel from './components/controlPanel/ControlPanel'
 import InfoPanel from './components/InfoPanel'
 import Header from './components/Header'
@@ -24,20 +24,41 @@ const Main = (): JSX.Element => {
 	const boards = useStore($boards)
 	const [topCanvasHeight, setTopCanvasHeight] = useState(HEADER_HEIGHT + DATE_ITEM_HEIGHT)
 	const [bottomCanvasHeight, setBottomCanvasHeight] = useState(boards.length * BOARD_ITEM_HEIGHT)
+	const bottomSvgContainerRef = useRef<any>(null)
+	const [bottomSvgContainerHeight, setBottomSvgContainerHeight] = useState('100px')
+	const canvasWidth = dates.length * DATE_ITEM_WIDTH + BOARD_ITEM_WIDTH
+
+	useEffect(() => {
+		const updateContainerHeight = () => {
+			const screenHeight = window.innerHeight
+
+			if (bottomSvgContainerRef.current) {
+				// const isScrollVisible = document.documentElement.scrollWidth > window.innerWidth
+				// console.log('isScrollVisible', isScrollVisible)
+				const bottomSvgContainerTop = bottomSvgContainerRef.current.getBoundingClientRect().top
+				const newContainerHeight = screenHeight - bottomSvgContainerTop - 20 + 'px'
+				setBottomSvgContainerHeight(newContainerHeight)
+			}
+		}
+		updateContainerHeight()
+		window.addEventListener('resize', updateContainerHeight)
+		return () => {
+			window.removeEventListener('resize', updateContainerHeight)
+		}
+	}, [])
 
 	useEffect(() => {
 		setTopCanvasHeight(HEADER_HEIGHT + DATE_ITEM_HEIGHT)
 		setBottomCanvasHeight(boards.length * BOARD_ITEM_HEIGHT)
 	}, [boards])
-	const canvasWidth = dates.length * DATE_ITEM_WIDTH + BOARD_ITEM_WIDTH
 
 	return (
 		<Space direction={'vertical'} size={'small'}>
 			<ControlPanel/>
-			<div style={{ padding: 0, margin: 0 }}>
+			<div>
 				<svg width={canvasWidth}
-					 height={topCanvasHeight + 1}
-					 style={{ backgroundColor: '$backgroundColor', padding: 0, margin: 0 }}
+					 height={topCanvasHeight}
+					 style={{ backgroundColor: '$backgroundColor' }}
 				>
 					<InfoPanel/>
 					<Header/>
@@ -47,21 +68,30 @@ const Main = (): JSX.Element => {
 								  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
 								  y={HEADER_HEIGHT}/>))}
 				</svg>
-				<svg width={canvasWidth}
-					 height={bottomCanvasHeight + 1}
-					 style={{ backgroundColor: '$backgroundColor', padding: 0, margin: 0 }}
-				>
-					{boards.map((value, index) => (
-						<BoardItem key={value.id}
-								   data={value}
-								   x={0}
-								   y={BOARD_ITEM_HEIGHT * index}
-								   width={BOARD_ITEM_WIDTH}
-								   height={BOARD_ITEM_HEIGHT}/>))}
-					<Background/>
-					<Flights/>
-					<Border/>
-				</svg>
+				<div
+					ref={bottomSvgContainerRef}
+					style={{
+						width: '100%',
+						// height: '250px',
+						height: bottomSvgContainerHeight,
+						overflowY: 'scroll'
+					}}>
+					<svg width={canvasWidth}
+						 height={bottomCanvasHeight}
+						 style={{ backgroundColor: '$backgroundColor' }}
+					>
+						{boards.map((value, index) => (
+							<BoardItem key={value.id}
+									   data={value}
+									   x={0}
+									   y={BOARD_ITEM_HEIGHT * index}
+									   width={BOARD_ITEM_WIDTH}
+									   height={BOARD_ITEM_HEIGHT}/>))}
+						<Background/>
+						<Flights/>
+						<Border/>
+					</svg>
+				</div>
 			</div>
 		</Space>
 	)

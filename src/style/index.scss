@@ -8,6 +8,7 @@ body {
   margin: var(--globalMargin);
   background-color: var(--backgroundColor);
   color: var(--textColor);
+  overflow-y: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased; // Сглаживание шрифтов (для браузеров использующих движок WebKit, таких как Google Chrome и Safari)
   -moz-osx-font-smoothing: grayscale; // Сглаживание шрифтов (для браузеров использующих движок Gecko, таких как Firefox)

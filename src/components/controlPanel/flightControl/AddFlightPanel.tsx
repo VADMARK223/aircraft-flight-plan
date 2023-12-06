@@ -20,7 +20,7 @@ import { PlusOutlined } from '@ant-design/icons'
 const AddFlightPanel = (): JSX.Element => {
 	const boards = useStore($boards)
 	const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
-	const [selectedFlightId, setSelectedFlightId] = useState<number>()
+	const [boardId, setBoardId] = useState<number>()
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	let options: SelectProps['options'] = []
@@ -30,43 +30,38 @@ const AddFlightPanel = (): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setAddFlightButtonDisable(selectedFlightId === undefined || dateRangeValue === null || timeRangeValue === null)
-	}, [selectedFlightId, dateRangeValue, timeRangeValue])
+		setAddFlightButtonDisable(boardId === undefined || dateRangeValue === null || timeRangeValue === null)
+	}, [boardId, dateRangeValue, timeRangeValue])
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
-		setSelectedFlightId(value)
+		setBoardId(value)
 	}
-
-	/*const handlerDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
-		setDateRangeValue(values)
-	}
-
-	const handlerTimeChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
-		setTimeRangeValue(values)
-	}*/
 
 	const handlerAddFlight = (): void => {
-		if (selectedFlightId === undefined) {
+		if (boardId === undefined || dateRangeValue === null || timeRangeValue === null) {
 			return
 		}
-		if (dateRangeValue != null && timeRangeValue != null) {
-			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
-			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-			if (newStartDate.isBefore(newEndDate)) {
-				const newFlight: Flight = {
-					id: 'new',
-					flightId: selectedFlightId,
-					startDate: newStartDate,
-					endDate: newEndDate,
-					type: FlightType.DEFAULT
-				}
+		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
+		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-				addFlightFx(newFlight)
-			} else {
-				toast.warn('Время вылета превышает или совпадает с временем прилета.')
+		if (newStartDate.isBefore(newEndDate)) {
+			const newFlight: Flight = {
+				id: 'new',
+				boardId: boardId,
+				startDate: newStartDate,
+				endDate: newEndDate,
+				type: FlightType.DEFAULT
 			}
+
+			addFlightFx(newFlight)
+		} else {
+			toast.warn('Время вылета превышает или совпадает с временем прилета.')
 		}
+
+		setBoardId(undefined)
+		setDateRangeValue(null)
+		setTimeRangeValue(null)
 	}
 
 	return (
@@ -76,6 +71,7 @@ const AddFlightPanel = (): JSX.Element => {
 				<Space>
 					<span>Борт:</span>
 					<Select placeholder={'Выберите борт'}
+							value={boardId}
 							options={options}
 							style={{ minWidth: '150px' }}
 							onChange={handlerBoardSelectChange}

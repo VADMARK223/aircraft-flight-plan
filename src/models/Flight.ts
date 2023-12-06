@@ -7,7 +7,7 @@ import { FlightType } from './FlightType'
  */
 export interface Flight {
 	id: string
-	flightId: number
+	boardId: number
 	startDate: Dayjs
 	endDate: Dayjs
 	type: FlightType

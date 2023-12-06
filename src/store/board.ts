@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createStore } from 'effector'
-import { editFlightFx } from './flight'
+import { deleteFlightFx, editFlightFx } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { redColor } from '../utils/style'
 
@@ -19,21 +19,21 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '11',
-				flightId: 1,
+				boardId: 1,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
 				endDate: dayjs().startOf('day').add(2, 'hours')
 			},
 			{
 				id: '21',
-				flightId: 1,
+				boardId: 1,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(23, 'hours'),
 				endDate: dayjs().startOf('day').add(25, 'hours')
 			},
 			{
 				id: '31',
-				flightId: 1,
+				boardId: 1,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(28, 'hours'),
 				endDate: dayjs().startOf('day').add(29, 'hours')
@@ -43,31 +43,32 @@ export const defaultBoards: Board[] = [
 	{
 		id: 2,
 		name: 'Борт 2',
+		type: redColor,
 		flights: [
 			{
 				id: '12',
-				flightId: 2,
+				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
 				endDate: dayjs().startOf('day').add(3, 'hours')
 			},
 			{
 				id: '22',
-				flightId: 2,
+				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
 				endDate: dayjs().startOf('day').add(6, 'hours')
 			},
 			{
-				id: '23',
-				flightId: 2,
+				id: '32',
+				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(18, 'hours'),
 				endDate: dayjs().startOf('day').add(30, 'hours')
 			},
 			{
-				id: '24',
-				flightId: 2,
+				id: '42',
+				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(32, 'hours'),
 				endDate: dayjs().startOf('day').add(33, 'hours')
@@ -81,7 +82,7 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '13',
-				flightId: 3,
+				boardId: 3,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(3, 'hours'),
 				endDate: dayjs().startOf('day').add(6, 'hours')
@@ -95,7 +96,7 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '14',
-				flightId: 4,
+				boardId: 4,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
 				endDate: dayjs().startOf('day').add(16, 'hours')
@@ -109,7 +110,7 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '15',
-				flightId: 5,
+				boardId: 5,
 				type: FlightType.ROUTINE_MAINTENANCE,
 				startDate: dayjs().startOf('day').add(15, 'hours'),
 				endDate: dayjs().startOf('day').add(30, 'hours')
@@ -122,14 +123,14 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '16',
-				flightId: 6,
+				boardId: 6,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(11, 'hours'),
 				endDate: dayjs().startOf('day').add(14, 'hours')
 			},
 			{
 				id: '26',
-				flightId: 6,
+				boardId: 6,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(32, 'hours'),
 				endDate: dayjs().startOf('day').add(35, 'hours')
@@ -143,7 +144,7 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '17',
-				flightId: 7,
+				boardId: 7,
 				type: FlightType.ROUTINE_MAINTENANCE,
 				startDate: dayjs().startOf('day').add(0, 'hours'),
 				endDate: dayjs().startOf('day').add(42, 'hours')
@@ -156,7 +157,7 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '18',
-				flightId: 1,
+				boardId: 8,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(0.5, 'hours'),
 				endDate: dayjs().startOf('day').add(3.5, 'hours')
@@ -169,7 +170,7 @@ export const defaultBoards: Board[] = [
 		flights: [
 			{
 				id: '19',
-				flightId: 1,
+				boardId: 9,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
 				endDate: dayjs().startOf('day').add(3, 'hours')
@@ -194,7 +195,7 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		return [...state, payload]
 	})
 	.on(addFlightFx, (boards, flight) => {
-		const findBoard = boards.find(value => value.id === flight.flightId)
+		const findBoard = boards.find(value => value.id === flight.boardId)
 		if (findBoard === undefined) {
 			return boards
 		}
@@ -208,7 +209,7 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		return newBoards
 	})
 	.on(editFlightFx, (boards, flight) => {
-		const findBoard = boards.find(value => value.id === flight.flightId)
+		const findBoard = boards.find(value => value.id === flight.boardId)
 		if (findBoard === undefined) {
 			return boards
 		}
@@ -226,3 +227,46 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		newBoards[findBoardIndex] = findBoard
 		return newBoards
 	})
+	.on(deleteFlightFx, (boards, flightId) => {
+		let findBoardIndex = -1, findFlightIndex = -1, stopFind = false
+		for (let i = 0; i < boards.length; i++) {
+			if (stopFind) {
+				break
+			}
+			const board = boards[i]
+			for (let j = 0; j < board.flights.length; j++) {
+				const flight = board.flights[j]
+				stopFind = flight.id === flightId
+				if (stopFind) {
+					findBoardIndex = boards.indexOf(board)
+					findFlightIndex = board.flights.indexOf(flight)
+					break
+				}
+			}
+		}
+
+		const newBoards = [...boards]
+		const newFlights = [...boards[findBoardIndex].flights]
+		newBoards[findBoardIndex].flights = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
+		return newBoards
+	})
+
+/* Удаление всего борта
+let findBoardIndex = -1
+let stop = false
+for (let i = 0; i < boards.length; i++) {
+	if (stop) {
+		break
+	}
+	const board = boards[i]
+	for (let j = 0; j < board.flights.length; j++) {
+		const flight = board.flights[j]
+		stop = flight.id === flightId
+		if (stop) {
+			findBoardIndex = boards.indexOf(board)
+			break
+		}
+	}
+}
+
+return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]*/

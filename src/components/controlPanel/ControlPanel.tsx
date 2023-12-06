@@ -13,20 +13,14 @@ import ThemeControl from './ThemeControl'
 
 const ControlPanel = (): JSX.Element => {
 	return (
-		<div style={{ paddingTop: '5px', paddingLeft: '5px' }}>
-			<Space align={'start'}>
-				<Space direction={'vertical'}>
-					<BoardControl/>
-					<FlightControl/>
-					<DateControl/>
-				</Space>
-				<div
-					// style={{ display: 'none' }}
-				>
-					<ThemeControl/>
-				</div>
+		<Space align={'start'} className={'control-panel'}>
+			<Space direction={'vertical'}>
+				<BoardControl/>
+				<FlightControl/>
+				<DateControl/>
 			</Space>
-		</div>
+			<ThemeControl/>
+		</Space>
 	)
 }
 

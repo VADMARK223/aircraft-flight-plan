@@ -13,7 +13,9 @@ function App () {
 	}
 
 	useEffect(() => {
-		setBackgroundColorFx(getComputedStyleByPropertyValue('backgroundColor', style.isDarkTheme))
+		const backgroudColor = getComputedStyleByPropertyValue('backgroundColor', style.isDarkTheme)
+		document.documentElement.style.backgroundColor = backgroudColor;
+		setBackgroundColorFx(backgroudColor)
 		setTextColorFx(getComputedStyleByPropertyValue('textColor', style.isDarkTheme))
 		setLineColorFx(getComputedStyleByPropertyValue('lineColor', style.isDarkTheme))
 	}, [style.isDarkTheme])

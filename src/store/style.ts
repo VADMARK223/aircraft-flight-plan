@@ -6,6 +6,9 @@ import { createEffect } from 'effector/compat'
  * @since 06.12.2023
  */
 
+export const THEME_LOCAL_STORAGE_KEY: string = 'aircraft_flight_plan_theme'
+export const THEME_LOCAL_STORAGE_VALUE: string = 'dark'
+
 interface StyleStore {
 	isDarkTheme: boolean
 	backgroundColor: string,
@@ -14,7 +17,7 @@ interface StyleStore {
 }
 
 const defaultStyleStore: StyleStore = {
-	isDarkTheme: false,
+	isDarkTheme: localStorage.getItem(THEME_LOCAL_STORAGE_KEY) === THEME_LOCAL_STORAGE_VALUE,
 	backgroundColor: '',
 	textColor: '',
 	lineColor: ''

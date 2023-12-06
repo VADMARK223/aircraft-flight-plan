@@ -6,16 +6,16 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
+import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { Dayjs } from 'dayjs'
 import { Flight } from '../../../models/Flight'
 import { DATE_FORMAT } from '../../../utils/consts'
 import type { RangeValue } from 'rc-picker/lib/interface'
-import { editFlightFx } from '../../../store/flight'
+import { deleteFlightFx, editFlightFx, resetSelectFlightFx } from '../../../store/flight'
 import { toast } from 'react-toastify'
 import { $boards } from '../../../store/board'
 import { combineDateTime } from '../../../utils/utils'
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 interface EditFlightPanelProps {
 	data: Flight
@@ -25,13 +25,15 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 	const { data } = props
 	const boards = useStore($boards)
 	const [editFlightButtonDisable, setEditFlightButtonDisable] = useState<boolean>(true)
-	const [selectedFlightId, setSelectedFlightId] = useState<number | undefined>()
+	const [boardId, setBoardId] = useState<number | undefined>()
+	const [flightId, setFlightId] = useState<string | undefined>()
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	let options: SelectProps['options'] = []
 
 	useEffect(() => {
-		setSelectedFlightId(data.flightId)
+		setBoardId(data.boardId)
+		setFlightId(data.id)
 		setDateRangeValue([data.startDate, data.endDate])
 		setTimeRangeValue([data.startDate, data.endDate])
 	}, [data])
@@ -41,11 +43,11 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setEditFlightButtonDisable(selectedFlightId === undefined || dateRangeValue === null || timeRangeValue === null)
-	}, [selectedFlightId, dateRangeValue, timeRangeValue])
+		setEditFlightButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null)
+	}, [boardId, flightId, dateRangeValue, timeRangeValue])
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
-		setSelectedFlightId(value)
+		setBoardId(value)
 	}
 
 	/**
@@ -56,7 +58,9 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
-				editFlightFx({ ...data, startDate: newStartDate, endDate: newEndDate })
+				if (flightId !== undefined && flightId !== '') {
+					editFlightFx({ ...data, id: flightId, startDate: newStartDate, endDate: newEndDate })
+				}
 			} else {
 				toast.warn('Время вылета превышает или совпадает с временем прилета.')
 			}
@@ -67,19 +71,32 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 		<Space direction={'vertical'}>
 			<Divider type={'horizontal'} orientation={'left'} style={{ margin: '0' }}>Изменение полета</Divider>
 			<Space align={'start'}>
-				<Space>
-					<span>Борт:</span>
-					<Select placeholder={'Выберите борт'}
-							value={selectedFlightId}
-							options={options}
-							style={{ minWidth: '150px' }}
-							onChange={handlerBoardSelectChange}
-							allowClear
-							showSearch
-							filterOption={(input, opt) => {
-								return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+				<Space direction={'vertical'} align={'end'}>
+					<Space>
+						<span>Борт:</span>
+						<Select placeholder={'Выберите борт'}
+								value={boardId}
+								options={options}
+								style={{ minWidth: '150px' }}
+								onChange={handlerBoardSelectChange}
+								allowClear
+								showSearch
+								filterOption={(input, opt) => {
+									return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+								}}
+						/>
+					</Space>
+					<Space>
+						<span>Полет:</span>
+						<Input
+							value={flightId}
+							onChange={(event) => {
+								setFlightId(event.target.value)
 							}}
-					/>
+							style={{ width: '150px' }}
+							allowClear
+						/>
+					</Space>
 				</Space>
 				<Space direction={'vertical'} align={'end'}>
 					<Space>
@@ -111,7 +128,8 @@ const EditFlightPanel = (props: EditFlightPanelProps): JSX.Element => {
 						danger
 						icon={<DeleteOutlined/>}
 						onClick={() => {
-							console.log('Delete')
+							deleteFlightFx(data.id)
+							resetSelectFlightFx()
 						}}
 				>Удалить полет полет</Button>
 			</Space>

@@ -1,4 +1,4 @@
-import { FlightViewModel } from './FlightViewModel'
+import { FlightViewModelDrag } from './FlightViewModelDrag'
 import { DragType } from './DragType'
 
 /**
@@ -6,6 +6,6 @@ import { DragType } from './DragType'
  * @since 30.11.2023
  */
 export interface DragModel {
-	flight: FlightViewModel
+	flight: FlightViewModelDrag
 	type: DragType
 }

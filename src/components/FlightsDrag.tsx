@@ -19,7 +19,7 @@ import {
 } from '../utils/consts'
 import dayjs from 'dayjs'
 import * as d3 from 'd3'
-import { FlightViewModel } from '../models/FlightViewModel'
+import { FlightViewModelDrag } from '../models/FlightViewModelDrag'
 import { FlightType } from '../models/FlightType'
 import { useStore } from 'effector-react'
 import { appendRotateText, dateToX, drawRect, drawText, xToDate } from '../utils/utils'
@@ -38,8 +38,8 @@ const FlightsDrag = (): JSX.Element => {
 	const [dragModel, setDragModel] = useState<DragModel | undefined>(undefined)
 	const dragModelRef = useRef(dragModel)
 
-	const [flightViewModels, setFlightViewModels] = useState<FlightViewModel[]>()
-	const [curDragFlight, setCurDragFlight] = useState<FlightViewModel | undefined>()
+	const [flightViewModels, setFlightViewModels] = useState<FlightViewModelDrag[]>()
+	const [curDragFlight, setCurDragFlight] = useState<FlightViewModelDrag | undefined>()
 	const curDragFlightRef = useRef(curDragFlight)
 
 	const [shifts, setShifts] = useState({ x: 0, y: 0 })
@@ -179,13 +179,13 @@ const FlightsDrag = (): JSX.Element => {
 	}, [flightViewModels, shiftsRef, height, width, boards, curDragFlight])
 
 	useEffect(() => {
-		const temp: FlightViewModel[] = []
+		const temp: FlightViewModelDrag[] = []
 		boards.forEach((value, index) => {
 			if (!value.flights) {
 				return undefined
 			}
 			value.flights.forEach((flightModel) => {
-				const flightViewModel: FlightViewModel = {
+				const flightViewModel: FlightViewModelDrag = {
 					model: flightModel,
 					index: index,
 					x: 0,

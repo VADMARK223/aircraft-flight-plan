@@ -10,10 +10,8 @@ import { useStore } from 'effector-react'
 import {
 	BOARD_ITEM_HEIGHT,
 	BOARD_ITEM_WIDTH,
-	DATE_ITEM_HEIGHT,
 	DATE_ITEM_WIDTH,
 	FLIGHT_ITEM_HEIGHT,
-	HEADER_HEIGHT,
 	MINUTES_IN_CELL,
 	SHOW_FLIGHT_ID
 } from '../utils/consts'
@@ -96,7 +94,7 @@ const Flights = (): JSX.Element => {
 
 			const flightDurationMinutes = xToDate(endX).diff(xToDate(flightX1), 'minutes')
 			const flightWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * flightDurationMinutes
-			const flightY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + BOARD_ITEM_HEIGHT * flightModel.index + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
+			const flightY = BOARD_ITEM_HEIGHT * flightModel.index + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
 
 			const container = svg.append('g')
 				.on('click', function (_: PointerEvent) {

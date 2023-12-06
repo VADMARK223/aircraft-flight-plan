@@ -6,7 +6,7 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../utils/consts'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../utils/consts'
 import { useStore } from 'effector-react'
 import { $boards, resetBoardSelectFx } from '../store/board'
 import { $dates } from '../store/date'
@@ -19,7 +19,7 @@ const Background = (): JSX.Element => {
 	const boards = useStore($boards)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 	const x = BOARD_ITEM_WIDTH
-	const y = HEADER_HEIGHT + DATE_ITEM_HEIGHT
+	const y = 0
 	const width = DATE_ITEM_WIDTH * dates.length
 	const height = BOARD_ITEM_HEIGHT * boards.length
 

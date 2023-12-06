@@ -6,11 +6,12 @@ import { Board } from '../models/Board'
  * @since 22.11.2023
  */
 export const HEADER_HEIGHT = 30
+export const DATE_ITEM_HEIGHT = 45
 export const BOARD_ITEM_WIDTH = 140
 export const BOARD_ITEM_HEIGHT = 80
 export const FLIGHT_ITEM_HEIGHT = BOARD_ITEM_HEIGHT * 0.3
 export const DATE_ITEM_WIDTH = 180
-export const DATE_ITEM_HEIGHT = 45
+
 export const HOURS_IN_CELL = 6
 export const MINUTES_IN_CELL = HOURS_IN_CELL * 60
 export const DATE_FORMAT = 'DD.MM.YYYY'

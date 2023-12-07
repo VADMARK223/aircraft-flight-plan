@@ -20,4 +20,4 @@ export const $flightsSelect = createStore<Flight | null>(null)
 	.reset(resetFlightSelectFx)
 
 export const editFlightFx = createEffect<Flight, Board[]>()
-export const deleteFlightFx = createEffect<string, Board[]>()
+export const flightDeleteFx = createEffect<string, Board[]>()

@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
-import { deleteFlightFx, editFlightFx } from './flight'
+import { flightDeleteFx, editFlightFx } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { redColor } from '../utils/style'
 import { toast } from 'react-toastify'
@@ -22,7 +22,7 @@ export const defaultBoards: Board[] = [
 				id: '11',
 				boardId: 1,
 				type: FlightType.DEFAULT,
-				startDate: dayjs().startOf('day').add(1, 'hours'),
+				startDate: dayjs().startOf('day').add(0, 'hours'),
 				endDate: dayjs().startOf('day').add(2, 'hours')
 			},
 			{
@@ -257,7 +257,7 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		newBoards[findBoardIndex] = findBoard
 		return newBoards
 	})
-	.on(deleteFlightFx, (boards, flightId) => {
+	.on(flightDeleteFx, (boards, flightId) => {
 		let findBoardIndex = -1, findFlightIndex = -1, stopFind = false
 		for (let i = 0; i < boards.length; i++) {
 			if (stopFind) {

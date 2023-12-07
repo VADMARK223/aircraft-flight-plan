@@ -8,6 +8,7 @@ import * as d3 from 'd3'
 import { Flight } from '../../models/Flight'
 import { flightClickFx, flightDeleteFx } from '../../store/flight'
 import { StyleStore } from '../../store/style'
+import { FLIGHTS_G_ID } from './Flights'
 
 /**
  * Модель элемента контекстного меню
@@ -31,7 +32,9 @@ const menuItems: MenuItemModel[] = [
 	}
 ]
 
-export const createContextMenu = (style: StyleStore, container: d3.Selection<Element, any, any, any>, x: number, y: number, flight: Flight, closeCallback: () => void) => {
+export const createContextMenu = (style: StyleStore, x: number, y: number, flight: Flight, closeCallback: () => void) => {
+	const container = d3.select(`#${FLIGHTS_G_ID}`)
+
 	// container.append('rect')
 	// 	.attr('x', x)
 	// 	.attr('y', y)

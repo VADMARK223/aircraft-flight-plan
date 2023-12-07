@@ -4,10 +4,10 @@ import dayjs from 'dayjs'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
-import { flightDeleteFx, editFlightFx } from './flight'
+import { editFlightFx, flightDeleteFx } from './flight'
 import { fetchBoardsFx } from '../api/board'
-import { redColor } from '../utils/style'
 import { toast } from 'react-toastify'
+import { BoardType } from '../models/BoardType'
 
 /**
  * @author Markitanov Vadim
@@ -17,6 +17,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 1,
 		name: 'Борт 1',
+		type: BoardType.LOW,
 		flights: [
 			{
 				id: '11',
@@ -44,7 +45,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 2,
 		name: 'Борт 2',
-		type: redColor,
+		type:BoardType.DEFAULT,
 		flights: [
 			{
 				id: '12',
@@ -79,7 +80,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 3,
 		name: 'Борт 3',
-		type: redColor,
+		type: BoardType.LOW,
 		flights: [
 			{
 				id: '13',
@@ -93,7 +94,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 4,
 		name: 'Борт 4',
-		type: redColor,
+		type: BoardType.PRIORITY,
 		flights: [
 			{
 				id: '14',
@@ -107,7 +108,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 5,
 		name: 'Борт 5',
-		type: redColor,
+		type: BoardType.LOW,
 		flights: [
 			{
 				id: '15',
@@ -121,6 +122,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 6,
 		name: 'Борт 6',
+		type:BoardType.DEFAULT,
 		flights: [
 			{
 				id: '16',
@@ -141,7 +143,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 7,
 		name: 'Борт 7',
-		type: redColor,
+		type: BoardType.DEFAULT,
 		flights: [
 			{
 				id: '17',
@@ -155,6 +157,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 8,
 		name: 'Борт 8',
+		type:BoardType.DEFAULT,
 		flights: [
 			{
 				id: '18',
@@ -168,6 +171,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 9,
 		name: 'Борт 9',
+		type:BoardType.DEFAULT,
 		flights: [
 			{
 				id: '19',

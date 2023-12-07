@@ -1,5 +1,5 @@
 /**
- * Компонент
+ * Компонент работы с бортами.
  *
  * @author Markitanov Vadim
  * @since 05.12.2023
@@ -8,22 +8,31 @@ import React, { ChangeEvent, JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $boardSelect, addBoardFx, deleteBoardFx, editBoardFx } from '../../../store/board'
 import { Board } from '../../../models/Board'
-import { Button, Divider, Input, Select, Space } from 'antd'
+import { Button, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
+import { BoardType } from '../../../models/BoardType'
 
 const BoardControl = (): JSX.Element => {
-	const boardSelect = useStore($boardSelect)
+	const board = useStore($boardSelect)
 	const [boardName, setBoardName] = useState<string | undefined>(undefined)
+	const [boardType, setBoardType] = useState<BoardType>(BoardType.DEFAULT)
 	const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
 
 	useEffect(() => {
-		setBoardName(boardSelect?.name)
-	}, [boardSelect])
+		setBoardName(board?.name)
+		setBoardType(board ? board.type : BoardType.DEFAULT)
+	}, [board])
 
 	useEffect(() => {
 		setAddFlightButtonDisable(boardName === undefined || boardName === '')
 	}, [boardName])
+
+	const boardTypeSelectOptions: SelectProps['options'] = [
+		{ value: BoardType.LOW, label: 'Неприоритетный' },
+		{ value: BoardType.DEFAULT, label: 'Обычный' },
+		{ value: BoardType.PRIORITY, label: 'Приоритетный' }
+	]
 
 	const handlerAddBoard = (): void => {
 		if (boardName === undefined || boardName === '') {
@@ -32,6 +41,7 @@ const BoardControl = (): JSX.Element => {
 		const newBoard: Board = {
 			id: -1,
 			name: boardName,
+			type: boardType,
 			flights: []
 		}
 		addBoardFx(newBoard)
@@ -39,11 +49,9 @@ const BoardControl = (): JSX.Element => {
 	}
 
 	const handlerEditBoard = (): void => {
-		if (boardSelect === null || boardName === undefined || boardName === '') {
-			return
+		if (board !== null && boardName !== undefined && boardName !== '') {
+			editBoardFx({ ...board, name: boardName, type: boardType })
 		}
-		const copy: Board = { ...boardSelect, name: boardName }
-		editBoardFx(copy)
 	}
 
 	const changeFlightName = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,8 +70,15 @@ const BoardControl = (): JSX.Element => {
 					   allowClear
 				/>
 				<span>Тип борта:</span>
-				<Select placeholder={'Тип борта'} disabled/>
-				{boardSelect ?
+				<Select<BoardType>
+					placeholder={'Тип борта'}
+					style={{ width: '160px' }}
+					defaultValue={BoardType.DEFAULT}
+					value={boardType}
+					options={boardTypeSelectOptions}
+					onChange={setBoardType}
+				/>
+				{board ?
 					<>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
@@ -73,7 +88,7 @@ const BoardControl = (): JSX.Element => {
 								danger
 								icon={<DeleteOutlined/>}
 								onClick={() => {
-									deleteBoardFx(boardSelect)
+									deleteBoardFx(board)
 								}}>Удалить борт</Button>
 					</>
 					:

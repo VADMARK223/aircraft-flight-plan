@@ -28,12 +28,14 @@ import { FlightViewModel } from '../../models/FlightViewModel'
 import { ContextMenuViewModel } from './ContextMenuViewModel'
 import { createContextMenu } from './contextMenu'
 
+export const FLIGHTS_G_ID = 'flights-g-id'
+
 const Flights = (): JSX.Element => {
 	const style: StyleStore = useStore($style)
 	const datesRange = useStore($datesRange)
 	const boards: Board[] = useStore($boards)
 	const flightsSelect = useStore($flightsSelect)
-	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
+	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const [flightViewModels, setFlightViewModels] = useState<FlightViewModel[]>()
 	const [contextMenu, setContextMenu] = useState<ContextMenuViewModel | null>(null)
 	const contextMenuRef = useRef(contextMenu)
@@ -81,7 +83,7 @@ const Flights = (): JSX.Element => {
 	}, [boards, datesRange])
 
 	useEffect(() => {
-		const svg = d3.select(svgRef.current)
+		const svg = d3.select(gRef.current)
 		svg.selectAll('*').remove()
 		flightViewModels?.forEach(flightModel => {
 			const isSelect = flightModel.id === flightsSelect?.id
@@ -106,7 +108,7 @@ const Flights = (): JSX.Element => {
 				.on('contextmenu', (event: PointerEvent) => {
 					event.preventDefault()
 					if (!contextMenuRef.current) {
-						setContextMenu({ svg: svg, offsetX: event.offsetX, offsetY: event.offsetY, model: flightModel })
+						setContextMenu({ offsetX: event.offsetX, offsetY: event.offsetY, model: flightModel })
 					}
 				})
 
@@ -147,7 +149,7 @@ const Flights = (): JSX.Element => {
 		})
 
 		if (contextMenuRef.current) {
-			createContextMenu(style, contextMenuRef.current?.svg, contextMenuRef.current?.offsetX, contextMenuRef.current?.offsetY, contextMenuRef.current?.model, () => {
+			createContextMenu(style, contextMenuRef.current?.offsetX, contextMenuRef.current?.offsetY, contextMenuRef.current?.model, () => {
 				setContextMenu(null)
 			})
 		}
@@ -155,8 +157,9 @@ const Flights = (): JSX.Element => {
 	}, [style, flightViewModels, flightsSelect, contextMenu])
 
 	return (
-		<svg ref={svgRef}>
-		</svg>
+		<g ref={gRef} id={FLIGHTS_G_ID}>
+
+		</g>
 	)
 }
 

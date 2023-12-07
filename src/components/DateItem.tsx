@@ -23,13 +23,13 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 	const { data, x, y } = props
 	const width = DATE_ITEM_WIDTH
 	const height = DATE_ITEM_HEIGHT
-	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
+	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const date = data.date.format('DD.MM.YYYY')
 	const time = data.date.format('HH:mm')
 
 	useEffect(() => {
-		const svg = d3.select(svgRef.current)
-		svg.append('rect')
+		const container = d3.select(gRef.current)
+		container.append('rect')
 			.attr('x', x)
 			.attr('y', y)
 			.attr('width', width)
@@ -37,7 +37,7 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 			.attr('stroke', style.lineColor)
 			.attr('fill', style.backgroundColor)
 
-		svg.append('text')
+		container.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + 5)
 			.attr('fill', style.textColor)
@@ -46,7 +46,7 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 			.attr('dominant-baseline', 'hanging')
 			.text(date)
 
-		svg.append('text')
+		container.append('text')
 			.attr('x', x + width - 5)
 			.attr('y', y + 5)
 			.attr('fill', style.textColor)
@@ -54,7 +54,7 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 			.attr('dominant-baseline', 'hanging')
 			.text(data.title)
 
-		svg.append('text')
+		container.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + height - 5)
 			.attr('fill', style.textColor)
@@ -63,7 +63,7 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 			.attr('dominant-baseline', 'auto')
 			.text(time)
 
-		svg.append('text')
+		container.append('text')
 			.attr('x', x + width - 5)
 			.attr('y', y + height - 5)
 			.attr('fill', style.textColor)
@@ -74,7 +74,7 @@ const DateItem = (props: DateItemProps): JSX.Element => {
 	}, [style, date, data.date, time, data.title, x, y, width, height])
 
 	return (
-		<g ref={svgRef}/>
+		<g ref={gRef}/>
 	)
 }
 

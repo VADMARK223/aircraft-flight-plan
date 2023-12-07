@@ -17,14 +17,14 @@ const Background = (): JSX.Element => {
 	const style = useStore($style)
 	const dates = useStore($dates)
 	const boards = useStore($boards)
-	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
+	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const x = BOARD_ITEM_WIDTH
 	const y = 0
 	const width = DATE_ITEM_WIDTH * dates.length
 	const height = BOARD_ITEM_HEIGHT * boards.length
 
 	useEffect(() => {
-		const svg = d3.select(svgRef.current)
+		const svg = d3.select(gRef.current)
 		svg.selectAll('*').remove()
 		const container = svg.append('g')
 		container.attr('transform', `translate(${x},${y})`)
@@ -49,7 +49,7 @@ const Background = (): JSX.Element => {
 	}, [style, x, y, width, height, boards, dates])
 
 	return (
-		<svg ref={svgRef}></svg>
+		<g ref={gRef}></g>
 	)
 }
 

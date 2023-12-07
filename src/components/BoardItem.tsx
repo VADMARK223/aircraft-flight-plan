@@ -11,6 +11,8 @@ import { Board } from '../models/Board'
 import { useStore } from 'effector-react'
 import { $style } from '../store/style'
 import { $boardSelect, boardClickFx } from '../store/board'
+import { BoardType } from '../models/BoardType'
+import { greenColor, redColor } from '../utils/style'
 
 interface BoardItemProps {
 	data: Board
@@ -24,12 +26,11 @@ const BoardItem = (props: BoardItemProps): JSX.Element => {
 	const { data, x, y, width, height } = props
 	const style = useStore($style)
 	const boardSelect = useStore($boardSelect)
-	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
+	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
+
 
 	useEffect(() => {
-		const svg = d3.select(svgRef.current)
-
-		const container = svg.append('g')
+		const container = d3.select(gRef.current)
 			.attr('cursor', 'pointer')
 			.on('click', (_: PointerEvent): void => {
 				boardClickFx(data)
@@ -45,10 +46,21 @@ const BoardItem = (props: BoardItemProps): JSX.Element => {
 			.attr('stroke', style.lineColor)
 			.attr('fill', style.backgroundColor)
 
+		const getColorByType = (type: BoardType.LOW | BoardType.DEFAULT | BoardType.PRIORITY) => {
+			switch (type) {
+				case BoardType.LOW:
+					return greenColor
+				case BoardType.DEFAULT:
+					return style.textColor
+				case BoardType.PRIORITY:
+					return redColor
+			}
+		}
+
 		container.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + 5)
-			.attr('fill', data.type ? data.type : style.textColor)
+			.attr('fill', data.type !== undefined ? getColorByType(data.type) : style.textColor)
 			.attr('font-weight', 'bold')
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
@@ -87,7 +99,7 @@ const BoardItem = (props: BoardItemProps): JSX.Element => {
 	}, [style, data.name, x, y, width, height, data.type, data.flights.length, data, boardSelect])
 
 	return (
-		<g ref={svgRef}/>
+		<g ref={gRef}/>
 	)
 }
 

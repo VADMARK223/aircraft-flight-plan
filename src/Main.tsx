@@ -58,7 +58,8 @@ const Main = (): JSX.Element => {
 		<Space direction={'vertical'} size={'small'}>
 			<ControlPanel/>
 			<div>
-				<svg width={canvasWidth}
+				<svg id={'top-svg-id'}
+					 width={canvasWidth}
 					 height={topCanvasHeight}
 					 style={{ backgroundColor: '$backgroundColor' }}
 				>
@@ -74,11 +75,11 @@ const Main = (): JSX.Element => {
 					ref={bottomSvgContainerRef}
 					style={{
 						width: '100%',
-						// height: '250px',
 						height: bottomSvgContainerHeight,
 						overflowY: 'scroll'
 					}}>
-					<svg width={canvasWidth}
+					<svg id={'bottom-svg-id'}
+						 width={canvasWidth}
 						 height={bottomCanvasHeight}
 						 style={{ backgroundColor: '$backgroundColor' }}
 					>

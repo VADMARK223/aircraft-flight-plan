@@ -5,7 +5,6 @@ import { FlightViewModel } from '../../models/FlightViewModel'
  * @since 07.12.2023
  */
 export interface ContextMenuViewModel {
-	svg: any
 	offsetX: number
 	offsetY: number
 	model: FlightViewModel

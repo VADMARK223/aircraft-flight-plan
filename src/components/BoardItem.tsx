@@ -28,7 +28,6 @@ const BoardItem = (props: BoardItemProps): JSX.Element => {
 	const boardSelect = useStore($boardSelect)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 
-
 	useEffect(() => {
 		const container = d3.select(gRef.current)
 			.attr('cursor', 'pointer')

@@ -1,4 +1,4 @@
-import { FlightViewModel } from '../../models/FlightViewModel'
+import { Flight } from '../../models/Flight'
 
 /**
  * @author Markitanov Vadim
@@ -7,5 +7,5 @@ import { FlightViewModel } from '../../models/FlightViewModel'
 export interface ContextMenuViewModel {
 	offsetX: number
 	offsetY: number
-	model: FlightViewModel
+	model: Flight
 }

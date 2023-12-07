@@ -12,12 +12,12 @@ import BoardItem from './components/BoardItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from './utils/consts'
 import DateItem from './components/DateItem'
 import Background from './components/Background'
-import Flights from './components/flights/Flights'
 import Border from './components/Border'
 import { Space } from 'antd'
 import { useStore } from 'effector-react'
 import { $dates } from './store/date'
 import { $boards } from './store/board'
+import Flights from './components/flights/Flights'
 
 const Main = (): JSX.Element => {
 	const dates = useStore($dates)

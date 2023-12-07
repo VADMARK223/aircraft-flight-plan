@@ -2,163 +2,79 @@
  * Компонент
  *
  * @author Markitanov Vadim
- * @since 04.12.2023
+ * @since 07.12.2023
  */
-import React, { JSX, LegacyRef, useEffect, useRef, useState } from 'react'
+import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
+import * as d3 from 'd3'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../../utils/consts'
 import { Board } from '../../models/Board'
 import { useStore } from 'effector-react'
-import {
-	BOARD_ITEM_HEIGHT,
-	BOARD_ITEM_WIDTH,
-	DATE_ITEM_WIDTH,
-	FLIGHT_ITEM_HEIGHT,
-	MINUTES_IN_CELL,
-	SHOW_FLIGHT_ID
-} from '../../utils/consts'
-import * as d3 from 'd3'
-import { appendRotateText, dateToNew, drawText, xToDate } from '../../utils/utils'
-import { FlightType } from '../../models/FlightType'
-import { $flightsSelect, flightClickFx } from '../../store/flight'
 import { $boards } from '../../store/board'
-import { $datesRange } from '../../store/date'
-import { Dayjs } from 'dayjs'
-import { greenColor } from '../../utils/style'
-import { $style, StyleStore } from '../../store/style'
-import { FlightViewModel } from '../../models/FlightViewModel'
-import { ContextMenuViewModel } from './ContextMenuViewModel'
-import { createContextMenu } from './contextMenu'
+import { $dates, $datesRange } from '../../store/date'
+import FlightItem from './FlightItem'
+import { Flight } from '../../models/Flight'
+import { $contextMenu } from '../../store/contextMenu'
+import ContextMenu from './ContextMenu'
 
-export const FLIGHTS_G_ID = 'flights-g-id'
+export const FLIGHTS_NEW_ID: string = 'flights-new-g-id'
 
 const Flights = (): JSX.Element => {
-	const style: StyleStore = useStore($style)
+	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const datesRange = useStore($datesRange)
 	const boards: Board[] = useStore($boards)
-	const flightsSelect = useStore($flightsSelect)
-	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-	const [flightViewModels, setFlightViewModels] = useState<FlightViewModel[]>()
-	const [contextMenu, setContextMenu] = useState<ContextMenuViewModel | null>(null)
-	const contextMenuRef = useRef(contextMenu)
-	useEffect(() => {
-		contextMenuRef.current = contextMenu
-	}, [contextMenu])
+	const dates = useStore($dates)
+	const contextMenu = useStore($contextMenu)
+	console.log('CONTEXT', contextMenu)
 
 	useEffect(() => {
-		if (datesRange === null) {
-			return
-		}
-
-		const startRange = datesRange[0]
-		if (startRange === null) {
-			return
-		}
-
-		const endRange = datesRange[1]
-		if (endRange === null) {
-			return
-		}
-
-		const viewModelsForRender: FlightViewModel[] = []
-		boards.forEach((value, index) => {
-			if (!value.flights) {
-				return undefined
-			}
-			value.flights.forEach((flight) => {
-				const flightViewModel: FlightViewModel = { ...flight, index: index }
-
-				const startDate = flightViewModel.startDate
-				const endDate = flightViewModel.endDate
-				const newEndRange = endRange.add(1, 'days')
-
-				if (
-					endDate.isAfter(startRange)
-					&& startDate.isBefore(newEndRange)
-				) {
-					viewModelsForRender.push(flightViewModel)
-				}
-			})
-		})
-		setFlightViewModels(viewModelsForRender)
-
-	}, [boards, datesRange])
-
-	useEffect(() => {
-		const svg = d3.select(gRef.current)
-		svg.selectAll('*').remove()
-		flightViewModels?.forEach(flightModel => {
-			const isSelect = flightModel.id === flightsSelect?.id
-			const cursor: string = 'pointer'
-			const isDefault = flightModel.type === FlightType.DEFAULT
-
-			let x = dateToNew(datesRange, flightModel.startDate)
-			if (x <= BOARD_ITEM_WIDTH) {
-				x = BOARD_ITEM_WIDTH
-			}
-
-			let endX = dateToNew(datesRange, flightModel.endDate)
-
-			const flightDurationMinutes = xToDate(endX).diff(xToDate(x), 'minutes')
-			const flightWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * flightDurationMinutes
-			const y = BOARD_ITEM_HEIGHT * flightModel.index + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
-
-			const container = svg.append('g').attr('class', 'flight_item')
-				.on('click', (_: PointerEvent) => {
-					flightClickFx(flightModel)
-				})
-				.on('contextmenu', (event: PointerEvent) => {
-					event.preventDefault()
-					if (!contextMenuRef.current) {
-						setContextMenu({ offsetX: event.offsetX, offsetY: event.offsetY, model: flightModel })
-					}
-				})
-
-			container.append('rect')
-				.attr('x', x)
-				.attr('y', y)
-				.attr('width', flightWidth)
-				.attr('height', FLIGHT_ITEM_HEIGHT)
-				.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
-				.attr('stroke-width', isSelect ? '3' : '1')
-				.attr('fill', isDefault ? greenColor : 'orange')
-				.attr('cursor', cursor)
-
-			if (SHOW_FLIGHT_ID) {
-				container.append('text')
-					.attr('x', x + 5)
-					.attr('y', y)
-					.attr('fill', style.textColor)
-					.attr('text-anchor', 'start')
-					.attr('dominant-baseline', 'hanging')
-					.attr('cursor', cursor)
-					.text(flightModel.id)
-			}
-
-			if (!isDefault) {
-				drawText(container, 'Тех. обслуживание', x + flightWidth * 0.5, y + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
-			}
-
-			const startDate: Dayjs = flightModel.startDate
-			const endDate: Dayjs = flightModel.endDate
-			const timeRotate: number = -19
-			appendRotateText(svg, style.textColor, x, y, startDate.format('HH:mm'), timeRotate)
-			appendRotateText(svg, style.textColor, x + flightWidth, y, endDate.format('HH:mm'), timeRotate)
-
-			const dateRotate: number = 19
-			appendRotateText(svg, style.textColor, x, y + FLIGHT_ITEM_HEIGHT, startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-			appendRotateText(svg, style.textColor, x + flightWidth, y + FLIGHT_ITEM_HEIGHT, endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-		})
-
-		if (contextMenuRef.current) {
-			createContextMenu(style, contextMenuRef.current?.offsetX, contextMenuRef.current?.offsetY, contextMenuRef.current?.model, () => {
-				setContextMenu(null)
-			})
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [style, flightViewModels, flightsSelect, contextMenu])
+		const container = d3.select(gRef.current)
+		container.attr('transform', `translate(${BOARD_ITEM_WIDTH},${0})`)
+	}, [])
 
 	return (
-		<g ref={gRef} id={FLIGHTS_G_ID}>
+		<g ref={gRef} id={FLIGHTS_NEW_ID}>
+			{boards.map((board: Board, boardIndex) =>
+				(
+					<g key={board.id} id={`board-row-${board.id}`}>
+						{board.flights.map((flight: Flight) => {
+								if (datesRange == null || datesRange[0] === null || datesRange[1] === null) {
+									return undefined
+								}
 
+								const startDate = datesRange[0].toDate()
+								const endDate = datesRange[1].add(1, 'day').toDate()
+								const rangeEnd = DATE_ITEM_WIDTH * dates.length
+								const scaleTime = d3.scaleTime([startDate, endDate], [0, rangeEnd])
+								let startX = scaleTime(flight.startDate.toDate())
+								const endX = scaleTime(flight.endDate.toDate())
+								let w = endX - startX
+
+								if (endX <= 0 || startX >= rangeEnd) {
+									return undefined
+								}
+
+								if (startX <= 0) {
+									startX = 0
+									w = endX
+								}
+
+								return (
+									<FlightItem
+										key={flight.id}
+										x={startX}
+										y={BOARD_ITEM_HEIGHT * boardIndex}
+										width={w}
+										data={flight}
+									/>)
+							}
+						)
+						}
+					</g>
+				)
+			)}
+			<g>
+				{contextMenu && <ContextMenu/>}
+			</g>
 		</g>
 	)
 }

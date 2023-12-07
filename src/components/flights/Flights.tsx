@@ -23,13 +23,13 @@ import { $boards } from '../../store/board'
 import { $datesRange } from '../../store/date'
 import { Dayjs } from 'dayjs'
 import { greenColor } from '../../utils/style'
-import { $style } from '../../store/style'
+import { $style, StyleStore } from '../../store/style'
 import { FlightViewModel } from '../../models/FlightViewModel'
 import { ContextMenuViewModel } from './ContextMenuViewModel'
 import { createContextMenu } from './contextMenu'
 
 const Flights = (): JSX.Element => {
-	const style = useStore($style)
+	const style: StyleStore = useStore($style)
 	const datesRange = useStore($datesRange)
 	const boards: Board[] = useStore($boards)
 	const flightsSelect = useStore($flightsSelect)
@@ -39,10 +39,6 @@ const Flights = (): JSX.Element => {
 	const contextMenuRef = useRef(contextMenu)
 	useEffect(() => {
 		contextMenuRef.current = contextMenu
-
-		// if (contextMenu) {
-		// 	createContextMenu(contextMenu.svg, contextMenu.offsetX, contextMenu.offsetY)
-		// }
 	}, [contextMenu])
 
 	useEffect(() => {
@@ -151,7 +147,7 @@ const Flights = (): JSX.Element => {
 		})
 
 		if (contextMenuRef.current) {
-			createContextMenu(contextMenuRef.current?.svg, contextMenuRef.current?.offsetX, contextMenuRef.current?.offsetY, contextMenuRef.current?.model, ()=>{
+			createContextMenu(style, contextMenuRef.current?.svg, contextMenuRef.current?.offsetX, contextMenuRef.current?.offsetY, contextMenuRef.current?.model, () => {
 				setContextMenu(null)
 			})
 		}

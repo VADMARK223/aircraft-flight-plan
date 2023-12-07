@@ -7,7 +7,11 @@
 import * as d3 from 'd3'
 import { Flight } from '../../models/Flight'
 import { flightClickFx, flightDeleteFx } from '../../store/flight'
+import { StyleStore } from '../../store/style'
 
+/**
+ * Модель элемента контекстного меню
+ */
 interface MenuItemModel {
 	title: string
 	action: (datum: Flight) => void
@@ -27,7 +31,15 @@ const menuItems: MenuItemModel[] = [
 	}
 ]
 
-export const createContextMenu = (container: d3.Selection<Element, any, any, any>, x: number, y: number, flight: Flight, closeCallback: () => void) => {
+export const createContextMenu = (style: StyleStore, container: d3.Selection<Element, any, any, any>, x: number, y: number, flight: Flight, closeCallback: () => void) => {
+	// container.append('rect')
+	// 	.attr('x', x)
+	// 	.attr('y', y)
+	// 	.attr('width', 300)
+	// 	.attr('height', 300)
+	// 	.attr('stroke', style.contextMenuLineColor)
+	// 	.attr('fill', style.contextMenuBackgroundColor)
+
 	container.append('g')
 		.attr('class', 'context-menu')
 		.selectAll('tmp')
@@ -45,7 +57,8 @@ export const createContextMenu = (container: d3.Selection<Element, any, any, any
 		.attr('y', (datum, index) => y + (index * 30))
 		.attr('width', 150)
 		.attr('height', 30)
-		.attr('fill', 'white')
+		.attr('stroke', style.contextMenuLineColor)
+		.attr('fill', style.contextMenuBackgroundColor)
 
 	container.selectAll('.context-menu-item')
 		.append('text')
@@ -55,7 +68,7 @@ export const createContextMenu = (container: d3.Selection<Element, any, any, any
 		.attr('dx', 5)
 		.attr('dy', 6)
 		.attr('dominant-baseline', 'hanging')
-		.attr('fill', 'black')
+		.attr('fill', style.textColor)
 
 	d3.select('body').on('click', () => {
 		d3.select('.context-menu').remove()

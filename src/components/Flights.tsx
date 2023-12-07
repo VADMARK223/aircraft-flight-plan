@@ -55,14 +55,11 @@ const Flights = (): JSX.Element => {
 			if (!value.flights) {
 				return undefined
 			}
-			value.flights.forEach((flightModel) => {
-				const flightViewModel: FlightViewModel = {
-					model: flightModel,
-					index: index
-				}
+			value.flights.forEach((flight) => {
+				const flightViewModel: FlightViewModel = { ...flight, index: index }
 
-				const startDate = flightViewModel.model.startDate
-				const endDate = flightViewModel.model.endDate
+				const startDate = flightViewModel.startDate
+				const endDate = flightViewModel.endDate
 				const newEndRange = endRange.add(1, 'days')
 
 				if (
@@ -81,16 +78,16 @@ const Flights = (): JSX.Element => {
 		const svg = d3.select(svgRef.current)
 		svg.selectAll('*').remove()
 		flightViewModels?.forEach(flightModel => {
-			const isSelect = flightModel.model.id === flightsSelect?.id
+			const isSelect = flightModel.id === flightsSelect?.id
 			const cursor: string = 'pointer'
-			const isDefault = flightModel.model.type === FlightType.DEFAULT
+			const isDefault = flightModel.type === FlightType.DEFAULT
 
-			let flightX1 = dateToNew(datesRange, flightModel.model.startDate)
+			let flightX1 = dateToNew(datesRange, flightModel.startDate)
 			if (flightX1 <= BOARD_ITEM_WIDTH) {
 				flightX1 = BOARD_ITEM_WIDTH
 			}
 
-			let endX = dateToNew(datesRange, flightModel.model.endDate)
+			let endX = dateToNew(datesRange, flightModel.endDate)
 
 			const flightDurationMinutes = xToDate(endX).diff(xToDate(flightX1), 'minutes')
 			const flightWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * flightDurationMinutes
@@ -98,7 +95,7 @@ const Flights = (): JSX.Element => {
 
 			const container = svg.append('g')
 				.on('click', function (_: PointerEvent) {
-					flightClickFx(flightModel.model)
+					flightClickFx(flightModel)
 				})
 
 			container.append('rect')
@@ -119,15 +116,15 @@ const Flights = (): JSX.Element => {
 					.attr('text-anchor', 'start')
 					.attr('dominant-baseline', 'hanging')
 					.attr('cursor', cursor)
-					.text(flightModel.model.id)
+					.text(flightModel.id)
 			}
 
 			if (!isDefault) {
 				drawText(container, 'Тех. обслуживание', flightX1 + flightWidth * 0.5, flightY + FLIGHT_ITEM_HEIGHT * 0.5 + 1, cursor)
 			}
 
-			const startDate: Dayjs = flightModel.model.startDate
-			const endDate: Dayjs = flightModel.model.endDate
+			const startDate: Dayjs = flightModel.startDate
+			const endDate: Dayjs = flightModel.endDate
 			const timeRotate: number = -19
 			appendRotateText(svg, style.textColor, flightX1, flightY, startDate.format('HH:mm'), timeRotate)
 			appendRotateText(svg, style.textColor, flightX1 + flightWidth, flightY, endDate.format('HH:mm'), timeRotate)

@@ -34,6 +34,8 @@ const Main = (): JSX.Element => {
 
 			if (bottomSvgContainerRef.current) {
 				// const isScrollVisible = document.documentElement.scrollWidth > window.innerWidth
+				// const temp = window.innerHeight - document.documentElement.scrollHeight
+				// console.log('document.documentElement.scrollWidth', temp)
 				// console.log('isScrollVisible', isScrollVisible)
 				const bottomSvgContainerTop = bottomSvgContainerRef.current.getBoundingClientRect().top
 				const newContainerHeight = screenHeight - bottomSvgContainerTop - 20 + 'px'

@@ -194,6 +194,7 @@ export const $boardSelect = createStore<Board | null>(null)
 export const addBoardFx = createEffect<Board, Board[]>()
 export const editBoardFx = createEffect<Board, Board[]>()
 export const deleteBoardFx = createEffect<Board, Board[]>()
+export const deleteAllBoardsFx = createEffect<void, Board[]>('Удаление всех бортов.')
 export const addFlightFx = createEffect<Flight, Board[]>()
 
 export const $boards = createStore<Board[]>(defaultBoards)
@@ -222,7 +223,7 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		} else {
 			return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]
 		}
-	})
+	}).on(deleteAllBoardsFx, state => [])
 	.on(addFlightFx, (boards, flight) => {
 		const findBoard = boards.find(value => value.id === flight.boardId)
 		if (findBoard === undefined) {
@@ -279,6 +280,19 @@ export const $boards = createStore<Board[]>(defaultBoards)
 		newBoards[findBoardIndex].flights = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
 		return newBoards
 	})
+
+$boards.watch((boards) => {
+	const boardSelect = $boardSelect.getState()
+	if (boardSelect !== null) {
+		const isBoardSelectInBoards = boards.find(value => boardSelect.id === value.id)
+		if (isBoardSelectInBoards === undefined) {
+			console.log('reset')
+			resetBoardSelectFx()
+		} else {
+			console.log('not reset')
+		}
+	}
+})
 
 const getBoardIndexByBoardId = (boards: Board[], boardId: number): number => {
 	let findBoardIndex = -1

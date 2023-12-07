@@ -6,10 +6,11 @@
  */
 import React, { ChangeEvent, JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $boardSelect, addBoardFx, deleteBoardFx, editBoardFx, resetBoardSelectFx } from '../../../store/board'
+import { $boardSelect, addBoardFx, deleteBoardFx, editBoardFx } from '../../../store/board'
 import { Board } from '../../../models/Board'
 import { Button, Divider, Input, Select, Space } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
+import DeleteAllButton from './DeleteAllButton'
 
 const BoardControl = (): JSX.Element => {
 	const boardSelect = useStore($boardSelect)
@@ -73,7 +74,6 @@ const BoardControl = (): JSX.Element => {
 								icon={<DeleteOutlined/>}
 								onClick={() => {
 									deleteBoardFx(boardSelect)
-									resetBoardSelectFx()
 								}}>Удалить борт</Button>
 					</>
 					:
@@ -83,8 +83,7 @@ const BoardControl = (): JSX.Element => {
 							onClick={handlerAddBoard}
 					>Добавить борт</Button>
 				}
-
-
+				<DeleteAllButton/>
 			</Space>
 		</Space>
 	)

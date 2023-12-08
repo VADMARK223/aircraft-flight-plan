@@ -1,23 +1,25 @@
+/**
+ * Хранилище бортов.
+ *
+ * @author Markitanov Vadim
+ * @since 04.12.2023
+ */
+
 import { Board } from '../models/Board'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
-import { flightSelectResetFx } from './flight'
+import { flightSelectReset } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { boardsDefault } from '../utils/consts'
 
-/**
- * @author Markitanov Vadim
- * @since 04.12.2023
- */
-
 export const $boards = createStore<Board[]>(boardsDefault)
 export const $boardSelect = createStore<Board | null>(null)
 $boards.watch((boards: Board[]) => {
 	if (!boards.length) {
-		flightSelectResetFx()
+		flightSelectReset()
 	}
 	const boardSelect = $boardSelect.getState()
 	if (boardSelect !== null) {
@@ -34,7 +36,7 @@ export const boardDeleteFx = createEffect<Board, Board[]>()
 export const boardsDeleteAllFx = createEffect<void, Board[]>('Удаление всех бортов.')
 export const flightAddFx = createEffect<Flight, Board[]>()
 export const flightEditFx = createEffect<Flight, Board[]>()
-export const flightDeleteFx = createEffect<string, Board[]>()
+export const flightDeleteFx = createEffect<Flight, Board[]>()
 $boards.on(fetchBoardsFx.doneData, (_, payload) => payload)
 $boards.on(boardAddFx, (boards: Board[], newBoard: Board) => {
 	if (newBoard.id === -1) {
@@ -49,13 +51,9 @@ $boards.on(flightAddFx, (boards, flight) => {
 	if (findBoard === undefined) {
 		return boards
 	}
-	const findBoardIndex = boards.indexOf(findBoard)
-	if (findBoardIndex === -1) {
-		return boards
-	}
 	findBoard.flights = [...findBoard.flights, flight]
 	const newBoards = [...boards]
-	newBoards[findBoardIndex] = findBoard
+	newBoards[boards.indexOf(findBoard)] = findBoard
 	return newBoards
 })
 $boards.on(boardEditFx, (boards, board) => {
@@ -84,11 +82,9 @@ $boards.on(flightEditFx, (boards, flight: Flight) => {
 	})
 	boards[boardIndex].flights[flightIndex] = flight
 	return [...boards]
-	// flightDeleteFx(flight.id)
-	// flight.boardId = newBoardId
-	// flightAddFx(flight)
 })
-$boards.on(flightDeleteFx, (boards, flightId) => {
+$boards.on(flightDeleteFx, (boards, flight) => {
+	const flightId = flight.id
 	let findBoardIndex = -1, findFlightIndex = -1, stopFind = false
 	for (let i = 0; i < boards.length; i++) {
 		if (stopFind) {

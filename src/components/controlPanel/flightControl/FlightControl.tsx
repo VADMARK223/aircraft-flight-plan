@@ -1,12 +1,12 @@
 /**
- * Компонент управлением полета
+ * Компонент управлением полетвами.
  *
  * @author Markitanov Vadim
  * @since 23.11.2023
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightsSelect, flightSelectFx, flightSelectResetFx } from '../../../store/flight'
+import { $flightsSelect, flightBoardIdChanged, flightSelectReset } from '../../../store/flight'
 import { $boards, flightAddFx, flightDeleteFx, flightEditFx } from '../../../store/board'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
@@ -33,7 +33,6 @@ const FlightControl = (): JSX.Element => {
 	let options: SelectProps['options'] = []
 
 	useEffect(() => {
-		console.log('Select', flight)
 		setBoardId(flight?.boardId)
 		setFlightId(flight?.id)
 		setAirportStart(flight?.airportStart)
@@ -117,11 +116,8 @@ const FlightControl = (): JSX.Element => {
 					if (flight.boardId === boardId) {
 						flightEditFx(updatedFlight)
 					} else {
-						flightDeleteFx(flight.id)
-						updatedFlight.boardId = boardId
-						// flightAddFx({ ...updatedFlight, boardId: boardId })
-						flightAddFx(updatedFlight)
-						flightSelectFx(updatedFlight)
+						flightDeleteFx(flight)
+						flightBoardIdChanged(boardId)
 					}
 				}
 			} else {
@@ -215,8 +211,8 @@ const FlightControl = (): JSX.Element => {
 								danger
 								icon={<DeleteOutlined/>}
 								onClick={() => {
-									flightDeleteFx(flight.id)
-									flightSelectResetFx()
+									flightDeleteFx(flight)
+									flightSelectReset()
 								}}
 						>Удалить полет</Button>
 					</>

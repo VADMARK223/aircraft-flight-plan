@@ -1,5 +1,5 @@
 /**
- * Компонент
+ * Компонент контекстного меню полётов.
  *
  * @author Markitanov Vadim
  * @since 07.12.2023
@@ -27,7 +27,7 @@ const menuItems: MenuItemModel[] = [
 	}, {
 		title: 'Удалить',
 		action: (datum: Flight) => {
-			flightDeleteFx(datum.id)
+			flightDeleteFx(datum)
 		}
 	}
 ]

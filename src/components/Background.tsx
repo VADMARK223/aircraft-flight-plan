@@ -8,7 +8,7 @@ import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../utils/consts'
 import { useStore } from 'effector-react'
-import { $boards, resetBoardSelectFx } from '../store/board'
+import { $boards, boardSelectResetFx } from '../store/board'
 import { $dates } from '../store/date'
 import { $style } from '../store/style'
 import { resetFlightSelectFx } from '../store/flight'
@@ -42,7 +42,7 @@ const Background = (): JSX.Element => {
 		}
 
 		container.on('click', function (_: PointerEvent) {
-			resetBoardSelectFx()
+			boardSelectResetFx()
 			resetFlightSelectFx()
 		})
 

@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
-import { editFlightFx, flightDeleteFx } from './flight'
+import { editFlightFx, flightDeleteFx, resetFlightSelectFx } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { BoardType } from '../models/BoardType'
@@ -45,7 +45,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 2,
 		name: 'Борт 2',
-		type:BoardType.DEFAULT,
+		type: BoardType.DEFAULT,
 		flights: [
 			{
 				id: '12',
@@ -122,7 +122,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 6,
 		name: 'Борт 6',
-		type:BoardType.DEFAULT,
+		type: BoardType.DEFAULT,
 		flights: [
 			{
 				id: '16',
@@ -157,7 +157,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 8,
 		name: 'Борт 8',
-		type:BoardType.DEFAULT,
+		type: BoardType.DEFAULT,
 		flights: [
 			{
 				id: '18',
@@ -171,7 +171,7 @@ export const defaultBoards: Board[] = [
 	{
 		id: 9,
 		name: 'Борт 9',
-		type:BoardType.DEFAULT,
+		type: BoardType.DEFAULT,
 		flights: [
 			{
 				id: '19',
@@ -183,120 +183,118 @@ export const defaultBoards: Board[] = [
 		]
 	}
 ]
-
-export const boardClickFx = createEffect<Board, Board>('Событие клика по борту')
-export const resetBoardSelectFx = createEvent()
+export const $boards = createStore<Board[]>(defaultBoards)
 export const $boardSelect = createStore<Board | null>(null)
-	.on(boardClickFx, (board, newBoard) => {
-		if (board?.id === newBoard.id) {
-			return null
+$boards.watch((boards) => {
+	if (!boards.length) {
+		resetFlightSelectFx()
+	}
+	const boardSelect = $boardSelect.getState()
+	if (boardSelect !== null) {
+		const isBoardSelectInBoards = boards.find(value => boardSelect.id === value.id)
+		if (isBoardSelectInBoards === undefined) {
+			boardSelectResetFx()
 		}
-		return newBoard
-	})
-	.reset(resetBoardSelectFx)
+	}
+})
 
 export const addBoardFx = createEffect<Board, Board[]>()
 export const editBoardFx = createEffect<Board, Board[]>()
 export const deleteBoardFx = createEffect<Board, Board[]>()
 export const deleteAllBoardsFx = createEffect<void, Board[]>('Удаление всех бортов.')
 export const addFlightFx = createEffect<Flight, Board[]>()
+$boards.on(fetchBoardsFx.doneData, (_, payload) => payload)
+$boards.on(addBoardFx, (state, payload) => {
+	if (payload.id === -1) {
+		let maxId = Math.max(...state.map(value => value.id))
+		payload.id = ++maxId
+	}
 
-export const $boards = createStore<Board[]>(defaultBoards)
-	.on(fetchBoardsFx.doneData, (_, payload) => payload)
-	.on(addBoardFx, (state, payload) => {
-		if (payload.id === -1) {
-			let maxId = Math.max(...state.map(value => value.id))
-			payload.id = ++maxId
-		}
-
-		return [...state, payload]
-	})
-	.on(editBoardFx, (boards, board) => {
-		const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
-		if (findBoardIndex === -1) {
-			toast.warn(`Ошибка редактирования борта: ${board.id}`)
-		} else {
-			const newBoards = [...boards]
-			newBoards[findBoardIndex] = board
-			return newBoards
-		}
-	}).on(deleteBoardFx, (boards, board) => {
-		const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
-		if (findBoardIndex === -1) {
-
-		} else {
-			return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]
-		}
-	}).on(deleteAllBoardsFx, state => [])
-	.on(addFlightFx, (boards, flight) => {
-		const findBoard = boards.find(value => value.id === flight.boardId)
-		if (findBoard === undefined) {
-			return boards
-		}
-		const findBoardIndex = boards.indexOf(findBoard)
-		if (findBoardIndex === -1) {
-			return boards
-		}
-		findBoard.flights = [...findBoard.flights, flight]
+	return [...state, payload]
+})
+$boards.on(addFlightFx, (boards, flight) => {
+	const findBoard = boards.find(value => value.id === flight.boardId)
+	if (findBoard === undefined) {
+		return boards
+	}
+	const findBoardIndex = boards.indexOf(findBoard)
+	if (findBoardIndex === -1) {
+		return boards
+	}
+	findBoard.flights = [...findBoard.flights, flight]
+	const newBoards = [...boards]
+	newBoards[findBoardIndex] = findBoard
+	return newBoards
+})
+$boards.on(editBoardFx, (boards, board) => {
+	const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
+	if (findBoardIndex === -1) {
+		toast.warn(`Ошибка редактирования борта: ${board.id}`)
+	} else {
 		const newBoards = [...boards]
-		newBoards[findBoardIndex] = findBoard
+		newBoards[findBoardIndex] = board
 		return newBoards
-	})
-	.on(editFlightFx, (boards, flight) => {
-		const findBoard = boards.find(value => value.id === flight.boardId)
-		if (findBoard === undefined) {
-			return boards
-		}
-		const findBoardIndex = boards.indexOf(findBoard)
-		if (findBoardIndex === -1) {
-			return boards
-		}
-		const findFlight = findBoard.flights.find(value => {
-			return flight.id === value.id
-		})
-		if (findFlight !== undefined) {
-			findBoard.flights[findBoard.flights.indexOf(findFlight)] = flight
-		}
-		const newBoards = [...boards]
-		newBoards[findBoardIndex] = findBoard
-		return newBoards
-	})
-	.on(flightDeleteFx, (boards, flightId) => {
-		let findBoardIndex = -1, findFlightIndex = -1, stopFind = false
-		for (let i = 0; i < boards.length; i++) {
-			if (stopFind) {
-				break
-			}
-			const board = boards[i]
-			for (let j = 0; j < board.flights.length; j++) {
-				const flight = board.flights[j]
-				stopFind = flight.id === flightId
-				if (stopFind) {
-					findBoardIndex = boards.indexOf(board)
-					findFlightIndex = board.flights.indexOf(flight)
-					break
-				}
-			}
-		}
-
-		const newBoards = [...boards]
-		const newFlights = [...boards[findBoardIndex].flights]
-		newBoards[findBoardIndex].flights = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
-		return newBoards
-	})
-
-$boards.watch((boards) => {
-	const boardSelect = $boardSelect.getState()
-	if (boardSelect !== null) {
-		const isBoardSelectInBoards = boards.find(value => boardSelect.id === value.id)
-		if (isBoardSelectInBoards === undefined) {
-			console.log('reset')
-			resetBoardSelectFx()
-		} else {
-			console.log('not reset')
-		}
 	}
 })
+$boards.on(deleteBoardFx, (boards, board) => {
+	const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
+	if (findBoardIndex === -1) {
+
+	} else {
+		return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]
+	}
+})
+$boards.on(deleteAllBoardsFx, _ => [])
+$boards.on(editFlightFx, (boards, flightDto) => {
+	const flight = flightDto.flight
+	const newBoardId = flightDto.newBoardId
+	if (flight.boardId === newBoardId) {
+		const boardIndex = boards.findIndex(value => value.id === flight.boardId)
+		const flightIndex = boards[boardIndex].flights.findIndex(value => {
+			return flight.id === value.id
+		})
+		boards[boardIndex].flights[flightIndex] = flight
+		return [...boards]
+	} else {
+		flightDeleteFx(flight.id)
+		flight.boardId = newBoardId
+		addFlightFx(flight)
+	}
+
+})
+$boards.on(flightDeleteFx, (boards, flightId) => {
+	let findBoardIndex = -1, findFlightIndex = -1, stopFind = false
+	for (let i = 0; i < boards.length; i++) {
+		if (stopFind) {
+			break
+		}
+		const board = boards[i]
+		for (let j = 0; j < board.flights.length; j++) {
+			const flight = board.flights[j]
+			stopFind = flight.id === flightId
+			if (stopFind) {
+				findBoardIndex = boards.indexOf(board)
+				findFlightIndex = board.flights.indexOf(flight)
+				break
+			}
+		}
+	}
+
+	const newBoards = [...boards]
+	const newFlights = [...boards[findBoardIndex].flights]
+	newBoards[findBoardIndex].flights = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
+	return newBoards
+})
+
+export const boardClickFx = createEffect<Board, Board>('Событие клика по борту')
+$boardSelect.on(boardClickFx, (board, newBoard) => {
+		if (board?.id === newBoard.id) {
+			return null
+		}
+		return newBoard
+	})
+export const boardSelectResetFx = createEvent()
+$boardSelect.reset(boardSelectResetFx)
 
 const getBoardIndexByBoardId = (boards: Board[], boardId: number): number => {
 	let findBoardIndex = -1

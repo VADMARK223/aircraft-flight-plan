@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightsSelect, editFlightFx, flightDeleteFx, resetFlightSelectFx } from '../../../store/flight'
+import { $flightsSelect, EditFlightDto, editFlightFx, flightDeleteFx, resetFlightSelectFx } from '../../../store/flight'
 import { $boards, addFlightFx } from '../../../store/board'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
@@ -96,7 +96,11 @@ const FlightControl = (): JSX.Element => {
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
 				if (flightId !== undefined && flightId !== '' && boardId && flight) {
-					editFlightFx({ ...flight, id: flightId, startDate: newStartDate, endDate: newEndDate })
+					const dto: EditFlightDto = {
+						flight: { ...flight, startDate: newStartDate, endDate: newEndDate },
+						newBoardId: boardId
+					}
+					editFlightFx(dto)
 				}
 			} else {
 				toast.warn('Время вылета превышает или совпадает с временем прилета.')
@@ -114,7 +118,7 @@ const FlightControl = (): JSX.Element => {
 					<Space>
 						<span>Борт:</span>
 						<Select placeholder={'Выберите борт'}
-								disabled={flight !== null}
+							// disabled={flight !== null}
 								value={boardId}
 								options={options}
 								style={{ minWidth: '150px' }}

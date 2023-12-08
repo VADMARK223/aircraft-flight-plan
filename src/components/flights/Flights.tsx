@@ -24,7 +24,6 @@ const Flights = (): JSX.Element => {
 	const boards: Board[] = useStore($boards)
 	const dates = useStore($dates)
 	const contextMenu = useStore($contextMenu)
-	console.log('CONTEXT', contextMenu)
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)

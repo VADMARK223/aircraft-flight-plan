@@ -4,40 +4,70 @@
  * @author Markitanov Vadim
  * @since 04.12.2023
  */
-import React, { JSX } from 'react'
-import { Button, DatePicker, Space } from 'antd'
+import React, { JSX, useEffect, useState } from 'react'
+import { DatePicker, Space } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValue } from 'rc-picker/lib/interface'
 import { DATE_FORMAT } from '../../../utils/consts'
 import { $datesRange, updateDatesRangeFx } from '../../../store/date'
 import { useStore } from 'effector-react'
+import { CheckboxOptionType, Radio } from 'antd/lib'
+
+enum DateControlMode {
+	TODAY_TOMORROW,
+	TODAY,
+	TOMORROW
+}
+
+const defaultDateControlMode = DateControlMode.TODAY_TOMORROW
 
 const DateControl = (): JSX.Element => {
 	const datesRange = useStore($datesRange)
-	const handlerDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
+	const [dateControlMode, setDateControlMode] = useState<DateControlMode>(defaultDateControlMode)
+	useEffect(() => {
+		switch (dateControlMode) {
+			case DateControlMode.TODAY_TOMORROW:
+				setDateChange([dayjs(), dayjs().add(1, 'days')])
+				break
+			case DateControlMode.TODAY:
+				setDateChange([dayjs(), dayjs()])
+				break
+			case DateControlMode.TOMORROW:
+				setDateChange([dayjs().add(1, 'days'), dayjs().add(1, 'days')])
+				break
+		}
+
+	}, [dateControlMode])
+
+	const setDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
 		if (values && values[0] && values[1]) {
-			const newStartDate = values[0].startOf('day')
-			const newEndDate = values[1].startOf('day')
-			updateDatesRangeFx([newStartDate, newEndDate])
+			updateDatesRangeFx([values[0].startOf('day'), values[1].startOf('day')])
 		}
 	}
+
+	const dateControlModeOptions: CheckboxOptionType[] = [
+		{ label: 'Сегодня-завтра', value: DateControlMode.TODAY_TOMORROW },
+		{ label: 'Сегодня', value: DateControlMode.TODAY },
+		{ label: 'Завтра', value: DateControlMode.TOMORROW }
+	]
 
 	return (
 		<Space>
 			<span>Диапозон дат:</span>
 			<DatePicker.RangePicker value={datesRange}
-									onChange={handlerDateChange}
+									onChange={setDateChange}
 									style={{ minWidth: '300px' }}
 									format={DATE_FORMAT}
 									picker={'date'}
 									allowClear={false}
 			/>
-			<Button type={'primary'} onClick={() => {
-				handlerDateChange([dayjs(), dayjs()])
-			}}>Сегодня</Button>
-			<Button type={'primary'} onClick={() => {
-				handlerDateChange([dayjs().add(1, 'days'), dayjs().add(1, 'days')])
-			}}>Завтра</Button>
+			<Radio.Group
+				options={dateControlModeOptions}
+				value={dateControlMode}
+				onChange={(e) => setDateControlMode(e.target.value)}
+				optionType={'button'}
+				buttonStyle={'solid'}
+			/>
 		</Space>
 	)
 }

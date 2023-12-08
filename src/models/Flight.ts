@@ -11,4 +11,6 @@ export interface Flight {
 	startDate: Dayjs
 	endDate: Dayjs
 	type: FlightType
+	airportStart: string // IATA
+	airportEnd: string // IATA
 }

@@ -25,21 +25,27 @@ export const defaultBoards: Board[] = [
 				boardId: 1,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(0, 'hours'),
-				endDate: dayjs().startOf('day').add(2, 'hours')
+				endDate: dayjs().startOf('day').add(2, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			},
 			{
 				id: '21',
 				boardId: 1,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(23, 'hours'),
-				endDate: dayjs().startOf('day').add(25, 'hours')
+				endDate: dayjs().startOf('day').add(25, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			},
 			{
 				id: '31',
 				boardId: 1,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(28, 'hours'),
-				endDate: dayjs().startOf('day').add(29, 'hours')
+				endDate: dayjs().startOf('day').add(29, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -53,28 +59,36 @@ export const defaultBoards: Board[] = [
 				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
-				endDate: dayjs().startOf('day').add(3, 'hours')
+				endDate: dayjs().startOf('day').add(3, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			},
 			{
 				id: '22',
 				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
-				endDate: dayjs().startOf('day').add(6, 'hours')
+				endDate: dayjs().startOf('day').add(6, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			},
 			{
 				id: '32',
 				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(18, 'hours'),
-				endDate: dayjs().startOf('day').add(30, 'hours')
+				endDate: dayjs().startOf('day').add(30, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			},
 			{
 				id: '42',
 				boardId: 2,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(32, 'hours'),
-				endDate: dayjs().startOf('day').add(33, 'hours')
+				endDate: dayjs().startOf('day').add(33, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -88,7 +102,9 @@ export const defaultBoards: Board[] = [
 				boardId: 3,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(3, 'hours'),
-				endDate: dayjs().startOf('day').add(6, 'hours')
+				endDate: dayjs().startOf('day').add(6, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -102,7 +118,9 @@ export const defaultBoards: Board[] = [
 				boardId: 4,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
-				endDate: dayjs().startOf('day').add(16, 'hours')
+				endDate: dayjs().startOf('day').add(16, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -116,7 +134,9 @@ export const defaultBoards: Board[] = [
 				boardId: 5,
 				type: FlightType.ROUTINE_MAINTENANCE,
 				startDate: dayjs().startOf('day').add(15, 'hours'),
-				endDate: dayjs().startOf('day').add(30, 'hours')
+				endDate: dayjs().startOf('day').add(30, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -130,14 +150,18 @@ export const defaultBoards: Board[] = [
 				boardId: 6,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(11, 'hours'),
-				endDate: dayjs().startOf('day').add(14, 'hours')
+				endDate: dayjs().startOf('day').add(14, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			},
 			{
 				id: '26',
 				boardId: 6,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(32, 'hours'),
-				endDate: dayjs().startOf('day').add(35, 'hours')
+				endDate: dayjs().startOf('day').add(35, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -151,7 +175,9 @@ export const defaultBoards: Board[] = [
 				boardId: 7,
 				type: FlightType.ROUTINE_MAINTENANCE,
 				startDate: dayjs().startOf('day').add(0, 'hours'),
-				endDate: dayjs().startOf('day').add(42, 'hours')
+				endDate: dayjs().startOf('day').add(42, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -165,7 +191,9 @@ export const defaultBoards: Board[] = [
 				boardId: 8,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(0.5, 'hours'),
-				endDate: dayjs().startOf('day').add(3.5, 'hours')
+				endDate: dayjs().startOf('day').add(3.5, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	},
@@ -179,7 +207,9 @@ export const defaultBoards: Board[] = [
 				boardId: 9,
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
-				endDate: dayjs().startOf('day').add(3, 'hours')
+				endDate: dayjs().startOf('day').add(3, 'hours'),
+				airportStart: 'AAQ',
+				airportEnd: 'ABA'
 			}
 		]
 	}

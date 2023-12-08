@@ -17,20 +17,26 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import type { RangeValue } from 'rc-picker/lib/interface'
 import { Flight } from '../../../models/Flight'
 import { FlightType } from '../../../models/FlightType'
+import { $airports } from '../../../store/airport'
 
 const FlightControl = (): JSX.Element => {
 	const flight = useStore($flightsSelect)
 	const boards = useStore($boards)
+	const airports = useStore($airports)
 	const [editFlightButtonDisable, setEditFlightButtonDisable] = useState<boolean>(true)
 	const [boardId, setBoardId] = useState<number | undefined>()
 	const [flightId, setFlightId] = useState<string | undefined>()
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValue<Dayjs> | null>(null)
+	const [airportStart, setAirportStart] = useState<string | undefined>()
+	const [airportEnd, setAirportEnd] = useState<string | undefined>()
 	let options: SelectProps['options'] = []
 
 	useEffect(() => {
 		setBoardId(flight?.boardId)
 		setFlightId(flight?.id)
+		setAirportStart(flight?.airportStart)
+		setAirportEnd(flight?.airportEnd)
 		if (flight) {
 			setDateRangeValue([flight.startDate, flight.endDate])
 			setTimeRangeValue([flight.startDate, flight.endDate])
@@ -46,8 +52,8 @@ const FlightControl = (): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setEditFlightButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null)
-	}, [boardId, flightId, dateRangeValue, timeRangeValue])
+		setEditFlightButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
+	}, [boardId, flightId, dateRangeValue, timeRangeValue, airportStart, airportEnd])
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
 		setBoardId(value)
@@ -57,7 +63,7 @@ const FlightControl = (): JSX.Element => {
 	 * Метод подтверждения добавления полета.
 	 */
 	const handlerAddFlight = (): void => {
-		if (boardId === undefined || dateRangeValue === null || timeRangeValue === null) {
+		if (boardId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined) {
 			return
 		}
 
@@ -73,7 +79,9 @@ const FlightControl = (): JSX.Element => {
 				boardId: boardId,
 				startDate: newStartDate,
 				endDate: newEndDate,
-				type: FlightType.DEFAULT
+				type: FlightType.DEFAULT,
+				airportStart: airportStart,
+				airportEnd: airportEnd
 			}
 
 			flightAddFx(newFlight)
@@ -85,6 +93,8 @@ const FlightControl = (): JSX.Element => {
 		setFlightId(undefined)
 		setDateRangeValue(null)
 		setTimeRangeValue(null)
+		setAirportStart(undefined)
+		setAirportEnd(undefined)
 	}
 
 	/**
@@ -95,9 +105,15 @@ const FlightControl = (): JSX.Element => {
 			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
-				if (flightId !== undefined && flightId !== '' && boardId && flight) {
+				if (flightId !== undefined && flightId !== '' && boardId && flight && airportStart && airportEnd) {
 					const dto: EditFlightDto = {
-						flight: { ...flight, startDate: newStartDate, endDate: newEndDate },
+						flight: {
+							...flight,
+							startDate: newStartDate,
+							endDate: newEndDate,
+							airportStart: airportStart,
+							airportEnd: airportEnd
+						},
 						newBoardId: boardId
 					}
 					flightEditFx(dto)
@@ -107,6 +123,10 @@ const FlightControl = (): JSX.Element => {
 			}
 		}
 	}
+
+	const airportSelectOptions: SelectProps['options'] = airports.map(airport => {
+		return { label: airport.name, value: airport.iata }
+	})
 
 	return (
 		<Space direction={'vertical'}>
@@ -118,7 +138,6 @@ const FlightControl = (): JSX.Element => {
 					<Space>
 						<span>Борт:</span>
 						<Select placeholder={'Выберите борт'}
-							// disabled={flight !== null}
 								value={boardId}
 								options={options}
 								style={{ minWidth: '150px' }}
@@ -163,6 +182,21 @@ const FlightControl = (): JSX.Element => {
 						/>
 					</Space>
 				</Space>
+
+				<Select
+					placeholder={'Вылет'}
+					value={airportStart}
+					options={airportSelectOptions}
+					onChange={setAirportStart}
+					popupMatchSelectWidth={false}
+				/>
+				<Select
+					placeholder={'Прилет'}
+					value={airportEnd}
+					options={airportSelectOptions}
+					onChange={setAirportEnd}
+					popupMatchSelectWidth={false}
+				/>
 
 				{flight ?
 					<>

@@ -11,7 +11,7 @@ import { $flightsSelect, flightClickFx } from '../../store/flight'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../utils/consts'
 import { $style, StyleStore } from '../../store/style'
 import { useStore } from 'effector-react'
-import { appendRotateText, drawText } from '../../utils/utils'
+import { appendRotateText, drawAirportText, drawText } from '../../utils/utils'
 import { FlightType } from '../../models/FlightType'
 import { greenColor } from '../../utils/style'
 import { $contextMenu, setContextMenuFx } from '../../store/contextMenu'
@@ -58,6 +58,10 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
 		if (!isDefault) {
 			drawText(container, 'Тех. обслуживание', x + width * 0.5, y + BOARD_ITEM_HEIGHT * 0.5 + 1, 'pointer')
 		}
+
+		const textSelection = drawAirportText(container, data.airportStart, x + 2, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + 1)
+		const textSelectionBox = textSelection.node().getBBox()
+		drawAirportText(container, data.airportEnd, textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
 
 		const timeRotate: number = -19
 		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.startDate.format('HH:mm'), timeRotate)

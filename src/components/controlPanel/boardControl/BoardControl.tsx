@@ -6,7 +6,7 @@
  */
 import React, { ChangeEvent, JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $boardSelect, addBoardFx, deleteBoardFx, editBoardFx } from '../../../store/board'
+import { $boardSelect, boardAddFx, boardDeleteFx, boardEditFx } from '../../../store/board'
 import { Board } from '../../../models/Board'
 import { Button, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
@@ -44,13 +44,13 @@ const BoardControl = (): JSX.Element => {
 			type: boardType,
 			flights: []
 		}
-		addBoardFx(newBoard)
+		boardAddFx(newBoard)
 		setBoardName('')
 	}
 
 	const handlerEditBoard = (): void => {
 		if (board !== null && boardName !== undefined && boardName !== '') {
-			editBoardFx({ ...board, name: boardName, type: boardType })
+			boardEditFx({ ...board, name: boardName, type: boardType })
 		}
 	}
 
@@ -88,7 +88,7 @@ const BoardControl = (): JSX.Element => {
 								danger
 								icon={<DeleteOutlined/>}
 								onClick={() => {
-									deleteBoardFx(board)
+									boardDeleteFx(board)
 								}}>Удалить борт</Button>
 					</>
 					:

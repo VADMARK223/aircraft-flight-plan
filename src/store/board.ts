@@ -4,10 +4,11 @@ import dayjs from 'dayjs'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
-import { editFlightFx, flightDeleteFx, resetFlightSelectFx } from './flight'
+import { EditFlightDto, flightSelectResetFx } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { BoardType } from '../models/BoardType'
+import { getBoardIndexByBoardId } from '../utils/board'
 
 /**
  * @author Markitanov Vadim
@@ -185,9 +186,9 @@ export const defaultBoards: Board[] = [
 ]
 export const $boards = createStore<Board[]>(defaultBoards)
 export const $boardSelect = createStore<Board | null>(null)
-$boards.watch((boards) => {
+$boards.watch((boards: Board[]) => {
 	if (!boards.length) {
-		resetFlightSelectFx()
+		flightSelectResetFx()
 	}
 	const boardSelect = $boardSelect.getState()
 	if (boardSelect !== null) {
@@ -198,21 +199,23 @@ $boards.watch((boards) => {
 	}
 })
 
-export const addBoardFx = createEffect<Board, Board[]>()
-export const editBoardFx = createEffect<Board, Board[]>()
-export const deleteBoardFx = createEffect<Board, Board[]>()
-export const deleteAllBoardsFx = createEffect<void, Board[]>('Удаление всех бортов.')
-export const addFlightFx = createEffect<Flight, Board[]>()
+export const boardAddFx = createEffect<Board, Board[]>()
+export const boardEditFx = createEffect<Board, Board[]>()
+export const boardDeleteFx = createEffect<Board, Board[]>()
+export const boardsDeleteAllFx = createEffect<void, Board[]>('Удаление всех бортов.')
+export const flightAddFx = createEffect<Flight, Board[]>()
+export const flightEditFx = createEffect<EditFlightDto, Board[]>()
+export const flightDeleteFx = createEffect<string, Board[]>()
 $boards.on(fetchBoardsFx.doneData, (_, payload) => payload)
-$boards.on(addBoardFx, (state, payload) => {
-	if (payload.id === -1) {
-		let maxId = Math.max(...state.map(value => value.id))
-		payload.id = ++maxId
+$boards.on(boardAddFx, (boards: Board[], newBoard: Board) => {
+	if (newBoard.id === -1) {
+		let maxId = boards.length ? Math.max(...boards.map(value => value.id)) : 0
+		newBoard.id = ++maxId
 	}
 
-	return [...state, payload]
+	return [...boards, newBoard]
 })
-$boards.on(addFlightFx, (boards, flight) => {
+$boards.on(flightAddFx, (boards, flight) => {
 	const findBoard = boards.find(value => value.id === flight.boardId)
 	if (findBoard === undefined) {
 		return boards
@@ -226,7 +229,7 @@ $boards.on(addFlightFx, (boards, flight) => {
 	newBoards[findBoardIndex] = findBoard
 	return newBoards
 })
-$boards.on(editBoardFx, (boards, board) => {
+$boards.on(boardEditFx, (boards, board) => {
 	const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
 	if (findBoardIndex === -1) {
 		toast.warn(`Ошибка редактирования борта: ${board.id}`)
@@ -236,7 +239,7 @@ $boards.on(editBoardFx, (boards, board) => {
 		return newBoards
 	}
 })
-$boards.on(deleteBoardFx, (boards, board) => {
+$boards.on(boardDeleteFx, (boards, board) => {
 	const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
 	if (findBoardIndex === -1) {
 
@@ -244,8 +247,8 @@ $boards.on(deleteBoardFx, (boards, board) => {
 		return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]
 	}
 })
-$boards.on(deleteAllBoardsFx, _ => [])
-$boards.on(editFlightFx, (boards, flightDto) => {
+$boards.on(boardsDeleteAllFx, _ => [])
+$boards.on(flightEditFx, (boards, flightDto) => {
 	const flight = flightDto.flight
 	const newBoardId = flightDto.newBoardId
 	if (flight.boardId === newBoardId) {
@@ -258,7 +261,7 @@ $boards.on(editFlightFx, (boards, flightDto) => {
 	} else {
 		flightDeleteFx(flight.id)
 		flight.boardId = newBoardId
-		addFlightFx(flight)
+		flightAddFx(flight)
 	}
 
 })
@@ -288,25 +291,10 @@ $boards.on(flightDeleteFx, (boards, flightId) => {
 
 export const boardClickFx = createEffect<Board, Board>('Событие клика по борту')
 $boardSelect.on(boardClickFx, (board, newBoard) => {
-		if (board?.id === newBoard.id) {
-			return null
-		}
-		return newBoard
-	})
+	if (board?.id === newBoard.id) {
+		return null
+	}
+	return newBoard
+})
 export const boardSelectResetFx = createEvent()
 $boardSelect.reset(boardSelectResetFx)
-
-const getBoardIndexByBoardId = (boards: Board[], boardId: number): number => {
-	let findBoardIndex = -1
-	let stop = false
-	for (let i = 0; i < boards.length; i++) {
-		const board = boards[i]
-		stop = board.id === boardId
-		if (stop) {
-			findBoardIndex = boards.indexOf(board)
-			break
-		}
-	}
-
-	return findBoardIndex
-}

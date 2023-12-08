@@ -6,8 +6,8 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightsSelect, EditFlightDto, editFlightFx, flightDeleteFx, resetFlightSelectFx } from '../../../store/flight'
-import { $boards, addFlightFx } from '../../../store/board'
+import { $flightsSelect, EditFlightDto, flightSelectResetFx } from '../../../store/flight'
+import { $boards, flightAddFx, flightDeleteFx, flightEditFx } from '../../../store/board'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
@@ -76,7 +76,7 @@ const FlightControl = (): JSX.Element => {
 				type: FlightType.DEFAULT
 			}
 
-			addFlightFx(newFlight)
+			flightAddFx(newFlight)
 		} else {
 			toast.warn('Время вылета превышает или совпадает с временем прилета.')
 		}
@@ -100,7 +100,7 @@ const FlightControl = (): JSX.Element => {
 						flight: { ...flight, startDate: newStartDate, endDate: newEndDate },
 						newBoardId: boardId
 					}
-					editFlightFx(dto)
+					flightEditFx(dto)
 				}
 			} else {
 				toast.warn('Время вылета превышает или совпадает с временем прилета.')
@@ -176,7 +176,7 @@ const FlightControl = (): JSX.Element => {
 								icon={<DeleteOutlined/>}
 								onClick={() => {
 									flightDeleteFx(flight.id)
-									resetFlightSelectFx()
+									flightSelectResetFx()
 								}}
 						>Удалить полет</Button>
 					</>

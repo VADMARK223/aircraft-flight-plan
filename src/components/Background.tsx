@@ -11,7 +11,7 @@ import { useStore } from 'effector-react'
 import { $boards, boardSelectResetFx } from '../store/board'
 import { $dates } from '../store/date'
 import { $style } from '../store/style'
-import { resetFlightSelectFx } from '../store/flight'
+import { flightSelectResetFx } from '../store/flight'
 
 const Background = (): JSX.Element => {
 	const style = useStore($style)
@@ -43,7 +43,7 @@ const Background = (): JSX.Element => {
 
 		container.on('click', function (_: PointerEvent) {
 			boardSelectResetFx()
-			resetFlightSelectFx()
+			flightSelectResetFx()
 		})
 
 	}, [style, x, y, width, height, boards, dates])

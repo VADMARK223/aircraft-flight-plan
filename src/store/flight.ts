@@ -1,7 +1,6 @@
 import { createEvent, createStore } from 'effector'
 import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
-import { Board } from '../models/Board'
 
 /**
  * @author Markitanov Vadim
@@ -9,7 +8,7 @@ import { Board } from '../models/Board'
  */
 
 export const flightClickFx = createEffect<Flight, Flight>('Событие клика по полету')
-export const resetFlightSelectFx = createEvent()
+export const flightSelectResetFx = createEvent()
 export const $flightsSelect = createStore<Flight | null>(null)
 	.on(flightClickFx, (state, payload) => {
 		if (state?.id === payload.id) {
@@ -17,10 +16,7 @@ export const $flightsSelect = createStore<Flight | null>(null)
 		}
 		return payload
 	})
-	.reset(resetFlightSelectFx)
-
-export const editFlightFx = createEffect<EditFlightDto, Board[]>()
-export const flightDeleteFx = createEffect<string, Board[]>()
+	.reset(flightSelectResetFx)
 
 export interface EditFlightDto {
 	flight: Flight

@@ -6,14 +6,14 @@
  */
 import React, { JSX } from 'react'
 import { Button, Popconfirm } from 'antd'
-import { $boards, deleteAllBoardsFx } from '../../../store/board'
+import { $boards, boardsDeleteAllFx } from '../../../store/board'
 import { useStore } from 'effector-react'
 
 const DeleteAllButton = (): JSX.Element => {
 	const boards = useStore($boards)
 
 	const handlerConfirm = () => {
-		deleteAllBoardsFx()
+		boardsDeleteAllFx()
 	}
 
 	return (

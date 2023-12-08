@@ -7,6 +7,7 @@ import { createEffect } from 'effector/compat'
  * @since 04.12.2023
  */
 
+export const flightSelectFx = createEffect<Flight, Flight>('Событие пренудительного выбора полета')
 export const flightClickFx = createEffect<Flight, Flight>('Событие клика по полету')
 export const flightSelectResetFx = createEvent()
 export const $flightsSelect = createStore<Flight | null>(null)
@@ -16,9 +17,5 @@ export const $flightsSelect = createStore<Flight | null>(null)
 		}
 		return payload
 	})
+	.on(flightSelectFx, (state, payload) => payload)
 	.reset(flightSelectResetFx)
-
-export interface EditFlightDto {
-	flight: Flight
-	newBoardId: number
-}

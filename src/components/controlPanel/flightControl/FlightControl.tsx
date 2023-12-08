@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightsSelect, EditFlightDto, flightSelectResetFx } from '../../../store/flight'
+import { $flightsSelect, flightSelectFx, flightSelectResetFx } from '../../../store/flight'
 import { $boards, flightAddFx, flightDeleteFx, flightEditFx } from '../../../store/board'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
@@ -33,6 +33,7 @@ const FlightControl = (): JSX.Element => {
 	let options: SelectProps['options'] = []
 
 	useEffect(() => {
+		console.log('Select', flight)
 		setBoardId(flight?.boardId)
 		setFlightId(flight?.id)
 		setAirportStart(flight?.airportStart)
@@ -106,17 +107,22 @@ const FlightControl = (): JSX.Element => {
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
 				if (flightId !== undefined && flightId !== '' && boardId && flight && airportStart && airportEnd) {
-					const dto: EditFlightDto = {
-						flight: {
-							...flight,
-							startDate: newStartDate,
-							endDate: newEndDate,
-							airportStart: airportStart,
-							airportEnd: airportEnd
-						},
-						newBoardId: boardId
+					const updatedFlight: Flight = {
+						...flight,
+						startDate: newStartDate,
+						endDate: newEndDate,
+						airportStart: airportStart,
+						airportEnd: airportEnd
 					}
-					flightEditFx(dto)
+					if (flight.boardId === boardId) {
+						flightEditFx(updatedFlight)
+					} else {
+						flightDeleteFx(flight.id)
+						updatedFlight.boardId = boardId
+						// flightAddFx({ ...updatedFlight, boardId: boardId })
+						flightAddFx(updatedFlight)
+						flightSelectFx(updatedFlight)
+					}
 				}
 			} else {
 				toast.warn('Время вылета превышает или совпадает с временем прилета.')

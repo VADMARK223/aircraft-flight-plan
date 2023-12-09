@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import * as d3 from 'd3'
 import { D3DragEvent } from 'd3'
-import { updatePosFx } from '../store/ui'
+import { $ui, updatePosFx } from '../store/ui'
+import { useStore } from 'effector-react'
 
 /**
  * @author Markitanov Vadim
@@ -11,6 +12,7 @@ import { updatePosFx } from '../store/ui'
 export type DragDirection = 'horizontal' | 'vertical' | undefined
 
 export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: DragDirection = undefined) => {
+	const ui = useStore($ui)
 	const [dimensions, setDimensions] = useState<DOMRectReadOnly>({
 		x: 0,
 		y: 0,
@@ -23,18 +25,18 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: 
 		toJSON (): any {
 		}
 	})
-	const [pos, setPos] = useState({ x: 0, y: 0 })
+	// const [pos, setPos] = useState({ x: 0, y: 0 })
 
 	useEffect(() => {
-		if (direction === undefined) {
-			updatePosFx({ x: pos.x, y: pos.y })
-		} else if (direction === 'vertical') {
-			updatePosFx({ x: 0, y: pos.y })
-		} else if (direction === 'horizontal') {
-			updatePosFx({ x: pos.x, y: 0 })
-		}
+		// if (direction === undefined) {
+		// 	updatePosFx({ x: pos.x, y: pos.y })
+		// } else if (direction === 'vertical') {
+		// 	updatePosFx({ x: 0, y: pos.y })
+		// } else if (direction === 'horizontal') {
+		// 	updatePosFx({ x: pos.x, y: 0 })
+		// }
 
-	}, [ref, pos, dimensions, direction])
+	}, [ref, ui, dimensions, direction])
 
 	useEffect(() => {
 		const observeTarget = ref.current
@@ -85,24 +87,31 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: 
 		}*/
 
 		svg.call(d3.drag().on('drag', (event: D3DragEvent<SVGSVGElement, unknown, unknown>) => {
-			const tempX = pos.x - event.dx
-			const tempY = pos.y - event.dy
+			const tempX = ui.x - event.dx
+			const tempY = ui.y - event.dy
 
-			pos.x = tempX <= 0 ? 0 : pos.x - event.dx
-			pos.y = tempY <= 0 ? 0 : pos.y - event.dy
-
-			if (groupWidth - dimensions.width - tempX <= 0) {
-				pos.x = groupWidth - dimensions.width
+			if (direction === undefined || direction === 'horizontal') {
+				ui.x = tempX <= 0 ? 0 : ui.x - event.dx
+				if (groupWidth - dimensions.width - tempX < 0) {
+					ui.x = groupWidth - dimensions.width
+				}
+				if (direction === undefined) {
+					ui.y = tempY <= 0 ? 0 : ui.y - event.dy
+					if (groupHeight - dimensions.height - tempY < 0) {
+						ui.y = groupHeight - dimensions.height
+					}
+				}
+			} else {
+				ui.y = tempY <= 0 ? 0 : ui.y - event.dy
+				if (groupHeight - dimensions.height - tempY < 0) {
+					ui.y = groupHeight - dimensions.height
+				}
 			}
 
-			if (groupHeight - dimensions.height - tempY <= 0) {
-				pos.y = groupHeight - dimensions.height
-			}
-
-			setPos({ x: pos.x, y: pos.y })
+			updatePosFx({ x: ui.x, y: ui.y })
 		}))
 
-	}, [pos, ref, dimensions])
+	}, [ref, dimensions])
 
 	return dimensions
 }

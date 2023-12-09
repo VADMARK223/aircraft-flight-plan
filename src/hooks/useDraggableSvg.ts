@@ -86,32 +86,37 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: 
 				.on('zoom', onZoom))
 		}*/
 
+		const changeX = (tempX: number) => {
+			ui.x = tempX <= 0 ? 0 : tempX
+			if (groupWidth - dimensions.width - tempX < 0) {
+				ui.x = groupWidth - dimensions.width
+			}
+		}
+
+		const changeY = (tempY: number) => {
+			ui.y = tempY <= 0 ? 0 : tempY
+			if (groupHeight - dimensions.height - tempY < 0) {
+				ui.y = groupHeight - dimensions.height
+			}
+		}
+
 		svg.call(d3.drag().on('drag', (event: D3DragEvent<SVGSVGElement, unknown, unknown>) => {
 			const tempX = ui.x - event.dx
 			const tempY = ui.y - event.dy
 
-			if (direction === undefined || direction === 'horizontal') {
-				ui.x = tempX <= 0 ? 0 : ui.x - event.dx
-				if (groupWidth - dimensions.width - tempX < 0) {
-					ui.x = groupWidth - dimensions.width
-				}
-				if (direction === undefined) {
-					ui.y = tempY <= 0 ? 0 : ui.y - event.dy
-					if (groupHeight - dimensions.height - tempY < 0) {
-						ui.y = groupHeight - dimensions.height
-					}
-				}
-			} else {
-				ui.y = tempY <= 0 ? 0 : ui.y - event.dy
-				if (groupHeight - dimensions.height - tempY < 0) {
-					ui.y = groupHeight - dimensions.height
-				}
+			if (direction === undefined) {
+				changeX(tempX)
+				changeY(tempY)
+			} else if(direction === 'horizontal') {
+				changeX(tempX)
+			} else if(direction==='vertical'){
+				changeY(tempY)
 			}
 
 			updatePosFx({ x: ui.x, y: ui.y })
 		}))
 
-	}, [ref, dimensions])
+	}, [ui, direction, ref, dimensions])
 
 	return dimensions
 }

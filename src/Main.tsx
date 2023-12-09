@@ -8,9 +8,9 @@ import React, { JSX, useEffect, useRef, useState } from 'react'
 import ControlPanel from './components/controlPanel/ControlPanel'
 import InfoPanel from './components/InfoPanel'
 import Header from './components/Header'
-import BoardItem from './components/BoardItem'
+import BoardItem from './components/boards/BoardItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from './utils/consts'
-import DateItem from './components/DateItem'
+import DateItem from './components/dates/DateItem'
 import Background from './components/Background'
 import Border from './components/Border'
 import { Space } from 'antd'
@@ -20,7 +20,7 @@ import { $boards } from './store/board'
 import Flights from './components/flights/Flights'
 import Geo from './components/geo/Geo'
 
-const TEST: boolean = true
+const TEST: boolean = false
 
 const Main = (): JSX.Element => {
 	const dates = useStore($dates)

@@ -18,14 +18,14 @@ import {
 } from '../../utils/consts'
 import { $dates } from '../../store/date'
 import { $boards } from '../../store/board'
-import BoardItem from '../BoardItem'
-import DateItem from '../DateItem'
+import Boards from '../boards/Boards'
+import Dates from '../dates/Dates'
+import InfoPanel from '../InfoPanel'
+import Flights from '../flights/Flights'
+import Background from '../Background'
 
 const CANVAS_WIDTH = 300
 const CANVAS_HEIGHT = 300
-const WORKSPACE_SIZE = 500
-const WORKSPACE_WIDTH = WORKSPACE_SIZE
-const WORKSPACE_HEIGHT = WORKSPACE_SIZE
 
 const Geo = (): JSX.Element => {
 	const ui = useStore($ui)
@@ -43,25 +43,10 @@ const Geo = (): JSX.Element => {
 			<Space size={0} align={'start'}>
 				<div>
 					<svg
-						viewBox={`${ui.x},${ui.y},${BOARD_ITEM_WIDTH},${HEADER_HEIGHT + DATE_ITEM_HEIGHT}`}
 						style={{ width: BOARD_ITEM_WIDTH, height: HEADER_HEIGHT + DATE_ITEM_HEIGHT }}
 					>
 						<g cursor={'pointer'} id={'INFO'}>
-							<rect
-								width={WORKSPACE_WIDTH}
-								height={WORKSPACE_HEIGHT}
-								fill={'blue'}
-							/>
-							<line
-								x2={WORKSPACE_WIDTH}
-								y2={WORKSPACE_HEIGHT}
-								stroke={'white'}
-							/>
-							<line
-								y1={WORKSPACE_HEIGHT}
-								x2={WORKSPACE_WIDTH}
-								stroke={'white'}
-							/>
+							<InfoPanel/>
 						</g>
 					</svg>
 				</div>
@@ -71,13 +56,7 @@ const Geo = (): JSX.Element => {
 						viewBox={`${ui.x},0,${CANVAS_WIDTH},${HEADER_HEIGHT + DATE_ITEM_HEIGHT}`}
 						style={{ width: CANVAS_WIDTH, height: HEADER_HEIGHT + DATE_ITEM_HEIGHT }}
 					>
-						<g cursor={'pointer'} id={'DATES'}>
-							{dates.map((value, index) => (
-								<DateItem key={index}
-										  data={value}
-										  x={DATE_ITEM_WIDTH * index}
-										  y={HEADER_HEIGHT}/>))}
-						</g>
+						<Dates/>
 					</svg>
 				</div>
 			</Space>
@@ -89,15 +68,7 @@ const Geo = (): JSX.Element => {
 						viewBox={`0,${ui.y},${BOARD_ITEM_WIDTH},${CANVAS_HEIGHT}`}
 						style={{ width: BOARD_ITEM_WIDTH, height: CANVAS_HEIGHT }}
 					>
-						<g cursor={'pointer'} id={'BOARDS'}>
-							{boards.map((value, index) => (
-								<BoardItem key={value.id}
-										   data={value}
-										   x={0}
-										   y={BOARD_ITEM_HEIGHT * index}
-										   width={BOARD_ITEM_WIDTH}
-										   height={BOARD_ITEM_HEIGHT}/>))}
-						</g>
+						<Boards/>
 					</svg>
 				</div>
 				<div>
@@ -106,7 +77,7 @@ const Geo = (): JSX.Element => {
 						viewBox={`${ui.x},${ui.y},${CANVAS_WIDTH},${CANVAS_HEIGHT}`}
 						style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
 					>
-						<g>
+						<g cursor={'pointer'}>
 							<rect
 								width={DATE_ITEM_WIDTH * dates.length}
 								height={BOARD_ITEM_HEIGHT * boards.length}

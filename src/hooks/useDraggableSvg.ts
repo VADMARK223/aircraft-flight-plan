@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import * as d3 from 'd3'
-import { D3ZoomEvent, ZoomTransform } from 'd3'
+import { D3DragEvent } from 'd3'
 
 /**
  * @author Markitanov Vadim
  * @since 09.12.2023
  */
 
-export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>) => {
+export type DragDirection = 'horizontal' | 'vertical' | undefined
+
+export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: DragDirection = undefined) => {
 	const [dimensions, setDimensions] = useState<DOMRectReadOnly>({
 		x: 0,
 		y: 0,
@@ -20,6 +22,19 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>) => {
 		toJSON (): any {
 		}
 	})
+	const [pos, setPos] = useState({ x: 0, y: 0 })
+
+	useEffect(() => {
+		const svg: any = d3.select(ref.current)
+		if (direction === undefined) {
+			svg.attr('viewBox', `${pos.x}, ${pos.y}, ${dimensions.width}, ${dimensions.height}`)
+		} else if (direction === 'vertical') {
+			svg.attr('viewBox', `0, ${pos.y}, ${dimensions.width}, ${dimensions.height}`)
+		} else if (direction === 'horizontal') {
+			svg.attr('viewBox', `${pos.x}, 0, ${dimensions.width}, ${dimensions.height}`)
+		}
+
+	}, [ref, pos, dimensions, direction])
 
 	useEffect(() => {
 		const observeTarget = ref.current
@@ -45,7 +60,7 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>) => {
 
 		svg.attr('width', dimensions.width).attr('height', dimensions.height)
 
-		const onZoom = (event: D3ZoomEvent<SVGSVGElement, undefined>) => {
+		/*const onZoom = (event: D3ZoomEvent<SVGSVGElement, undefined>) => {
 			const transform: ZoomTransform = event.transform
 			let x = transform.x >= 0 ? 0 : transform.x
 			let y = transform.y >= 0 ? 0 : transform.y
@@ -67,8 +82,27 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>) => {
 				.extent([[0, 0], [dimensions.width, dimensions.height]])
 				.scaleExtent([0.5, 2])
 				.on('zoom', onZoom))
-		}
-	}, [ref, dimensions])
+		}*/
+
+		svg.call(d3.drag().on('drag', (event: D3DragEvent<SVGSVGElement, unknown, unknown>) => {
+			const tempX = pos.x - event.dx
+			const tempY = pos.y - event.dy
+
+			pos.x = tempX <= 0 ? 0 : pos.x - event.dx
+			pos.y = tempY <= 0 ? 0 : pos.y - event.dy
+
+			if (groupWidth - dimensions.width - tempX <= 0) {
+				pos.x = groupWidth - dimensions.width
+			}
+
+			if (groupHeight - dimensions.height - tempY <= 0) {
+				pos.y = groupHeight - dimensions.height
+			}
+
+			setPos({ x: pos.x, y: pos.y })
+		}))
+
+	}, [pos, ref, dimensions])
 
 	return dimensions
 }

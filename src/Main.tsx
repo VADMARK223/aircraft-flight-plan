@@ -20,7 +20,7 @@ import { $boards } from './store/board'
 import Flights from './components/flights/Flights'
 import Geo from './components/geo/Geo'
 
-const TEST: boolean = false
+const TEST: boolean = true
 
 const Main = (): JSX.Element => {
 	const dates = useStore($dates)

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import * as d3 from 'd3'
 import { D3DragEvent } from 'd3'
+import { updatePosFx } from '../store/ui'
 
 /**
  * @author Markitanov Vadim
@@ -25,13 +26,12 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: 
 	const [pos, setPos] = useState({ x: 0, y: 0 })
 
 	useEffect(() => {
-		const svg: any = d3.select(ref.current)
 		if (direction === undefined) {
-			svg.attr('viewBox', `${pos.x}, ${pos.y}, ${dimensions.width}, ${dimensions.height}`)
+			updatePosFx({ x: pos.x, y: pos.y })
 		} else if (direction === 'vertical') {
-			svg.attr('viewBox', `0, ${pos.y}, ${dimensions.width}, ${dimensions.height}`)
+			updatePosFx({ x: 0, y: pos.y })
 		} else if (direction === 'horizontal') {
-			svg.attr('viewBox', `${pos.x}, 0, ${dimensions.width}, ${dimensions.height}`)
+			updatePosFx({ x: pos.x, y: 0 })
 		}
 
 	}, [ref, pos, dimensions, direction])

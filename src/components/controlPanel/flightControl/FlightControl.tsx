@@ -6,8 +6,14 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightsSelect, flightBoardIdChanged, flightSelectReset } from '../../../store/flight'
-import { $boards, flightAddFx, flightDeleteFx, flightEditFx } from '../../../store/board'
+import {
+	$flightsSelect,
+	flightAddFx,
+	flightBoardIdChanged,
+	flightDeleteFx,
+	flightSelectReset
+} from '../../../store/flight'
+import { $boards, flightEditFx } from '../../../store/board'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'

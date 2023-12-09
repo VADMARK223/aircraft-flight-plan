@@ -9,7 +9,7 @@ import { Board } from '../models/Board'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
-import { flightSelectReset } from './flight'
+import { flightAddFx, flightDeleteFx, flightSelectReset } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
@@ -34,9 +34,9 @@ export const boardAddFx = createEffect<Board, Board[]>()
 export const boardEditFx = createEffect<Board, Board[]>()
 export const boardDeleteFx = createEffect<Board, Board[]>()
 export const boardsDeleteAllFx = createEffect<void, Board[]>('Удаление всех бортов.')
-export const flightAddFx = createEffect<Flight, Board[]>()
+
 export const flightEditFx = createEffect<Flight, Board[]>()
-export const flightDeleteFx = createEffect<Flight, Board[]>()
+
 $boards.on(fetchBoardsFx.doneData, (_, payload) => payload)
 $boards.on(boardAddFx, (boards: Board[], newBoard: Board) => {
 	if (newBoard.id === -1) {

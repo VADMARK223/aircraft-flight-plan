@@ -18,6 +18,7 @@ import { useStore } from 'effector-react'
 import { $dates } from './store/date'
 import { $boards } from './store/board'
 import Flights from './components/flights/Flights'
+import Geo from './components/geo/Geo'
 
 const Main = (): JSX.Element => {
 	const dates = useStore($dates)
@@ -55,48 +56,49 @@ const Main = (): JSX.Element => {
 	}, [boards])
 
 	return (
-		<Space direction={'vertical'} size={'small'}>
-			<ControlPanel/>
-			<div>
-				<svg id={'top-svg-id'}
-					 width={canvasWidth}
-					 height={topCanvasHeight}
-					 style={{ backgroundColor: '$backgroundColor' }}
-				>
-					<InfoPanel/>
-					<Header/>
-					{dates.map((value, index) => (
-						<DateItem key={index}
-								  data={value}
-								  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
-								  y={HEADER_HEIGHT}/>))}
-				</svg>
-				<div
-					ref={bottomSvgContainerRef}
-					style={{
-						width: '100%',
-						height: bottomSvgContainerHeight,
-						overflowY: 'scroll'
-					}}>
-					<svg id={'bottom-svg-id'}
-						 width={canvasWidth}
-						 height={bottomCanvasHeight}
-						 style={{ backgroundColor: '$backgroundColor' }}
-					>
-						{boards.map((value, index) => (
-							<BoardItem key={value.id}
-									   data={value}
-									   x={0}
-									   y={BOARD_ITEM_HEIGHT * index}
-									   width={BOARD_ITEM_WIDTH}
-									   height={BOARD_ITEM_HEIGHT}/>))}
-						<Background/>
-						<Flights/>
-						<Border/>
-					</svg>
-				</div>
-			</div>
-		</Space>
+		<Geo/>
+		// <Space direction={'vertical'} size={'small'}>
+		// 	<ControlPanel/>
+		// 	<div>
+		// 		<svg id={'top-svg-id'}
+		// 			 width={canvasWidth}
+		// 			 height={topCanvasHeight}
+		// 			 style={{ backgroundColor: '$backgroundColor' }}
+		// 		>
+		// 			<InfoPanel/>
+		// 			<Header/>
+		// 			{dates.map((value, index) => (
+		// 				<DateItem key={index}
+		// 						  data={value}
+		// 						  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
+		// 						  y={HEADER_HEIGHT}/>))}
+		// 		</svg>
+		// 		<div
+		// 			ref={bottomSvgContainerRef}
+		// 			style={{
+		// 				width: '100%',
+		// 				height: bottomSvgContainerHeight,
+		// 				overflowY: 'scroll'
+		// 			}}>
+		// 			<svg id={'bottom-svg-id'}
+		// 				 width={canvasWidth}
+		// 				 height={bottomCanvasHeight}
+		// 				 style={{ backgroundColor: '$backgroundColor' }}
+		// 			>
+		// 				{boards.map((value, index) => (
+		// 					<BoardItem key={value.id}
+		// 							   data={value}
+		// 							   x={0}
+		// 							   y={BOARD_ITEM_HEIGHT * index}
+		// 							   width={BOARD_ITEM_WIDTH}
+		// 							   height={BOARD_ITEM_HEIGHT}/>))}
+		// 				<Background/>
+		// 				<Flights/>
+		// 				<Border/>
+		// 			</svg>
+		// 		</div>
+		// 	</div>
+		// </Space>
 	)
 }
 

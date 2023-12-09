@@ -1,7 +1,7 @@
 import { createEvent, createStore, sample } from 'effector'
 import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
-import { flightAddFx, flightDeleteFx } from './board'
+import { Board } from '../models/Board'
 
 /**
  * Хранилище полётов.
@@ -23,6 +23,9 @@ export const $flightsSelect = createStore<Flight | null>(null)
 	})
 	.on(flightSelectFx, (state, payload) => payload)
 	.reset(flightSelectReset)
+
+export const flightAddFx = createEffect<Flight, Board[]>()
+export const flightDeleteFx = createEffect<Flight, Board[]>()
 
 sample({
 	source: flightDeleteFx,

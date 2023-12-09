@@ -7,11 +7,10 @@
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Flight } from '../../models/Flight'
-import { flightClickFx } from '../../store/flight'
+import { flightClickFx, flightDeleteFx } from '../../store/flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../store/style'
 import { $contextMenu, resetContextMenuFx } from '../../store/contextMenu'
-import { flightDeleteFx } from '../../store/board'
 
 interface MenuItemModel {
 	title: string

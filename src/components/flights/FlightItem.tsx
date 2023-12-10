@@ -57,8 +57,10 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
 		}
 
 		const textSelection = drawAirportText(container, data.airportStart, x + 2, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + 1)
-		const textSelectionBox = textSelection.node().getBBox()
-		drawAirportText(container, data.airportEnd, textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
+		const textSelectionBox: SVGRect | undefined = textSelection.node().getBBox()
+		if (textSelectionBox !== undefined) {
+			drawAirportText(container, data.airportEnd, textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
+		}
 
 		const timeRotate: number = -19
 		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.startDate.format('HH:mm'), timeRotate)

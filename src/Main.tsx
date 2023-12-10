@@ -6,7 +6,6 @@
  */
 import React, { JSX, useEffect, useRef, useState } from 'react'
 import ControlPanel from './components/controlPanel/ControlPanel'
-import InfoPanel from './components/InfoPanel'
 import Header from './components/Header'
 import BoardItem from './components/boards/BoardItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from './utils/consts'
@@ -18,8 +17,9 @@ import { $dates } from './store/date'
 import { $boards } from './store/board'
 import Flights from './components/flights/Flights'
 import Geo from './components/geo/Geo'
-import Dates from './components/dates/Dates'
 import { $test } from './store/test'
+import DateItem from './components/dates/DateItem'
+import InfoPanel from './components/InfoPanel'
 
 const Main = (): JSX.Element => {
 	const dates = useStore($dates)
@@ -50,7 +50,7 @@ const Main = (): JSX.Element => {
 		return () => {
 			window.removeEventListener('resize', updateContainerHeight)
 		}
-	}, [])
+	}, [test])
 
 	useEffect(() => {
 		setTopCanvasHeight(HEADER_HEIGHT + DATE_ITEM_HEIGHT)
@@ -69,7 +69,13 @@ const Main = (): JSX.Element => {
 					>
 						<InfoPanel/>
 						<Header/>
-						<Dates/>
+						<g cursor={'pointer'} id={'DATES'}>
+							{dates.map((value, index) => (
+								<DateItem key={index}
+										  data={value}
+										  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
+										  y={HEADER_HEIGHT}/>))}
+						</g>
 					</svg>
 					<div
 						ref={bottomSvgContainerRef}

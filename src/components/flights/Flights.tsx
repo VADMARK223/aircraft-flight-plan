@@ -16,8 +16,6 @@ import { Flight } from '../../models/Flight'
 import { $contextMenu } from '../../store/contextMenu'
 import ContextMenu from './ContextMenu'
 
-export const FLIGHTS_NEW_ID: string = 'flights-new-g-id'
-
 const Flights = (): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const datesRange = useStore($datesRange)
@@ -31,7 +29,7 @@ const Flights = (): JSX.Element => {
 	}, [])
 
 	return (
-		<g ref={gRef} id={FLIGHTS_NEW_ID}>
+		<g ref={gRef} id={'flights-layout'}>
 			{boards.map((board: Board, boardIndex) =>
 				(
 					<g key={board.id} id={`board-row-${board.id}`}>
@@ -71,7 +69,7 @@ const Flights = (): JSX.Element => {
 					</g>
 				)
 			)}
-			<g>
+			<g id={'context-menu-layout'}>
 				{contextMenu && <ContextMenu/>}
 			</g>
 		</g>

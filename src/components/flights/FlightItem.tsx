@@ -14,7 +14,7 @@ import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText } from '../../utils/utils'
 import { FlightType } from '../../models/FlightType'
 import { greenColor } from '../../utils/style'
-import { $contextMenu, setContextMenuFx } from '../../store/contextMenu'
+import { setContextMenuFx } from '../../store/contextMenu'
 
 interface FlightItemProps {
 	x: number
@@ -25,7 +25,6 @@ interface FlightItemProps {
 
 const FlightItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
-	const contextMenu = useStore($contextMenu)
 	const flightsSelect = useStore($flightsSelect)
 	const { x, y, width, data } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -41,9 +40,7 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
 			flightClickFx(data)
 		}).on('contextmenu', (event: PointerEvent) => {
 			event.preventDefault()
-			if (!contextMenu) {
-				setContextMenuFx({ x: event.offsetX - BOARD_ITEM_WIDTH, y: event.offsetY, data: data })
-			}
+			setContextMenuFx({ x: event.offsetX - BOARD_ITEM_WIDTH, y: event.offsetY, data: data })
 		})
 
 		container.append('rect')
@@ -70,7 +67,7 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
 		const dateRotate: number = 19
 		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-	}, [x, y, width, data, style, isDefault, isSelect, contextMenu])
+	}, [x, y, width, data, style, isDefault, isSelect])
 
 	return (
 		<g ref={gRef} id={`flight-item-${data.id}`}/>

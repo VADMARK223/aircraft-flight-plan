@@ -41,7 +41,7 @@ const Main = (): JSX.Element => {
 				// console.log('document.documentElement.scrollWidth', temp)
 				// console.log('isScrollVisible', isScrollVisible)
 				const bottomSvgContainerTop = bottomSvgContainerRef.current.getBoundingClientRect().top
-				const newContainerHeight = screenHeight - bottomSvgContainerTop - 20 + 'px'
+				const newContainerHeight = screenHeight - bottomSvgContainerTop - 13 + 'px'
 				setBottomSvgContainerHeight(newContainerHeight)
 			}
 		}
@@ -80,7 +80,8 @@ const Main = (): JSX.Element => {
 						style={{
 							width: '100%',
 							height: bottomSvgContainerHeight,
-							overflowY: 'scroll'
+							overflowY: 'scroll',
+							marginTop: -5
 						}}>
 						<svg id={'bottom-svg-id'}
 							 width={canvasWidth}

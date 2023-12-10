@@ -44,8 +44,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(23, 'hours'),
 				endDate: dayjs().startOf('day').add(25, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ABA',
+				airportEnd: 'ACS'
 			},
 			{
 				id: '31',
@@ -53,8 +53,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(28, 'hours'),
 				endDate: dayjs().startOf('day').add(29, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ADH',
+				airportEnd: 'AER'
 			}
 		]
 	},
@@ -69,8 +69,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
 				endDate: dayjs().startOf('day').add(3, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'AMV',
+				airportEnd: 'ARH'
 			},
 			{
 				id: '22',
@@ -78,8 +78,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
 				endDate: dayjs().startOf('day').add(6, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ASF',
+				airportEnd: 'ARH'
 			},
 			{
 				id: '32',
@@ -87,8 +87,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(18, 'hours'),
 				endDate: dayjs().startOf('day').add(30, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'AMV',
+				airportEnd: 'AER'
 			},
 			{
 				id: '42',
@@ -96,8 +96,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(32, 'hours'),
 				endDate: dayjs().startOf('day').add(33, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ADH',
+				airportEnd: 'ACS'
 			}
 		]
 	},
@@ -112,8 +112,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(3, 'hours'),
 				endDate: dayjs().startOf('day').add(6, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ABA',
+				airportEnd: 'AAQ'
 			}
 		]
 	},
@@ -128,8 +128,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
 				endDate: dayjs().startOf('day').add(16, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ABA',
+				airportEnd: 'AER'
 			}
 		]
 	},
@@ -144,8 +144,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.ROUTINE_MAINTENANCE,
 				startDate: dayjs().startOf('day').add(15, 'hours'),
 				endDate: dayjs().startOf('day').add(30, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ARH',
+				airportEnd: 'ASF'
 			}
 		]
 	},
@@ -160,8 +160,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(11, 'hours'),
 				endDate: dayjs().startOf('day').add(14, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ASF',
+				airportEnd: 'AER'
 			},
 			{
 				id: '26',
@@ -170,7 +170,7 @@ export const boardsDefault: Board[] = [
 				startDate: dayjs().startOf('day').add(32, 'hours'),
 				endDate: dayjs().startOf('day').add(35, 'hours'),
 				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportEnd: 'ACS'
 			}
 		]
 	},
@@ -201,8 +201,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(0.5, 'hours'),
 				endDate: dayjs().startOf('day').add(3.5, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ADH',
+				airportEnd: 'ARH'
 			}
 		]
 	},
@@ -217,8 +217,8 @@ export const boardsDefault: Board[] = [
 				type: FlightType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
 				endDate: dayjs().startOf('day').add(3, 'hours'),
-				airportStart: 'AAQ',
-				airportEnd: 'ABA'
+				airportStart: 'ASF',
+				airportEnd: 'ADH'
 			}
 		]
 	}

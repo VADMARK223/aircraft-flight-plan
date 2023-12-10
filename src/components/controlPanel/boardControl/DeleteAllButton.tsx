@@ -28,7 +28,7 @@ const DeleteAllButton = (): JSX.Element => {
 				type={'primary'}
 				danger
 				disabled={boards.length === 0}
-			>Удаить все</Button>
+			>Удалить все</Button>
 		</Popconfirm>
 	)
 }

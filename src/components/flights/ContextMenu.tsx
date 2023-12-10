@@ -38,6 +38,7 @@ const ContextMenu = (): JSX.Element => {
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)
+		container.selectAll('*').remove()
 		container.append('g')
 			.attr('class', 'context-menu')
 			.selectAll('tmp')

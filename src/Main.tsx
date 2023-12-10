@@ -10,7 +10,6 @@ import InfoPanel from './components/InfoPanel'
 import Header from './components/Header'
 import BoardItem from './components/boards/BoardItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from './utils/consts'
-import DateItem from './components/dates/DateItem'
 import Background from './components/Background'
 import Border from './components/Border'
 import { Space } from 'antd'
@@ -19,12 +18,13 @@ import { $dates } from './store/date'
 import { $boards } from './store/board'
 import Flights from './components/flights/Flights'
 import Geo from './components/geo/Geo'
-
-const TEST: boolean = false
+import Dates from './components/dates/Dates'
+import { $test } from './store/test'
 
 const Main = (): JSX.Element => {
 	const dates = useStore($dates)
 	const boards = useStore($boards)
+	const test = useStore($test)
 	const [topCanvasHeight, setTopCanvasHeight] = useState(HEADER_HEIGHT + DATE_ITEM_HEIGHT)
 	const [bottomCanvasHeight, setBottomCanvasHeight] = useState(boards.length * BOARD_ITEM_HEIGHT)
 	const bottomSvgContainerRef = useRef<any>(null)
@@ -59,8 +59,8 @@ const Main = (): JSX.Element => {
 
 	return (
 		<>
-			{TEST ? <Geo/> : <Space direction={'vertical'} size={'small'}>
-				<ControlPanel/>
+			<ControlPanel/>
+			{test ? <Geo/> : <Space direction={'vertical'} size={'small'}>
 				<div>
 					<svg id={'top-svg-id'}
 						 width={canvasWidth}
@@ -69,11 +69,7 @@ const Main = (): JSX.Element => {
 					>
 						<InfoPanel/>
 						<Header/>
-						{dates.map((value, index) => (
-							<DateItem key={index}
-									  data={value}
-									  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
-									  y={HEADER_HEIGHT}/>))}
+						<Dates/>
 					</svg>
 					<div
 						ref={bottomSvgContainerRef}

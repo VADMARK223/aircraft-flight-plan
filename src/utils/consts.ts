@@ -8,6 +8,7 @@ import { Airport } from '../models/Airport'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
+export const SHOW_TEST_TOGGLE: boolean = true
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
 export const BOARD_ITEM_WIDTH = 140

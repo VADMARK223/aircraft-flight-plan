@@ -225,7 +225,7 @@ export const boardsDefault: Board[] = [
 	{
 		id: 9,
 		name: 'Борт 9',
-		type: BoardType.DEFAULT,
+		type: BoardType.PRIORITY,
 		flights: [
 			{
 				id: '19',

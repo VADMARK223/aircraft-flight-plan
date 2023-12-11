@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useRef, useState } from 'react'
 import ControlPanel from './components/controlPanel/ControlPanel'
 import Header from './components/Header'
-import BoardItem from './components/boards/BoardItem'
+import BoardItem from './components/svg/boards/BoardItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH, HEADER_HEIGHT } from './utils/consts'
 import Background from './components/Background'
 import Border from './components/Border'
@@ -16,7 +16,7 @@ import { useStore } from 'effector-react'
 import { $dates } from './store/date'
 import { $boards } from './store/board'
 import Flights from './components/flights/Flights'
-import Geo from './components/geo/Geo'
+import Svg from './components/svg/Svg'
 import { $test } from './store/test'
 import DateItem from './components/dates/DateItem'
 import InfoPanel from './components/InfoPanel'
@@ -60,7 +60,7 @@ const Main = (): JSX.Element => {
 	return (
 		<>
 			<ControlPanel/>
-			{test ? <Geo/> : <Space direction={'vertical'} size={'small'}>
+			{test ? <Svg/> : <Space direction={'vertical'} size={'small'}>
 				<div>
 					<svg id={'top-svg-id'}
 						 width={canvasWidth}

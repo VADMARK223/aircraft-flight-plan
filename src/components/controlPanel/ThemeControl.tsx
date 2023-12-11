@@ -40,7 +40,7 @@ const ThemeControl = (): JSX.Element => {
 				style={{ display: SHOW_TEST_TOGGLE ? undefined : 'none' }}
 			>
 				<Space>
-					<span>Тестовый режим:</span>
+					<span>Режим перетаскивания:</span>
 					<Switch
 						checkedChildren={<CheckOutlined/>}
 						unCheckedChildren={<CloseOutlined/>}

@@ -1,14 +1,14 @@
 /**
- * Компонент
+ * Компонент отображения бортов.
  *
  * @author Markitanov Vadim
- * @since 09.12.2023
+ * @since 11.12.2023
  */
 import React, { JSX } from 'react'
-import BoardItem from './BoardItem'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../utils/consts'
 import { useStore } from 'effector-react'
-import { $boards } from '../../store/board'
+import { $boards } from '../../../store/board'
+import BoardItem from './BoardItem'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../../utils/consts'
 
 const Boards = (): JSX.Element => {
 	const boards = useStore($boards)

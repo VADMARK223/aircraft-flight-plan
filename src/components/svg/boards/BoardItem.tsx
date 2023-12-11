@@ -6,13 +6,13 @@
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_WIDTH } from '../../utils/consts'
-import { Board } from '../../models/Board'
+import { BOARD_ITEM_WIDTH } from '../../../utils/consts'
+import { Board } from '../../../models/Board'
 import { useStore } from 'effector-react'
-import { $style } from '../../store/style'
-import { $boardSelect, boardClickFx } from '../../store/board'
-import { BoardType } from '../../models/BoardType'
-import { greenColor, redColor } from '../../utils/style'
+import { $style } from '../../../store/style'
+import { $boardSelect, boardClickFx } from '../../../store/board'
+import { BoardType } from '../../../models/BoardType'
+import { greenColor, redColor } from '../../../utils/style'
 
 interface BoardItemProps {
 	data: Board

@@ -11,6 +11,7 @@ import { flightClickFx, flightDeleteFx } from '../../store/flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../store/style'
 import { $contextMenu, resetContextMenuFx } from '../../store/contextMenu'
+import { $ui } from '../../store/ui'
 
 interface MenuItemModel {
 	title: string
@@ -35,9 +36,11 @@ const ContextMenu = (): JSX.Element => {
 	const style = useStore($style)
 	const contextMenu = useStore($contextMenu)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
+	const ui = useStore($ui)
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)
+
 		container.selectAll('*').remove()
 		container.append('g')
 			.attr('class', 'context-menu')
@@ -47,6 +50,7 @@ const ContextMenu = (): JSX.Element => {
 			.attr('cursor', 'pointer')
 			.on('click', (_, datum) => {
 				if (contextMenu) {
+					console.log('CLICK', ui.x)
 					datum.action(contextMenu.data)
 				}
 			})
@@ -55,7 +59,8 @@ const ContextMenu = (): JSX.Element => {
 			container.selectAll('.context-menu-item')
 				.append('rect')
 				.attr('x', contextMenu.x)
-				.attr('y', (datum, index) => contextMenu.y + (index * 30))
+				.attr('y', (_, index) => contextMenu.y + (index * 30))
+				// .attr('transform', `translate(${ui.x},${ui.y})`)
 				.attr('width', 150)
 				.attr('height', 30)
 				.attr('stroke', style.contextMenuLineColor)
@@ -65,17 +70,19 @@ const ContextMenu = (): JSX.Element => {
 				.append('text')
 				.text((datum: any) => datum.title)
 				.attr('x', contextMenu.x)
-				.attr('y', (datum, index) => contextMenu.y + (index * 30))
+				.attr('y', (_, index) => contextMenu.y + (index * 30))
 				.attr('dx', 5)
 				.attr('dy', 6)
 				.attr('dominant-baseline', 'hanging')
 				.attr('fill', style.textColor)
 		}
 
-		d3.select('body').on('click', () => {
-			resetContextMenuFx()
-		})
-	}, [contextMenu, style])
+		d3.select('body')
+			.on('click', () => {
+				console.log('CLICK')
+				resetContextMenuFx()
+			})
+	}, [contextMenu, style, ui.x, ui.y])
 	return (
 		<g ref={gRef}/>
 	)

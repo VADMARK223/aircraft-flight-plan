@@ -25,18 +25,6 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: 
 		toJSON (): any {
 		}
 	})
-	// const [pos, setPos] = useState({ x: 0, y: 0 })
-
-	useEffect(() => {
-		// if (direction === undefined) {
-		// 	updatePosFx({ x: pos.x, y: pos.y })
-		// } else if (direction === 'vertical') {
-		// 	updatePosFx({ x: 0, y: pos.y })
-		// } else if (direction === 'horizontal') {
-		// 	updatePosFx({ x: pos.x, y: 0 })
-		// }
-
-	}, [ref, ui, dimensions, direction])
 
 	useEffect(() => {
 		const observeTarget = ref.current
@@ -107,9 +95,9 @@ export const useDraggableSvg = (ref: React.RefObject<SVGSVGElement>, direction: 
 			if (direction === undefined) {
 				changeX(tempX)
 				changeY(tempY)
-			} else if(direction === 'horizontal') {
+			} else if (direction === 'horizontal') {
 				changeX(tempX)
-			} else if(direction==='vertical'){
+			} else if (direction === 'vertical') {
 				changeY(tempY)
 			}
 

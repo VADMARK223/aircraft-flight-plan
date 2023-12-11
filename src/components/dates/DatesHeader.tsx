@@ -37,8 +37,6 @@ const DatesHeader = (): JSX.Element => {
 
 		const textBox: SVGRect | undefined = text.node()?.getBBox()
 		if (textBox) {
-			const temp = (HEADER_HEIGHT - textBox?.height) * 0.5
-			console.log(temp)
 			text.attr('y', (HEADER_HEIGHT - textBox?.height) * 0.5 + 4)
 		}
 	}, [style, width, height])

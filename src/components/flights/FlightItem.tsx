@@ -15,6 +15,8 @@ import { appendRotateText, drawAirportText, drawText } from '../../utils/utils'
 import { FlightType } from '../../models/FlightType'
 import { greenColor } from '../../utils/style'
 import { setContextMenuFx } from '../../store/contextMenu'
+import { $ui } from '../../store/ui'
+import { $test } from '../../store/test'
 
 interface FlightItemProps {
 	x: number
@@ -25,11 +27,13 @@ interface FlightItemProps {
 
 const FlightItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
+	const ui = useStore($ui)
 	const flightsSelect = useStore($flightsSelect)
 	const { x, y, width, data } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const isSelect = data.id === flightsSelect?.id
 	const isDefault = data.type === FlightType.DEFAULT
+	const test = useStore($test)
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)
@@ -40,7 +44,11 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
 			flightClickFx(data)
 		}).on('contextmenu', (event: PointerEvent) => {
 			event.preventDefault()
-			setContextMenuFx({ x: event.offsetX - BOARD_ITEM_WIDTH, y: event.offsetY, data: data })
+			setContextMenuFx({
+				x: test ? event.offsetX + ui.x : event.offsetX - BOARD_ITEM_WIDTH,
+				y: test ? event.offsetY + ui.y : event.offsetY,
+				data: data
+			})
 		})
 
 		container.append('rect')
@@ -69,7 +77,7 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
 		const dateRotate: number = 19
 		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-	}, [x, y, width, data, style, isDefault, isSelect])
+	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y, test])
 
 	return (
 		<g ref={gRef} id={`flight-item-${data.id}`}/>

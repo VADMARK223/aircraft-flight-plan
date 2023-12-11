@@ -14,6 +14,7 @@ import Dates from '../dates/Dates'
 import InfoPanel from '../InfoPanel'
 import Boards from './boards/Boards'
 import Background from './Background'
+import Flights from './flights/Flights'
 
 const Svg = (): JSX.Element => {
 	const ui = useStore($ui)
@@ -90,6 +91,7 @@ const Svg = (): JSX.Element => {
 						style={{ width: svgDimensions.width, height: svgDimensions.height }}
 					>
 						<Background/>
+						<Flights/>
 					</svg>
 				</div>
 			</Space>

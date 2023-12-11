@@ -24,6 +24,8 @@ import type { RangeValue } from 'rc-picker/lib/interface'
 import { Flight } from '../../../models/Flight'
 import { FlightType } from '../../../models/FlightType'
 import { $airports } from '../../../store/airport'
+import { Price } from '../../../models/Price'
+import { Currency } from '../../../models/Currency'
 
 const FlightControl = (): JSX.Element => {
 	const flight = useStore($flightsSelect)
@@ -32,11 +34,11 @@ const FlightControl = (): JSX.Element => {
 	const [editFlightButtonDisable, setEditFlightButtonDisable] = useState<boolean>(true)
 	const [boardId, setBoardId] = useState<number | undefined>()
 	const [flightId, setFlightId] = useState<string | undefined>()
+	const [price, setPrice] = useState<Price | null>({ value: 0, currency: Currency.RUB })
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValue<Dayjs> | null>(null)
 	const [airportStart, setAirportStart] = useState<string | undefined>()
 	const [airportEnd, setAirportEnd] = useState<string | undefined>()
-	let options: SelectProps['options'] = []
 
 	useEffect(() => {
 		setBoardId(flight?.boardId)
@@ -50,12 +52,21 @@ const FlightControl = (): JSX.Element => {
 			setDateRangeValue(null)
 			setTimeRangeValue(null)
 		}
+		setPrice(flight ? flight.price : null)
 
 	}, [flight])
 
+	let boardOptions: SelectProps['options'] = []
 	boards.forEach(value => {
-		options?.push({ value: value.id, label: value.name })
+		boardOptions?.push({ value: value.id, label: value.name })
 	})
+
+	let currencyOptions: SelectProps['options'] = []
+	currencyOptions.push({ value: Currency.RUB, label: Currency.RUB })
+	currencyOptions.push({ value: Currency.USD, label: Currency.USD })
+	// boards.forEach(value => {
+	// 	currencyOptions?.push({ value: value.id, label: value.name })
+	// })
 
 	useEffect(() => {
 		setEditFlightButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
@@ -63,6 +74,12 @@ const FlightControl = (): JSX.Element => {
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
 		setBoardId(value)
+	}
+
+	const handlerCurrencySelectChange = (currency: Currency): void => {
+		if (price) {
+			setPrice({ ...price, currency: currency })
+		}
 	}
 
 	/**
@@ -87,7 +104,8 @@ const FlightControl = (): JSX.Element => {
 				endDate: newEndDate,
 				type: FlightType.DEFAULT,
 				airportStart: airportStart,
-				airportEnd: airportEnd
+				airportEnd: airportEnd,
+				price: price
 			}
 
 			flightAddFx(newFlight)
@@ -101,6 +119,7 @@ const FlightControl = (): JSX.Element => {
 		setTimeRangeValue(null)
 		setAirportStart(undefined)
 		setAirportEnd(undefined)
+		setPrice(null)
 	}
 
 	/**
@@ -117,7 +136,8 @@ const FlightControl = (): JSX.Element => {
 						startDate: newStartDate,
 						endDate: newEndDate,
 						airportStart: airportStart,
-						airportEnd: airportEnd
+						airportEnd: airportEnd,
+						price: price
 					}
 					if (flight.boardId === boardId) {
 						flightEditFx(updatedFlight)
@@ -147,7 +167,7 @@ const FlightControl = (): JSX.Element => {
 						<span>Борт:</span>
 						<Select placeholder={'Выберите борт'}
 								value={boardId}
-								options={options}
+								options={boardOptions}
 								style={{ minWidth: '150px' }}
 								onChange={handlerBoardSelectChange}
 								allowClear
@@ -191,42 +211,73 @@ const FlightControl = (): JSX.Element => {
 					</Space>
 				</Space>
 
-				<Select
-					placeholder={'Вылет'}
-					value={airportStart}
-					options={airportSelectOptions}
-					onChange={setAirportStart}
-					popupMatchSelectWidth={false}
-				/>
-				<Select
-					placeholder={'Прилет'}
-					value={airportEnd}
-					options={airportSelectOptions}
-					onChange={setAirportEnd}
-					popupMatchSelectWidth={false}
-				/>
+				<Space direction={'vertical'} align={'end'}>
+					<Space>
+						<Select
+							placeholder={'Вылет'}
+							value={airportStart}
+							options={airportSelectOptions}
+							onChange={setAirportStart}
+							style={{ width: '160px' }}
+							popupMatchSelectWidth={false}
+						/>
+						<Select
+							placeholder={'Прилет'}
+							value={airportEnd}
+							options={airportSelectOptions}
+							onChange={setAirportEnd}
+							style={{ width: '160px' }}
+							popupMatchSelectWidth={false}
+						/>
+					</Space>
+					<Space align={'center'}>
+						<span>Стоимость:</span>
+						<Input
+							value={price?.value}
+							type={'number'}
+							onChange={(event) => {
+								if (price) {
+									setPrice({ ...price, value: event.target.value as unknown as number })
+								}
+							}
+							}
+							style={{ width: '130px' }}
+							allowClear
+						/>
+						<Select placeholder={'Валюта'}
+								value={price?.currency}
+								options={currencyOptions}
+								style={{ minWidth: '100px' }}
+								onChange={handlerCurrencySelectChange}
+								allowClear
+						/>
+					</Space>
+				</Space>
 
 				{flight ?
-					<>
+					<Space direction={'vertical'}>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
 								disabled={editFlightButtonDisable}
 								onClick={handlerEditFlight}
+								style={{ width: '160px' }}
 						>Изменить полет</Button>
 						<Button type={'primary'}
 								danger
 								icon={<DeleteOutlined/>}
+								style={{ width: '160px' }}
 								onClick={() => {
 									flightDeleteFx(flight)
 									flightSelectReset()
 								}}
 						>Удалить полет</Button>
-					</>
+					</Space>
 					:
 					<Button type={'primary'}
 							icon={<PlusOutlined/>}
 							disabled={editFlightButtonDisable}
 							onClick={handlerAddFlight}
+							style={{ width: '160px' }}
 					>Добавить полет</Button>
 				}
 

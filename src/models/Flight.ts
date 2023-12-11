@@ -1,5 +1,6 @@
 import { Dayjs } from 'dayjs'
 import { FlightType } from './FlightType'
+import { Price } from './Price'
 
 /**
  * @author Markitanov Vadim
@@ -13,4 +14,5 @@ export interface Flight {
 	type: FlightType
 	airportStart: string // IATA
 	airportEnd: string // IATA
+	price: Price | null
 }

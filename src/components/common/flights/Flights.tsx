@@ -4,17 +4,18 @@
  * @author Markitanov Vadim
  * @since 11.12.2023
  */
-import React, { JSX, LegacyRef, useRef } from 'react'
+import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import { useStore } from 'effector-react'
 import { $dates, $datesRange } from '../../../store/date'
 import { Board } from '../../../models/Board'
 import { $boards } from '../../../store/board'
 import { $contextMenu } from '../../../store/contextMenu'
 import * as d3 from 'd3'
-import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../../utils/consts'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../../../utils/consts'
 import { Flight } from '../../../models/Flight'
-import FlightItem from '../../frame/flights/FlightItem'
-import ContextMenu from '../../common/ContextMenu'
+import FlightItem from './FlightItem'
+import ContextMenu from '../ContextMenu'
+import { $test } from '../../../store/test'
 
 const Flights = (): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -22,6 +23,14 @@ const Flights = (): JSX.Element => {
 	const boards: Board[] = useStore($boards)
 	const dates = useStore($dates)
 	const contextMenu = useStore($contextMenu)
+	const test = useStore($test)
+
+	useEffect(() => {
+		if (!test) {
+			const container = d3.select(gRef.current)
+			container.attr('transform', `translate(${BOARD_ITEM_WIDTH},${0})`)
+		}
+	}, [test])
 
 	return (
 		<g ref={gRef} id={'flights-layout'}>

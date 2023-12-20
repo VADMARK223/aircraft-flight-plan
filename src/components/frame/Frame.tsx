@@ -15,14 +15,14 @@ import {
 	DATE_ITEM_WIDTH,
 	HEADER_HEIGHT
 } from '../../utils/consts'
-import BoardItem from '../svg/boards/BoardItem'
+import BoardItem from '../common/BoardItem'
 import Background from './Background'
-import Flights from './flights/Flights'
 import Border from './Border'
 import { Space } from 'antd'
 import { useStore } from 'effector-react'
 import { $dates } from '../../store/date'
 import { $boards } from '../../store/board'
+import Flights from '../common/flights/Flights'
 
 const Frame = (): JSX.Element => {
 	const dates = useStore($dates)

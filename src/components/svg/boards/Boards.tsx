@@ -7,7 +7,7 @@
 import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
 import { $boards } from '../../../store/board'
-import BoardItem from './BoardItem'
+import BoardItem from '../../common/BoardItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../../utils/consts'
 
 const Boards = (): JSX.Element => {

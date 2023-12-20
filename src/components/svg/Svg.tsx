@@ -14,7 +14,7 @@ import Dates from './dates/Dates'
 import InfoPanel from '../frame/InfoPanel'
 import Boards from './boards/Boards'
 import Background from './Background'
-import Flights from './flights/Flights'
+import Flights from '../common/flights/Flights'
 import Header from './Header'
 
 const Svg = (): JSX.Element => {

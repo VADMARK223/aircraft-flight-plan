@@ -1,4 +1,4 @@
-import { Flight } from '../../models/Flight'
+import { Flight } from '../../../models/Flight'
 
 /**
  * @author Markitanov Vadim

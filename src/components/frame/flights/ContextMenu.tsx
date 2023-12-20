@@ -6,12 +6,12 @@
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { Flight } from '../../models/Flight'
-import { flightClickFx, flightDeleteFx } from '../../store/flight'
+import { Flight } from '../../../models/Flight'
+import { flightClickFx, flightDeleteFx } from '../../../store/flight'
 import { useStore } from 'effector-react'
-import { $style } from '../../store/style'
-import { $contextMenu, resetContextMenuFx } from '../../store/contextMenu'
-import { $ui } from '../../store/ui'
+import { $style } from '../../../store/style'
+import { $contextMenu, resetContextMenuFx } from '../../../store/contextMenu'
+import { $ui } from '../../../store/ui'
 
 interface MenuItemModel {
 	title: string

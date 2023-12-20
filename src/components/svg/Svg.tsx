@@ -1,5 +1,5 @@
 /**
- * Компонент
+ * Компонент перетаскиваемой рабочей области.
  *
  * @author Markitanov Vadim
  * @since 08.12.2023
@@ -10,11 +10,12 @@ import { Space } from 'antd'
 import { $ui } from '../../store/ui'
 import { useStore } from 'effector-react'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, HEADER_HEIGHT } from '../../utils/consts'
-import Dates from '../dates/Dates'
-import InfoPanel from '../InfoPanel'
+import Dates from './dates/Dates'
+import InfoPanel from '../frame/InfoPanel'
 import Boards from './boards/Boards'
 import Background from './Background'
 import Flights from './flights/Flights'
+import Header from './Header'
 
 const Svg = (): JSX.Element => {
 	const ui = useStore($ui)
@@ -60,6 +61,7 @@ const Svg = (): JSX.Element => {
 					>
 						<g cursor={'pointer'} id={'INFO'}>
 							<InfoPanel/>
+
 						</g>
 					</svg>
 				</div>
@@ -70,6 +72,7 @@ const Svg = (): JSX.Element => {
 						style={{ width: svgDimensions.width, height: HEADER_HEIGHT + DATE_ITEM_HEIGHT }}
 					>
 						<Dates/>
+						<Header/>
 					</svg>
 				</div>
 			</Space>

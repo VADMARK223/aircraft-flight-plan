@@ -6,17 +6,17 @@
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { Flight } from '../../models/Flight'
-import { $flightsSelect, flightClickFx } from '../../store/flight'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../utils/consts'
-import { $style, StyleStore } from '../../store/style'
+import { Flight } from '../../../models/Flight'
+import { $flightsSelect, flightClickFx } from '../../../store/flight'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
+import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'
-import { appendRotateText, drawAirportText, drawText } from '../../utils/utils'
-import { FlightType } from '../../models/FlightType'
-import { greenColor } from '../../utils/style'
-import { setContextMenuFx } from '../../store/contextMenu'
-import { $ui } from '../../store/ui'
-import { $test } from '../../store/test'
+import { appendRotateText, drawAirportText, drawText } from '../../../utils/utils'
+import { FlightType } from '../../../models/FlightType'
+import { greenColor } from '../../../utils/style'
+import { setContextMenuFx } from '../../../store/contextMenu'
+import { $ui } from '../../../store/ui'
+import { $test } from '../../../store/test'
 
 interface FlightItemProps {
 	x: number

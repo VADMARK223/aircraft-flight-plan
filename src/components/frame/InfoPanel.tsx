@@ -6,11 +6,11 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, FULL_TIME_FORMAT, HEADER_HEIGHT } from '../utils/consts'
+import { BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, FULL_TIME_FORMAT, HEADER_HEIGHT } from '../../utils/consts'
 import dayjs from 'dayjs'
-import { getWeekCount } from '../utils/utils'
+import { getWeekCount } from '../../utils/utils'
 import { useStore } from 'effector-react'
-import { $style } from '../store/style'
+import { $style } from '../../store/style'
 
 const InfoPanel = (): JSX.Element => {
 	const style = useStore($style)

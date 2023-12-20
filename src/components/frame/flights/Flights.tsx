@@ -6,14 +6,14 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../../utils/consts'
-import { Board } from '../../models/Board'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../../../utils/consts'
+import { Board } from '../../../models/Board'
 import { useStore } from 'effector-react'
-import { $boards } from '../../store/board'
-import { $dates, $datesRange } from '../../store/date'
+import { $boards } from '../../../store/board'
+import { $dates, $datesRange } from '../../../store/date'
 import FlightItem from './FlightItem'
-import { Flight } from '../../models/Flight'
-import { $contextMenu } from '../../store/contextMenu'
+import { Flight } from '../../../models/Flight'
+import { $contextMenu } from '../../../store/contextMenu'
 import ContextMenu from './ContextMenu'
 
 const Flights = (): JSX.Element => {

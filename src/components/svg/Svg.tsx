@@ -12,7 +12,7 @@ import { useStore } from 'effector-react'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, HEADER_HEIGHT } from '../../utils/consts'
 import Dates from './dates/Dates'
 import InfoPanel from '../frame/InfoPanel'
-import Boards from './boards/Boards'
+import Boards from '../common/boards/Boards'
 import Background from './Background'
 import Flights from '../common/flights/Flights'
 import Header from './Header'
@@ -85,6 +85,7 @@ const Svg = (): JSX.Element => {
 						style={{ width: BOARD_ITEM_WIDTH, height: svgDimensions.height }}
 					>
 						<Boards/>
+
 					</svg>
 				</div>
 				<div style={{ marginTop: -5 }}>
@@ -95,6 +96,7 @@ const Svg = (): JSX.Element => {
 					>
 						<Background/>
 						<Flights/>
+
 					</svg>
 				</div>
 			</Space>

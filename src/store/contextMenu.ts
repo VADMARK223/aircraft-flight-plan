@@ -1,6 +1,7 @@
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
 import { createEffect } from 'effector/compat'
+import { Board } from '../models/Board'
 
 /**
  * @author Markitanov Vadim
@@ -10,7 +11,8 @@ import { createEffect } from 'effector/compat'
 export interface ContextMenuModel {
 	x: number
 	y: number
-	data: Flight
+	data: Flight | Board
+	isFlight: boolean
 }
 
 export const setContextMenuFx = createEffect<ContextMenuModel | null, ContextMenuModel | null>()

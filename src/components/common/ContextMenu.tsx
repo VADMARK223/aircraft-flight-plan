@@ -7,31 +7,22 @@
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Flight } from '../../models/Flight'
-import { flightClickFx, flightDeleteFx } from '../../store/flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../store/style'
 import { $contextMenu, resetContextMenuFx } from '../../store/contextMenu'
+import { Board } from '../../models/Board'
 
 interface MenuItemModel {
 	title: string
-	action: (datum: Flight) => void
+	action: (datum: Flight | Board) => void
 }
 
-const menuItems: MenuItemModel[] = [
-	{
-		title: 'Редактировать',
-		action: (datum: Flight) => {
-			flightClickFx(datum)
-		}
-	}, {
-		title: 'Удалить',
-		action: (datum: Flight) => {
-			flightDeleteFx(datum)
-		}
-	}
-]
+interface ContextMenuProps {
+	menuItems: MenuItemModel[]
+}
 
-const ContextMenu = (): JSX.Element => {
+const ContextMenu = (props: ContextMenuProps): JSX.Element => {
+	const { menuItems } = props
 	const style = useStore($style)
 	const contextMenu = useStore($contextMenu)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -77,7 +68,7 @@ const ContextMenu = (): JSX.Element => {
 			.on('click', () => {
 				resetContextMenuFx()
 			})
-	}, [contextMenu, style])
+	}, [menuItems, contextMenu, style])
 	return (
 		<g ref={gRef}/>
 	)

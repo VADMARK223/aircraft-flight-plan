@@ -15,7 +15,6 @@ import {
 	DATE_ITEM_WIDTH,
 	HEADER_HEIGHT
 } from '../../utils/consts'
-import BoardItem from '../common/BoardItem'
 import Background from './Background'
 import Border from './Border'
 import { Space } from 'antd'
@@ -23,6 +22,7 @@ import { useStore } from 'effector-react'
 import { $dates } from '../../store/date'
 import { $boards } from '../../store/board'
 import Flights from '../common/flights/Flights'
+import Boards from '../common/boards/Boards'
 
 const Frame = (): JSX.Element => {
 	const dates = useStore($dates)
@@ -90,17 +90,19 @@ const Frame = (): JSX.Element => {
 						 height={bottomCanvasHeight}
 						 style={{ backgroundColor: '$backgroundColor' }}
 					>
-						{boards.map((value, index) => (
+						<Boards/>
+						{/*{boards.map((value, index) => (
 							<BoardItem key={value.id}
 									   data={value}
 									   x={0}
 									   y={BOARD_ITEM_HEIGHT * index}
 									   width={BOARD_ITEM_WIDTH}
-									   height={BOARD_ITEM_HEIGHT}/>))}
+									   height={BOARD_ITEM_HEIGHT}/>))}*/}
 						<Background/>
 						<Flights/>
 						<Border/>
 					</svg>
+
 				</div>
 			</div>
 		</Space>

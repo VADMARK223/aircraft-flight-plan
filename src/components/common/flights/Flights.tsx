@@ -16,6 +16,7 @@ import { Flight } from '../../../models/Flight'
 import FlightItem from './FlightItem'
 import ContextMenu from '../ContextMenu'
 import { $test } from '../../../store/test'
+import { flightClickFx, flightDeleteFx } from '../../../store/flight'
 
 const Flights = (): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -74,7 +75,19 @@ const Flights = (): JSX.Element => {
 				)
 			)}
 			<g id={'context-menu-layout'}>
-				{contextMenu && <ContextMenu/>}
+				{contextMenu && contextMenu.isFlight && <ContextMenu menuItems={[
+					{
+						title: 'Редактировать',
+						action: (datum: Flight | Board) => {
+							flightClickFx(datum as Flight)
+						}
+					}, {
+						title: 'Удалить',
+						action: (datum: Flight | Board) => {
+							flightDeleteFx(datum as Flight)
+						}
+					}
+				]}/>}
 			</g>
 		</g>
 	)

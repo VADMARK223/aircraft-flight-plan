@@ -6,19 +6,16 @@
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_WIDTH } from '../../utils/consts'
-import { Board } from '../../models/Board'
+import { BOARD_ITEM_WIDTH } from '../../../utils/consts'
+import { Board } from '../../../models/Board'
 import { useStore } from 'effector-react'
-import { $style } from '../../store/style'
-import { $boardSelect, boardClickFx } from '../../store/board'
-import { BoardType } from '../../models/BoardType'
-import { greenColor, redColor } from '../../utils/style'
-import { setContextMenuFx } from '../../store/contextMenu'
-import { FlightType } from '../../models/FlightType'
-import dayjs from 'dayjs'
-import { Currency } from '../../models/Currency'
-import { $test } from '../../store/test'
-import { $ui } from '../../store/ui'
+import { $style } from '../../../store/style'
+import { $boardSelect, boardClickFx } from '../../../store/board'
+import { BoardType } from '../../../models/BoardType'
+import { greenColor, redColor } from '../../../utils/style'
+import { $test } from '../../../store/test'
+import { $ui } from '../../../store/ui'
+import { setContextMenuFx } from '../../../store/contextMenu'
 
 interface BoardItemProps {
 	data: Board
@@ -44,20 +41,11 @@ const BoardItem = (props: BoardItemProps): JSX.Element => {
 			})
 			.on('contextmenu', (event: PointerEvent) => {
 				event.preventDefault()
-				console.log('AAAAA')
 				setContextMenuFx({
-					x: test ? 0 : event.offsetX - BOARD_ITEM_WIDTH,
+					isFlight: false,
+					x: 0,
 					y: test ? event.offsetY + ui.y : event.offsetY,
-					data: {
-						id: '19',
-						boardId: 9,
-						type: FlightType.DEFAULT,
-						startDate: dayjs().startOf('day').add(1, 'hours'),
-						endDate: dayjs().startOf('day').add(3, 'hours'),
-						airportStart: 'ASF',
-						airportEnd: 'ADH',
-						price: { value: 900, currency: Currency.USD }
-					}
+					data: data
 				})
 			})
 

@@ -45,6 +45,7 @@ const FlightItem = (props: FlightItemProps): JSX.Element => {
 		}).on('contextmenu', (event: PointerEvent) => {
 			event.preventDefault()
 			setContextMenuFx({
+				isFlight: true,
 				x: test ? event.offsetX + ui.x : event.offsetX - BOARD_ITEM_WIDTH,
 				y: test ? event.offsetY + ui.y : event.offsetY,
 				data: data

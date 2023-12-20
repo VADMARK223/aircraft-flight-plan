@@ -14,7 +14,7 @@ import { $dates, $datesRange } from '../../../store/date'
 import FlightItem from './FlightItem'
 import { Flight } from '../../../models/Flight'
 import { $contextMenu } from '../../../store/contextMenu'
-import ContextMenu from './ContextMenu'
+import ContextMenu from '../../common/ContextMenu'
 
 const Flights = (): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)

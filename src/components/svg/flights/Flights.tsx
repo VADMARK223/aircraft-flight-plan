@@ -14,7 +14,7 @@ import * as d3 from 'd3'
 import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../../utils/consts'
 import { Flight } from '../../../models/Flight'
 import FlightItem from '../../frame/flights/FlightItem'
-import ContextMenu from '../../frame/flights/ContextMenu'
+import ContextMenu from '../../common/ContextMenu'
 
 const Flights = (): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)

@@ -9,7 +9,7 @@ import { Board } from '../models/Board'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { createEvent, createStore } from 'effector'
-import { flightAddFx, flightDeleteFx, flightSelectReset } from './flight'
+import { $flightsSelect, flightAddFx, flightDeleteFx, flightSelectReset } from './flight'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
@@ -21,6 +21,21 @@ $boards.watch((boards: Board[]) => {
 	if (!boards.length) {
 		flightSelectReset()
 	}
+
+	const flightsSelect = $flightsSelect.getState()
+	if (flightsSelect) {
+		let find = false
+		for (let i = 0; i < boards.length; i++) {
+			if (boards[i].flights.indexOf(flightsSelect) !== -1) {
+				find = true
+				break
+			}
+		}
+		if (!find) {
+			flightSelectReset()
+		}
+	}
+
 	const boardSelect = $boardSelect.getState()
 	if (boardSelect !== null) {
 		const isBoardSelectInBoards = boards.find(value => boardSelect.id === value.id)

@@ -14,7 +14,7 @@ import { combineDateTime } from '../../../utils/utils'
 import { toast } from 'react-toastify'
 import { DATE_FORMAT } from '../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
-import type { RangeValue } from 'rc-picker/lib/interface'
+import type {RangeValueType} from 'rc-picker/lib/PickerInput/RangePicker'
 import { Flight } from '../../../models/Flight'
 import { FlightType } from '../../../models/FlightType'
 import { $airports } from '../../../store/airport'
@@ -29,8 +29,8 @@ const FlightControl = (): JSX.Element => {
 	const [boardId, setBoardId] = useState<number | undefined>()
 	const [flightId, setFlightId] = useState<string | undefined>()
 	const [price, setPrice] = useState<Price | null>({ value: 0, currency: Currency.RUB })
-	const [dateRangeValue, setDateRangeValue] = useState<RangeValue<Dayjs> | null>(null)
-	const [timeRangeValue, setTimeRangeValue] = useState<RangeValue<Dayjs> | null>(null)
+	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
+	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [airportStart, setAirportStart] = useState<string | undefined>()
 	const [airportEnd, setAirportEnd] = useState<string | undefined>()
 

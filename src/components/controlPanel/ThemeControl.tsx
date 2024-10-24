@@ -7,7 +7,7 @@
 import { JSX } from 'react'
 import { useStore } from 'effector-react'
 import { $style, setDarkThemeFx, THEME_LOCAL_STORAGE_KEY, THEME_LOCAL_STORAGE_VALUE } from '../../store/style'
-import { Space, Switch } from 'antd'
+import { Space, Switch, Tooltip } from 'antd'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { $test, setTestFx, TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE } from '../../store/test'
 import { SHOW_TEST_TOGGLE } from '../../utils/consts'
@@ -40,13 +40,16 @@ const ThemeControl = (): JSX.Element => {
 				style={{ display: SHOW_TEST_TOGGLE ? undefined : 'none' }}
 			>
 				<Space>
-					<span>Режим перетаскивания:</span>
-					<Switch
-						checkedChildren={<CheckOutlined/>}
-						unCheckedChildren={<CloseOutlined/>}
-						onChange={onTestChangeHandler}
-						defaultChecked={test}
-					/>
+					<Tooltip title={'В разработке'}>
+						<span>Режим перетаскивания:</span>
+						<Switch
+							disabled
+							checkedChildren={<CheckOutlined/>}
+							unCheckedChildren={<CloseOutlined/>}
+							onChange={onTestChangeHandler}
+							defaultChecked={test}
+						/>
+					</Tooltip>
 				</Space>
 			</div>
 			<span>Тёмная тема:</span>

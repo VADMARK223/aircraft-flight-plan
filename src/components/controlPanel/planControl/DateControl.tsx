@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { DatePicker, Space } from 'antd'
 import dayjs from 'dayjs'
-import type { RangeValue } from 'rc-picker/lib/interface'
+import type {RangeValueType} from 'rc-picker/lib/PickerInput/RangePicker'
 import { DATE_FORMAT } from '../../../utils/consts'
 import { $datesRange, updateDatesRangeFx } from '../../../store/date'
 import { useStore } from 'effector-react'
@@ -39,7 +39,7 @@ const DateControl = (): JSX.Element => {
 
 	}, [dateControlMode])
 
-	const setDateChange = (values: RangeValue<dayjs.Dayjs> | null): void => {
+	const setDateChange = (values: RangeValueType<dayjs.Dayjs> | null): void => {
 		if (values && values[0] && values[1]) {
 			updateDatesRangeFx([values[0].startOf('day'), values[1].startOf('day')])
 		}

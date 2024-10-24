@@ -3,7 +3,7 @@
  * @since 04.12.2023
  */
 import { createStore } from 'effector'
-import type { RangeValue } from 'rc-picker/lib/interface'
+import type {RangeValueType} from 'rc-picker/lib/PickerInput/RangePicker'
 import dayjs, { Dayjs } from 'dayjs'
 import { createEffect } from 'effector/compat'
 import { getWeekCount } from '../utils/utils'
@@ -14,8 +14,8 @@ const updateDatesFx = createEffect<DateModel[], DateModel[]>()
 export const $dates = createStore<DateModel[]>([])
 	.on(updateDatesFx, (state, payload) => payload)
 
-export const updateDatesRangeFx = createEffect<RangeValue<Dayjs>, RangeValue<Dayjs>>()
-export const $datesRange = createStore<RangeValue<Dayjs>>([dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')])
+export const updateDatesRangeFx = createEffect<RangeValueType<Dayjs>, RangeValueType<Dayjs>>()
+export const $datesRange = createStore<RangeValueType<Dayjs>>([dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')])
 // export const $datesRange = createStore<RangeValue<Dayjs>>([dayjs().startOf('day'), dayjs().startOf('day')])
 $datesRange.on(updateDatesRangeFx, (state, payload) => payload)
 $datesRange.watch((state, payload) => {

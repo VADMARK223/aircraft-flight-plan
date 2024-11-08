@@ -14,8 +14,8 @@ import lombok.Data
 @Entity
 @Table(schema = "afp_schema", name = "route")
 @Data
-class Route {
+data class Route (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val routeId: Int = 0
-}
+    var routeId: Int = 0
+)

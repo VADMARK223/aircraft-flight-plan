@@ -1,0 +1,42 @@
+@import "variables";
+
+html {
+  //background-color: #c94f4f;
+}
+
+body {
+  margin: var(--globalMargin);
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
+  overflow-y: hidden; // Отключение вертикального строла на странице
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased; // Сглаживание шрифтов (для браузеров использующих движок WebKit, таких как Google Chrome и Safari)
+  -moz-osx-font-smoothing: grayscale; // Сглаживание шрифтов (для браузеров использующих движок Gecko, таких как Firefox)
+}
+
+.app {
+  &.light-theme {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+  }
+
+  &.dark-theme {
+    background-color: var(--backgroundColor-dark);
+    color: var(--textColor-dark);
+  }
+
+  .control-panel {
+    display: flex;
+    width: calc(100vw - 3 * var(--globalMargin));
+    justify-content: space-between;
+  }
+
+  .control-panel-divider {
+    margin: 0;
+    width: 70vw;
+  }
+
+  .viewer-width {
+    width: calc(100vw - 3 * var(--globalMargin));
+  }
+}

@@ -4,20 +4,21 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import vadmark.afp.dto.RouteDto
+import vadmark.afp.service.UserService
+import vadmark.afp.entity.Route
+import vadmark.afp.service.RouteService
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/route")
-class RouteController {
+class RouteController(private val routeService: RouteService, private val userService: UserService) {
     @GetMapping("/get_all")
-    fun getAll(): Array<RouteDto> {
-        val dto1 = RouteDto()
-        dto1.name = "Board1"
+    fun getAll(): List<Route> {
+        return routeService.findAll()
+    }
 
-        val dto2 = RouteDto()
-        dto2.name = "Board1"
-
-        return arrayOf(dto1, dto2)
+    @GetMapping("/info")
+    fun getInfo(): String {
+        return userService.getInfo()
     }
 }

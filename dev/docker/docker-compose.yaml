@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  buddy-api:
+    image: fondorg/aircraft-flight-plan-client:latest
+    container_name: aircraft-flight-plan-client
+    ports:
+      - '3000:3000'

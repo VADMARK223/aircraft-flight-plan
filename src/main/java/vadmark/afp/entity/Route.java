@@ -9,7 +9,7 @@ import lombok.Setter;
  * @since 09.11.2024
  */
 @Entity
-@Table(schema = "afp_schema", name = "route")
+@Table(name = "route")
 @Getter
 @Setter
 public class Route {

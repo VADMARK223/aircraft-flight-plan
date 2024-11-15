@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+**/private-values.yaml
+client/afp/.env.production

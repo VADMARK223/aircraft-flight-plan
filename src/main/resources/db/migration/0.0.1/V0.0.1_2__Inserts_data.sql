@@ -3,7 +3,9 @@ INSERT INTO dict_route_type VALUES (2, 'Грузовой');
 
 
 INSERT INTO contract (contract_id) VALUES (999);
+INSERT INTO contract (contract_id) VALUES (888);
 INSERT INTO flight (contract_id) VALUES (999);
+INSERT INTO flight (contract_id) VALUES (888);
 INSERT INTO aircraft (aircraft_name, aircraft_type_id, tail) VALUES ('Boeng', 3,'tail');
 INSERT INTO aircraft (aircraft_name, aircraft_type_id, tail) VALUES ('Airbus', 4,'tail4');
 

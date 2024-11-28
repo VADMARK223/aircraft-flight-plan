@@ -14,4 +14,7 @@ class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "flight_id")
     var flightId: Int = 0
+
+    @Column(name = "contract_id", nullable = false)
+    var contractId: Int = 0
 }

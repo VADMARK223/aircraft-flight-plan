@@ -78,9 +78,9 @@ ALTER TABLE route
     ADD CONSTRAINT route_flight_fk
         FOREIGN KEY (flight_id) REFERENCES flight(flight_id);
 ALTER TABLE flight ADD CONSTRAINT flight_contract_id_unique UNIQUE (contract_id);
--- ALTER TABLE flight
---     ADD CONSTRAINT flight_contract_fk
---         FOREIGN KEY (contract_id) REFERENCES flight(contract_id);
+ALTER TABLE flight
+    ADD CONSTRAINT flight_contract_fk
+        FOREIGN KEY (contract_id) REFERENCES contract(contract_id);
 
 CREATE TABLE airport
 (

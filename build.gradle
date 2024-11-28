@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'vadmark'
-version = '0.0.2-SNAPSHOT'
+version = '0.0.1'
 
 java {
     sourceCompatibility = '17'

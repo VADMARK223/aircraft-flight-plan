@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "flight-plan-api.fullname" . }}
+  labels:
+    {{- include "flight-plan-api.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "flight-plan-api.selectorLabels" . | nindent 4 }}
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: {{ include "flight-plan-api.fullname" . }}-ip
+#  labels:
+#    {{- include "flight-plan-api.labels" . | nindent 4 }}
+#spec:
+#  type: {{ .Values.service.type }}
+#  ports:
+#    - port: {{ .Values.service.loadBalancerPort }}
+#      targetPort: 8080
+#      protocol: TCP
+#      name: http
+#  selector:
+#    {{- include "flight-plan-api.selectorLabels" . | nindent 4 }}

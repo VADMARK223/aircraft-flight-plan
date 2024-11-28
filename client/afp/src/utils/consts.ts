@@ -9,6 +9,7 @@ import { Currency } from '../models/Currency'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
+export const LOCAL_MODE = false
 export const SHOW_TEST_TOGGLE: boolean = true
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
@@ -28,9 +29,9 @@ export const RESIZE_STICK_WIDTH = 5
 export const boardsDefault: Board[] = [
 	{
 		id: 1,
-		name: 'Борт 1',
+		name: 'Рейс 1',
 		type: BoardType.LOW,
-		flights: [
+		routes: [
 			{
 				id: '11',
 				boardId: 1,
@@ -65,9 +66,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 2,
-		name: 'Борт 2',
+		name: 'Рейс 2',
 		type: BoardType.DEFAULT,
-		flights: [
+		routes: [
 			{
 				id: '12',
 				boardId: 2,
@@ -112,9 +113,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 3,
-		name: 'Борт 3',
+		name: 'Рейс 3',
 		type: BoardType.LOW,
-		flights: [
+		routes: [
 			{
 				id: '13',
 				boardId: 3,
@@ -129,9 +130,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 4,
-		name: 'Борт 4',
+		name: 'Рейс 4',
 		type: BoardType.PRIORITY,
-		flights: [
+		routes: [
 			{
 				id: '14',
 				boardId: 4,
@@ -146,9 +147,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 5,
-		name: 'Борт 5',
+		name: 'Рейс 5',
 		type: BoardType.LOW,
-		flights: [
+		routes: [
 			{
 				id: '15',
 				boardId: 5,
@@ -163,9 +164,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 6,
-		name: 'Борт 6',
+		name: 'Рейс 6',
 		type: BoardType.DEFAULT,
-		flights: [
+		routes: [
 			{
 				id: '16',
 				boardId: 6,
@@ -190,9 +191,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 7,
-		name: 'Борт 7',
+		name: 'Рейс 7',
 		type: BoardType.DEFAULT,
-		flights: [
+		routes: [
 			{
 				id: '17',
 				boardId: 7,
@@ -207,9 +208,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 8,
-		name: 'Борт 8',
+		name: 'Рейс 8',
 		type: BoardType.DEFAULT,
-		flights: [
+		routes: [
 			{
 				id: '18',
 				boardId: 8,
@@ -224,9 +225,9 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 9,
-		name: 'Борт 9',
+		name: 'Рейс 9',
 		type: BoardType.PRIORITY,
-		flights: [
+		routes: [
 			{
 				id: '19',
 				boardId: 9,

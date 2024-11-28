@@ -8,7 +8,7 @@ import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../utils/consts'
 import { CommonProps } from '../common/CommonProps'
-import BoardItem from '../common/boards/BoardItem'
+import FlightItem from '../common/flights/FlightItem'
 import ContextMenu from '../common/ContextMenu'
 import { Flight } from '../../models/Flight'
 import { Board } from '../../models/Board'
@@ -22,7 +22,7 @@ const Boards = ({ x, y }: CommonProps): JSX.Element => {
   return (
     <g id={'boards'} transform={`translate(${x}, ${y})`}>
       {boards.map((value, index) => (
-        <BoardItem key={value.id}
+        <FlightItem key={value.id}
                    data={value}
                    x={0}
                    y={BOARD_ITEM_HEIGHT * index}

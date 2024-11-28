@@ -21,8 +21,8 @@ import { Space } from 'antd'
 import { useStore } from 'effector-react'
 import { $dates } from '../../store/date'
 import { $boards } from '../../store/board'
-import Flights from '../common/flights/Flights'
-import Boards from '../common/boards/Boards'
+import Routes from '../common/routes/Routes'
+import Boards from '../common/flights/Flights'
 
 const Frame = (): JSX.Element => {
 	const dates = useStore($dates)
@@ -99,7 +99,7 @@ const Frame = (): JSX.Element => {
 									   width={BOARD_ITEM_WIDTH}
 									   height={BOARD_ITEM_HEIGHT}/>))}*/}
 						<Background/>
-						<Flights/>
+						<Routes/>
 						<Border/>
 					</svg>
 

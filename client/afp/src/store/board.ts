@@ -26,7 +26,7 @@ $boards.watch((boards: Board[]) => {
 	if (flightsSelect) {
 		let find = false
 		for (let i = 0; i < boards.length; i++) {
-			if (boards[i].flights.indexOf(flightsSelect) !== -1) {
+			if (boards[i].routes.indexOf(flightsSelect) !== -1) {
 				find = true
 				break
 			}
@@ -66,7 +66,7 @@ $boards.on(flightAddFx, (boards, flight) => {
 	if (findBoard === undefined) {
 		return boards
 	}
-	findBoard.flights = [...findBoard.flights, flight]
+	findBoard.routes = [...findBoard.routes, flight]
 	const newBoards = [...boards]
 	newBoards[boards.indexOf(findBoard)] = findBoard
 	return newBoards
@@ -92,10 +92,10 @@ $boards.on(boardDeleteFx, (boards, board) => {
 $boards.on(boardsDeleteAllFx, _ => [])
 $boards.on(flightEditFx, (boards, flight: Flight) => {
 	const boardIndex = boards.findIndex(value => value.id === flight.boardId)
-	const flightIndex = boards[boardIndex].flights.findIndex(value => {
+	const flightIndex = boards[boardIndex].routes.findIndex(value => {
 		return flight.id === value.id
 	})
-	boards[boardIndex].flights[flightIndex] = flight
+	boards[boardIndex].routes[flightIndex] = flight
 	return [...boards]
 })
 $boards.on(flightDeleteFx, (boards, flight) => {
@@ -106,20 +106,20 @@ $boards.on(flightDeleteFx, (boards, flight) => {
 			break
 		}
 		const board = boards[i]
-		for (let j = 0; j < board.flights.length; j++) {
-			const flight = board.flights[j]
+		for (let j = 0; j < board.routes.length; j++) {
+			const flight = board.routes[j]
 			stopFind = flight.id === flightId
 			if (stopFind) {
 				findBoardIndex = boards.indexOf(board)
-				findFlightIndex = board.flights.indexOf(flight)
+				findFlightIndex = board.routes.indexOf(flight)
 				break
 			}
 		}
 	}
 
 	const newBoards = [...boards]
-	const newFlights = [...boards[findBoardIndex].flights]
-	newBoards[findBoardIndex].flights = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
+	const newFlights = [...boards[findBoardIndex].routes]
+	newBoards[findBoardIndex].routes = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
 	return newBoards
 })
 

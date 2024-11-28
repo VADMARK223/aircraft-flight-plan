@@ -42,7 +42,7 @@ const BoardControl = (): JSX.Element => {
 			id: -1,
 			name: boardName,
 			type: boardType,
-			flights: []
+			routes: []
 		}
 		boardAddFx(newBoard)
 		setBoardName('')

@@ -181,10 +181,10 @@ const FlightsDrag = (): JSX.Element => {
 	useEffect(() => {
 		const temp: FlightViewModelDrag[] = []
 		boards.forEach((value, index) => {
-			if (!value.flights) {
+			if (!value.routes) {
 				return undefined
 			}
-			value.flights.forEach((flightModel) => {
+			value.routes.forEach((flightModel) => {
 				const flightViewModel: FlightViewModelDrag = {
 					model: flightModel,
 					index: index,

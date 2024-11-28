@@ -10,6 +10,6 @@ import { BoardType } from './BoardType'
 export interface Board {
 	id: number
 	name: string
-	flights: Flight[]
+	routes: Flight[]
 	type: BoardType
 }

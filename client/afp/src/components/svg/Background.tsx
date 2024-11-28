@@ -11,7 +11,7 @@ import { $dates } from '../../store/date'
 import { $flights, boardSelectResetFx } from '../../store/board'
 import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import * as d3 from 'd3'
-import { flightSelectReset } from '../../store/flight'
+import { flightSelectReset } from '../../store/route'
 
 const Background = (): JSX.Element => {
 	const style = useStore($style)

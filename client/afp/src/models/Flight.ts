@@ -9,7 +9,7 @@ import { FlightType } from './FlightType'
  */
 export interface Flight {
 	id: number
-	name: string
+	name?: string
 	routes: Route[]
 	type: FlightType
 }

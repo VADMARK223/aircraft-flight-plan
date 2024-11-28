@@ -6,9 +6,9 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../../utils/consts'
+import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import { $flights, boardSelectResetFx } from '../../store/board'
-import { flightSelectReset } from '../../store/flight'
+import { flightSelectReset } from '../../store/route'
 import { useStore } from 'effector-react'
 import { $dates } from '../../store/date'
 import { $style } from '../../store/style'

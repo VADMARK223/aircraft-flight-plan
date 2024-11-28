@@ -11,7 +11,7 @@ import { useStore } from 'effector-react'
 import { $flights, boardSelectResetFx } from '../../store/board'
 import { $dates } from '../../store/date'
 import { $style } from '../../store/style'
-import { flightSelectReset } from '../../store/flight'
+import { flightSelectReset } from '../../store/route'
 
 const Background = (): JSX.Element => {
 	const style = useStore($style)

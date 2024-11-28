@@ -16,7 +16,7 @@ import { Route } from '../../../models/Route'
 import RouteItem from './RouteItem'
 import ContextMenu from '../ContextMenu'
 import { $test } from '../../../store/test'
-import { flightClickFx, flightDeleteFx } from '../../../store/flight'
+import { flightClickFx, flightDeleteFx } from '../../../store/route'
 
 const Routes = (): JSX.Element => {
   const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)

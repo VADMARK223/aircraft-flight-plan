@@ -7,16 +7,16 @@
 import React, { JSX } from 'react'
 import { Space } from 'antd'
 import FlightControl from './flightControl/FlightControl'
-import BoardControl from './boardControl/BoardControl'
 import ThemeControl from './ThemeControl'
 import PlanControl from './planControl/PlanControl'
+import RouteControl from './routeControl/RouteControl'
 
 const ControlPanel = (): JSX.Element => {
 	return (
 		<Space align={'start'} className={'control-panel'}>
 			<Space direction={'vertical'}>
-				<BoardControl/>
 				<FlightControl/>
+				<RouteControl/>
 				<PlanControl/>
 			</Space>
 			<ThemeControl/>

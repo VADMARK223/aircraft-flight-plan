@@ -7,7 +7,7 @@
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Route } from '../../../models/Route'
-import { $flightsSelect, flightClickFx } from '../../../store/flight'
+import { $flightsSelect, flightClickFx } from '../../../store/route'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
 import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'

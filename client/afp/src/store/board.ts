@@ -9,13 +9,13 @@ import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { Route } from '../models/Route'
 import { createEvent, createStore } from 'effector'
-import { $flightsSelect, flightAddFx, flightDeleteFx, flightSelectReset } from './flight'
+import { $flightsSelect, flightAddFx, flightDeleteFx, flightSelectReset } from './route'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
-import { flightsDefault } from '../utils/consts'
+import { flightsDefault, LOCAL_MODE } from '../utils/consts'
 
-export const $flights = createStore<Flight[]>(flightsDefault)
+export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $flightSelect = createStore<Flight | null>(null)
 $flights.watch((boards: Flight[]) => {
 	if (!boards.length) {

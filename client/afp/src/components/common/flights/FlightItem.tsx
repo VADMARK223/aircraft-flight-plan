@@ -7,18 +7,18 @@
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { BOARD_ITEM_WIDTH } from '../../../utils/consts'
-import { Board } from '../../../models/Board'
+import { Flight } from '../../../models/Flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../../store/style'
-import { $boardSelect, boardClickFx } from '../../../store/board'
-import { BoardType } from '../../../models/BoardType'
+import { $flightSelect, boardClickFx } from '../../../store/board'
+import { FlightType } from '../../../models/FlightType'
 import { greenColor, redColor } from '../../../utils/style'
 import { $test } from '../../../store/test'
 import { $ui } from '../../../store/ui'
 import { setContextMenuFx } from '../../../store/contextMenu'
 
 interface BoardItemProps {
-	data: Board
+	data: Flight
 	x: number
 	y: number
 	width: number
@@ -28,7 +28,7 @@ interface BoardItemProps {
 const FlightItem = (props: BoardItemProps): JSX.Element => {
 	const { data, x, y, width, height } = props
 	const style = useStore($style)
-	const boardSelect = useStore($boardSelect)
+	const boardSelect = useStore($flightSelect)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const test = useStore($test)
 	const ui = useStore($ui)
@@ -59,13 +59,13 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('stroke', style.lineColor)
 			.attr('fill', style.backgroundColor)
 
-		const getColorByType = (type: BoardType.LOW | BoardType.DEFAULT | BoardType.PRIORITY) => {
+		const getColorByType = (type: FlightType.LOW | FlightType.DEFAULT | FlightType.PRIORITY) => {
 			switch (type) {
-				case BoardType.LOW:
+				case FlightType.LOW:
 					return greenColor
-				case BoardType.DEFAULT:
+				case FlightType.DEFAULT:
 					return style.textColor
-				case BoardType.PRIORITY:
+				case FlightType.PRIORITY:
 					return redColor
 			}
 		}

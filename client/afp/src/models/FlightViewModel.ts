@@ -1,4 +1,4 @@
-import { Flight } from './Flight'
+import { Route } from './Route'
 
 /**
  * Представление модели данных полета.
@@ -6,6 +6,6 @@ import { Flight } from './Flight'
  * @author Markitanov Vadim
  * @since 06.12.2023
  */
-export interface FlightViewModel extends Flight {
+export interface FlightViewModel extends Route {
 	index: number
 }

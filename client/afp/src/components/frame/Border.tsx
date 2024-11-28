@@ -9,14 +9,14 @@ import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH} from '../../utils
 import * as d3 from 'd3'
 import { useStore } from 'effector-react'
 import { drawLine } from '../../utils/utils'
-import { $boards } from '../../store/board'
+import { $flights } from '../../store/board'
 import { $dates } from '../../store/date'
 import { $style } from '../../store/style'
 
 const Border = (): JSX.Element => {
 	const style = useStore($style)
 	const dates = useStore($dates)
-	const boards = useStore($boards)
+	const boards = useStore($flights)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 	const x = BOARD_ITEM_WIDTH
 	const y = 0

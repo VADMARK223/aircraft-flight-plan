@@ -2,9 +2,9 @@
  * @author Markitanov Vadim
  * @since 08.12.2023
  */
-import { Board } from '../models/Board'
+import { Flight } from '../models/Flight'
 
-export const getBoardIndexByBoardId = (boards: Board[], boardId: number): number => {
+export const getBoardIndexByBoardId = (boards: Flight[], boardId: number): number => {
 	let findBoardIndex = -1
 	let stop = false
 	for (let i = 0; i < boards.length; i++) {

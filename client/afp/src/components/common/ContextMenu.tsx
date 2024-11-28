@@ -6,15 +6,15 @@
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { Flight } from '../../models/Flight'
+import { Route } from '../../models/Route'
 import { useStore } from 'effector-react'
 import { $style } from '../../store/style'
 import { $contextMenu, resetContextMenuFx } from '../../store/contextMenu'
-import { Board } from '../../models/Board'
+import { Flight } from '../../models/Flight'
 
 interface MenuItemModel {
 	title: string
-	action: (datum: Flight | Board) => void
+	action: (datum: Route | Flight) => void
 }
 
 interface ContextMenuProps {

@@ -6,16 +6,16 @@
  */
 import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { $boards, boardClickFx, boardDeleteFx } from '../../../store/board'
+import { $flights, boardClickFx, boardDeleteFx } from '../../../store/board'
 import FlightItem from './FlightItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../../utils/consts'
 import ContextMenu from '../ContextMenu'
 import { $contextMenu } from '../../../store/contextMenu'
+import { Route } from '../../../models/Route'
 import { Flight } from '../../../models/Flight'
-import { Board } from '../../../models/Board'
 
 const Flights = (): JSX.Element => {
-	const boards = useStore($boards)
+	const boards = useStore($flights)
 	const contextMenu = useStore($contextMenu)
 
 	return (
@@ -32,13 +32,13 @@ const Flights = (): JSX.Element => {
 				{contextMenu && !contextMenu.isFlight && <ContextMenu menuItems={[
 					{
 						title: 'Редактировать',
-						action: (datum: Flight | Board) => {
-							boardClickFx(datum as Board)
+						action: (datum: Route | Flight) => {
+							boardClickFx(datum as Flight)
 						}
 					}, {
 						title: 'Удалить',
-						action: (datum: Flight | Board) => {
-							boardDeleteFx(datum as Board)
+						action: (datum: Route | Flight) => {
+							boardDeleteFx(datum as Flight)
 						}
 					}
 				]}/>}

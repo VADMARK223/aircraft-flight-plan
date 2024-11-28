@@ -18,13 +18,13 @@ import { useStore } from 'effector-react'
 import { $dates } from '../../store/date'
 import DatesPanel from './DatesPanel'
 import Boards from './Boards'
-import { $boards } from '../../store/board'
+import { $flights } from '../../store/board'
 import Flights from './Flights'
 import Background from './Background'
 
 const Viewer = (): JSX.Element => {
   const dates = useStore($dates)
-  const boards = useStore($boards)
+  const boards = useStore($flights)
   const bottomSvgContainerRef = useRef<any>(null)
   const [bottomSvgContainerHeight, setBottomSvgContainerHeight] = useState('100px')
 

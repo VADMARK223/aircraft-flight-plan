@@ -6,13 +6,13 @@
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { Flight } from '../../../models/Flight'
+import { Route } from '../../../models/Route'
 import { $flightsSelect, flightClickFx } from '../../../store/flight'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
 import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText } from '../../../utils/utils'
-import { FlightType } from '../../../models/FlightType'
+import { RouteType } from '../../../models/RouteType'
 import { greenColor } from '../../../utils/style'
 import { setContextMenuFx } from '../../../store/contextMenu'
 import { $ui } from '../../../store/ui'
@@ -22,7 +22,7 @@ interface FlightItemProps {
 	x: number
 	y: number
 	width: number
-	data: Flight
+	data: Route
 }
 
 const RouteItem = (props: FlightItemProps): JSX.Element => {
@@ -32,7 +32,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const { x, y, width, data } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const isSelect = data.id === flightsSelect?.id
-	const isDefault = data.type === FlightType.DEFAULT
+	const isDefault = data.type === RouteType.DEFAULT
 	const test = useStore($test)
 
 	useEffect(() => {

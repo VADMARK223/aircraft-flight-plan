@@ -10,13 +10,13 @@ import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../utils/consts'
 import { CommonProps } from '../common/CommonProps'
 import FlightItem from '../common/flights/FlightItem'
 import ContextMenu from '../common/ContextMenu'
+import { Route } from '../../models/Route'
 import { Flight } from '../../models/Flight'
-import { Board } from '../../models/Board'
-import { $boards, boardClickFx, boardDeleteFx } from '../../store/board'
+import { $flights, boardClickFx, boardDeleteFx } from '../../store/board'
 import { $contextMenu } from '../../store/contextMenu'
 
 const Boards = ({ x, y }: CommonProps): JSX.Element => {
-  const boards = useStore($boards)
+  const boards = useStore($flights)
   const contextMenu = useStore($contextMenu)
 
   return (
@@ -33,13 +33,13 @@ const Boards = ({ x, y }: CommonProps): JSX.Element => {
         {contextMenu && !contextMenu.isFlight && <ContextMenu menuItems={[
           {
             title: 'Редактировать',
-            action: (datum: Flight | Board) => {
-              boardClickFx(datum as Board)
+            action: (datum: Route | Flight) => {
+              boardClickFx(datum as Flight)
             }
           }, {
             title: 'Удалить',
-            action: (datum: Flight | Board) => {
-              boardDeleteFx(datum as Board)
+            action: (datum: Route | Flight) => {
+              boardDeleteFx(datum as Flight)
             }
           }
         ]}/>}

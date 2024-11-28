@@ -11,12 +11,12 @@ import { $dates } from '../../store/date'
 import { DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../../utils/consts'
 import * as d3 from 'd3'
 import { $ui } from '../../store/ui'
-import { $boards } from '../../store/board'
+import { $flights } from '../../store/board'
 
 const Header = (): JSX.Element => {
 	const style = useStore($style)
 	const dates = useStore($dates)
-	const boards = useStore($boards)
+	const boards = useStore($flights)
 	const ui = useStore($ui)
 	const gRef: LegacyRef<any> = useRef<SVGGElement>(null)
 	const width = DATE_ITEM_WIDTH * dates.length

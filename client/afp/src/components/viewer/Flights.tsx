@@ -5,8 +5,8 @@
  * @since 03.11.2024
  */
 import React, { JSX, LegacyRef, useRef } from 'react'
-import { Board } from '../../models/Board'
 import { Flight } from '../../models/Flight'
+import { Route } from '../../models/Route'
 import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import * as d3 from 'd3'
 import RouteItem from '../common/routes/RouteItem'
@@ -14,23 +14,23 @@ import ContextMenu from '../common/ContextMenu'
 import { flightClickFx, flightDeleteFx } from '../../store/flight'
 import { useStore } from 'effector-react'
 import { $contextMenu } from '../../store/contextMenu'
-import { $boards } from '../../store/board'
+import { $flights } from '../../store/board'
 import { $dates, $datesRange } from '../../store/date'
 import { CommonProps } from '../common/CommonProps'
 
 const Flights = ({x,y}:CommonProps): JSX.Element => {
   const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
   const contextMenu = useStore($contextMenu)
-  const boards: Board[] = useStore($boards)
+  const boards: Flight[] = useStore($flights)
   const dates = useStore($dates)
   const datesRange = useStore($datesRange)
 
   return (
     <g ref={gRef} id={'flights'} transform={`translate(${x}, ${y})`}>
-      {boards.map((board: Board, boardIndex) =>
+      {boards.map((board: Flight, boardIndex) =>
         (
           <g key={board.id} id={`board-row-${board.id}`}>
-            {board.routes.map((flight: Flight) => {
+            {board.routes.map((flight: Route) => {
                 if (!datesRange || !datesRange.every(date => date)) {
                   return undefined
                 }
@@ -72,13 +72,13 @@ const Flights = ({x,y}:CommonProps): JSX.Element => {
         {contextMenu && contextMenu.isFlight && <ContextMenu menuItems={[
           {
             title: 'Редактировать',
-            action: (datum: Flight | Board) => {
-              flightClickFx(datum as Flight)
+            action: (datum: Route | Flight) => {
+              flightClickFx(datum as Route)
             }
           }, {
             title: 'Удалить',
-            action: (datum: Flight | Board) => {
-              flightDeleteFx(datum as Flight)
+            action: (datum: Route | Flight) => {
+              flightDeleteFx(datum as Route)
             }
           }
         ]}/>}

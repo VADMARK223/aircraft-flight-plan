@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $flightsSelect, flightAddFx, flightBoardIdChanged, flightDeleteFx } from '../../../store/flight'
-import { $boards, flightEditFx } from '../../../store/board'
+import { $flights, flightEditFx } from '../../../store/board'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
@@ -15,15 +15,15 @@ import { toast } from 'react-toastify'
 import { DATE_FORMAT } from '../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import type {RangeValueType} from 'rc-picker/lib/PickerInput/RangePicker'
-import { Flight } from '../../../models/Flight'
-import { FlightType } from '../../../models/FlightType'
+import { Route } from '../../../models/Route'
+import { RouteType } from '../../../models/RouteType'
 import { $airports } from '../../../store/airport'
 import { Price } from '../../../models/Price'
 import { Currency } from '../../../models/Currency'
 
 const FlightControl = (): JSX.Element => {
 	const flight = useStore($flightsSelect)
-	const boards = useStore($boards)
+	const boards = useStore($flights)
 	const airports = useStore($airports)
 	const [editFlightButtonDisable, setEditFlightButtonDisable] = useState<boolean>(true)
 	const [boardId, setBoardId] = useState<number | undefined>()
@@ -91,12 +91,12 @@ const FlightControl = (): JSX.Element => {
 			return
 		}
 		if (newStartDate.isBefore(newEndDate)) {
-			const newFlight: Flight = {
+			const newFlight: Route = {
 				id: flightId,
 				boardId: boardId,
 				startDate: newStartDate,
 				endDate: newEndDate,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				airportStart: airportStart,
 				airportEnd: airportEnd,
 				price: price
@@ -125,7 +125,7 @@ const FlightControl = (): JSX.Element => {
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
 				if (flightId !== undefined && flightId !== '' && boardId && flight && airportStart && airportEnd) {
-					const updatedFlight: Flight = {
+					const updatedFlight: Route = {
 						...flight,
 						startDate: newStartDate,
 						endDate: newEndDate,

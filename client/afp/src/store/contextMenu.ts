@@ -1,7 +1,7 @@
-import { Flight } from '../models/Flight'
+import { Route } from '../models/Route'
 import { createEvent, createStore } from 'effector'
 import { createEffect } from 'effector/compat'
-import { Board } from '../models/Board'
+import { Flight } from '../models/Flight'
 
 /**
  * @author Markitanov Vadim
@@ -11,7 +11,7 @@ import { Board } from '../models/Board'
 export interface ContextMenuModel {
 	x: number
 	y: number
-	data: Flight | Board
+	data: Route | Flight
 	isFlight: boolean
 }
 

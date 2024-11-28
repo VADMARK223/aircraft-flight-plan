@@ -9,7 +9,7 @@ import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH} from '../../utils
 import * as d3 from 'd3'
 import { useStore } from 'effector-react'
 import { drawLine } from '../../utils/utils'
-import { $flights } from '../../store/board'
+import { $flights } from '../../store/flight'
 import { $dates } from '../../store/date'
 import { $style } from '../../store/style'
 

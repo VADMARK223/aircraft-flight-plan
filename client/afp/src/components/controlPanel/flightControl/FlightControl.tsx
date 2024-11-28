@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelect, boardAddFx, boardDeleteFx } from '../../../store/board'
+import { $flightSelect, boardAddFx, boardDeleteFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
 import { Button, Divider, Select, SelectProps, Space } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'

@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $flightsSelect, flightAddFx, flightBoardIdChanged, flightDeleteFx } from '../../../store/route'
-import { $flights, flightEditFx } from '../../../store/board'
+import { $flights, flightEditFx } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'

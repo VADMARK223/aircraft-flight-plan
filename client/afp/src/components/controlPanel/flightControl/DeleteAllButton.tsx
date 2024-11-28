@@ -6,7 +6,7 @@
  */
 import React, { JSX } from 'react'
 import { Button, Popconfirm } from 'antd'
-import { $flights, boardsDeleteAllFx } from '../../../store/board'
+import { $flights, boardsDeleteAllFx } from '../../../store/flight'
 import { useStore } from 'effector-react'
 
 const DeleteAllButton = (): JSX.Element => {

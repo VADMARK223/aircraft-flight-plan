@@ -11,7 +11,7 @@ import { $dates } from '../../store/date'
 import { DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../../utils/consts'
 import * as d3 from 'd3'
 import { $ui } from '../../store/ui'
-import { $flights } from '../../store/board'
+import { $flights } from '../../store/flight'
 
 const Header = (): JSX.Element => {
 	const style = useStore($style)

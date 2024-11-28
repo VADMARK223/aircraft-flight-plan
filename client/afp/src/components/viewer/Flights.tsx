@@ -14,7 +14,7 @@ import ContextMenu from '../common/ContextMenu'
 import { flightClickFx, flightDeleteFx } from '../../store/route'
 import { useStore } from 'effector-react'
 import { $contextMenu } from '../../store/contextMenu'
-import { $flights } from '../../store/board'
+import { $flights } from '../../store/flight'
 import { $dates, $datesRange } from '../../store/date'
 import { CommonProps } from '../common/CommonProps'
 

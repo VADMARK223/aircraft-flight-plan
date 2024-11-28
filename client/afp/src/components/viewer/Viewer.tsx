@@ -18,7 +18,7 @@ import { useStore } from 'effector-react'
 import { $dates } from '../../store/date'
 import DatesPanel from './DatesPanel'
 import Boards from './Boards'
-import { $flights } from '../../store/board'
+import { $flights } from '../../store/flight'
 import Flights from './Flights'
 import Background from './Background'
 

@@ -20,7 +20,7 @@ import Border from './Border'
 import { Space } from 'antd'
 import { useStore } from 'effector-react'
 import { $dates } from '../../store/date'
-import { $flights } from '../../store/board'
+import { $flights } from '../../store/flight'
 import Routes from '../common/routes/Routes'
 import Boards from '../common/flights/Flights'
 

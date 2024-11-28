@@ -24,7 +24,7 @@ export const $flightsSelect = createStore<Route | null>(null)
 	.on(flightSelectFx, (state, payload) => payload)
 	.reset(flightSelectReset)
 
-export const flightAddFx = createEffect<Route, Flight[]>()
+export const routeAddFx = createEffect<Route, Flight[]>()
 export const flightDeleteFx = createEffect<Route, Flight[]>()
 
 sample({
@@ -34,5 +34,5 @@ sample({
 		flight.boardId = boardId
 		return flight
 	},
-	target: flightAddFx
+	target: routeAddFx
 })

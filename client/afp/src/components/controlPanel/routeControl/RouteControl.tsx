@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightsSelect, flightAddFx, flightBoardIdChanged, flightDeleteFx } from '../../../store/route'
+import { $flightsSelect, routeAddFx, flightBoardIdChanged, flightDeleteFx } from '../../../store/route'
 import { $flights, flightEditFx } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
@@ -25,7 +25,7 @@ const RouteControl = (): JSX.Element => {
 	const flight = useStore($flightsSelect)
 	const boards = useStore($flights)
 	const airports = useStore($airports)
-	const [editFlightButtonDisable, setEditFlightButtonDisable] = useState<boolean>(true)
+	const [editRouteButtonDisable, setEditRouteButtonDisable] = useState<boolean>(true)
 	const [boardId, setBoardId] = useState<number | undefined>()
 	const [flightId, setFlightId] = useState<string | undefined>()
 	const [price, setPrice] = useState<Price | null>({ value: 0, currency: Currency.RUB })
@@ -63,7 +63,7 @@ const RouteControl = (): JSX.Element => {
 	// })
 
 	useEffect(() => {
-		setEditFlightButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
+		setEditRouteButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
 	}, [boardId, flightId, dateRangeValue, timeRangeValue, airportStart, airportEnd])
 
 	const handlerBoardSelectChange = (value: number | undefined): void => {
@@ -77,9 +77,9 @@ const RouteControl = (): JSX.Element => {
 	}
 
 	/**
-	 * Метод подтверждения добавления полета.
+	 * Метод подтверждения добавления перелета.
 	 */
-	const handlerAddFlight = (): void => {
+	const handlerAddRoute = (): void => {
 		if (boardId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined) {
 			return
 		}
@@ -91,7 +91,7 @@ const RouteControl = (): JSX.Element => {
 			return
 		}
 		if (newStartDate.isBefore(newEndDate)) {
-			const newFlight: Route = {
+			const newRoute: Route = {
 				id: flightId,
 				boardId: boardId,
 				startDate: newStartDate,
@@ -102,7 +102,7 @@ const RouteControl = (): JSX.Element => {
 				price: price
 			}
 
-			flightAddFx(newFlight)
+			routeAddFx(newRoute)
 		} else {
 			toast.warn('Время вылета превышает или совпадает с временем прилета.')
 		}
@@ -154,12 +154,12 @@ const RouteControl = (): JSX.Element => {
 		<Space direction={'vertical'}>
 			<Divider type={'horizontal'}
 					 orientation={'left'}
-					 className={'control-panel-divider'}>Изменение полета</Divider>
+					 className={'control-panel-divider'}>Изменение перелета</Divider>
 			<Space align={'start'}>
 				<Space direction={'vertical'} align={'end'}>
 					<Space>
-						<span>Борт:</span>
-						<Select placeholder={'Выберите борт'}
+						<span>Рейс:</span>
+						<Select placeholder={'Выберите рейс'}
 								value={boardId}
 								options={boardOptions}
 								style={{ minWidth: '150px' }}
@@ -252,10 +252,10 @@ const RouteControl = (): JSX.Element => {
 					<Space direction={'vertical'}>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
-								disabled={editFlightButtonDisable}
+								disabled={editRouteButtonDisable}
 								onClick={handlerEditFlight}
 								style={{ width: '160px' }}
-						>Изменить полет</Button>
+						>Изменить перелета</Button>
 						<Button type={'primary'}
 								danger
 								icon={<DeleteOutlined/>}
@@ -269,10 +269,10 @@ const RouteControl = (): JSX.Element => {
 					:
 					<Button type={'primary'}
 							icon={<PlusOutlined/>}
-							disabled={editFlightButtonDisable}
-							onClick={handlerAddFlight}
+							disabled={editRouteButtonDisable}
+							onClick={handlerAddRoute}
 							style={{ width: '160px' }}
-					>Добавить полет</Button>
+					>Добавить перелет</Button>
 				}
 
 

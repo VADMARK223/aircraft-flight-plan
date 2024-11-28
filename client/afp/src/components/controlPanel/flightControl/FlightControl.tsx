@@ -6,12 +6,14 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelect, boardAddFx, boardDeleteFx } from '../../../store/flight'
+import { $flightSelect, flightAddFx, boardDeleteFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
 import { Button, Divider, Select, SelectProps, Space } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
 import { FlightType } from '../../../models/FlightType'
+import { LOCAL_MODE } from '../../../utils/consts'
+import { addFlightFx } from '../../../api/flight'
 
 const FlightControl = (): JSX.Element => {
 	const board = useStore($flightSelect)
@@ -44,7 +46,11 @@ const FlightControl = (): JSX.Element => {
 			type: boardType,
 			routes: []
 		}
-		boardAddFx(newFlight)
+		if (LOCAL_MODE) {
+			flightAddFx(newFlight)
+		} else {
+			addFlightFx()
+		}
 		// setBoardName('')
 	}
 
@@ -82,7 +88,7 @@ const FlightControl = (): JSX.Element => {
 					<>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
-								// disabled={addFlightButtonDisable}
+							// disabled={addFlightButtonDisable}
 								onClick={handlerEditBoard}>Изменить борт</Button>
 						<Button type={'primary'}
 								danger
@@ -93,7 +99,7 @@ const FlightControl = (): JSX.Element => {
 					</>
 					:
 					<Button type={'primary'}
-							// disabled={addFlightButtonDisable}
+						// disabled={addFlightButtonDisable}
 							icon={<PlusOutlined/>}
 							onClick={handlerAddFlight}
 					>Добавить рейс</Button>

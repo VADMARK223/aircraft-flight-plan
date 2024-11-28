@@ -9,7 +9,7 @@ import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { Route } from '../models/Route'
 import { createEvent, createStore } from 'effector'
-import { $flightsSelect, flightAddFx, flightDeleteFx, flightSelectReset } from './route'
+import { $flightsSelect, routeAddFx, flightDeleteFx, flightSelectReset } from './route'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
@@ -45,7 +45,7 @@ $flights.watch((boards: Flight[]) => {
 	}
 })
 
-export const boardAddFx = createEffect<Flight, Flight[]>()
+export const flightAddFx = createEffect<Flight, Flight[]>()
 export const boardEditFx = createEffect<Flight, Flight[]>()
 export const boardDeleteFx = createEffect<Flight, Flight[]>()
 export const boardsDeleteAllFx = createEffect<void, Flight[]>('Удаление всех бортов.')
@@ -53,7 +53,7 @@ export const boardsDeleteAllFx = createEffect<void, Flight[]>('Удаление 
 export const flightEditFx = createEffect<Route, Flight[]>()
 
 $flights.on(fetchBoardsFx.doneData, (_, payload) => payload)
-$flights.on(boardAddFx, (boards: Flight[], newBoard: Flight) => {
+$flights.on(flightAddFx, (boards: Flight[], newBoard: Flight) => {
 	if (newBoard.id === -1) {
 		let maxId = boards.length ? Math.max(...boards.map(value => value.id)) : 0
 		newBoard.id = ++maxId
@@ -61,7 +61,7 @@ $flights.on(boardAddFx, (boards: Flight[], newBoard: Flight) => {
 
 	return [...boards, newBoard]
 })
-$flights.on(flightAddFx, (boards, flight) => {
+$flights.on(routeAddFx, (boards, flight) => {
 	const findBoard = boards.find(value => value.id === flight.boardId)
 	if (findBoard === undefined) {
 		return boards

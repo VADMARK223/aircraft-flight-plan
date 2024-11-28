@@ -1,32 +1,40 @@
 /**
- * Компонент
+ * Компонент отображения полетов.
  *
  * @author Markitanov Vadim
- * @since 03.11.2024
+ * @since 11.12.2023
  */
-import React, { JSX, LegacyRef, useRef } from 'react'
-import { Flight } from '../../models/Flight'
-import { Route } from '../../models/Route'
-import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
-import * as d3 from 'd3'
-import RouteItem from '../common/routes/RouteItem'
-import ContextMenu from '../common/ContextMenu'
-import { flightClickFx, flightDeleteFx } from '../../store/flight'
+import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import { useStore } from 'effector-react'
-import { $contextMenu } from '../../store/contextMenu'
-import { $flights } from '../../store/board'
-import { $dates, $datesRange } from '../../store/date'
-import { CommonProps } from '../common/CommonProps'
+import { $dates, $datesRange } from '../../../store/date'
+import { Flight } from '../../../models/Flight'
+import { $flights } from '../../../store/board'
+import { $contextMenu } from '../../../store/contextMenu'
+import * as d3 from 'd3'
+import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../../../utils/consts'
+import { Route } from '../../../models/Route'
+import RouteItem from './RouteItem'
+import ContextMenu from '../ContextMenu'
+import { $test } from '../../../store/test'
+import { flightClickFx, flightDeleteFx } from '../../../store/flight'
 
-const Flights = ({x,y}:CommonProps): JSX.Element => {
+const Routes = (): JSX.Element => {
   const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-  const contextMenu = useStore($contextMenu)
+  const datesRange = useStore($datesRange)
   const boards: Flight[] = useStore($flights)
   const dates = useStore($dates)
-  const datesRange = useStore($datesRange)
+  const contextMenu = useStore($contextMenu)
+  const test = useStore($test)
+
+  useEffect(() => {
+    if (!test) {
+      const container = d3.select(gRef.current)
+      container.attr('transform', `translate(${BOARD_ITEM_WIDTH},${0})`)
+    }
+  }, [test])
 
   return (
-    <g ref={gRef} id={'flights'} transform={`translate(${x}, ${y})`}>
+    <g ref={gRef} id={'flights-layout'}>
       {boards.map((board: Flight, boardIndex) =>
         (
           <g key={board.id} id={`board-row-${board.id}`}>
@@ -87,4 +95,4 @@ const Flights = ({x,y}:CommonProps): JSX.Element => {
   )
 }
 
-export default Flights
+export default Routes

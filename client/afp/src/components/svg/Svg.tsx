@@ -12,9 +12,9 @@ import { useStore } from 'effector-react'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, HEADER_HEIGHT } from '../../utils/consts'
 import Dates from './dates/Dates'
 import InfoPanel from '../frame/InfoPanel'
-import Boards from '../common/boards/Boards'
+import Boards from '../common/flights/Flights'
 import Background from './Background'
-import Flights from '../common/flights/Flights'
+import Routes from '../common/routes/Routes'
 import Header from './Header'
 
 const Svg = (): JSX.Element => {
@@ -95,7 +95,7 @@ const Svg = (): JSX.Element => {
 						style={{ width: svgDimensions.width, height: svgDimensions.height }}
 					>
 						<Background/>
-						<Flights/>
+						<Routes/>
 
 					</svg>
 				</div>

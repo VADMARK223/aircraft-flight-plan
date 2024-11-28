@@ -4,21 +4,15 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import vadmark.afp.config.WebConstants.API_BASE_URL
-import vadmark.afp.service.UserService
-import vadmark.afp.entity.Route
+
+import vadmark.afp.entity.RouteView
 import vadmark.afp.service.RouteService
 
 @RestController
-@RequestMapping("$API_BASE_URL/route")
-class RouteController(private val routeService: RouteService, private val userService: UserService) {
+@RequestMapping("/route")
+class RouteController(private val routeService: RouteService) {
     @GetMapping("/get_all")
-    fun getAll(): List<Route> {
+    fun getAll(): List<RouteView> {
         return routeService.findAll()
-    }
-
-    @GetMapping("/info")
-    fun getInfo(): String {
-        return userService.getInfo()
     }
 }

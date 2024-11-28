@@ -6,22 +6,22 @@
  */
 import React, { ChangeEvent, JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $boardSelect, boardAddFx, boardDeleteFx, boardEditFx } from '../../../store/board'
-import { Board } from '../../../models/Board'
+import { $flightSelect, boardAddFx, boardDeleteFx, boardEditFx } from '../../../store/board'
+import { Flight } from '../../../models/Flight'
 import { Button, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
-import { BoardType } from '../../../models/BoardType'
+import { FlightType } from '../../../models/FlightType'
 
 const BoardControl = (): JSX.Element => {
-	const board = useStore($boardSelect)
+	const board = useStore($flightSelect)
 	const [boardName, setBoardName] = useState<string | undefined>(undefined)
-	const [boardType, setBoardType] = useState<BoardType>(BoardType.DEFAULT)
+	const [boardType, setBoardType] = useState<FlightType>(FlightType.DEFAULT)
 	const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
 
 	useEffect(() => {
 		setBoardName(board?.name)
-		setBoardType(board ? board.type : BoardType.DEFAULT)
+		setBoardType(board ? board.type : FlightType.DEFAULT)
 	}, [board])
 
 	useEffect(() => {
@@ -29,20 +29,20 @@ const BoardControl = (): JSX.Element => {
 	}, [boardName])
 
 	const boardTypeSelectOptions: SelectProps['options'] = [
-		{ value: BoardType.LOW, label: 'Неприоритетный' },
-		{ value: BoardType.DEFAULT, label: 'Обычный' },
-		{ value: BoardType.PRIORITY, label: 'Приоритетный' }
+		{ value: FlightType.LOW, label: 'Неприоритетный' },
+		{ value: FlightType.DEFAULT, label: 'Обычный' },
+		{ value: FlightType.PRIORITY, label: 'Приоритетный' }
 	]
 
 	const handlerAddBoard = (): void => {
 		if (boardName === undefined || boardName === '') {
 			return
 		}
-		const newBoard: Board = {
+		const newBoard: Flight = {
 			id: -1,
 			name: boardName,
 			type: boardType,
-			flights: []
+			routes: []
 		}
 		boardAddFx(newBoard)
 		setBoardName('')
@@ -70,10 +70,10 @@ const BoardControl = (): JSX.Element => {
 					   allowClear
 				/>
 				<span>Тип борта:</span>
-				<Select<BoardType>
+				<Select<FlightType>
 					placeholder={'Тип борта'}
 					style={{ width: '160px' }}
-					defaultValue={BoardType.DEFAULT}
+					defaultValue={FlightType.DEFAULT}
 					value={boardType}
 					options={boardTypeSelectOptions}
 					onChange={setBoardType}

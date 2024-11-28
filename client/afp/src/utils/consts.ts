@@ -1,6 +1,6 @@
-import { Board } from '../models/Board'
-import { BoardType } from '../models/BoardType'
+import { Flight } from '../models/Flight'
 import { FlightType } from '../models/FlightType'
+import { RouteType } from '../models/RouteType'
 import dayjs from 'dayjs'
 import { Airport } from '../models/Airport'
 import { Currency } from '../models/Currency'
@@ -9,6 +9,7 @@ import { Currency } from '../models/Currency'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
+export const LOCAL_MODE = false
 export const SHOW_TEST_TOGGLE: boolean = true
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
@@ -25,16 +26,16 @@ export const SHOW_FLIGHT_ID = false
 export const SHOW_OLD_STICKS = false
 export const RESIZE_STICK_WIDTH = 5
 
-export const boardsDefault: Board[] = [
+export const flightsDefault: Flight[] = [
 	{
 		id: 1,
-		name: 'Борт 1',
-		type: BoardType.LOW,
-		flights: [
+		name: 'Рейс 1',
+		type: FlightType.LOW,
+		routes: [
 			{
 				id: '11',
 				boardId: 1,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(0, 'hours'),
 				endDate: dayjs().startOf('day').add(2, 'hours'),
 				airportStart: 'AAQ',
@@ -44,7 +45,7 @@ export const boardsDefault: Board[] = [
 			{
 				id: '21',
 				boardId: 1,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(23, 'hours'),
 				endDate: dayjs().startOf('day').add(25, 'hours'),
 				airportStart: 'ABA',
@@ -54,7 +55,7 @@ export const boardsDefault: Board[] = [
 			{
 				id: '31',
 				boardId: 1,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(28, 'hours'),
 				endDate: dayjs().startOf('day').add(29, 'hours'),
 				airportStart: 'ADH',
@@ -65,13 +66,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 2,
-		name: 'Борт 2',
-		type: BoardType.DEFAULT,
-		flights: [
+		name: 'Рейс 2',
+		type: FlightType.DEFAULT,
+		routes: [
 			{
 				id: '12',
 				boardId: 2,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
 				endDate: dayjs().startOf('day').add(3, 'hours'),
 				airportStart: 'AMV',
@@ -81,7 +82,7 @@ export const boardsDefault: Board[] = [
 			{
 				id: '22',
 				boardId: 2,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
 				endDate: dayjs().startOf('day').add(6, 'hours'),
 				airportStart: 'ASF',
@@ -91,7 +92,7 @@ export const boardsDefault: Board[] = [
 			{
 				id: '32',
 				boardId: 2,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(18, 'hours'),
 				endDate: dayjs().startOf('day').add(30, 'hours'),
 				airportStart: 'AMV',
@@ -101,7 +102,7 @@ export const boardsDefault: Board[] = [
 			{
 				id: '42',
 				boardId: 2,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(32, 'hours'),
 				endDate: dayjs().startOf('day').add(33, 'hours'),
 				airportStart: 'ADH',
@@ -112,13 +113,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 3,
-		name: 'Борт 3',
-		type: BoardType.LOW,
-		flights: [
+		name: 'Рейс 3',
+		type: FlightType.LOW,
+		routes: [
 			{
 				id: '13',
 				boardId: 3,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(3, 'hours'),
 				endDate: dayjs().startOf('day').add(6, 'hours'),
 				airportStart: 'ABA',
@@ -129,13 +130,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 4,
-		name: 'Борт 4',
-		type: BoardType.PRIORITY,
-		flights: [
+		name: 'Рейс 4',
+		type: FlightType.PRIORITY,
+		routes: [
 			{
 				id: '14',
 				boardId: 4,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(5, 'hours'),
 				endDate: dayjs().startOf('day').add(16, 'hours'),
 				airportStart: 'ABA',
@@ -146,13 +147,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 5,
-		name: 'Борт 5',
-		type: BoardType.LOW,
-		flights: [
+		name: 'Рейс 5',
+		type: FlightType.LOW,
+		routes: [
 			{
 				id: '15',
 				boardId: 5,
-				type: FlightType.ROUTINE_MAINTENANCE,
+				type: RouteType.ROUTINE_MAINTENANCE,
 				startDate: dayjs().startOf('day').add(15, 'hours'),
 				endDate: dayjs().startOf('day').add(30, 'hours'),
 				airportStart: 'ARH',
@@ -163,13 +164,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 6,
-		name: 'Борт 6',
-		type: BoardType.DEFAULT,
-		flights: [
+		name: 'Рейс 6',
+		type: FlightType.DEFAULT,
+		routes: [
 			{
 				id: '16',
 				boardId: 6,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(11, 'hours'),
 				endDate: dayjs().startOf('day').add(14, 'hours'),
 				airportStart: 'ASF',
@@ -179,7 +180,7 @@ export const boardsDefault: Board[] = [
 			{
 				id: '26',
 				boardId: 6,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(32, 'hours'),
 				endDate: dayjs().startOf('day').add(35, 'hours'),
 				airportStart: 'AAQ',
@@ -190,13 +191,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 7,
-		name: 'Борт 7',
-		type: BoardType.DEFAULT,
-		flights: [
+		name: 'Рейс 7',
+		type: FlightType.DEFAULT,
+		routes: [
 			{
 				id: '17',
 				boardId: 7,
-				type: FlightType.ROUTINE_MAINTENANCE,
+				type: RouteType.ROUTINE_MAINTENANCE,
 				startDate: dayjs().startOf('day').add(0, 'hours'),
 				endDate: dayjs().startOf('day').add(42, 'hours'),
 				airportStart: 'AAQ',
@@ -207,13 +208,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 8,
-		name: 'Борт 8',
-		type: BoardType.DEFAULT,
-		flights: [
+		name: 'Рейс 8',
+		type: FlightType.DEFAULT,
+		routes: [
 			{
 				id: '18',
 				boardId: 8,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(0.5, 'hours'),
 				endDate: dayjs().startOf('day').add(3.5, 'hours'),
 				airportStart: 'ADH',
@@ -224,13 +225,13 @@ export const boardsDefault: Board[] = [
 	},
 	{
 		id: 9,
-		name: 'Борт 9',
-		type: BoardType.PRIORITY,
-		flights: [
+		name: 'Рейс 9',
+		type: FlightType.PRIORITY,
+		routes: [
 			{
 				id: '19',
 				boardId: 9,
-				type: FlightType.DEFAULT,
+				type: RouteType.DEFAULT,
 				startDate: dayjs().startOf('day').add(1, 'hours'),
 				endDate: dayjs().startOf('day').add(3, 'hours'),
 				airportStart: 'ASF',

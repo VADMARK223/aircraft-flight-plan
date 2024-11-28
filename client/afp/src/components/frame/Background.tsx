@@ -8,7 +8,7 @@ import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH } from '../../utils/consts'
 import { useStore } from 'effector-react'
-import { $boards, boardSelectResetFx } from '../../store/board'
+import { $flights, boardSelectResetFx } from '../../store/board'
 import { $dates } from '../../store/date'
 import { $style } from '../../store/style'
 import { flightSelectReset } from '../../store/flight'
@@ -16,7 +16,7 @@ import { flightSelectReset } from '../../store/flight'
 const Background = (): JSX.Element => {
 	const style = useStore($style)
 	const dates = useStore($dates)
-	const boards = useStore($boards)
+	const boards = useStore($flights)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const x = BOARD_ITEM_WIDTH
 	const y = 0

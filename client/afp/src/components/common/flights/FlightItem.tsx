@@ -1,87 +1,118 @@
 /**
- * Компонент представления полета
+ * Компонент представления рейса.
  *
  * @author Markitanov Vadim
- * @since 07.12.2023
+ * @since 22.11.2023
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
+import { BOARD_ITEM_WIDTH } from '../../../utils/consts'
 import { Flight } from '../../../models/Flight'
-import { $flightsSelect, flightClickFx } from '../../../store/flight'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
-import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'
-import { appendRotateText, drawAirportText, drawText } from '../../../utils/utils'
+import { $style } from '../../../store/style'
+import { $flightSelect, boardClickFx } from '../../../store/board'
 import { FlightType } from '../../../models/FlightType'
-import { greenColor } from '../../../utils/style'
-import { setContextMenuFx } from '../../../store/contextMenu'
-import { $ui } from '../../../store/ui'
+import { greenColor, redColor } from '../../../utils/style'
 import { $test } from '../../../store/test'
+import { $ui } from '../../../store/ui'
+import { setContextMenuFx } from '../../../store/contextMenu'
 
-interface FlightItemProps {
+interface BoardItemProps {
+	data: Flight
 	x: number
 	y: number
 	width: number
-	data: Flight
+	height: number
 }
 
-const FlightItem = (props: FlightItemProps): JSX.Element => {
-	const style: StyleStore = useStore($style)
-	const ui = useStore($ui)
-	const flightsSelect = useStore($flightsSelect)
-	const { x, y, width, data } = props
+const FlightItem = (props: BoardItemProps): JSX.Element => {
+	const { data, x, y, width, height } = props
+	const style = useStore($style)
+	const boardSelect = useStore($flightSelect)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-	const isSelect = data.id === flightsSelect?.id
-	const isDefault = data.type === FlightType.DEFAULT
 	const test = useStore($test)
+	const ui = useStore($ui)
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)
-		container.selectAll('*').remove()
-
-		container.attr('cursor', 'pointer')
-		container.on('click', (_: PointerEvent) => {
-			flightClickFx(data)
-		}).on('contextmenu', (event: PointerEvent) => {
-			event.preventDefault()
-			setContextMenuFx({
-				isFlight: true,
-				x: test ? event.offsetX + ui.x : event.offsetX - BOARD_ITEM_WIDTH,
-				y: test ? event.offsetY + ui.y : event.offsetY,
-				data: data
+			.attr('cursor', 'pointer')
+			.on('click', (_: PointerEvent): void => {
+				boardClickFx(data)
 			})
-		})
+			.on('contextmenu', (event: PointerEvent) => {
+				event.preventDefault()
+				setContextMenuFx({
+					isFlight: false,
+					x: 0,
+					y: test ? event.offsetY + ui.y : event.offsetY,
+					data: data
+				})
+			})
+
+		const isSelect = data.id === boardSelect?.id
 
 		container.append('rect')
 			.attr('x', x)
-			.attr('y', y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5)
+			.attr('y', y)
 			.attr('width', width)
-			.attr('height', FLIGHT_ITEM_HEIGHT)
-			.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
-			.attr('stroke-width', isSelect ? '3' : '1')
-			.attr('fill', isDefault ? greenColor : 'orange')
+			.attr('height', height)
+			.attr('stroke', style.lineColor)
+			.attr('fill', style.backgroundColor)
 
-		if (!isDefault) {
-			drawText(container, 'Тех. обслуживание', x + width * 0.5, y + BOARD_ITEM_HEIGHT * 0.5 + 1, 'pointer')
+		const getColorByType = (type: FlightType.LOW | FlightType.DEFAULT | FlightType.PRIORITY) => {
+			switch (type) {
+				case FlightType.LOW:
+					return greenColor
+				case FlightType.DEFAULT:
+					return style.textColor
+				case FlightType.PRIORITY:
+					return redColor
+			}
 		}
 
-		const textSelection = drawAirportText(container, data.airportStart, x + 2, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + 1)
-		const textSelectionBox: SVGRect | undefined = textSelection.node().getBBox()
-		if (textSelectionBox !== undefined) {
-			drawAirportText(container, data.airportEnd, textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
+		container.append('text')
+			.attr('x', x + 5)
+			.attr('y', y + 5)
+			.attr('fill', data.type !== undefined ? getColorByType(data.type) : style.textColor)
+			.attr('font-weight', 'bold')
+			.attr('text-anchor', 'start')
+			.attr('dominant-baseline', 'hanging')
+			.text(data.name)
+
+		const lineShiftX = 5
+		const lineShiftY = 25
+		container.append('line')
+			.attr('stroke', style.lineColor)
+			.attr('stroke-width', 1)
+			.attr('x1', x + lineShiftX)
+			.attr('y1', y + lineShiftY)
+			.attr('x2', x + BOARD_ITEM_WIDTH - 2 * lineShiftX)
+			.attr('y2', y + lineShiftY)
+
+		container.append('text')
+			.attr('x', x + 5)
+			.attr('y', y + 33)
+			.attr('fill', style.textColor)
+			.attr('text-anchor', 'start')
+			.attr('dominant-baseline', 'hanging')
+			.text(data.routes.length ? `Перелетов: ${data.routes.length}` : 'Нет перелетов')
+
+		if (isSelect) {
+			const selectStrokeWidth = 3
+			container.append('rect')
+				.attr('x', x + selectStrokeWidth)
+				.attr('y', y + selectStrokeWidth)
+				.attr('width', width - selectStrokeWidth * 2)
+				.attr('height', height - selectStrokeWidth * 2)
+				.attr('fill', 'transparent')
+				.attr('stroke', 'red')
+				.attr('stroke-width', selectStrokeWidth)
 		}
 
-		const timeRotate: number = -19
-		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.startDate.format('HH:mm'), timeRotate)
-		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.endDate.format('HH:mm'), timeRotate)
-
-		const dateRotate: number = 19
-		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y, test])
+	}, [test, ui.y, style, data.name, x, y, width, height, data.type, data.routes.length, data, boardSelect])
 
 	return (
-		<g ref={gRef} id={`flight-item-${data.id}`}/>
+		<g ref={gRef}/>
 	)
 }
 

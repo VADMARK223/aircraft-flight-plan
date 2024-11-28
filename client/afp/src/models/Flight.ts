@@ -1,18 +1,15 @@
-import { Dayjs } from 'dayjs'
+import { Route } from './Route'
 import { FlightType } from './FlightType'
-import { Price } from './Price'
 
 /**
+ * Модель борта.
+ *
  * @author Markitanov Vadim
- * @since 22.11.2023
+ * @since 02.12.2023
  */
 export interface Flight {
-	id: string
-	boardId: number
-	startDate: Dayjs
-	endDate: Dayjs
+	id: number
+	name: string
+	routes: Route[]
 	type: FlightType
-	airportStart: string // IATA
-	airportEnd: string // IATA
-	price: Price | null
 }

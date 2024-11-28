@@ -1,8 +1,12 @@
 /**
+ * Типа борта.
+ *
  * @author Markitanov Vadim
- * @since 23.11.2023
+ * @since 07.12.2023
  */
+
 export enum FlightType {
+	LOW,
 	DEFAULT,
-	ROUTINE_MAINTENANCE
+	PRIORITY
 }

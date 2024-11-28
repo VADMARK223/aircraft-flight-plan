@@ -1,7 +1,7 @@
 import { createEvent, createStore, sample } from 'effector'
-import { Flight } from '../models/Flight'
+import { Route } from '../models/Route'
 import { createEffect } from 'effector/compat'
-import { Board } from '../models/Board'
+import { Flight } from '../models/Flight'
 
 /**
  * Хранилище полётов.
@@ -10,11 +10,11 @@ import { Board } from '../models/Board'
  * @since 04.12.2023
  */
 
-export const flightSelectFx = createEffect<Flight, Flight>('Событие пренудительного выбора полета')
-export const flightClickFx = createEffect<Flight, Flight>('Событие клика по полету')
+export const flightSelectFx = createEffect<Route, Route>('Событие пренудительного выбора полета')
+export const flightClickFx = createEffect<Route, Route>('Событие клика по полету')
 export const flightSelectReset = createEvent()
 export const flightBoardIdChanged = createEvent<number>('Событие смены борта у полета.')
-export const $flightsSelect = createStore<Flight | null>(null)
+export const $flightsSelect = createStore<Route | null>(null)
 	.on(flightClickFx, (state, payload) => {
 		if (state?.id === payload.id) {
 			return null
@@ -24,13 +24,13 @@ export const $flightsSelect = createStore<Flight | null>(null)
 	.on(flightSelectFx, (state, payload) => payload)
 	.reset(flightSelectReset)
 
-export const flightAddFx = createEffect<Flight, Board[]>()
-export const flightDeleteFx = createEffect<Flight, Board[]>()
+export const flightAddFx = createEffect<Route, Flight[]>()
+export const flightDeleteFx = createEffect<Route, Flight[]>()
 
 sample({
 	source: flightDeleteFx,
 	clock: flightBoardIdChanged,
-	fn: (flight: Flight, boardId: number) => {
+	fn: (flight: Route, boardId: number) => {
 		flight.boardId = boardId
 		return flight
 	},

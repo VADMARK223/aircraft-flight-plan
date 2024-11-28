@@ -20,19 +20,19 @@ import {
 import dayjs from 'dayjs'
 import * as d3 from 'd3'
 import { FlightViewModelDrag } from '../models/FlightViewModelDrag'
-import { FlightType } from '../models/FlightType'
+import { RouteType } from '../models/RouteType'
 import { useStore } from 'effector-react'
 import { appendRotateText, dateToX, drawRect, drawText, xToDate } from '../utils/utils'
 import { DragModel } from '../models/DragModel'
 import { DragType } from '../models/DragType'
+import { Route } from '../models/Route'
 import { Flight } from '../models/Flight'
-import { Board } from '../models/Board'
-import { $boards } from '../store/board'
+import { $flights } from '../store/board'
 import { $dates } from '../store/date'
 
 const FlightsDrag = (): JSX.Element => {
 	const dates = useStore($dates)
-	const boards: Board[] = useStore($boards)
+	const boards: Flight[] = useStore($flights)
 	const svgRef: LegacyRef<any> = useRef<SVGSVGElement | undefined>()
 
 	const [dragModel, setDragModel] = useState<DragModel | undefined>(undefined)
@@ -181,10 +181,10 @@ const FlightsDrag = (): JSX.Element => {
 	useEffect(() => {
 		const temp: FlightViewModelDrag[] = []
 		boards.forEach((value, index) => {
-			if (!value.flights) {
+			if (!value.routes) {
 				return undefined
 			}
-			value.flights.forEach((flightModel) => {
+			value.routes.forEach((flightModel) => {
 				const flightViewModel: FlightViewModelDrag = {
 					model: flightModel,
 					index: index,
@@ -214,7 +214,7 @@ const FlightsDrag = (): JSX.Element => {
 			let flightY: number = 0
 			const isDragging = flightModel.model.id === dragModelRef.current?.flight.model.id
 			const cursor: string = isDragging ? 'grabbing' : 'grab'
-			const isDefault = flightModel.model.type === FlightType.DEFAULT
+			const isDefault = flightModel.model.type === RouteType.DEFAULT
 
 			if (isDragging) {
 				if (curDragFlightRef.current) {
@@ -282,7 +282,7 @@ const FlightsDrag = (): JSX.Element => {
 
 	}, [flightViewModels, curDragFlight])
 
-	const updateCurDragFlight = (model: Flight, x: number, y: number, width: number, index: number, oldX1: number, oldX2: number): void => {
+	const updateCurDragFlight = (model: Route, x: number, y: number, width: number, index: number, oldX1: number, oldX2: number): void => {
 		setCurDragFlight({ model: model, x: x, y: y, width: width, index: index, oldX1: oldX1, oldX2: oldX2 })
 	}
 

@@ -17,6 +17,4 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "route_id")
     private int routeId;
-
-
 }

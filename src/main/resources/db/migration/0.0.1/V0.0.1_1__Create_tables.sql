@@ -59,17 +59,28 @@ ALTER TABLE route
     ADD CONSTRAINT route_type_fk
         FOREIGN KEY (route_type_id) REFERENCES dict_route_type(route_type_id);
 
+CREATE TABLE IF NOT EXISTS contract
+(
+    contract_id SERIAL4 NOT NULL CONSTRAINT contract_pk PRIMARY KEY
+);
+COMMENT ON TABLE contract IS 'Контракты';
+COMMENT ON COLUMN contract.contract_id IS 'Идентификатор контракта';
+
 CREATE TABLE IF NOT EXISTS flight
 (
     flight_id SERIAL4 NOT NULL CONSTRAINT flight_pk PRIMARY KEY,
-    contact_id INT4
+    contract_id INT4
 );
 COMMENT ON TABLE flight IS 'Рейсы';
 COMMENT ON COLUMN flight.flight_id IS 'Идентификатор рейса';
-COMMENT ON COLUMN flight.contact_id IS 'Идентификатор контакта';
+COMMENT ON COLUMN flight.contract_id IS 'Идентификатор контакта';
 ALTER TABLE route
     ADD CONSTRAINT route_flight_fk
         FOREIGN KEY (flight_id) REFERENCES flight(flight_id);
+ALTER TABLE flight ADD CONSTRAINT flight_contract_id_unique UNIQUE (contract_id);
+-- ALTER TABLE flight
+--     ADD CONSTRAINT flight_contract_fk
+--         FOREIGN KEY (contract_id) REFERENCES flight(contract_id);
 
 CREATE TABLE airport
 (

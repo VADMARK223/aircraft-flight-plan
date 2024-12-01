@@ -11,7 +11,7 @@ import { $test } from './store/test'
 import Viewer from './components/viewer/Viewer'
 import { fetchRoutesFx } from './api/route'
 import { fetchFlightsFx } from './api/flight'
-import { FlightDto } from './models/FlightDto'
+import { FlightDto } from './models/dto/FlightDto'
 
 const Main = (): JSX.Element => {
 	const test = useStore($test)

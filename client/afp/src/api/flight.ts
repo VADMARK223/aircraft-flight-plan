@@ -1,18 +1,18 @@
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
 import { commonApi } from './common'
-import { FlightDto } from '../models/FlightDto'
+import { FlightDto } from '../models/dto/FlightDto'
 
 /**
  * @author Markitanov Vadim
  * @since 28.11.2024
  */
-export const addFlightFx = createEffect<void, Flight[]>(async () => {
+export const requestAddFlightFx = createEffect<void, Flight | null>(async () => {
 	try {
-		return await commonApi.get('flight/add').json<Flight[]>()
+		return await commonApi.get('flight/add').json<Flight>()
 	} catch (error: any) {
 		console.log('Error', error)
-		return []
+		return null
 	}
 })
 

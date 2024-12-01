@@ -1,5 +1,4 @@
-import { Route } from './Route'
-import { FlightType } from './FlightType'
+import { FlightDto } from './dto/FlightDto'
 
 /**
  * Модель борта.
@@ -7,9 +6,5 @@ import { FlightType } from './FlightType'
  * @author Markitanov Vadim
  * @since 02.12.2023
  */
-export interface Flight {
-	id: number
-	name?: string
-	routes: Route[]
-	type: FlightType
+export interface Flight extends FlightDto {
 }

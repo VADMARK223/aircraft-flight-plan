@@ -13,7 +13,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
 import { FlightType } from '../../../models/FlightType'
 import { LOCAL_MODE } from '../../../utils/consts'
-import { addFlightFx } from '../../../api/flight'
+import { requestAddFlightFx } from '../../../api/flight'
 
 const FlightControl = (): JSX.Element => {
 	const board = useStore($flightSelect)
@@ -49,7 +49,7 @@ const FlightControl = (): JSX.Element => {
 		if (LOCAL_MODE) {
 			flightAddFx(newFlight)
 		} else {
-			addFlightFx()
+			requestAddFlightFx()
 		}
 		// setBoardName('')
 	}

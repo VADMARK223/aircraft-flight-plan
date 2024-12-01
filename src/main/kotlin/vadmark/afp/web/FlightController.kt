@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import vadmark.afp.dto.FlightDto
+import vadmark.afp.dto.RouteDto
 import vadmark.afp.entity.Flight
 import vadmark.afp.service.FlightService
 
@@ -14,6 +15,9 @@ class FlightController(private val service: FlightService) {
     fun add(): FlightDto {
         val dto: FlightDto = FlightDto()
         dto.id = 999
+        dto.name = "Test name"
+        dto.type = 1
+        dto.routes = arrayOf<RouteDto>()
         return dto
     }
 

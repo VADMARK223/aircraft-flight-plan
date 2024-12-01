@@ -8,12 +8,13 @@
 import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { Route } from '../models/Route'
-import { createEvent, createStore } from 'effector'
+import { createEvent, createStore, sample } from 'effector'
 import { $flightsSelect, routeAddFx, flightDeleteFx, flightSelectReset } from './route'
 import { fetchBoardsFx } from '../api/board'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
+import { requestAddFlightFx } from '../api/flight'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $flightSelect = createStore<Flight | null>(null)
@@ -53,6 +54,12 @@ export const boardsDeleteAllFx = createEffect<void, Flight[]>('Удаление 
 export const flightEditFx = createEffect<Route, Flight[]>()
 
 $flights.on(fetchBoardsFx.doneData, (_, payload) => payload)
+sample({
+	source: requestAddFlightFx.doneData,
+	filter: (payload): payload is Flight => payload != null,
+	target: flightAddFx
+})
+
 $flights.on(flightAddFx, (boards: Flight[], newBoard: Flight) => {
 	if (newBoard.id === -1) {
 		let maxId = boards.length ? Math.max(...boards.map(value => value.id)) : 0

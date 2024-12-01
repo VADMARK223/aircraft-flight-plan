@@ -10,8 +10,8 @@ object Response {
         return result
     }
 
-    fun failure(message: String): ResponseDto<Nothing?> {
-        val result = ResponseDto<Nothing?>()
+    fun <Any> failure(message: String): ResponseDto<Any> {
+        val result = ResponseDto<Any>()
         result.status = false
         result.message = message
         return result

@@ -23,6 +23,7 @@ class FlightController(private val service: FlightService) {
         dto.routes = arrayOf<RouteDto>()
 
         return ResponseEntity.ok(Response.success(dto))
+//        return ResponseEntity.ok(Response.failure("BAD"))
     }
 
     @GetMapping("/get_all_flights")

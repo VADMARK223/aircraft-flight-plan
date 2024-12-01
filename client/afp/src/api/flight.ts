@@ -8,27 +8,15 @@ import { FlightDto } from '../models/dto/FlightDto'
  * @since 28.11.2024
  */
 export const requestAddFlightFx = createEffect<void, Flight | null>(async () => {
-	try {
-		const data = await commonApi.get('flight/add').json<Flight>()
+	// try {
+		const data: Flight = await apiGet<Flight>('flight/add')
 		console.log('DATA:', data)
 		return data
-	} catch (error: any) {
-		console.log('Error', error)
-		return null
-	}
+	// } catch (error: any) {
+	// 	console.log('Error', error)
+	// 	return null
+	// }
 })
-
-export async function testFetch () {
-	console.log('testFetch:')
-	try {
-		// @ts-ignore
-		const data: Flight = await apiGet<Flight>('flight/add')//await commonApi.get('flight/add');
-		// const data = await commonApi.get('flight/add')
-		console.log('>>>>',data)
-	} catch (error) {
-		console.error(error)
-	}
-}
 
 export const fetchFlightsFx = createEffect<void, FlightDto | null>(async () => {
 	try {

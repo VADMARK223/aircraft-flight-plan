@@ -33,6 +33,8 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 	const test = useStore($test)
 	const ui = useStore($ui)
 
+	console.log('DATA:', data)
+
 	useEffect(() => {
 		const container = d3.select(gRef.current)
 			.attr('cursor', 'pointer')

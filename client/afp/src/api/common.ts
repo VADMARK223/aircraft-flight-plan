@@ -2,7 +2,7 @@
  * @author Markitanov Vadim
  * @since 02.12.2023
  */
-import ky from 'ky'
+import ky, { Options } from 'ky'
 import { ResponseDto } from '../models/dto/ResponseDto'
 import { toast } from 'react-toastify'
 
@@ -24,6 +24,27 @@ export const commonApi = ky.create({
 		]
 	}
 })
+
+export async function apiPost<T> (endpoint: string, options?:Options): Promise<T> {
+	try {
+		const response = await commonApi.post(endpoint, options)
+		const responseData: ResponseDto<T> = await response.json()
+
+		if (responseData.status) {
+			return responseData.data // Возвращаем только поле `data`
+		} else {
+			throw new Error(`Ошибка: ${responseData.message}`)
+		}
+	} catch (error) {
+		if (error instanceof Error) {
+			showError(error.message)
+		} else {
+			showError('Неизвестная ошибка.')
+		}
+
+		return Promise.reject(error)
+	}
+}
 
 export async function apiGet<T> (endpoint: string): Promise<T> {
 	try {

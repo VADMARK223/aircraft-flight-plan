@@ -4,11 +4,11 @@
  * @author Markitanov Vadim
  * @since 05.12.2023
  */
-import React, { JSX, useEffect, useState } from 'react'
+import React, { JSX, useEffect, useState, ChangeEvent } from 'react'
 import { useStore } from 'effector-react'
 import { $flightSelect, flightAddFx, boardDeleteFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
-import { Button, Divider, Select, SelectProps, Space } from 'antd'
+import { Button, Divider, Select, SelectProps, Space, Input } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
 import { FlightType } from '../../../models/FlightType'
@@ -17,7 +17,7 @@ import { requestAddFlightFx } from '../../../api/flight'
 
 const FlightControl = (): JSX.Element => {
 	const board = useStore($flightSelect)
-	// const [boardName, setBoardName] = useState<string | undefined>(undefined)
+	const [contractId, setContractId] = useState<string | undefined>('888')
 	const [boardType, setBoardType] = useState<FlightType>(FlightType.DEFAULT)
 	// const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
 
@@ -49,8 +49,7 @@ const FlightControl = (): JSX.Element => {
 		if (LOCAL_MODE) {
 			flightAddFx(newFlight)
 		} else {
-			// testFetch()
-			requestAddFlightFx()
+			requestAddFlightFx(Number(contractId))
 		}
 		// setBoardName('')
 	}
@@ -61,21 +60,21 @@ const FlightControl = (): JSX.Element => {
 		// }
 	}
 
-	// const changeFlightName = (e: ChangeEvent<HTMLInputElement>) => {
-	// 	setBoardName(e.target.value)
-	// }
+	const changeContractId = (e: ChangeEvent<HTMLInputElement>) => {
+		setContractId(e.target.value)
+	}
 
 	return (
 		<Space direction={'vertical'}>
 			<Divider type={'horizontal'} orientation={'left'} className={'control-panel-divider'}>Добавление
 				рейса</Divider>
 			<Space>
-				{/*<span>Название рейса:</span>*/}
-				{/*<Input placeholder={'Введите название рейса'}*/}
-				{/*	   onChange={changeFlightName}*/}
-				{/*	   value={boardName}*/}
-				{/*	   allowClear*/}
-				{/*/>*/}
+				<span>Идентификатор контракта:</span>
+				<Input placeholder={'Введите идентификатор контракта'}
+					   onChange={changeContractId}
+					   value={contractId}
+					   allowClear
+				/>
 				<span>Тип рейса:</span>
 				<Select<FlightType>
 					placeholder={'Тип рейса'}

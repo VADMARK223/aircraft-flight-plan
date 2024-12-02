@@ -6,6 +6,6 @@ import lombok.Data
 class FlightDto {
     var id: Int? = null
     var name: String? = null
-    var routes: Array<RouteDto>? = null
+    var routes: Array<RouteDto> = arrayOf<RouteDto>()
     var type: Int? = null
 }

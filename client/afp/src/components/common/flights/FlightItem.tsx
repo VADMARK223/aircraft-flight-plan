@@ -73,7 +73,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 		container.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + 5)
-			.attr('fill', data.type !== undefined ? getColorByType(data.type) : style.textColor)
+			.attr('fill', style.textColor)
 			.attr('font-weight', 'bold')
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')

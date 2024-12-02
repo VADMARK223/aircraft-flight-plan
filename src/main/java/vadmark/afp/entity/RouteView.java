@@ -19,4 +19,7 @@ public class RouteView {
 
     @Column(name = "aircraft_id")
     private int aircraftId;
+
+    @Column(name = "flight_id")
+    private int flightId;
 }

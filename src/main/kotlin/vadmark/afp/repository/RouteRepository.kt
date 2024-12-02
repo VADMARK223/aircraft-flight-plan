@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import vadmark.afp.entity.RouteView
 
 @Repository
-interface RouteRepository : JpaRepository<RouteView, Int>
+interface RouteRepository : JpaRepository<RouteView, Int> {
+    fun findRouteViewByFlightId(id: Int): List<RouteView>
+}

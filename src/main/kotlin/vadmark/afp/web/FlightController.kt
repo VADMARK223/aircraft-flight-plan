@@ -9,20 +9,24 @@ import org.springframework.web.bind.annotation.RestController
 import vadmark.afp.dto.FlightDto
 import vadmark.afp.dto.ResponseDto
 import vadmark.afp.dto.RouteDto
+import vadmark.afp.entity.RouteView
 import vadmark.afp.service.FlightService
+import vadmark.afp.service.RouteService
 import vadmark.afp.util.Response
 
 @RestController
 @RequestMapping("\${api.prefix}/flight")
-class FlightController(private val service: FlightService) {
+class FlightController(private val flightService: FlightService, private val routeService: RouteService) {
     @GetMapping("/get_all_flights")
     fun getAll(): ResponseEntity<ResponseDto<List<FlightDto>>> {
         var result = mutableListOf<FlightDto>()
-        val flights = service.findAll()
+        val flights = flightService.findAll()
         flights.forEach { flight ->
             val dto = FlightDto()
             dto.id = flight.flightId
-            dto.routes = arrayOf<RouteDto>()
+            println("Flight id: ${flight.flightId}, routes: ${routeService.findAllByFlightId(flight.flightId)}")
+//            dto.routes = routeService.findAllByFlightId(flight.flightId)
+            dto.routes = listOf<RouteView>()
             result.add(dto)
         }
 
@@ -32,15 +36,15 @@ class FlightController(private val service: FlightService) {
     @PostMapping("/add")
     fun add(@RequestBody contactId: Int): ResponseEntity<ResponseDto<FlightDto>> {
         val dto: FlightDto = FlightDto()
-        val flight = service.add(contactId)
+        val flight = flightService.add(contactId)
         dto.id = flight.flightId
-        dto.routes = arrayOf<RouteDto>()
+        dto.routes = listOf<RouteView>()
         return ResponseEntity.ok(Response.success(dto))
     }
 
     @PostMapping("/delete_all_flights")
     fun deleteAll(): ResponseEntity<ResponseDto<Boolean>> {
-        service.deleteAll()
+        flightService.deleteAll()
         return ResponseEntity.ok(Response.success(true))
     }
 }

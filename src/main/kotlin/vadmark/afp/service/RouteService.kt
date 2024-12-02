@@ -7,4 +7,5 @@ import vadmark.afp.repository.RouteRepository
 @Service
 class RouteService(private val repo: RouteRepository) {
     fun findAll(): List<RouteView> = repo.findAll()
+    fun findAllByFlightId(flightId:Int):List<RouteView> = repo.findRouteViewByFlightId(flightId)
 }

@@ -72,12 +72,12 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		}
 
 		const timeRotate: number = -19
-		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.startDate.format('HH:mm'), timeRotate)
-		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.endDate.format('HH:mm'), timeRotate)
+		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledDepartureDate.format('HH:mm'), timeRotate)
+		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledArrivalDate.format('HH:mm'), timeRotate)
 
 		const dateRotate: number = 19
-		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.startDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.endDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y, test])
 
 	return (

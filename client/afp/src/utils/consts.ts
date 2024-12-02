@@ -9,7 +9,7 @@ import { Currency } from '../models/Currency'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const LOCAL_MODE = false
+export const LOCAL_MODE = true
 export const SHOW_TEST_TOGGLE: boolean = true
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
@@ -36,8 +36,8 @@ export const flightsDefault: Flight[] = [
 				id: '11',
 				boardId: 1,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(0, 'hours'),
-				endDate: dayjs().startOf('day').add(2, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(2, 'hours'),
 				airportStart: 'AAQ',
 				airportEnd: 'ABA',
 				price: { value: 167, currency: Currency.RUB }
@@ -46,8 +46,8 @@ export const flightsDefault: Flight[] = [
 				id: '21',
 				boardId: 1,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(23, 'hours'),
-				endDate: dayjs().startOf('day').add(25, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(23, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(25, 'hours'),
 				airportStart: 'ABA',
 				airportEnd: 'ACS',
 				price: { value: 167, currency: Currency.USD }
@@ -56,8 +56,8 @@ export const flightsDefault: Flight[] = [
 				id: '31',
 				boardId: 1,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(28, 'hours'),
-				endDate: dayjs().startOf('day').add(29, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(28, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(29, 'hours'),
 				airportStart: 'ADH',
 				airportEnd: 'AER',
 				price: { value: 123, currency: Currency.USD }
@@ -73,8 +73,8 @@ export const flightsDefault: Flight[] = [
 				id: '12',
 				boardId: 2,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(1, 'hours'),
-				endDate: dayjs().startOf('day').add(3, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(1, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(3, 'hours'),
 				airportStart: 'AMV',
 				airportEnd: 'ARH',
 				price: { value: 234, currency: Currency.USD }
@@ -83,8 +83,8 @@ export const flightsDefault: Flight[] = [
 				id: '22',
 				boardId: 2,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(5, 'hours'),
-				endDate: dayjs().startOf('day').add(6, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(5, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
 				airportStart: 'ASF',
 				airportEnd: 'ARH',
 				price: { value: 276, currency: Currency.USD }
@@ -93,8 +93,8 @@ export const flightsDefault: Flight[] = [
 				id: '32',
 				boardId: 2,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(18, 'hours'),
-				endDate: dayjs().startOf('day').add(30, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(18, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(30, 'hours'),
 				airportStart: 'AMV',
 				airportEnd: 'AER',
 				price: { value: 297, currency: Currency.USD }
@@ -103,8 +103,8 @@ export const flightsDefault: Flight[] = [
 				id: '42',
 				boardId: 2,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(32, 'hours'),
-				endDate: dayjs().startOf('day').add(33, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(32, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(33, 'hours'),
 				airportStart: 'ADH',
 				airportEnd: 'ACS',
 				price: { value: 300, currency: Currency.USD }
@@ -120,8 +120,8 @@ export const flightsDefault: Flight[] = [
 				id: '13',
 				boardId: 3,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(3, 'hours'),
-				endDate: dayjs().startOf('day').add(6, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(3, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
 				airportStart: 'ABA',
 				airportEnd: 'AAQ',
 				price: { value: 300, currency: Currency.USD }
@@ -137,8 +137,8 @@ export const flightsDefault: Flight[] = [
 				id: '14',
 				boardId: 4,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(5, 'hours'),
-				endDate: dayjs().startOf('day').add(16, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(5, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(16, 'hours'),
 				airportStart: 'ABA',
 				airportEnd: 'AER',
 				price: { value: 400, currency: Currency.USD }
@@ -154,8 +154,8 @@ export const flightsDefault: Flight[] = [
 				id: '15',
 				boardId: 5,
 				type: RouteType.ROUTINE_MAINTENANCE,
-				startDate: dayjs().startOf('day').add(15, 'hours'),
-				endDate: dayjs().startOf('day').add(30, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(15, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(30, 'hours'),
 				airportStart: 'ARH',
 				airportEnd: 'ASF',
 				price: { value: 500, currency: Currency.USD }
@@ -171,8 +171,8 @@ export const flightsDefault: Flight[] = [
 				id: '16',
 				boardId: 6,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(11, 'hours'),
-				endDate: dayjs().startOf('day').add(14, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(11, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(14, 'hours'),
 				airportStart: 'ASF',
 				airportEnd: 'AER',
 				price: { value: 560, currency: Currency.USD }
@@ -181,8 +181,8 @@ export const flightsDefault: Flight[] = [
 				id: '26',
 				boardId: 6,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(32, 'hours'),
-				endDate: dayjs().startOf('day').add(35, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(32, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(35, 'hours'),
 				airportStart: 'AAQ',
 				airportEnd: 'ACS',
 				price: { value: 600, currency: Currency.USD }
@@ -198,8 +198,8 @@ export const flightsDefault: Flight[] = [
 				id: '17',
 				boardId: 7,
 				type: RouteType.ROUTINE_MAINTENANCE,
-				startDate: dayjs().startOf('day').add(0, 'hours'),
-				endDate: dayjs().startOf('day').add(42, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(42, 'hours'),
 				airportStart: 'AAQ',
 				airportEnd: 'ABA',
 				price: { value: 700, currency: Currency.USD }
@@ -215,8 +215,8 @@ export const flightsDefault: Flight[] = [
 				id: '18',
 				boardId: 8,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(0.5, 'hours'),
-				endDate: dayjs().startOf('day').add(3.5, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(0.5, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(3.5, 'hours'),
 				airportStart: 'ADH',
 				airportEnd: 'ARH',
 				price: { value: 800, currency: Currency.USD }
@@ -232,8 +232,8 @@ export const flightsDefault: Flight[] = [
 				id: '19',
 				boardId: 9,
 				type: RouteType.DEFAULT,
-				startDate: dayjs().startOf('day').add(1, 'hours'),
-				endDate: dayjs().startOf('day').add(3, 'hours'),
+				scheduledDepartureDate: dayjs().startOf('day').add(1, 'hours'),
+				scheduledArrivalDate: dayjs().startOf('day').add(3, 'hours'),
 				airportStart: 'ASF',
 				airportEnd: 'ADH',
 				price: { value: 900, currency: Currency.USD }

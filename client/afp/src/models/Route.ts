@@ -9,8 +9,8 @@ import { Price } from './Price'
 export interface Route {
 	id: string
 	boardId: number
-	startDate: Dayjs
-	endDate: Dayjs
+	scheduledDepartureDate: Dayjs // Плановая дата вылета
+	scheduledArrivalDate: Dayjs // Плановая дата прилета
 	type: RouteType
 	airportStart: string // IATA
 	airportEnd: string // IATA

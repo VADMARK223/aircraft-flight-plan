@@ -40,8 +40,8 @@ const RouteControl = (): JSX.Element => {
 		setAirportStart(flight?.airportStart)
 		setAirportEnd(flight?.airportEnd)
 		if (flight) {
-			setDateRangeValue([flight.startDate, flight.endDate])
-			setTimeRangeValue([flight.startDate, flight.endDate])
+			setDateRangeValue([flight.scheduledDepartureDate, flight.scheduledArrivalDate])
+			setTimeRangeValue([flight.scheduledDepartureDate, flight.scheduledArrivalDate])
 		} else {
 			setDateRangeValue(null)
 			setTimeRangeValue(null)
@@ -94,8 +94,8 @@ const RouteControl = (): JSX.Element => {
 			const newRoute: Route = {
 				id: flightId,
 				boardId: boardId,
-				startDate: newStartDate,
-				endDate: newEndDate,
+				scheduledDepartureDate: newStartDate,
+				scheduledArrivalDate: newEndDate,
 				type: RouteType.DEFAULT,
 				airportStart: airportStart,
 				airportEnd: airportEnd,
@@ -127,8 +127,8 @@ const RouteControl = (): JSX.Element => {
 				if (flightId !== undefined && flightId !== '' && boardId && flight && airportStart && airportEnd) {
 					const updatedFlight: Route = {
 						...flight,
-						startDate: newStartDate,
-						endDate: newEndDate,
+						scheduledDepartureDate: newStartDate,
+						scheduledArrivalDate: newEndDate,
 						airportStart: airportStart,
 						airportEnd: airportEnd,
 						price: price

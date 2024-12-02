@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import vadmark.afp.dto.FlightDto
 import vadmark.afp.dto.ResponseDto
-import vadmark.afp.dto.RouteDto
 import vadmark.afp.entity.RouteView
 import vadmark.afp.service.FlightService
 import vadmark.afp.service.RouteService
@@ -24,9 +23,8 @@ class FlightController(private val flightService: FlightService, private val rou
         flights.forEach { flight ->
             val dto = FlightDto()
             dto.id = flight.flightId
-            println("Flight id: ${flight.flightId}, routes: ${routeService.findAllByFlightId(flight.flightId)}")
-//            dto.routes = routeService.findAllByFlightId(flight.flightId)
-            dto.routes = listOf<RouteView>()
+            dto.routes = routeService.findAllByFlightId(flight.flightId)
+//            dto.routes = listOf<RouteView>()
             result.add(dto)
         }
 

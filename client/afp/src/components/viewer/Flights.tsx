@@ -41,8 +41,8 @@ const Flights = ({x,y}:CommonProps): JSX.Element => {
                 const endDate = datesRange[1].add(1, 'day').toDate()
                 const rangeEnd = DATE_ITEM_WIDTH * dates.length
                 const scaleTime = d3.scaleTime([startDate, endDate], [0, rangeEnd])
-                let startX = scaleTime(flight.startDate.toDate())
-                const endX = scaleTime(flight.endDate.toDate())
+                let startX = scaleTime(flight.scheduledDepartureDate.toDate())
+                const endX = scaleTime(flight.scheduledArrivalDate.toDate())
                 let w = endX - startX
 
                 if (endX <= 0 || startX >= rangeEnd) {

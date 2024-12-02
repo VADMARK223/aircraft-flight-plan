@@ -1,5 +1,6 @@
 package vadmark.afp.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -19,5 +20,6 @@ class Contract {
     var contractId: Int = 0
 
     @OneToMany(mappedBy = "contract", cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY)
+    @JsonIgnore
     var flights: List<Flight> = mutableListOf()
 }

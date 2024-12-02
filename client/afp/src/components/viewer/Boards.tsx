@@ -16,37 +16,37 @@ import { $flights, boardClickFx, boardDeleteFx } from '../../store/flight'
 import { $contextMenu } from '../../store/contextMenu'
 
 const Boards = ({ x, y }: CommonProps): JSX.Element => {
-  const boards = useStore($flights)
-  const contextMenu = useStore($contextMenu)
+	const flights = useStore($flights)
+	const contextMenu = useStore($contextMenu)
 
-  return (
-    <g id={'boards'} transform={`translate(${x}, ${y})`}>
-      {boards.map((value, index) => (
-        <FlightItem key={value.id}
-                   data={value}
-                   x={0}
-                   y={BOARD_ITEM_HEIGHT * index}
-                   width={BOARD_ITEM_WIDTH}
-                   height={BOARD_ITEM_HEIGHT}/>))}
+	return (
+		<g id={'boards'} transform={`translate(${x}, ${y})`}>
+			{flights.map((value, index) => (
+				<FlightItem key={value.id}
+							data={value}
+							x={0}
+							y={BOARD_ITEM_HEIGHT * index}
+							width={BOARD_ITEM_WIDTH}
+							height={BOARD_ITEM_HEIGHT}/>))}
 
-      <g id={'context-menu-layout'}>
-        {contextMenu && !contextMenu.isFlight && <ContextMenu menuItems={[
-          {
-            title: 'Редактировать',
-            action: (datum: Route | Flight) => {
-              boardClickFx(datum as Flight)
-            }
-          }, {
-            title: 'Удалить',
-            action: (datum: Route | Flight) => {
-              boardDeleteFx(datum as Flight)
-            }
-          }
-        ]}/>}
-      </g>
-    </g>
+			<g id={'context-menu-layout'}>
+				{contextMenu && !contextMenu.isFlight && <ContextMenu menuItems={[
+					{
+						title: 'Редактировать',
+						action: (datum: Route | Flight) => {
+							boardClickFx(datum as Flight)
+						}
+					}, {
+						title: 'Удалить',
+						action: (datum: Route | Flight) => {
+							boardDeleteFx(datum as Flight)
+						}
+					}
+				]}/>}
+			</g>
+		</g>
 
-  )
+	)
 }
 
 export default Boards

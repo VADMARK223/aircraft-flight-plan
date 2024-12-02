@@ -37,4 +37,10 @@ class FlightController(private val service: FlightService) {
         dto.routes = arrayOf<RouteDto>()
         return ResponseEntity.ok(Response.success(dto))
     }
+
+    @PostMapping("/delete_all_flights")
+    fun deleteAll(): ResponseEntity<ResponseDto<Boolean>> {
+        service.deleteAll()
+        return ResponseEntity.ok(Response.success(true))
+    }
 }

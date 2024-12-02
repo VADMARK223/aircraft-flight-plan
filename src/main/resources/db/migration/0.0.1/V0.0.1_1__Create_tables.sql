@@ -76,7 +76,7 @@ COMMENT ON COLUMN flight.flight_id IS 'Идентификатор рейса';
 COMMENT ON COLUMN flight.contract_id IS 'Идентификатор контакта';
 ALTER TABLE route
     ADD CONSTRAINT route_flight_fk
-        FOREIGN KEY (flight_id) REFERENCES flight(flight_id);
+        FOREIGN KEY (flight_id) REFERENCES flight(flight_id) ON DELETE CASCADE;
 -- ALTER TABLE flight ADD CONSTRAINT flight_contract_id_unique UNIQUE (contract_id);
 ALTER TABLE flight
     ADD CONSTRAINT flight_contract_fk

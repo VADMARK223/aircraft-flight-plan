@@ -18,9 +18,6 @@ class Flight {
     @Column(name = "flight_id")
     var flightId: Int = 0
 
-//    @Column(name = "contract_id", nullable = false)
-//    var contractId: Int = 0
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contract_id", nullable = false)
     var contract: Contract? = null

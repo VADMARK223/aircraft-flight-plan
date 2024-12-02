@@ -6,20 +6,26 @@
  */
 import React, { JSX } from 'react'
 import { Button, Popconfirm } from 'antd'
-import { $flights, boardsDeleteAllFx } from '../../../store/flight'
+import { $flights, flightsDeleteAllFx } from '../../../store/flight'
 import { useStore } from 'effector-react'
+import { LOCAL_MODE } from '../../../utils/consts'
+import { requestDeleteAllFlightsFx } from '../../../api/flight'
 
 const DeleteAllButton = (): JSX.Element => {
 	const boards = useStore($flights)
 
 	const handlerConfirm = () => {
-		boardsDeleteAllFx()
+		if (LOCAL_MODE) {
+			flightsDeleteAllFx()
+		} else {
+			requestDeleteAllFlightsFx()
+		}
 	}
 
 	return (
 		<Popconfirm
-			title={'Удаление всех бортов.'}
-			description={'Вы уверены, что хотите удалить все борты?'}
+			title={'Удаление всех рейсов.'}
+			description={'Вы уверены, что хотите удалить все рейсы?'}
 			okText={'Да'}
 			cancelText={'Отмена'}
 			onConfirm={handlerConfirm}

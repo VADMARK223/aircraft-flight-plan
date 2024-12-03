@@ -16,7 +16,7 @@ import { flightsDefault, LOCAL_MODE } from '../utils/consts'
 import { requestAddFlightFx, fetchFlightsFx, requestDeleteAllFlightsFx } from '../api/flight'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
-export const $flightSelect = createStore<Flight | null>(null)
+export const $selectedFlight = createStore<Flight | null>(null)
 $flights.watch((boards: Flight[]) => {
 	if (!boards.length) {
 		flightSelectReset()
@@ -36,7 +36,7 @@ $flights.watch((boards: Flight[]) => {
 		}
 	}
 
-	const flightSelect = $flightSelect.getState()
+	const flightSelect = $selectedFlight.getState()
 	if (flightSelect !== null) {
 		const isBoardSelectInBoards = boards.find(value => flightSelect.id === value.id)
 		if (isBoardSelectInBoards === undefined) {
@@ -136,11 +136,11 @@ $flights.on(routeDeleteFx, (flights, route) => {
 })
 
 export const boardClickFx = createEffect<Flight, Flight>('Событие клика по борту')
-$flightSelect.on(boardClickFx, (board, newBoard) => {
+$selectedFlight.on(boardClickFx, (board, newBoard) => {
 	if (board?.id === newBoard.id) {
 		return null
 	}
 	return newBoard
 })
 export const boardSelectResetFx = createEvent()
-$flightSelect.reset(boardSelectResetFx)
+$selectedFlight.reset(boardSelectResetFx)

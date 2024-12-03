@@ -16,3 +16,7 @@ export const fetchRouteTypeFx = createEffect<void, DictData[]>(async () => {
 	const flightsFromServer = await apiGet<DictData[]>('dict/dict_route_type')
 	return DictSchema.parse(flightsFromServer) as DictData[]
 })
+
+export const fetchContracts = async ()=> {
+	return await apiGet<DictData[]>('dict/dict_contract')
+}

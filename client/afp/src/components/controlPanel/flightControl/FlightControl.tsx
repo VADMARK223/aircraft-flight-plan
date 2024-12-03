@@ -4,45 +4,44 @@
  * @author Markitanov Vadim
  * @since 05.12.2023
  */
-import React, { JSX, useEffect, useState, ChangeEvent } from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelect, flightAddFx, boardDeleteFx } from '../../../store/flight'
+import { $selectedFlight, flightAddFx, boardDeleteFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
-import { Button, Divider, Space, Input } from 'antd'
+import { Button, Divider, Space, Select } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
 import { LOCAL_MODE } from '../../../utils/consts'
 import { requestAddFlightFx } from '../../../api/flight'
+import { fetchContracts } from '../../../api/dict'
+import { DictData } from '../../../models/DictData'
 
 const FlightControl = (): JSX.Element => {
-	const board = useStore($flightSelect)
-	const [contractId, setContractId] = useState<string | undefined>('888')
-	// const [boardType, setBoardType] = useState<FlightType>(FlightType.DEFAULT)
-	// const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
+	const selectedFlight = useStore($selectedFlight)
+	const [title, setTitle] = useState<string>()
+	const [contractId, setContractId] = useState<number | undefined>()
+	const [contractOptions, setContractOptions] = useState<DictData[]>([])
 
 	useEffect(() => {
-		// setBoardName(board?.name)
-		// setBoardType(board ? board.type : FlightType.DEFAULT)
-	}, [board])
+		fetchContracts().then(contracts => {
+			if (contracts.length !== 0) {
+				setContractOptions(contracts)
+				// setContractId(contracts[0].value)
+			}
+		})
+	}, [])
 
-	// useEffect(() => {
-	// 	setAddFlightButtonDisable(boardName === undefined || boardName === '')
-	// }, [boardName])
-
-	// const boardTypeSelectOptions: SelectProps['options'] = [
-	// 	{ value: FlightType.LOW, label: 'Неприоритетный' },
-	// 	{ value: FlightType.DEFAULT, label: 'Обычный' },
-	// 	{ value: FlightType.PRIORITY, label: 'Приоритетный' }
-	// ]
+	useEffect(() => {
+		if (selectedFlight) {
+			setTitle('Изменение рейса')
+		} else {
+			setTitle('Добавление рейса')
+		}
+	}, [selectedFlight])
 
 	const handlerAddFlight = (): void => {
-		// if (boardName === undefined || boardName === '') {
-		// 	return
-		// }
 		const newFlight: Flight = {
 			id: -1,
-			// name: boardName,
-			// type: boardType,
 			routes: []
 		}
 		if (LOCAL_MODE) {
@@ -50,7 +49,6 @@ const FlightControl = (): JSX.Element => {
 		} else {
 			requestAddFlightFx(Number(contractId))
 		}
-		// setBoardName('')
 	}
 
 	const handlerEditBoard = (): void => {
@@ -59,46 +57,32 @@ const FlightControl = (): JSX.Element => {
 		// }
 	}
 
-	const changeContractId = (e: ChangeEvent<HTMLInputElement>) => {
-		setContractId(e.target.value)
-	}
-
 	return (
 		<Space direction={'vertical'}>
-			<Divider type={'horizontal'} orientation={'left'} className={'control-panel-divider'}>Добавление
-				рейса</Divider>
+			<Divider type={'horizontal'} orientation={'left'} className={'control-panel-divider'}>{title}</Divider>
 			<Space>
-				<span>Идентификатор контракта:</span>
-				<Input placeholder={'Введите идентификатор контракта'}
-					   onChange={changeContractId}
-					   value={contractId}
-					   allowClear
-				/>
-				<span>Тип рейса:</span>
-				{/*<Select<FlightType>
-					placeholder={'Тип рейса'}
+				<span>ID контракта:</span>
+				<Select
+					placeholder={'Выберите контракт'}
 					style={{ width: '160px' }}
-					defaultValue={FlightType.DEFAULT}
-					value={boardType}
-					options={boardTypeSelectOptions}
-					onChange={setBoardType}
-				/>*/}
-				{board ?
+					value={contractId}
+					options={contractOptions}
+					onChange={value => setContractId(value)}
+				/>
+				{selectedFlight ?
 					<>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
-							// disabled={addFlightButtonDisable}
 								onClick={handlerEditBoard}>Изменить борт</Button>
 						<Button type={'primary'}
 								danger
 								icon={<DeleteOutlined/>}
 								onClick={() => {
-									boardDeleteFx(board)
+									boardDeleteFx(selectedFlight)
 								}}>Удалить борт</Button>
 					</>
 					:
 					<Button type={'primary'}
-						// disabled={addFlightButtonDisable}
 							icon={<PlusOutlined/>}
 							onClick={handlerAddFlight}
 					>Добавить рейс</Button>

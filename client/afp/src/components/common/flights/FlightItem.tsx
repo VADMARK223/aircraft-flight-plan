@@ -10,8 +10,7 @@ import { BOARD_ITEM_WIDTH } from '../../../utils/consts'
 import { Flight } from '../../../models/Flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../../store/style'
-import { $flightSelect, boardClickFx } from '../../../store/flight'
-import { greenColor, redColor } from '../../../utils/style'
+import { $selectedFlight, boardClickFx } from '../../../store/flight'
 import { $test } from '../../../store/test'
 import { $ui } from '../../../store/ui'
 import { setContextMenuFx } from '../../../store/contextMenu'
@@ -27,7 +26,7 @@ interface BoardItemProps {
 const FlightItem = (props: BoardItemProps): JSX.Element => {
 	const { data, x, y, width, height } = props
 	const style = useStore($style)
-	const boardSelect = useStore($flightSelect)
+	const boardSelect = useStore($selectedFlight)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const test = useStore($test)
 	const ui = useStore($ui)

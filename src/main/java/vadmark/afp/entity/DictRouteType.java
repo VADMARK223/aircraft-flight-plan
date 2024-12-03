@@ -18,8 +18,8 @@ import lombok.Setter;
 public class DictRouteType {
     @Id
     @Column(name = "route_type_id")
-    private int id;
+    private int value;
 
     @Column(name = "name")
-    private String name;
+    private String label;
 }

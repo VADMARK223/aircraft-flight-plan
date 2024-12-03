@@ -32,7 +32,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const { x, y, width, data } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const isSelect = data.id === routeSelect?.id
-	const isDefault = data.type === RouteType.DEFAULT
+	const isDefault = data.routeTypeId === RouteType.DEFAULT
 	const test = useStore($test)
 
 	useEffect(() => {

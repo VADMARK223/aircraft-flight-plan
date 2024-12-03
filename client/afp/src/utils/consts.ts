@@ -31,7 +31,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 11,
 				flightId: 1,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(2, 'hours'),
 				airportStart: 'AAQ',
@@ -40,7 +40,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 21,
 				flightId: 1,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(23, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(25, 'hours'),
 				airportStart: 'ABA',
@@ -49,7 +49,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 31,
 				flightId: 1,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(28, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(29, 'hours'),
 				airportStart: 'ADH',
@@ -63,7 +63,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 12,
 				flightId: 2,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(1, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(3, 'hours'),
 				airportStart: 'AMV',
@@ -72,7 +72,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 22,
 				flightId: 2,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(5, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
 				airportStart: 'ASF',
@@ -81,7 +81,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 32,
 				flightId: 2,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(18, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(30, 'hours'),
 				airportStart: 'AMV',
@@ -90,7 +90,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 42,
 				flightId: 2,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(32, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(33, 'hours'),
 				airportStart: 'ADH',
@@ -104,7 +104,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 13,
 				flightId: 3,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(3, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
 				airportStart: 'ABA',
@@ -118,7 +118,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 14,
 				flightId: 4,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(5, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(16, 'hours'),
 				airportStart: 'ABA',
@@ -132,7 +132,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 15,
 				flightId: 5,
-				type: RouteType.ROUTINE_MAINTENANCE,
+				routeTypeId: RouteType.ROUTINE_MAINTENANCE,
 				scheduledDepartureDate: dayjs().startOf('day').add(15, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(30, 'hours'),
 				airportStart: 'ARH',
@@ -146,7 +146,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 16,
 				flightId: 6,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(11, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(14, 'hours'),
 				airportStart: 'ASF',
@@ -155,7 +155,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 26,
 				flightId: 6,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(32, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(35, 'hours'),
 				airportStart: 'AAQ',
@@ -169,7 +169,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 17,
 				flightId: 7,
-				type: RouteType.ROUTINE_MAINTENANCE,
+				routeTypeId: RouteType.ROUTINE_MAINTENANCE,
 				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(42, 'hours'),
 				airportStart: 'AAQ',
@@ -183,7 +183,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 18,
 				flightId: 8,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(0.5, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(3.5, 'hours'),
 				airportStart: 'ADH',
@@ -197,7 +197,7 @@ export const flightsDefault: Flight[] = [
 			{
 				id: 19,
 				flightId: 9,
-				type: RouteType.DEFAULT,
+				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(1, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(3, 'hours'),
 				airportStart: 'ASF',

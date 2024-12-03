@@ -18,8 +18,8 @@ import lombok.Setter;
 public class DictAircraftType {
     @Id
     @Column(name = "aircraft_type_id")
-    private int id;
+    private int value;
 
     @Column(name = "aircraft_type_name")
-    private String name;
+    private String label;
 }

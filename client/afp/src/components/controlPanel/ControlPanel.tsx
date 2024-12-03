@@ -17,7 +17,9 @@ const ControlPanel = (): JSX.Element => {
 			<Space direction={'vertical'}>
 				<FlightControl/>
 				<RouteControl/>
-				<PlanControl/>
+				<div style={{ marginBottom: 5 }}>
+					<PlanControl/>
+				</div>
 			</Space>
 			<ThemeControl/>
 		</Space>

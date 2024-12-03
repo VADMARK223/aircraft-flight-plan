@@ -1,6 +1,9 @@
 package vadmark.afp.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,4 +36,8 @@ public class RouteView {
     // Плановая дата прилета
     @Column(name = "scheduled_arrival_date")
     private LocalDateTime scheduledArrivalDate;
+
+    // Тип перелета
+    @Column(name = "route_type_id")
+    private int routeTypeId;
 }

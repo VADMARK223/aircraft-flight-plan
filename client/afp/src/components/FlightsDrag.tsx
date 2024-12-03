@@ -214,7 +214,7 @@ const FlightsDrag = (): JSX.Element => {
 			let flightY: number = 0
 			const isDragging = flightModel.model.id === dragModelRef.current?.flight.model.id
 			const cursor: string = isDragging ? 'grabbing' : 'grab'
-			const isDefault = flightModel.model.type === RouteType.DEFAULT
+			const isDefault = flightModel.model.routeTypeId === RouteType.DEFAULT
 
 			if (isDragging) {
 				if (curDragFlightRef.current) {

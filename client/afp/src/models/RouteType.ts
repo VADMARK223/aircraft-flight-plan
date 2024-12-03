@@ -3,6 +3,6 @@
  * @since 23.11.2023
  */
 export enum RouteType {
-	DEFAULT,
-	ROUTINE_MAINTENANCE
+	ROUTINE_MAINTENANCE = 0,
+	DEFAULT = 1
 }

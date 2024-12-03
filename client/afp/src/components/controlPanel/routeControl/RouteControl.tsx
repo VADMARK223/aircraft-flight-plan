@@ -18,17 +18,22 @@ import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
 import { RouteType } from '../../../models/RouteType'
 import { $airports } from '../../../store/airport'
+import { $routeDictStore } from '../../../store/dict'
+import { DictData } from '../../../models/DictData'
 
 const RouteControl = (): JSX.Element => {
 	const route = useStore($routeSelect)
 	const flights = useStore($flights)
 	const airports = useStore($airports)
+	const routeTypes = useStore($routeDictStore)
 	const [editRouteButtonDisable, setEditRouteButtonDisable] = useState<boolean>(true)
 	const [flightId, setFlightId] = useState<number | undefined>()
+	const [routeType, setRouteType] = useState<number>(-1)
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [airportStart, setAirportStart] = useState<string | undefined>()
 	const [airportEnd, setAirportEnd] = useState<string | undefined>()
+	const [routeTypeOptions, setRouteTypeOptions] = useState<DictData[]>([])
 
 	useEffect(() => {
 		setFlightId(route?.flightId)
@@ -43,6 +48,13 @@ const RouteControl = (): JSX.Element => {
 		}
 
 	}, [route])
+
+	useEffect(() => {
+		if (routeTypes.length !== 0) {
+			setRouteTypeOptions(routeTypes)
+			setRouteType(routeTypes[0].value)
+		}
+	}, [routeTypes])
 
 	let flightOptions: SelectProps['options'] = []
 	flights.forEach(flight => {
@@ -72,9 +84,9 @@ const RouteControl = (): JSX.Element => {
 			const newRoute: Route = {
 				id: -1,
 				flightId: flightId,
+				routeTypeId: routeType,
 				scheduledDepartureDate: newStartDate,
 				scheduledArrivalDate: newEndDate,
-				type: RouteType.DEFAULT,
 				airportStart: airportStart,
 				airportEnd: airportEnd
 			}
@@ -139,6 +151,21 @@ const RouteControl = (): JSX.Element => {
 								style={{ minWidth: '150px' }}
 								onChange={handlerFlightSelectChange}
 								allowClear
+								showSearch
+								filterOption={(input, opt) => {
+									return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
+								}}
+						/>
+					</Space>
+					<Space>
+						<span>Тип:</span>
+						<Select placeholder={'Выберите тип'}
+								value={routeType}
+								options={routeTypeOptions}
+								style={{ minWidth: '150px' }}
+								onChange={value => {
+									setRouteType(value)
+								}}
 								showSearch
 								filterOption={(input, opt) => {
 									return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)

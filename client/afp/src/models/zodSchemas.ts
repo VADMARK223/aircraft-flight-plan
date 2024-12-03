@@ -14,6 +14,7 @@ const DateSchema = z.string()
 const RouteSchema = z.object({
 	id: z.number(),
 	flightId: z.number(),
+	routeTypeId: z.number(),
 	scheduledDepartureDate: DateSchema,
 	scheduledArrivalDate: DateSchema
 })
@@ -29,8 +30,8 @@ export const FlightsSchema = z.array(FlightSchema)
 
 // Схема элемента словаря
 const DictDataSchema = z.object({
-	id: z.number(),
-	name: z.string()
+	value: z.number(),
+	label: z.string()
 })
 
 // Схема словаря

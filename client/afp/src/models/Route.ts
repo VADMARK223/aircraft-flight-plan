@@ -8,9 +8,9 @@ import { RouteType } from './RouteType'
 export interface Route {
 	id: number
 	flightId: number // Идентификатор рейса
+	routeTypeId: RouteType // Тип перелета
 	scheduledDepartureDate: Dayjs // Плановая дата вылета
 	scheduledArrivalDate: Dayjs // Плановая дата прилета
-	type: RouteType
 	airportStart: string // IATA
 	airportEnd: string // IATA
 }

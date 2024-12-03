@@ -26,7 +26,6 @@ const FlightControl = (): JSX.Element => {
 		fetchContracts().then(contracts => {
 			if (contracts.length !== 0) {
 				setContractOptions(contracts)
-				// setContractId(contracts[0].value)
 			}
 		})
 	}, [])
@@ -34,15 +33,21 @@ const FlightControl = (): JSX.Element => {
 	useEffect(() => {
 		if (selectedFlight) {
 			setTitle('Изменение рейса')
+			setContractId(selectedFlight.contractId)
 		} else {
 			setTitle('Добавление рейса')
+			setContractId(undefined)
 		}
 	}, [selectedFlight])
 
 	const handlerAddFlight = (): void => {
+		if (contractId === undefined) {
+			return
+		}
 		const newFlight: Flight = {
 			id: -1,
-			routes: []
+			routes: [],
+			contractId: contractId
 		}
 		if (LOCAL_MODE) {
 			flightAddFx(newFlight)

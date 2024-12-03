@@ -19,7 +19,7 @@ export const fetchFlightsFx = createEffect<void, Flight[]>(async () => {
 })
 
 export const requestAddFlightFx = createEffect<number, Flight | null>(async (contractId: number) => {
-	return await apiPost<Flight>('flight/add', {
+	return await apiPost<Flight>('flight/add_flight', {
 		json: contractId
 	})
 })

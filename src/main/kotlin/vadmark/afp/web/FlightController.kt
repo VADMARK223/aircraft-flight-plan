@@ -24,13 +24,14 @@ class FlightController(private val flightService: FlightService, private val rou
             val dto = FlightDto()
             dto.id = flight.flightId
             dto.routes = routeService.findAllByFlightId(flight.flightId)
+            dto.contractId = flight.contract?.contractId
             result.add(dto)
         }
 
         return ResponseEntity.ok(Response.success(result))
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add_flight")
     fun add(@RequestBody contactId: Int): ResponseEntity<ResponseDto<FlightDto>> {
         val dto: FlightDto = FlightDto()
         val flight = flightService.add(contactId)

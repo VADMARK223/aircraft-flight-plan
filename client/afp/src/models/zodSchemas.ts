@@ -22,7 +22,8 @@ const RouteSchema = z.object({
 // Схема рейса
 const FlightSchema = z.object({
 	id: z.number(),
-	routes: z.array(RouteSchema)
+	routes: z.array(RouteSchema),
+	contractId: z.number(),
 })
 
 // Схема группы рейсов

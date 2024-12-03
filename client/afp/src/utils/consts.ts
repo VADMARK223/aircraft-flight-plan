@@ -2,6 +2,7 @@ import { Flight } from '../models/Flight'
 import { RouteType } from '../models/RouteType'
 import dayjs from 'dayjs'
 import { Airport } from '../models/Airport'
+import { generateContractId } from './utils'
 
 /**
  * @author Markitanov Vadim
@@ -27,6 +28,7 @@ export const RESIZE_STICK_WIDTH = 5
 export const flightsDefault: Flight[] = [
 	{
 		id: 1,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 11,
@@ -59,6 +61,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 2,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 12,
@@ -100,6 +103,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 3,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 13,
@@ -114,6 +118,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 4,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 14,
@@ -128,6 +133,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 5,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 15,
@@ -142,6 +148,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 6,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 16,
@@ -165,6 +172,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 7,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 17,
@@ -179,6 +187,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 8,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 18,
@@ -193,6 +202,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 9,
+		contractId: generateContractId(),
 		routes: [
 			{
 				id: 19,

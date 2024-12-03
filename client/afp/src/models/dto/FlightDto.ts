@@ -7,4 +7,5 @@ import { Route } from '../Route'
 export interface FlightDto {
 	id: number
 	routes: Route[]
+	contractId: number
 }

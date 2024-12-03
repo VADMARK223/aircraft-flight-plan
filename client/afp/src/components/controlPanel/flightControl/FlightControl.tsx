@@ -8,33 +8,32 @@ import React, { JSX, useEffect, useState, ChangeEvent } from 'react'
 import { useStore } from 'effector-react'
 import { $flightSelect, flightAddFx, boardDeleteFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
-import { Button, Divider, Select, SelectProps, Space, Input } from 'antd'
+import { Button, Divider, Space, Input } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
-import { FlightType } from '../../../models/FlightType'
 import { LOCAL_MODE } from '../../../utils/consts'
 import { requestAddFlightFx } from '../../../api/flight'
 
 const FlightControl = (): JSX.Element => {
 	const board = useStore($flightSelect)
 	const [contractId, setContractId] = useState<string | undefined>('888')
-	const [boardType, setBoardType] = useState<FlightType>(FlightType.DEFAULT)
+	// const [boardType, setBoardType] = useState<FlightType>(FlightType.DEFAULT)
 	// const [addFlightButtonDisable, setAddFlightButtonDisable] = useState<boolean>(true)
 
 	useEffect(() => {
 		// setBoardName(board?.name)
-		setBoardType(board ? board.type : FlightType.DEFAULT)
+		// setBoardType(board ? board.type : FlightType.DEFAULT)
 	}, [board])
 
 	// useEffect(() => {
 	// 	setAddFlightButtonDisable(boardName === undefined || boardName === '')
 	// }, [boardName])
 
-	const boardTypeSelectOptions: SelectProps['options'] = [
-		{ value: FlightType.LOW, label: 'Неприоритетный' },
-		{ value: FlightType.DEFAULT, label: 'Обычный' },
-		{ value: FlightType.PRIORITY, label: 'Приоритетный' }
-	]
+	// const boardTypeSelectOptions: SelectProps['options'] = [
+	// 	{ value: FlightType.LOW, label: 'Неприоритетный' },
+	// 	{ value: FlightType.DEFAULT, label: 'Обычный' },
+	// 	{ value: FlightType.PRIORITY, label: 'Приоритетный' }
+	// ]
 
 	const handlerAddFlight = (): void => {
 		// if (boardName === undefined || boardName === '') {
@@ -43,7 +42,7 @@ const FlightControl = (): JSX.Element => {
 		const newFlight: Flight = {
 			id: -1,
 			// name: boardName,
-			type: boardType,
+			// type: boardType,
 			routes: []
 		}
 		if (LOCAL_MODE) {
@@ -76,14 +75,14 @@ const FlightControl = (): JSX.Element => {
 					   allowClear
 				/>
 				<span>Тип рейса:</span>
-				<Select<FlightType>
+				{/*<Select<FlightType>
 					placeholder={'Тип рейса'}
 					style={{ width: '160px' }}
 					defaultValue={FlightType.DEFAULT}
 					value={boardType}
 					options={boardTypeSelectOptions}
 					onChange={setBoardType}
-				/>
+				/>*/}
 				{board ?
 					<>
 						<Button type={'primary'}

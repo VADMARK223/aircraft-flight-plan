@@ -1,5 +1,5 @@
 /**
- * Компонент управлением полетвами.
+ * Компонент управлением перелетами.
  *
  * @author Markitanov Vadim
  * @since 23.11.2023
@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $flightsSelect, routeAddFx, flightBoardIdChanged, flightDeleteFx } from '../../../store/route'
-import { $flights, flightEditFx } from '../../../store/flight'
+import { flightEditFx } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
@@ -23,7 +23,6 @@ import { Currency } from '../../../models/Currency'
 
 const RouteControl = (): JSX.Element => {
 	const flight = useStore($flightsSelect)
-	const boards = useStore($flights)
 	const airports = useStore($airports)
 	const [editRouteButtonDisable, setEditRouteButtonDisable] = useState<boolean>(true)
 	const [boardId, setBoardId] = useState<number | undefined>()
@@ -35,7 +34,7 @@ const RouteControl = (): JSX.Element => {
 	const [airportEnd, setAirportEnd] = useState<string | undefined>()
 
 	useEffect(() => {
-		setBoardId(flight?.boardId)
+		setBoardId(flight?.flightId)
 		setFlightId(flight?.id)
 		setAirportStart(flight?.airportStart)
 		setAirportEnd(flight?.airportEnd)
@@ -51,9 +50,9 @@ const RouteControl = (): JSX.Element => {
 	}, [flight])
 
 	let boardOptions: SelectProps['options'] = []
-	boards.forEach(value => {
-		boardOptions?.push({ value: value.id, label: value.name })
-	})
+	// boards.forEach(value => {
+	// 	boardOptions?.push({ value: value.id, label: value.name })
+	// })
 
 	let currencyOptions: SelectProps['options'] = []
 	currencyOptions.push({ value: Currency.RUB, label: Currency.RUB })
@@ -93,7 +92,7 @@ const RouteControl = (): JSX.Element => {
 		if (newStartDate.isBefore(newEndDate)) {
 			const newRoute: Route = {
 				id: flightId,
-				boardId: boardId,
+				flightId: boardId,
 				scheduledDepartureDate: newStartDate,
 				scheduledArrivalDate: newEndDate,
 				type: RouteType.DEFAULT,
@@ -133,7 +132,7 @@ const RouteControl = (): JSX.Element => {
 						airportEnd: airportEnd,
 						price: price
 					}
-					if (flight.boardId === boardId) {
+					if (flight.flightId === boardId) {
 						flightEditFx(updatedFlight)
 					} else {
 						flightDeleteFx(flight)

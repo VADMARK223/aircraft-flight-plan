@@ -6,6 +6,5 @@ import vadmark.afp.entity.RouteView
 @Data
 class FlightDto {
     var id: Int? = null
-    var name: String? = null
     var routes: List<RouteView> = listOf<RouteView>()
 }

@@ -74,7 +74,7 @@ $flights.on(flightAddFx, (boards: Flight[], newBoard: Flight) => {
 	return [...boards, newBoard]
 })
 $flights.on(routeAddFx, (boards, flight) => {
-	const findBoard = boards.find(value => value.id === flight.boardId)
+	const findBoard = boards.find(value => value.id === flight.flightId)
 	if (findBoard === undefined) {
 		return boards
 	}
@@ -103,7 +103,7 @@ $flights.on(boardDeleteFx, (boards, board) => {
 })
 $flights.on(flightsDeleteAllFx, _ => [])
 $flights.on(flightEditFx, (boards, flight: Route) => {
-	const boardIndex = boards.findIndex(value => value.id === flight.boardId)
+	const boardIndex = boards.findIndex(value => value.id === flight.flightId)
 	const flightIndex = boards[boardIndex].routes.findIndex(value => {
 		return flight.id === value.id
 	})

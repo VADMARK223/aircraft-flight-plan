@@ -1,5 +1,4 @@
 import { Route } from '../Route'
-import { FlightType } from '../FlightType'
 
 /**
  * @author Markitanov Vadim
@@ -7,7 +6,5 @@ import { FlightType } from '../FlightType'
  */
 export interface FlightDto {
 	id: number
-	name?: string
 	routes: Route[]
-	type: FlightType
 }

@@ -11,7 +11,6 @@ import { Flight } from '../../../models/Flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../../store/style'
 import { $flightSelect, boardClickFx } from '../../../store/flight'
-import { FlightType } from '../../../models/FlightType'
 import { greenColor, redColor } from '../../../utils/style'
 import { $test } from '../../../store/test'
 import { $ui } from '../../../store/ui'
@@ -59,17 +58,6 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('stroke', style.lineColor)
 			.attr('fill', style.backgroundColor)
 
-		const getColorByType = (type: FlightType.LOW | FlightType.DEFAULT | FlightType.PRIORITY) => {
-			switch (type) {
-				case FlightType.LOW:
-					return greenColor
-				case FlightType.DEFAULT:
-					return style.textColor
-				case FlightType.PRIORITY:
-					return redColor
-			}
-		}
-
 		container.append('text')
 			.attr('x', x + 5)
 			.attr('y', y + 5)
@@ -110,7 +98,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 				.attr('stroke-width', selectStrokeWidth)
 		}
 
-	}, [test, ui.y, style, data.name, x, y, width, height, data.type, data.routes.length, data, boardSelect])
+	}, [test, ui.y, style, x, y, width, height, data.routes.length, data, boardSelect])
 
 	return (
 		<g ref={gRef}/>

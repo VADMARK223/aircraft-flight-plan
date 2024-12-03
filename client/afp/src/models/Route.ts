@@ -7,8 +7,8 @@ import { Price } from './Price'
  * @since 22.11.2023
  */
 export interface Route {
-	id: string
-	boardId: number
+	id: string // route_id
+	flightId: number // Идентификатор рейса
 	scheduledDepartureDate: Dayjs // Плановая дата вылета
 	scheduledArrivalDate: Dayjs // Плановая дата прилета
 	type: RouteType

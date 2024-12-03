@@ -17,11 +17,12 @@ import java.time.LocalDateTime;
 public class RouteView {
     @Id
     @Column(name = "route_id")
-    private int routeId;
+    private int id;
 
     @Column(name = "aircraft_id")
     private int aircraftId;
 
+    // Идентификатор рейса
     @Column(name = "flight_id")
     private int flightId;
 

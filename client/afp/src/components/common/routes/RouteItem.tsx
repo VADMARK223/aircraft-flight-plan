@@ -7,7 +7,7 @@
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Route } from '../../../models/Route'
-import { $flightsSelect, flightClickFx } from '../../../store/route'
+import { $routeSelect, flightClickFx } from '../../../store/route'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
 import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'
@@ -28,10 +28,10 @@ interface FlightItemProps {
 const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
 	const ui = useStore($ui)
-	const flightsSelect = useStore($flightsSelect)
+	const routeSelect = useStore($routeSelect)
 	const { x, y, width, data } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-	const isSelect = data.id === flightsSelect?.id
+	const isSelect = data.id === routeSelect?.id
 	const isDefault = data.type === RouteType.DEFAULT
 	const test = useStore($test)
 

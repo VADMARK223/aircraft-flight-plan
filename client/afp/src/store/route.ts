@@ -14,7 +14,7 @@ export const flightSelectFx = createEffect<Route, Route>('Событие при�
 export const flightClickFx = createEffect<Route, Route>('Событие клика по полету')
 export const flightSelectReset = createEvent()
 export const flightBoardIdChanged = createEvent<number>('Событие смены борта у полета.')
-export const $flightsSelect = createStore<Route | null>(null)
+export const $routeSelect = createStore<Route | null>(null)
 	.on(flightClickFx, (state, payload) => {
 		if (state?.id === payload.id) {
 			return null
@@ -25,10 +25,10 @@ export const $flightsSelect = createStore<Route | null>(null)
 	.reset(flightSelectReset)
 
 export const routeAddFx = createEffect<Route, Flight[]>()
-export const flightDeleteFx = createEffect<Route, Flight[]>()
+export const routeDeleteFx = createEffect<Route, Flight[]>()
 
 sample({
-	source: flightDeleteFx,
+	source: routeDeleteFx,
 	clock: flightBoardIdChanged,
 	fn: (route: Route, flightId: number) => {
 		route.flightId = flightId

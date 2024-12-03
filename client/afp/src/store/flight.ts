@@ -9,7 +9,7 @@ import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { Route } from '../models/Route'
 import { createEvent, createStore, sample } from 'effector'
-import { $flightsSelect, routeAddFx, flightDeleteFx, flightSelectReset } from './route'
+import { $routeSelect, routeAddFx, routeDeleteFx, flightSelectReset } from './route'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
@@ -22,11 +22,11 @@ $flights.watch((boards: Flight[]) => {
 		flightSelectReset()
 	}
 
-	const flightsSelect = $flightsSelect.getState()
-	if (flightsSelect) {
+	const routeSelect = $routeSelect.getState()
+	if (routeSelect) {
 		let find = false
 		for (let i = 0; i < boards.length; i++) {
-			if (boards[i].routes.indexOf(flightsSelect) !== -1) {
+			if (boards[i].routes.indexOf(routeSelect) !== -1) {
 				find = true
 				break
 			}
@@ -110,27 +110,27 @@ $flights.on(flightEditFx, (boards, flight: Route) => {
 	boards[boardIndex].routes[flightIndex] = flight
 	return [...boards]
 })
-$flights.on(flightDeleteFx, (boards, flight) => {
-	const flightId = flight.id
+$flights.on(routeDeleteFx, (flights, route) => {
+	const routeId = route.id
 	let findBoardIndex = -1, findFlightIndex = -1, stopFind = false
-	for (let i = 0; i < boards.length; i++) {
+	for (let i = 0; i < flights.length; i++) {
 		if (stopFind) {
 			break
 		}
-		const board = boards[i]
+		const board = flights[i]
 		for (let j = 0; j < board.routes.length; j++) {
 			const flight = board.routes[j]
-			stopFind = flight.id === flightId
+			stopFind = flight.id === routeId
 			if (stopFind) {
-				findBoardIndex = boards.indexOf(board)
+				findBoardIndex = flights.indexOf(board)
 				findFlightIndex = board.routes.indexOf(flight)
 				break
 			}
 		}
 	}
 
-	const newBoards = [...boards]
-	const newFlights = [...boards[findBoardIndex].routes]
+	const newBoards = [...flights]
+	const newFlights = [...flights[findBoardIndex].routes]
 	newBoards[findBoardIndex].routes = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
 	return newBoards
 })

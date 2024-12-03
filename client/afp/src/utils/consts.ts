@@ -30,7 +30,7 @@ export const flightsDefault: Flight[] = [
 		id: 1,
 		routes: [
 			{
-				id: '11',
+				id: 11,
 				flightId: 1,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
@@ -40,7 +40,7 @@ export const flightsDefault: Flight[] = [
 				price: { value: 167, currency: Currency.RUB }
 			},
 			{
-				id: '21',
+				id: 21,
 				flightId: 1,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(23, 'hours'),
@@ -50,7 +50,7 @@ export const flightsDefault: Flight[] = [
 				price: { value: 167, currency: Currency.USD }
 			},
 			{
-				id: '31',
+				id: 31,
 				flightId: 1,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(28, 'hours'),
@@ -65,7 +65,7 @@ export const flightsDefault: Flight[] = [
 		id: 2,
 		routes: [
 			{
-				id: '12',
+				id: 12,
 				flightId: 2,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(1, 'hours'),
@@ -75,7 +75,7 @@ export const flightsDefault: Flight[] = [
 				price: { value: 234, currency: Currency.USD }
 			},
 			{
-				id: '22',
+				id: 22,
 				flightId: 2,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(5, 'hours'),
@@ -85,7 +85,7 @@ export const flightsDefault: Flight[] = [
 				price: { value: 276, currency: Currency.USD }
 			},
 			{
-				id: '32',
+				id: 32,
 				flightId: 2,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(18, 'hours'),
@@ -95,7 +95,7 @@ export const flightsDefault: Flight[] = [
 				price: { value: 297, currency: Currency.USD }
 			},
 			{
-				id: '42',
+				id: 42,
 				flightId: 2,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(32, 'hours'),
@@ -110,7 +110,7 @@ export const flightsDefault: Flight[] = [
 		id: 3,
 		routes: [
 			{
-				id: '13',
+				id: 13,
 				flightId: 3,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(3, 'hours'),
@@ -125,7 +125,7 @@ export const flightsDefault: Flight[] = [
 		id: 4,
 		routes: [
 			{
-				id: '14',
+				id: 14,
 				flightId: 4,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(5, 'hours'),
@@ -140,7 +140,7 @@ export const flightsDefault: Flight[] = [
 		id: 5,
 		routes: [
 			{
-				id: '15',
+				id: 15,
 				flightId: 5,
 				type: RouteType.ROUTINE_MAINTENANCE,
 				scheduledDepartureDate: dayjs().startOf('day').add(15, 'hours'),
@@ -155,7 +155,7 @@ export const flightsDefault: Flight[] = [
 		id: 6,
 		routes: [
 			{
-				id: '16',
+				id: 16,
 				flightId: 6,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(11, 'hours'),
@@ -165,7 +165,7 @@ export const flightsDefault: Flight[] = [
 				price: { value: 560, currency: Currency.USD }
 			},
 			{
-				id: '26',
+				id: 26,
 				flightId: 6,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(32, 'hours'),
@@ -180,7 +180,7 @@ export const flightsDefault: Flight[] = [
 		id: 7,
 		routes: [
 			{
-				id: '17',
+				id: 17,
 				flightId: 7,
 				type: RouteType.ROUTINE_MAINTENANCE,
 				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
@@ -195,7 +195,7 @@ export const flightsDefault: Flight[] = [
 		id: 8,
 		routes: [
 			{
-				id: '18',
+				id: 18,
 				flightId: 8,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(0.5, 'hours'),
@@ -210,7 +210,7 @@ export const flightsDefault: Flight[] = [
 		id: 9,
 		routes: [
 			{
-				id: '19',
+				id: 19,
 				flightId: 9,
 				type: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(1, 'hours'),

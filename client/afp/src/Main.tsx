@@ -40,7 +40,7 @@ const Main = (): JSX.Element => {
 
 		try {
 			const resultSafeParse = FlightsSchema.safeParse(flightsFromServer)
-			showSuccess('resultSafeParse: ' + resultSafeParse)
+			// showSuccess('resultSafeParse: ' + resultSafeParse)
 			if (resultSafeParse.success) {
 				console.log('Converted flights:', resultSafeParse.data)
 			}

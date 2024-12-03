@@ -11,7 +11,7 @@ import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import * as d3 from 'd3'
 import RouteItem from '../common/routes/RouteItem'
 import ContextMenu from '../common/ContextMenu'
-import { flightClickFx, flightDeleteFx } from '../../store/route'
+import { flightClickFx, routeDeleteFx } from '../../store/route'
 import { useStore } from 'effector-react'
 import { $contextMenu } from '../../store/contextMenu'
 import { $flights } from '../../store/flight'
@@ -78,7 +78,7 @@ const Flights = ({x,y}:CommonProps): JSX.Element => {
           }, {
             title: 'Удалить',
             action: (datum: Route | Flight) => {
-              flightDeleteFx(datum as Route)
+                routeDeleteFx(datum as Route)
             }
           }
         ]}/>}

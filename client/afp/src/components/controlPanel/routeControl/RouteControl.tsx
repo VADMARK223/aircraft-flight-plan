@@ -6,8 +6,8 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightsSelect, routeAddFx, flightBoardIdChanged, flightDeleteFx } from '../../../store/route'
-import { flightEditFx } from '../../../store/flight'
+import { $routeSelect, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
+import { flightEditFx, $flights } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
@@ -22,11 +22,11 @@ import { Price } from '../../../models/Price'
 import { Currency } from '../../../models/Currency'
 
 const RouteControl = (): JSX.Element => {
-	const flight = useStore($flightsSelect)
+	const route = useStore($routeSelect)
+	const flights = useStore($flights)
 	const airports = useStore($airports)
 	const [editRouteButtonDisable, setEditRouteButtonDisable] = useState<boolean>(true)
-	const [boardId, setBoardId] = useState<number | undefined>()
-	const [flightId, setFlightId] = useState<string | undefined>()
+	const [flightId, setFlightId] = useState<number | undefined>()
 	const [price, setPrice] = useState<Price | null>({ value: 0, currency: Currency.RUB })
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
@@ -34,39 +34,35 @@ const RouteControl = (): JSX.Element => {
 	const [airportEnd, setAirportEnd] = useState<string | undefined>()
 
 	useEffect(() => {
-		setBoardId(flight?.flightId)
-		setFlightId(flight?.id)
-		setAirportStart(flight?.airportStart)
-		setAirportEnd(flight?.airportEnd)
-		if (flight) {
-			setDateRangeValue([flight.scheduledDepartureDate, flight.scheduledArrivalDate])
-			setTimeRangeValue([flight.scheduledDepartureDate, flight.scheduledArrivalDate])
+		setFlightId(route?.flightId)
+		setAirportStart(route?.airportStart)
+		setAirportEnd(route?.airportEnd)
+		if (route) {
+			setDateRangeValue([route.scheduledDepartureDate, route.scheduledArrivalDate])
+			setTimeRangeValue([route.scheduledDepartureDate, route.scheduledArrivalDate])
 		} else {
 			setDateRangeValue(null)
 			setTimeRangeValue(null)
 		}
-		setPrice(flight ? flight.price : null)
+		setPrice(route ? route.price : null)
 
-	}, [flight])
+	}, [route])
 
-	let boardOptions: SelectProps['options'] = []
-	// boards.forEach(value => {
-	// 	boardOptions?.push({ value: value.id, label: value.name })
-	// })
+	let flightOptions: SelectProps['options'] = []
+	flights.forEach(flight=>{
+		flightOptions?.push({value: flight.id, label: `Рейс ${flight.id}`})
+	})
 
 	let currencyOptions: SelectProps['options'] = []
 	currencyOptions.push({ value: Currency.RUB, label: Currency.RUB })
 	currencyOptions.push({ value: Currency.USD, label: Currency.USD })
-	// boards.forEach(value => {
-	// 	currencyOptions?.push({ value: value.id, label: value.name })
-	// })
 
 	useEffect(() => {
-		setEditRouteButtonDisable(boardId === undefined || flightId === undefined || flightId === '' || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
-	}, [boardId, flightId, dateRangeValue, timeRangeValue, airportStart, airportEnd])
+		setEditRouteButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
+	}, [flightId, dateRangeValue, timeRangeValue, airportStart, airportEnd])
 
-	const handlerBoardSelectChange = (value: number | undefined): void => {
-		setBoardId(value)
+	const handlerFlightSelectChange = (value: number | undefined): void => {
+		setFlightId(value)
 	}
 
 	const handlerCurrencySelectChange = (currency: Currency): void => {
@@ -79,20 +75,17 @@ const RouteControl = (): JSX.Element => {
 	 * Метод подтверждения добавления перелета.
 	 */
 	const handlerAddRoute = (): void => {
-		if (boardId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined) {
+		if (flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined) {
 			return
 		}
 
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-		if (flightId === undefined || flightId === '') {
-			return
-		}
 		if (newStartDate.isBefore(newEndDate)) {
 			const newRoute: Route = {
-				id: flightId,
-				flightId: boardId,
+				id: -1,
+				flightId: flightId,
 				scheduledDepartureDate: newStartDate,
 				scheduledArrivalDate: newEndDate,
 				type: RouteType.DEFAULT,
@@ -106,7 +99,6 @@ const RouteControl = (): JSX.Element => {
 			toast.warn('Время вылета превышает или совпадает с временем прилета.')
 		}
 
-		setBoardId(undefined)
 		setFlightId(undefined)
 		setDateRangeValue(null)
 		setTimeRangeValue(null)
@@ -123,20 +115,20 @@ const RouteControl = (): JSX.Element => {
 			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
-				if (flightId !== undefined && flightId !== '' && boardId && flight && airportStart && airportEnd) {
+				if (flightId && route && airportStart && airportEnd) {
 					const updatedFlight: Route = {
-						...flight,
+						...route,
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
 						airportStart: airportStart,
 						airportEnd: airportEnd,
 						price: price
 					}
-					if (flight.flightId === boardId) {
+					if (route.flightId === flightId) {
 						flightEditFx(updatedFlight)
 					} else {
-						flightDeleteFx(flight)
-						flightBoardIdChanged(boardId)
+						routeDeleteFx(route)
+						flightBoardIdChanged(flightId)
 					}
 				}
 			} else {
@@ -159,27 +151,15 @@ const RouteControl = (): JSX.Element => {
 					<Space>
 						<span>Рейс:</span>
 						<Select placeholder={'Выберите рейс'}
-								value={boardId}
-								options={boardOptions}
+								value={flightId}
+								options={flightOptions}
 								style={{ minWidth: '150px' }}
-								onChange={handlerBoardSelectChange}
+								onChange={handlerFlightSelectChange}
 								allowClear
 								showSearch
 								filterOption={(input, opt) => {
 									return (opt?.label !== null && opt?.label !== undefined ? JSON.stringify(opt.label).toLowerCase().includes(input.toLowerCase()) : true)
 								}}
-						/>
-					</Space>
-					<Space>
-						<span>Полет:</span>
-						<Input
-							value={flightId}
-							onChange={(event) => {
-								setFlightId(event.target.value)
-							}}
-							style={{ width: '150px' }}
-							allowClear
-							disabled={flight !== null}
 						/>
 					</Space>
 				</Space>
@@ -247,7 +227,7 @@ const RouteControl = (): JSX.Element => {
 					</Space>
 				</Space>
 
-				{flight ?
+				{route ?
 					<Space direction={'vertical'}>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
@@ -260,10 +240,9 @@ const RouteControl = (): JSX.Element => {
 								icon={<DeleteOutlined/>}
 								style={{ width: '160px' }}
 								onClick={() => {
-									flightDeleteFx(flight)
-									// flightSelectReset()
+									routeDeleteFx(route)
 								}}
-						>Удалить полет</Button>
+						>Удалить перелет</Button>
 					</Space>
 					:
 					<Button type={'primary'}

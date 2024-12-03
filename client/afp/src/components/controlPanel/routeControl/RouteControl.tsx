@@ -9,17 +9,15 @@ import { useStore } from 'effector-react'
 import { $routeSelect, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
 import { flightEditFx, $flights } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
-import { Button, DatePicker, Divider, Input, Select, SelectProps, Space } from 'antd'
+import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
 import { toast } from 'react-toastify'
 import { DATE_FORMAT } from '../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
-import type {RangeValueType} from 'rc-picker/lib/PickerInput/RangePicker'
+import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
 import { RouteType } from '../../../models/RouteType'
 import { $airports } from '../../../store/airport'
-import { Price } from '../../../models/Price'
-import { Currency } from '../../../models/Currency'
 
 const RouteControl = (): JSX.Element => {
 	const route = useStore($routeSelect)
@@ -27,7 +25,6 @@ const RouteControl = (): JSX.Element => {
 	const airports = useStore($airports)
 	const [editRouteButtonDisable, setEditRouteButtonDisable] = useState<boolean>(true)
 	const [flightId, setFlightId] = useState<number | undefined>()
-	const [price, setPrice] = useState<Price | null>({ value: 0, currency: Currency.RUB })
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [airportStart, setAirportStart] = useState<string | undefined>()
@@ -44,18 +41,13 @@ const RouteControl = (): JSX.Element => {
 			setDateRangeValue(null)
 			setTimeRangeValue(null)
 		}
-		setPrice(route ? route.price : null)
 
 	}, [route])
 
 	let flightOptions: SelectProps['options'] = []
-	flights.forEach(flight=>{
-		flightOptions?.push({value: flight.id, label: `Рейс ${flight.id}`})
+	flights.forEach(flight => {
+		flightOptions?.push({ value: flight.id, label: `Рейс ${flight.id}` })
 	})
-
-	let currencyOptions: SelectProps['options'] = []
-	currencyOptions.push({ value: Currency.RUB, label: Currency.RUB })
-	currencyOptions.push({ value: Currency.USD, label: Currency.USD })
 
 	useEffect(() => {
 		setEditRouteButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
@@ -63,12 +55,6 @@ const RouteControl = (): JSX.Element => {
 
 	const handlerFlightSelectChange = (value: number | undefined): void => {
 		setFlightId(value)
-	}
-
-	const handlerCurrencySelectChange = (currency: Currency): void => {
-		if (price) {
-			setPrice({ ...price, currency: currency })
-		}
 	}
 
 	/**
@@ -90,8 +76,7 @@ const RouteControl = (): JSX.Element => {
 				scheduledArrivalDate: newEndDate,
 				type: RouteType.DEFAULT,
 				airportStart: airportStart,
-				airportEnd: airportEnd,
-				price: price
+				airportEnd: airportEnd
 			}
 
 			routeAddFx(newRoute)
@@ -104,7 +89,6 @@ const RouteControl = (): JSX.Element => {
 		setTimeRangeValue(null)
 		setAirportStart(undefined)
 		setAirportEnd(undefined)
-		setPrice(null)
 	}
 
 	/**
@@ -121,8 +105,7 @@ const RouteControl = (): JSX.Element => {
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
 						airportStart: airportStart,
-						airportEnd: airportEnd,
-						price: price
+						airportEnd: airportEnd
 					}
 					if (route.flightId === flightId) {
 						flightEditFx(updatedFlight)
@@ -203,28 +186,7 @@ const RouteControl = (): JSX.Element => {
 							popupMatchSelectWidth={false}
 						/>
 					</Space>
-					<Space align={'center'}>
-						<span>Стоимость:</span>
-						<Input
-							value={price?.value}
-							type={'number'}
-							onChange={(event) => {
-								if (price) {
-									setPrice({ ...price, value: event.target.value as unknown as number })
-								}
-							}
-							}
-							style={{ width: '130px' }}
-							allowClear
-						/>
-						<Select placeholder={'Валюта'}
-								value={price?.currency}
-								options={currencyOptions}
-								style={{ minWidth: '100px' }}
-								onChange={handlerCurrencySelectChange}
-								allowClear
-						/>
-					</Space>
+
 				</Space>
 
 				{route ?

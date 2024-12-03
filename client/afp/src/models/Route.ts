@@ -1,6 +1,5 @@
 import { Dayjs } from 'dayjs'
 import { RouteType } from './RouteType'
-import { Price } from './Price'
 
 /**
  * @author Markitanov Vadim
@@ -14,5 +13,4 @@ export interface Route {
 	type: RouteType
 	airportStart: string // IATA
 	airportEnd: string // IATA
-	price: Price | null
 }

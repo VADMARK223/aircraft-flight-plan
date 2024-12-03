@@ -8,7 +8,7 @@ import { Currency } from '../models/Currency'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const LOCAL_MODE = true
+export const LOCAL_MODE = false
 export const SHOW_TEST_TOGGLE: boolean = true
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45

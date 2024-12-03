@@ -1,6 +1,7 @@
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
-import { apiPost, apiGet } from './common'
+import { apiPost, apiGet, showError } from './common'
+import { FlightsSchema } from '../models/zodSchemas'
 
 /**
  * @author Markitanov Vadim
@@ -8,7 +9,17 @@ import { apiPost, apiGet } from './common'
  */
 
 export const fetchFlightsFx = createEffect<void, Flight[]>(async () => {
-	return await apiGet('flight/get_all_flights')
+	const flightsFromServer = await apiGet<Flight[]>('flight/get_all_flights')
+	console.log('flightsFromServer:', flightsFromServer)
+	const resultSafeParse = FlightsSchema.safeParse(flightsFromServer)
+	if (!resultSafeParse.success) {
+		showError(`Ошибка валидации рейсов.`)
+		return []
+	}
+
+	const flights = resultSafeParse.data
+	console.log('flights:', flights)
+	return flights as Flight[]
 })
 
 export const requestAddFlightFx = createEffect<number, Flight | null>(async (contractId: number) => {

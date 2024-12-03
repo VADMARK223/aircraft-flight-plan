@@ -15,12 +15,12 @@ import { Route } from '../../../models/Route'
 import { Flight } from '../../../models/Flight'
 
 const Flights = (): JSX.Element => {
-	const boards = useStore($flights)
+	const flights = useStore($flights)
 	const contextMenu = useStore($contextMenu)
 
 	return (
-		<g id={'BOARDS'}>
-			{boards.map((value, index) => (
+		<g id={'FLIGHTS'}>
+			{flights.map((value, index) => (
 				<FlightItem key={value.id}
 							data={value}
 							x={0}

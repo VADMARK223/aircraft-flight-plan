@@ -21,13 +21,13 @@ import { CommonProps } from '../common/CommonProps'
 const Flights = ({x,y}:CommonProps): JSX.Element => {
   const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
   const contextMenu = useStore($contextMenu)
-  const boards: Flight[] = useStore($flights)
+  const flights: Flight[] = useStore($flights)
   const dates = useStore($dates)
   const datesRange = useStore($datesRange)
 
   return (
     <g ref={gRef} id={'flights'} transform={`translate(${x}, ${y})`}>
-      {boards.map((board: Flight, boardIndex) =>
+      {flights.map((board: Flight, boardIndex) =>
         (
           <g key={board.id} id={`board-row-${board.id}`}>
             {board.routes.map((flight: Route) => {

@@ -14,7 +14,8 @@ const DateSchema = z.string()
 const RouteSchema = z.object({
 	id: z.number(),
 	flightId: z.number(),
-	scheduledDepartureDate: DateSchema
+	scheduledDepartureDate: DateSchema,
+	scheduledArrivalDate: DateSchema
 })
 
 // Схема рейса

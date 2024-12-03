@@ -24,8 +24,15 @@ export const requestAddFlightFx = createEffect<number, Flight | null>(async (con
 	})
 })
 
+export const requestDeleteFlightFx = createEffect<number, number | null>(async (flightId: number) => {
+	return await apiPost<number>('flight/delete_flight', {
+		json: flightId
+	})
+})
+
 export const requestDeleteAllFlightsFx = createEffect<void, boolean | null>(async () => {
 	return await apiPost<boolean>('flight/delete_all_flights')
 })
+
 
 

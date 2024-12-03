@@ -6,7 +6,7 @@
  */
 import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { $flights, boardClickFx, boardDeleteFx } from '../../../store/flight'
+import { $flights, boardClickFx, flightDeleteFx } from '../../../store/flight'
 import FlightItem from './FlightItem'
 import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../../utils/consts'
 import ContextMenu from '../ContextMenu'
@@ -38,7 +38,7 @@ const Flights = (): JSX.Element => {
 					}, {
 						title: 'Удалить',
 						action: (datum: Route | Flight) => {
-							boardDeleteFx(datum as Flight)
+							flightDeleteFx((datum as Flight).id)
 						}
 					}
 				]}/>}

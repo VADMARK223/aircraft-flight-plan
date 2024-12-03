@@ -6,13 +6,13 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $selectedFlight, flightAddFx, boardDeleteFx } from '../../../store/flight'
+import { $selectedFlight, flightAddFx, flightDeleteFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
 import { Button, Divider, Space, Select } from 'antd'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
 import { LOCAL_MODE } from '../../../utils/consts'
-import { requestAddFlightFx } from '../../../api/flight'
+import { requestAddFlightFx, requestDeleteFlightFx } from '../../../api/flight'
 import { fetchContracts } from '../../../api/dict'
 import { DictData } from '../../../models/DictData'
 
@@ -56,7 +56,7 @@ const FlightControl = (): JSX.Element => {
 		}
 	}
 
-	const handlerEditBoard = (): void => {
+	const handlerEditFlight = (): void => {
 		// if (board !== null && boardName !== undefined && boardName !== '') {
 		// 	boardEditFx({ ...board, name: boardName, type: boardType })
 		// }
@@ -78,13 +78,17 @@ const FlightControl = (): JSX.Element => {
 					<>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
-								onClick={handlerEditBoard}>Изменить борт</Button>
+								onClick={handlerEditFlight}>Изменить рейс</Button>
 						<Button type={'primary'}
 								danger
 								icon={<DeleteOutlined/>}
 								onClick={() => {
-									boardDeleteFx(selectedFlight)
-								}}>Удалить борт</Button>
+									if (LOCAL_MODE) {
+										flightDeleteFx(selectedFlight?.id)
+									} else {
+										requestDeleteFlightFx(selectedFlight?.id)
+									}
+								}}>Удалить рейс</Button>
 					</>
 					:
 					<Button type={'primary'}

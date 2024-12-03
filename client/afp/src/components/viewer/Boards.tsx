@@ -12,7 +12,7 @@ import FlightItem from '../common/flights/FlightItem'
 import ContextMenu from '../common/ContextMenu'
 import { Route } from '../../models/Route'
 import { Flight } from '../../models/Flight'
-import { $flights, boardClickFx, boardDeleteFx } from '../../store/flight'
+import { $flights, boardClickFx, flightDeleteFx } from '../../store/flight'
 import { $contextMenu } from '../../store/contextMenu'
 
 const Boards = ({ x, y }: CommonProps): JSX.Element => {
@@ -39,7 +39,7 @@ const Boards = ({ x, y }: CommonProps): JSX.Element => {
 					}, {
 						title: 'Удалить',
 						action: (datum: Route | Flight) => {
-							boardDeleteFx(datum as Flight)
+							flightDeleteFx((datum as Flight).id)
 						}
 					}
 				]}/>}

@@ -13,7 +13,7 @@ import { $routeSelect, routeAddFx, routeDeleteFx, flightSelectReset } from './ro
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
-import { requestAddFlightFx, fetchFlightsFx, requestDeleteAllFlightsFx } from '../api/flight'
+import { requestAddFlightFx, fetchFlightsFx, requestDeleteAllFlightsFx, requestDeleteFlightFx } from '../api/flight'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $selectedFlight = createStore<Flight | null>(null)
@@ -48,8 +48,7 @@ $flights.watch((boards: Flight[]) => {
 export const flightAddFx = createEffect<Flight, Flight[]>()
 export const flightsDeleteAllFx = createEffect<void, Flight[]>('Удаление всех рейсов.')
 export const boardEditFx = createEffect<Flight, Flight[]>()
-export const boardDeleteFx = createEffect<Flight, Flight[]>()
-
+export const flightDeleteFx = createEffect<number | null, Flight[]>()
 
 export const flightEditFx = createEffect<Route, Flight[]>()
 
@@ -59,7 +58,10 @@ sample({
 	filter: (payload): payload is Flight => payload != null,
 	target: flightAddFx
 })
-
+sample({
+	source: requestDeleteFlightFx.doneData,
+	target: flightDeleteFx
+})
 sample({
 	source: requestDeleteAllFlightsFx.doneData,
 	target: flightsDeleteAllFx
@@ -93,8 +95,8 @@ $flights.on(boardEditFx, (boards, board) => {
 		return newBoards
 	}
 })
-$flights.on(boardDeleteFx, (boards, board) => {
-	const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
+$flights.on(flightDeleteFx, (boards, flightId) => {
+	const findBoardIndex = getBoardIndexByBoardId(boards, flightId)
 	if (findBoardIndex === -1) {
 
 	} else {

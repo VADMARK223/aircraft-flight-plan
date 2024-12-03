@@ -16,4 +16,5 @@ class FlightService(private val flightRepo: FlightRepository, private val contra
     }
 
     fun deleteAll(): Unit = flightRepo.deleteAll()
+    fun delete(flightIdi: Int) = flightRepo.deleteById(flightIdi)
 }

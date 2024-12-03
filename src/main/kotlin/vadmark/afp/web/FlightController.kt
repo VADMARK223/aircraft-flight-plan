@@ -40,6 +40,12 @@ class FlightController(private val flightService: FlightService, private val rou
         return ResponseEntity.ok(Response.success(dto))
     }
 
+    @PostMapping("/delete_flight")
+    fun delete(@RequestBody flightId: Int): ResponseEntity<ResponseDto<Int>> {
+        flightService.delete(flightId)
+        return ResponseEntity.ok(Response.success(flightId))
+    }
+
     @PostMapping("/delete_all_flights")
     fun deleteAll(): ResponseEntity<ResponseDto<Boolean>> {
         flightService.deleteAll()

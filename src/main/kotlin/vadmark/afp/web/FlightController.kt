@@ -24,7 +24,6 @@ class FlightController(private val flightService: FlightService, private val rou
             val dto = FlightDto()
             dto.id = flight.flightId
             dto.routes = routeService.findAllByFlightId(flight.flightId)
-//            dto.routes = listOf<RouteView>()
             result.add(dto)
         }
 

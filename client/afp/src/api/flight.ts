@@ -1,6 +1,6 @@
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
-import { apiPost, apiGet, showError } from './common'
+import { apiPost, apiGet } from './common'
 import { FlightsSchema } from '../models/zodSchemas'
 
 /**

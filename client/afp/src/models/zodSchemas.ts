@@ -26,3 +26,12 @@ const FlightSchema = z.object({
 
 // Схема группы рейсов
 export const FlightsSchema = z.array(FlightSchema)
+
+// Схема элемента словаря
+const DictDataSchema = z.object({
+	id: z.number(),
+	name: z.string()
+})
+
+// Схема словаря
+export const DictSchema = z.array(DictDataSchema)

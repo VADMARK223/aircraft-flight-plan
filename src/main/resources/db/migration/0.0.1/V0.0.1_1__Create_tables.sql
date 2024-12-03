@@ -31,6 +31,16 @@ COMMENT ON COLUMN route.aircraft_id IS 'Идентификатор самоле�
 COMMENT ON COLUMN route.flight_id IS 'Идентификатор рейса';
 COMMENT ON COLUMN route.fuel_uplift IS 'Заправка топлива';
 
+CREATE TABLE IF NOT EXISTS afp_schema.dict_aircraft_type
+(
+    aircraft_type_id INT2 NOT NULL UNIQUE,
+    aircraft_type_name VARCHAR(10)
+);
+COMMENT ON TABLE afp_schema.dict_aircraft_type IS 'Словарь типов бортов';
+COMMENT ON COLUMN afp_schema.dict_aircraft_type.aircraft_type_id IS 'Идентификатор типа борта';
+COMMENT ON COLUMN afp_schema.dict_aircraft_type.aircraft_type_name IS 'Наименование типа борта';
+
+
 CREATE TABLE IF NOT EXISTS aircraft
 (
     aircraft_id SERIAL NOT NULL CONSTRAINT aircraft_pk PRIMARY KEY,
@@ -46,6 +56,10 @@ COMMENT ON COLUMN aircraft.tail IS 'Номер борта';
 ALTER TABLE route
     ADD CONSTRAINT route_aircraft_fk
         FOREIGN KEY (aircraft_id) REFERENCES aircraft(aircraft_id);
+
+ALTER TABLE aircraft
+    ADD CONSTRAINT aircraft_aircraft_type_fk
+        FOREIGN KEY (aircraft_type_id) REFERENCES dict_aircraft_type(aircraft_type_id);
 
 CREATE TABLE IF NOT EXISTS dict_route_type
 (

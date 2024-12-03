@@ -10,16 +10,12 @@ import { FlightsSchema } from '../models/zodSchemas'
 
 export const fetchFlightsFx = createEffect<void, Flight[]>(async () => {
 	const flightsFromServer = await apiGet<Flight[]>('flight/get_all_flights')
-	console.log('flightsFromServer:', flightsFromServer)
 	const resultSafeParse = FlightsSchema.safeParse(flightsFromServer)
 	if (!resultSafeParse.success) {
-		showError(`Ошибка валидации рейсов.`)
 		return []
 	}
 
-	const flights = resultSafeParse.data
-	console.log('flights:', flights)
-	return flights as Flight[]
+	return resultSafeParse.data as Flight[]
 })
 
 export const requestAddFlightFx = createEffect<number, Flight | null>(async (contractId: number) => {

@@ -1,7 +1,7 @@
 import { FlightDto } from './dto/FlightDto'
 
 /**
- * Модель борта.
+ * Модель рейса.
  *
  * @author Markitanov Vadim
  * @since 02.12.2023

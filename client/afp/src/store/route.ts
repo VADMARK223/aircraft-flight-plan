@@ -13,7 +13,7 @@ import { Flight } from '../models/Flight'
 export const flightSelectFx = createEffect<Route, Route>('Событие принудительного выбора полета')
 export const flightClickFx = createEffect<Route, Route>('Событие клика по полету')
 export const flightSelectReset = createEvent()
-export const flightBoardIdChanged = createEvent<number>('Событие смены борта у полета.')
+export const flightBoardIdChanged = createEvent<number>('Событие смены рейса у перелета.')
 export const $routeSelect = createStore<Route | null>(null)
 	.on(flightClickFx, (state, payload) => {
 		if (state?.id === payload.id) {

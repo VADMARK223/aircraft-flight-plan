@@ -10,11 +10,10 @@ import vadmark.afp.dto.FlightDto
 import vadmark.afp.dto.ResponseDto
 import vadmark.afp.entity.Flight
 import vadmark.afp.entity.RouteView
+import vadmark.afp.mapper.FlightMapper
 import vadmark.afp.service.ContractService
 import vadmark.afp.service.FlightService
 import vadmark.afp.service.RouteService
-import vadmark.afp.temp.User
-import vadmark.afp.temp.UserMapper
 import vadmark.afp.util.Response
 
 @RestController
@@ -23,15 +22,10 @@ class FlightController(
     private val flightService: FlightService,
     private val routeService: RouteService,
     private val contractService: ContractService,
-    private val mapper: UserMapper
+    private val flightMapper: FlightMapper
 ) {
     @GetMapping("/get_all_flights")
     fun getAll(): ResponseEntity<ResponseDto<List<FlightDto>>> {
-        println("Get all flights")
-        val user = User(id="1")
-        val dot = mapper.toDto(user)
-        println(dot)
-
         var result = mutableListOf<FlightDto>()
         val flights = flightService.findAll()
         flights.forEach { flight ->
@@ -46,12 +40,8 @@ class FlightController(
     }
 
     @PostMapping("/add_flight")
-    fun add(@RequestBody contactId: Int): ResponseEntity<ResponseDto<FlightDto>> {
-        val dto: FlightDto = FlightDto()
-        val flight = flightService.add(contactId)
-        dto.id = flight.flightId
-        dto.routes = listOf<RouteView>()
-        return ResponseEntity.ok(Response.success(dto))
+    fun add(@RequestBody contractId: Int): ResponseEntity<ResponseDto<FlightDto>> {
+        return ResponseEntity.ok(Response.success(flightMapper.toDto(flightService.add(contractId))))
     }
 
     @PostMapping("/delete_flight")

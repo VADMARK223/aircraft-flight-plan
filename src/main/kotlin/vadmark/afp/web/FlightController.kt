@@ -60,7 +60,7 @@ class FlightController(
 
         val contract = contractService.findById(contractId!!)
         if (!contract.isPresent) {
-            return ResponseEntity.ok(Response.failure("Контракт $contractId не найден."))
+            return ResponseEntity.ok(Response.failure("У рейса $id. Контракт $contractId не найден."))
         }
         flight.contract = contract.get()
         flightService.save(flight)

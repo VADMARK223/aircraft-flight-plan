@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $routeSelect, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
-import { flightEditFx, $flights } from '../../../store/flight'
+import { routeEditFx, $flights } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
@@ -16,7 +16,6 @@ import { DATE_FORMAT } from '../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
-import { RouteType } from '../../../models/RouteType'
 import { $airports } from '../../../store/airport'
 import { $routeDictStore } from '../../../store/dict'
 import { DictData } from '../../../models/DictData'
@@ -112,7 +111,7 @@ const RouteControl = (): JSX.Element => {
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
 				if (flightId && route && airportStart && airportEnd) {
-					const updatedFlight: Route = {
+					const updatedRoute: Route = {
 						...route,
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
@@ -120,7 +119,7 @@ const RouteControl = (): JSX.Element => {
 						airportEnd: airportEnd
 					}
 					if (route.flightId === flightId) {
-						flightEditFx(updatedFlight)
+						routeEditFx(updatedRoute)
 					} else {
 						routeDeleteFx(route)
 						flightBoardIdChanged(flightId)

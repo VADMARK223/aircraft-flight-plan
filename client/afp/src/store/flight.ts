@@ -1,5 +1,5 @@
 /**
- * Хранилище бортов.
+ * Хранилище рейсов.
  *
  * @author Markitanov Vadim
  * @since 04.12.2023
@@ -13,7 +13,13 @@ import { $routeSelect, routeAddFx, routeDeleteFx, flightSelectReset } from './ro
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
-import { requestAddFlightFx, fetchFlightsFx, requestDeleteAllFlightsFx, requestDeleteFlightFx } from '../api/flight'
+import {
+	requestAddFlightFx,
+	fetchFlightsFx,
+	requestDeleteAllFlightsFx,
+	requestDeleteFlightFx,
+	requestSaveFlightFx
+} from '../api/flight'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $selectedFlight = createStore<Flight | null>(null)
@@ -47,10 +53,10 @@ $flights.watch((boards: Flight[]) => {
 
 export const flightAddFx = createEffect<Flight, Flight[]>()
 export const flightsDeleteAllFx = createEffect<void, Flight[]>('Удаление всех рейсов.')
-export const boardEditFx = createEffect<Flight, Flight[]>()
+export const flightSaveFx = createEffect<Flight, Flight[]>()
 export const flightDeleteFx = createEffect<number | null, Flight[]>()
 
-export const flightEditFx = createEffect<Route, Flight[]>()
+export const routeEditFx = createEffect<Route, Flight[]>()
 
 $flights.on(fetchFlightsFx.doneData, (_, payload) => payload)
 sample({
@@ -66,6 +72,11 @@ sample({
 	source: requestDeleteAllFlightsFx.doneData,
 	target: flightsDeleteAllFx
 })
+
+/*sample({
+	source: requestSaveFlightFx.doneData,
+	target: flightSaveFx
+})*/
 
 $flights.on(flightAddFx, (boards: Flight[], newBoard: Flight) => {
 	if (newBoard.id === -1) {
@@ -85,13 +96,13 @@ $flights.on(routeAddFx, (boards, flight) => {
 	newBoards[boards.indexOf(findBoard)] = findBoard
 	return newBoards
 })
-$flights.on(boardEditFx, (boards, board) => {
-	const findBoardIndex = getBoardIndexByBoardId(boards, board.id)
+$flights.on(flightSaveFx, (flights, flight) => {
+	const findBoardIndex = getBoardIndexByBoardId(flights, flight.id)
 	if (findBoardIndex === -1) {
-		toast.warn(`Ошибка редактирования борта: ${board.id}`)
+		toast.warn(`Ошибка редактирования рейса: ${flight.id}`)
 	} else {
-		const newBoards = [...boards]
-		newBoards[findBoardIndex] = board
+		const newBoards = [...flights]
+		newBoards[findBoardIndex] = flight
 		return newBoards
 	}
 })
@@ -104,7 +115,7 @@ $flights.on(flightDeleteFx, (boards, flightId) => {
 	}
 })
 $flights.on(flightsDeleteAllFx, _ => [])
-$flights.on(flightEditFx, (boards, flight: Route) => {
+$flights.on(routeEditFx, (boards, flight: Route) => {
 	const boardIndex = boards.findIndex(value => value.id === flight.flightId)
 	const flightIndex = boards[boardIndex].routes.findIndex(value => {
 		return flight.id === value.id
@@ -137,7 +148,7 @@ $flights.on(routeDeleteFx, (flights, route) => {
 	return newBoards
 })
 
-export const boardClickFx = createEffect<Flight, Flight>('Событие клика по борту')
+export const boardClickFx = createEffect<Flight, Flight>('Событие клика по рейсу')
 $selectedFlight.on(boardClickFx, (board, newBoard) => {
 	if (board?.id === newBoard.id) {
 		return null

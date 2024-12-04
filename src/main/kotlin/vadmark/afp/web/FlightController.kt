@@ -8,14 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import vadmark.afp.dto.FlightDto
 import vadmark.afp.dto.ResponseDto
+import vadmark.afp.entity.Flight
 import vadmark.afp.entity.RouteView
+import vadmark.afp.service.ContractService
 import vadmark.afp.service.FlightService
 import vadmark.afp.service.RouteService
 import vadmark.afp.util.Response
 
 @RestController
 @RequestMapping("\${api.prefix}/flight")
-class FlightController(private val flightService: FlightService, private val routeService: RouteService) {
+class FlightController(
+    private val flightService: FlightService,
+    private val routeService: RouteService,
+    private val contractService: ContractService
+) {
     @GetMapping("/get_all_flights")
     fun getAll(): ResponseEntity<ResponseDto<List<FlightDto>>> {
         var result = mutableListOf<FlightDto>()
@@ -44,6 +50,21 @@ class FlightController(private val flightService: FlightService, private val rou
     fun delete(@RequestBody flightId: Int): ResponseEntity<ResponseDto<Int>> {
         flightService.delete(flightId)
         return ResponseEntity.ok(Response.success(flightId))
+    }
+
+    @PostMapping("/save_flight")
+    fun save(@RequestBody flightDto: FlightDto): ResponseEntity<ResponseDto<FlightDto>> {
+        val (id, _, contractId) = flightDto
+        val flight = Flight()
+        flight.flightId = flightDto.id!!
+
+        val contract = contractService.findById(contractId!!)
+        if (!contract.isPresent) {
+            return ResponseEntity.ok(Response.failure("Контракт $contractId не найден."))
+        }
+        flight.contract = contract.get()
+        flightService.save(flight)
+        return ResponseEntity.ok(Response.success(flightDto))
     }
 
     @PostMapping("/delete_all_flights")

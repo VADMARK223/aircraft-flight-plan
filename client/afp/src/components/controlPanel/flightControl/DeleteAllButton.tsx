@@ -1,5 +1,5 @@
 /**
- * Компонент удаления всех бортов.
+ * Компонент удаления всех рейсов.
  *
  * @author Markitanov Vadim
  * @since 07.12.2023
@@ -10,6 +10,7 @@ import { $flights, flightsDeleteAllFx } from '../../../store/flight'
 import { useStore } from 'effector-react'
 import { LOCAL_MODE } from '../../../utils/consts'
 import { requestDeleteAllFlightsFx } from '../../../api/flight'
+import { CloseOutlined } from '@ant-design/icons'
 
 const DeleteAllButton = (): JSX.Element => {
 	const boards = useStore($flights)
@@ -33,6 +34,7 @@ const DeleteAllButton = (): JSX.Element => {
 			<Button
 				type={'primary'}
 				danger
+				icon={<CloseOutlined/>}
 				disabled={boards.length === 0}
 			>Удалить все</Button>
 		</Popconfirm>

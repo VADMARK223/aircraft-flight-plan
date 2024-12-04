@@ -1,6 +1,6 @@
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
-import { apiPost, apiGet } from './common'
+import { apiPost, apiGet, showSuccess } from './common'
 import { FlightsSchema } from '../models/zodSchemas'
 
 /**
@@ -29,6 +29,35 @@ export const requestDeleteFlightFx = createEffect<number, number | null>(async (
 		json: flightId
 	})
 })
+
+export const requestSaveFlightFx = createEffect<Flight, Flight>(async (flight: Flight) => {
+	const response: Flight = await apiPost<Flight>('flight/save_flight', {
+		json: flight
+	})
+
+	showSuccess(`Рейс ${response.id} успешно изменен.`)
+
+	setTimeout(()=>{
+		window.location.reload()
+	}, 1000)
+
+	return response
+})
+
+/*export const requestSaveFlightFx = createEffect<Flight, Flight>(async (flight: Flight) => {
+	const response: Flight = await apiPost<Flight>('flight/save_flight', {
+		json: flight
+	})
+
+	const resultParse = FlightsSchema.safeParse(response)
+	if (!resultParse.success) {
+		throw new Error('Ошибка валидации рейса!')
+	}
+	const parsedFlight: Flight = resultParse.data as unknown as Flight
+
+	showSuccess(`Рейс ${parsedFlight.id} успешно изменен.`)
+	return parsedFlight
+})*/
 
 export const requestDeleteAllFlightsFx = createEffect<void, boolean | null>(async () => {
 	return await apiPost<boolean>('flight/delete_all_flights')

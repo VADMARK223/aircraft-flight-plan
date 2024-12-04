@@ -1,18 +1,18 @@
 /**
- * Компонент работы с бортами.
+ * Компонент работы с рейсами.
  *
  * @author Markitanov Vadim
  * @since 05.12.2023
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $selectedFlight, flightAddFx, flightDeleteFx } from '../../../store/flight'
+import { $selectedFlight, flightAddFx, flightDeleteFx, flightSaveFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
 import { Button, Divider, Space, Select } from 'antd'
-import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
+import { DeleteOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
 import { LOCAL_MODE } from '../../../utils/consts'
-import { requestAddFlightFx, requestDeleteFlightFx } from '../../../api/flight'
+import { requestAddFlightFx, requestDeleteFlightFx, requestSaveFlightFx } from '../../../api/flight'
 import { fetchContracts } from '../../../api/dict'
 import { DictData } from '../../../models/DictData'
 
@@ -21,6 +21,8 @@ const FlightControl = (): JSX.Element => {
 	const [title, setTitle] = useState<string>()
 	const [contractId, setContractId] = useState<number | undefined>()
 	const [contractOptions, setContractOptions] = useState<DictData[]>([])
+	const [addButtonDisabled, setAddButtonDisabled] = useState<boolean>(true)
+	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)
 
 	useEffect(() => {
 		fetchContracts().then(contracts => {
@@ -40,6 +42,11 @@ const FlightControl = (): JSX.Element => {
 		}
 	}, [selectedFlight])
 
+	useEffect(() => {
+		setAddButtonDisabled(contractId === undefined)
+		setEditButtonDisabled(contractId === undefined || selectedFlight?.contractId === contractId)
+	}, [contractId])
+
 	const handlerAddFlight = (): void => {
 		if (contractId === undefined) {
 			return
@@ -57,9 +64,15 @@ const FlightControl = (): JSX.Element => {
 	}
 
 	const handlerEditFlight = (): void => {
-		// if (board !== null && boardName !== undefined && boardName !== '') {
-		// 	boardEditFx({ ...board, name: boardName, type: boardType })
-		// }
+		if (contractId !== undefined && selectedFlight?.id) {
+			const editedFlight = { ...selectedFlight, contractId: contractId }
+			if (LOCAL_MODE) {
+				flightSaveFx(editedFlight)
+			} else {
+				requestSaveFlightFx(editedFlight)
+			}
+			setEditButtonDisabled(true)
+		}
 	}
 
 	return (
@@ -72,13 +85,15 @@ const FlightControl = (): JSX.Element => {
 					style={{ width: '160px' }}
 					value={contractId}
 					options={contractOptions}
+					allowClear
 					onChange={value => setContractId(value)}
 				/>
 				{selectedFlight ?
 					<>
 						<Button type={'primary'}
-								icon={<EditOutlined/>}
-								onClick={handlerEditFlight}>Изменить рейс</Button>
+								icon={<SaveOutlined/>}
+								disabled={editButtonDisabled}
+								onClick={handlerEditFlight}>Сохранить</Button>
 						<Button type={'primary'}
 								danger
 								icon={<DeleteOutlined/>}
@@ -88,13 +103,14 @@ const FlightControl = (): JSX.Element => {
 									} else {
 										requestDeleteFlightFx(selectedFlight?.id)
 									}
-								}}>Удалить рейс</Button>
+								}}>Удалить</Button>
 					</>
 					:
 					<Button type={'primary'}
 							icon={<PlusOutlined/>}
 							onClick={handlerAddFlight}
-					>Добавить рейс</Button>
+							disabled={addButtonDisabled}
+					>Добавить</Button>
 				}
 				<DeleteAllButton/>
 			</Space>

@@ -1,13 +1,10 @@
-package vadmark.afp.entity;
+package vadmark.afp.entity
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Id
+import jakarta.persistence.Table
+import java.time.LocalDateTime
 
 /**
  * @author Markitanov Vadim
@@ -15,27 +12,27 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(schema = "afp_schema", name = "v_route")
-public class RouteView {
+class RouteView {
     @Id
     @Column(name = "route_id")
-    public int id;
+    var id: Int = 0
 
     @Column(name = "aircraft_id")
-    public int aircraftId;
+    var aircraftId: Int = 0
 
     // Идентификатор рейса
     @Column(name = "flight_id")
-    public int flightId;
+    var flightId: Int = 0
 
     // Плановая дата вылета
     @Column(name = "scheduled_departure_date")
-    public LocalDateTime scheduledDepartureDate;
+    var scheduledDepartureDate: LocalDateTime? = null
 
     // Плановая дата прилета
     @Column(name = "scheduled_arrival_date")
-    public LocalDateTime scheduledArrivalDate;
+    var scheduledArrivalDate: LocalDateTime? = null
 
     // Тип перелета
     @Column(name = "route_type_id")
-    public int routeTypeId;
+    var routeTypeId: Int = 0
 }

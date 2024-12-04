@@ -13,6 +13,8 @@ import vadmark.afp.entity.RouteView
 import vadmark.afp.service.ContractService
 import vadmark.afp.service.FlightService
 import vadmark.afp.service.RouteService
+import vadmark.afp.temp.User
+import vadmark.afp.temp.UserMapper
 import vadmark.afp.util.Response
 
 @RestController
@@ -20,10 +22,16 @@ import vadmark.afp.util.Response
 class FlightController(
     private val flightService: FlightService,
     private val routeService: RouteService,
-    private val contractService: ContractService
+    private val contractService: ContractService,
+    private val mapper: UserMapper
 ) {
     @GetMapping("/get_all_flights")
     fun getAll(): ResponseEntity<ResponseDto<List<FlightDto>>> {
+        println("Get all flights")
+        val user = User(id="1")
+        val dot = mapper.toDto(user)
+        println(dot)
+
         var result = mutableListOf<FlightDto>()
         val flights = flightService.findAll()
         flights.forEach { flight ->

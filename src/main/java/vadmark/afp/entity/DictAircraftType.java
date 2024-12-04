@@ -13,13 +13,11 @@ import lombok.Setter;
  */
 @Entity
 @Table(schema = "afp_schema", name = "dict_aircraft_type")
-@Getter
-@Setter
 public class DictAircraftType {
     @Id
     @Column(name = "aircraft_type_id")
-    private int value;
+    public int value;
 
     @Column(name = "aircraft_type_name")
-    private String label;
+    public String label;
 }

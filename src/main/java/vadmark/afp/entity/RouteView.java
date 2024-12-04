@@ -15,29 +15,27 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(schema = "afp_schema", name = "v_route")
-@Getter
-@Setter
 public class RouteView {
     @Id
     @Column(name = "route_id")
-    private int id;
+    public int id;
 
     @Column(name = "aircraft_id")
-    private int aircraftId;
+    public int aircraftId;
 
     // Идентификатор рейса
     @Column(name = "flight_id")
-    private int flightId;
+    public int flightId;
 
     // Плановая дата вылета
     @Column(name = "scheduled_departure_date")
-    private LocalDateTime scheduledDepartureDate;
+    public LocalDateTime scheduledDepartureDate;
 
     // Плановая дата прилета
     @Column(name = "scheduled_arrival_date")
-    private LocalDateTime scheduledArrivalDate;
+    public LocalDateTime scheduledArrivalDate;
 
     // Тип перелета
     @Column(name = "route_type_id")
-    private int routeTypeId;
+    public int routeTypeId;
 }

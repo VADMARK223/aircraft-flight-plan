@@ -10,11 +10,9 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "route")
-@Getter
-@Setter
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "route_id")
-    private int routeId;
+    public int routeId;
 }

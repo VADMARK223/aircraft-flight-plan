@@ -10,7 +10,7 @@ import { FLIGHT_CELL_WIDTH } from '../../../utils/consts'
 import { Flight } from '../../../models/Flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../../store/style'
-import { $selectedFlight, boardClickFx } from '../../../store/flight'
+import { $selectedFlight, flightClickFx } from '../../../store/flight'
 import { $test } from '../../../store/test'
 import { $ui } from '../../../store/ui'
 import { setContextMenuFx } from '../../../store/contextMenu'
@@ -35,7 +35,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 		const container = d3.select(gRef.current)
 			.attr('cursor', 'pointer')
 			.on('click', (_: PointerEvent): void => {
-				boardClickFx(data)
+				flightClickFx(data)
 			})
 			.on('contextmenu', (event: PointerEvent) => {
 				event.preventDefault()

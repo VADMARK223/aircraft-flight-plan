@@ -136,14 +136,14 @@ $flights.on(routeDeleteFx, (flights, route) => {
 		}
 	}
 
-	const newBoards = [...flights]
-	const newFlights = [...flights[findBoardIndex].routes]
-	newBoards[findBoardIndex].routes = [...newFlights.slice(0, findFlightIndex), ...newFlights.slice(findFlightIndex + 1)]
-	return newBoards
+	const newFlights = [...flights]
+	const newRoutes = [...flights[findBoardIndex].routes]
+	newFlights[findBoardIndex].routes = [...newRoutes.slice(0, findFlightIndex), ...newRoutes.slice(findFlightIndex + 1)]
+	return newFlights
 })
 
-export const boardClickFx = createEffect<Flight, Flight>('Событие клика по рейсу')
-$selectedFlight.on(boardClickFx, (board, newBoard) => {
+export const flightClickFx = createEffect<Flight, Flight>('Событие клика по рейсу')
+$selectedFlight.on(flightClickFx, (board, newBoard) => {
 	if (board?.id === newBoard.id) {
 		return null
 	}

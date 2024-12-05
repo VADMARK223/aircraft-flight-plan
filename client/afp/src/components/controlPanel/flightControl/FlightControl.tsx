@@ -11,7 +11,7 @@ import { Flight } from '../../../models/Flight'
 import { Button, Divider, Space, Select } from 'antd'
 import { DeleteOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
-import { LOCAL_MODE } from '../../../utils/consts'
+import { LOCAL_MODE, contractsDefault } from '../../../utils/consts'
 import { requestAddFlightFx, requestDeleteFlightFx, requestSaveFlightFx } from '../../../api/flight'
 import { fetchContracts } from '../../../api/dict'
 import { DictDto } from '../../../models/dto/DictDto'
@@ -25,12 +25,14 @@ const FlightControl = (): JSX.Element => {
 	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)
 
 	useEffect(() => {
-		if(!LOCAL_MODE) {
+		if (!LOCAL_MODE) {
 			fetchContracts().then(contracts => {
 				if (contracts.length !== 0) {
 					setContractOptions(contracts)
 				}
 			})
+		} else {
+			setContractOptions(contractsDefault)
 		}
 	}, [])
 

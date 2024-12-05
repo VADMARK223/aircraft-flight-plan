@@ -27,7 +27,7 @@ const Routes = ({x,y}:CommonProps): JSX.Element => {
 
   return (
     <g ref={gRef} id={'routes'} transform={`translate(${x}, ${y})`}>
-      {flights.map((flight: Flight, boardIndex) =>
+      {flights.map((flight: Flight, flightIndex) =>
         (
           <g key={flight.id} id={`flight-row-${flight.id}`}>
             {flight.routes.map((flight: Route) => {
@@ -58,7 +58,7 @@ const Routes = ({x,y}:CommonProps): JSX.Element => {
                   <RouteItem
                     key={flight.id}
                     x={startX}
-                    y={CELL_HEIGHT * boardIndex}
+                    y={CELL_HEIGHT * flightIndex}
                     width={w}
                     data={flight}
                   />)

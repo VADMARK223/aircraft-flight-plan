@@ -3,6 +3,7 @@ import { RouteType } from '../models/RouteType'
 import dayjs from 'dayjs'
 import { Airport } from '../models/Airport'
 import { generateContractId } from './utils'
+import { DictDto } from '../models/dto/DictDto'
 
 /**
  * Общие константы приложения
@@ -217,6 +218,11 @@ export const flightsDefault: Flight[] = [
 			}
 		]
 	}
+]
+
+export const contractsDefault: DictDto[] = [
+	{ value: 888, label: 'Контракт 888' },
+	{ value: 999, label: 'Контракт 999' }
 ]
 
 export const airportsDefault: Airport[] = [

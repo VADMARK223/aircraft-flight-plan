@@ -13,7 +13,7 @@ import { requestDeleteAllFlightsFx } from '../../../api/flight'
 import { CloseOutlined } from '@ant-design/icons'
 
 const DeleteAllButton = (): JSX.Element => {
-	const boards = useStore($flights)
+	const flights = useStore($flights)
 
 	const handlerConfirm = () => {
 		if (LOCAL_MODE) {
@@ -35,7 +35,7 @@ const DeleteAllButton = (): JSX.Element => {
 				type={'primary'}
 				danger
 				icon={<CloseOutlined/>}
-				disabled={boards.length === 0}
+				disabled={flights.length === 0}
 			>Удалить все</Button>
 		</Popconfirm>
 	)

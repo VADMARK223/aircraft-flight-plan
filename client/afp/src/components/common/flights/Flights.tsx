@@ -6,7 +6,7 @@
  */
 import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { $flights, boardClickFx, flightDeleteFx } from '../../../store/flight'
+import { $flights, flightClickFx, flightDeleteFx } from '../../../store/flight'
 import FlightItem from './FlightItem'
 import { CELL_HEIGHT, FLIGHT_CELL_WIDTH } from '../../../utils/consts'
 import ContextMenu from '../ContextMenu'
@@ -33,7 +33,7 @@ const Flights = (): JSX.Element => {
 					{
 						title: 'Редактировать',
 						action: (datum: Route | Flight) => {
-							boardClickFx(datum as Flight)
+							flightClickFx(datum as Flight)
 						}
 					}, {
 						title: 'Удалить',

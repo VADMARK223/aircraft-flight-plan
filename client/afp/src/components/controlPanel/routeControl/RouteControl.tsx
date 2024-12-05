@@ -18,7 +18,8 @@ import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
 import { $airports } from '../../../store/airport'
 import { $routeDictStore } from '../../../store/dict'
-import { DictData } from '../../../models/DictData'
+import { DictDto } from '../../../models/dto/DictDto'
+import AircraftTypeSelect from './AircraftTypeSelect'
 
 const RouteControl = (): JSX.Element => {
 	const route = useStore($routeSelect)
@@ -32,7 +33,7 @@ const RouteControl = (): JSX.Element => {
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [airportStart, setAirportStart] = useState<string | undefined>()
 	const [airportEnd, setAirportEnd] = useState<string | undefined>()
-	const [routeTypeOptions, setRouteTypeOptions] = useState<DictData[]>([])
+	const [routeTypeOptions, setRouteTypeOptions] = useState<DictDto[]>([])
 
 	useEffect(() => {
 		setFlightId(route?.flightId)
@@ -212,7 +213,10 @@ const RouteControl = (): JSX.Element => {
 							popupMatchSelectWidth={false}
 						/>
 					</Space>
-
+					<Space>
+						<span>Тип борта:</span>
+						<AircraftTypeSelect/>
+					</Space>
 				</Space>
 
 				{route ?

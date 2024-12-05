@@ -10,8 +10,8 @@ import jakarta.persistence.Table
 class DictRouteType {
     @Id
     @Column(name = "route_type_id")
-    var value: Int = 0
+    var routeTypeId: Int = 0
 
     @Column(name = "name")
-    var label: String = ""
+    var name: String = ""
 }

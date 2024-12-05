@@ -10,8 +10,8 @@ import jakarta.persistence.Table
 class DictAircraftType {
     @Id
     @Column(name = "aircraft_type_id")
-    var value: Int = 0
+    var aircraftTypeId: Int = 0
 
     @Column(name = "aircraft_type_name")
-    var label: String = ""
+    var aircraftTypeName: String = ""
 }

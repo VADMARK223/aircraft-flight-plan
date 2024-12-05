@@ -1,15 +1,10 @@
 package vadmark.afp.web
 
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import vadmark.afp.dto.FlightDto
 import vadmark.afp.dto.ResponseDto
 import vadmark.afp.entity.Flight
-import vadmark.afp.entity.RouteView
 import vadmark.afp.mapper.FlightMapper
 import vadmark.afp.service.ContractService
 import vadmark.afp.service.FlightService
@@ -25,23 +20,11 @@ class FlightController(
     private val flightMapper: FlightMapper
 ) {
     @GetMapping("/get_all_flights")
-    fun getAll(): ResponseEntity<ResponseDto<List<FlightDto>>> {
-        var result = mutableListOf<FlightDto>()
-        val flights = flightService.findAll()
-        flights.forEach { flight ->
-            val dto = FlightDto()
-            dto.id = flight.flightId
-            dto.routes = routeService.findAllByFlightId(flight.flightId)
-            dto.contractId = flight.contract?.contractId
-            result.add(dto)
-        }
-
-        return ResponseEntity.ok(Response.success(result))
-    }
+    fun getAll(): ResponseEntity<ResponseDto<List<FlightDto>>> = ResponseEntity.ok(Response.success(flightMapper.toDtoList(flightService.findAll(), routeService)))
 
     @PostMapping("/add_flight")
     fun add(@RequestBody contractId: Int): ResponseEntity<ResponseDto<FlightDto>> {
-        return ResponseEntity.ok(Response.success(flightMapper.toDto(flightService.add(contractId))))
+        return ResponseEntity.ok(Response.success(flightMapper.toDto(flightService.add(contractId), routeService)))
     }
 
     @PostMapping("/delete_flight")

@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useRef } from 'react'
 import { useStore } from 'effector-react'
 import { $style } from '../../store/style'
-import { BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, FULL_TIME_FORMAT, HEADER_HEIGHT } from '../../utils/consts'
+import { FLIGHT_CELL_WIDTH, DATE_ITEM_HEIGHT, FULL_TIME_FORMAT, HEADER_HEIGHT } from '../../utils/consts'
 import dayjs from 'dayjs'
 import * as d3 from 'd3'
 import { getWeekCount } from '../../utils/utils'
@@ -16,7 +16,7 @@ import { CommonProps } from '../common/CommonProps'
 const InfoPanel = ({x,y}:CommonProps): JSX.Element => {
   const style = useStore($style)
   const svgRef = useRef<SVGSVGElement>(null)
-  const width = BOARD_ITEM_WIDTH
+  const width = FLIGHT_CELL_WIDTH
   const height = DATE_ITEM_HEIGHT + HEADER_HEIGHT
   const now = dayjs()
 

@@ -9,7 +9,7 @@ import { useStore } from 'effector-react'
 import { $style } from '../../store/style'
 import { $dates } from '../../store/date'
 import { $flights, boardSelectResetFx } from '../../store/flight'
-import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
+import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import * as d3 from 'd3'
 import { flightSelectReset } from '../../store/route'
 
@@ -19,7 +19,7 @@ const Background = (): JSX.Element => {
 	const boards = useStore($flights)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const width = DATE_ITEM_WIDTH * dates.length
-	const height = BOARD_ITEM_HEIGHT * boards.length
+	const height = CELL_HEIGHT * boards.length
 
 	useEffect(() => {
 		const svg = d3.select(gRef.current)
@@ -29,9 +29,9 @@ const Background = (): JSX.Element => {
 			for (let i = 0; i < dates.length; i++) {
 				container.append('rect')
 					.attr('x', DATE_ITEM_WIDTH * i)
-					.attr('y', BOARD_ITEM_HEIGHT * j)
+					.attr('y', CELL_HEIGHT * j)
 					.attr('width', DATE_ITEM_WIDTH)
-					.attr('height', BOARD_ITEM_HEIGHT)
+					.attr('height', CELL_HEIGHT)
 					.attr('stroke', style.lineColor)
 					.attr('stroke-dasharray', [2, 3])
 					.attr('fill', style.backgroundColor)

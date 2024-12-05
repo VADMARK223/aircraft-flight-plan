@@ -8,7 +8,7 @@ import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Route } from '../../../models/Route'
 import { $routeSelect, flightClickFx } from '../../../store/route'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
+import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
 import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText } from '../../../utils/utils'
@@ -46,7 +46,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			event.preventDefault()
 			setContextMenuFx({
 				isFlight: true,
-				x: test ? event.offsetX + ui.x : event.offsetX - BOARD_ITEM_WIDTH,
+				x: test ? event.offsetX + ui.x : event.offsetX - FLIGHT_CELL_WIDTH,
 				y: test ? event.offsetY + ui.y : event.offsetY,
 				data: data
 			})
@@ -54,7 +54,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 
 		container.append('rect')
 			.attr('x', x)
-			.attr('y', y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5)
+			.attr('y', y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5)
 			.attr('width', width)
 			.attr('height', FLIGHT_ITEM_HEIGHT)
 			.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
@@ -62,22 +62,22 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			.attr('fill', isDefault ? greenColor : 'orange')
 
 		if (!isDefault) {
-			drawText(container, 'Тех. обслуживание', x + width * 0.5, y + BOARD_ITEM_HEIGHT * 0.5 + 1, 'pointer')
+			drawText(container, 'Тех. обслуживание', x + width * 0.5, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
 		}
 
-		const textSelection = drawAirportText(container, data.airportStart, x + 2, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + 1)
+		const textSelection = drawAirportText(container, data.airportStart, x + 2, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + 1)
 		const textSelectionBox: SVGRect | undefined = textSelection.node().getBBox()
 		if (textSelectionBox !== undefined) {
 			drawAirportText(container, data.airportEnd, textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
 		}
 
 		const timeRotate: number = -19
-		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledDepartureDate.format('HH:mm'), timeRotate)
-		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledArrivalDate.format('HH:mm'), timeRotate)
+		appendRotateText(container, style.textColor, x, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledDepartureDate.format('HH:mm'), timeRotate)
+		appendRotateText(container, style.textColor, x + width, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledArrivalDate.format('HH:mm'), timeRotate)
 
 		const dateRotate: number = 19
-		appendRotateText(container, style.textColor, x, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-		appendRotateText(container, style.textColor, x + width, y + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+		appendRotateText(container, style.textColor, x, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+		appendRotateText(container, style.textColor, x + width, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y, test])
 
 	return (

@@ -13,13 +13,7 @@ import { $routeSelect, routeAddFx, routeDeleteFx, flightSelectReset } from './ro
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
-import {
-	requestAddFlightFx,
-	fetchFlightsFx,
-	requestDeleteAllFlightsFx,
-	requestDeleteFlightFx,
-	requestSaveFlightFx
-} from '../api/flight'
+import { requestAddFlightFx, fetchFlightsFx, requestDeleteAllFlightsFx, requestDeleteFlightFx } from '../api/flight'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $selectedFlight = createStore<Flight | null>(null)

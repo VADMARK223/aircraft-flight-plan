@@ -25,11 +25,13 @@ const FlightControl = (): JSX.Element => {
 	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)
 
 	useEffect(() => {
-		fetchContracts().then(contracts => {
-			if (contracts.length !== 0) {
-				setContractOptions(contracts)
-			}
-		})
+		if(!LOCAL_MODE) {
+			fetchContracts().then(contracts => {
+				if (contracts.length !== 0) {
+					setContractOptions(contracts)
+				}
+			})
+		}
 	}, [])
 
 	useEffect(() => {
@@ -45,7 +47,7 @@ const FlightControl = (): JSX.Element => {
 	useEffect(() => {
 		setAddButtonDisabled(contractId === undefined)
 		setEditButtonDisabled(contractId === undefined || selectedFlight?.contractId === contractId)
-	}, [contractId])
+	}, [contractId, selectedFlight?.contractId])
 
 	const handlerAddFlight = (): void => {
 		if (contractId === undefined) {

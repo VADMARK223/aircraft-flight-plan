@@ -7,11 +7,11 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { Select } from 'antd'
 import { useStore } from 'effector-react'
-import { $aircraftDictStore } from '../../../store/dict'
+import { $aircraftTypeDictStore } from '../../../store/dict'
 import { DictDto } from '../../../models/dto/DictDto'
 
 const AircraftTypeSelect = (): JSX.Element => {
-	const store = useStore($aircraftDictStore)
+	const store = useStore($aircraftTypeDictStore)
 	const [aircraftTypeOptions, setAircraftTypeOptions] = useState<DictDto[]>([])
 
 	useEffect(() => {

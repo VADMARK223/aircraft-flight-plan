@@ -8,7 +8,7 @@ import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
 import { $flights, boardClickFx, flightDeleteFx } from '../../../store/flight'
 import FlightItem from './FlightItem'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH } from '../../../utils/consts'
+import { CELL_HEIGHT, FLIGHT_CELL_WIDTH } from '../../../utils/consts'
 import ContextMenu from '../ContextMenu'
 import { $contextMenu } from '../../../store/contextMenu'
 import { Route } from '../../../models/Route'
@@ -24,9 +24,9 @@ const Flights = (): JSX.Element => {
 				<FlightItem key={value.id}
 							data={value}
 							x={0}
-							y={BOARD_ITEM_HEIGHT * index}
-							width={BOARD_ITEM_WIDTH}
-							height={BOARD_ITEM_HEIGHT}/>))}
+							y={CELL_HEIGHT * index}
+							width={FLIGHT_CELL_WIDTH}
+							height={CELL_HEIGHT}/>))}
 
 			<g id={'context-menu-layout'}>
 				{contextMenu && !contextMenu.isFlight && <ContextMenu menuItems={[

@@ -17,7 +17,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
 import { $airports } from '../../../store/airport'
-import { $routeDictStore } from '../../../store/dict'
+import { $routeTypeDictStore } from '../../../store/dict'
 import { DictDto } from '../../../models/dto/DictDto'
 import AircraftTypeSelect from './AircraftTypeSelect'
 
@@ -25,7 +25,7 @@ const RouteControl = (): JSX.Element => {
 	const route = useStore($routeSelect)
 	const flights = useStore($flights)
 	const airports = useStore($airports)
-	const routeTypes = useStore($routeDictStore)
+	const routeTypes = useStore($routeTypeDictStore)
 	const [editRouteButtonDisable, setEditRouteButtonDisable] = useState<boolean>(true)
 	const [flightId, setFlightId] = useState<number | undefined>()
 	const [routeType, setRouteType] = useState<number>(-1)

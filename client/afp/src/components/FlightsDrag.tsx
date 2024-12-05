@@ -6,8 +6,8 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef, useState } from 'react'
 import {
-	BOARD_ITEM_HEIGHT,
-	BOARD_ITEM_WIDTH,
+	CELL_HEIGHT,
+	FLIGHT_CELL_WIDTH,
 	DATE_ITEM_HEIGHT,
 	DATE_ITEM_WIDTH,
 	FLIGHT_ITEM_HEIGHT,
@@ -45,8 +45,8 @@ const FlightsDrag = (): JSX.Element => {
 	const [shifts, setShifts] = useState({ x: 0, y: 0 })
 	const shiftsRef = useRef(shifts)
 
-	const height = BOARD_ITEM_HEIGHT * boards.length + HEADER_HEIGHT + DATE_ITEM_HEIGHT
-	const width = BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length
+	const height = CELL_HEIGHT * boards.length + HEADER_HEIGHT + DATE_ITEM_HEIGHT
+	const width = FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length
 
 	useEffect(() => {
 		shiftsRef.current = shifts
@@ -71,8 +71,8 @@ const FlightsDrag = (): JSX.Element => {
 				const cur = curDragFlightRef.current
 				switch (dragType) {
 					case DragType.LEFT:
-						if (newPosX <= BOARD_ITEM_WIDTH) {
-							newPosX = BOARD_ITEM_WIDTH
+						if (newPosX <= FLIGHT_CELL_WIDTH) {
+							newPosX = FLIGHT_CELL_WIDTH
 						}
 
 						if (cur) {
@@ -91,8 +91,8 @@ const FlightsDrag = (): JSX.Element => {
 						break
 
 					case DragType.CENTER:
-						if (newPosX <= BOARD_ITEM_WIDTH) {
-							newPosX = BOARD_ITEM_WIDTH
+						if (newPosX <= FLIGHT_CELL_WIDTH) {
+							newPosX = FLIGHT_CELL_WIDTH
 						}
 
 						if (dragModelRef.current && dragModelRef.current.flight) {
@@ -110,7 +110,7 @@ const FlightsDrag = (): JSX.Element => {
 						}
 
 						if (cur) {
-							const newStartX = cur.x - BOARD_ITEM_WIDTH
+							const newStartX = cur.x - FLIGHT_CELL_WIDTH
 							const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
 							const model = cur.model
 							const diffMinutes = dayjs(model.scheduledArrivalDate).diff(model.scheduledDepartureDate, 'minutes')
@@ -125,8 +125,8 @@ const FlightsDrag = (): JSX.Element => {
 						if (dragModelRef.current && dragModelRef.current.flight && cur) {
 							const endDate = dragModelRef.current?.flight.model.scheduledArrivalDate
 
-							if (dateToX(endDate) > BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length) {
-								newPosX = BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length + shiftsRef.current.x
+							if (dateToX(endDate) > FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length) {
+								newPosX = FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length + shiftsRef.current.x
 							}
 
 							const oldStartDate = cur.model.scheduledDepartureDate
@@ -159,14 +159,14 @@ const FlightsDrag = (): JSX.Element => {
 			})
 			.on('end', _ => {
 				if (curDragFlightRef.current) {
-					const newStartX = curDragFlightRef.current.x - BOARD_ITEM_WIDTH
+					const newStartX = curDragFlightRef.current.x - FLIGHT_CELL_WIDTH
 					const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
 					const model = curDragFlightRef.current?.model
 					const diffMinutes = dayjs(model.scheduledArrivalDate).diff(model.scheduledDepartureDate, 'minutes')
 					model.scheduledDepartureDate = dayjs().startOf('day').add(newStartMinutes, 'minutes')
 					const newEndDate = dayjs().startOf('day').add(newStartMinutes + diffMinutes, 'minutes')
-					if (dateToX(newEndDate) >= BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length) {
-						model.scheduledArrivalDate = xToDate(BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * dates.length)
+					if (dateToX(newEndDate) >= FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length) {
+						model.scheduledArrivalDate = xToDate(FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length)
 					} else {
 						model.scheduledArrivalDate = newEndDate
 					}
@@ -223,7 +223,7 @@ const FlightsDrag = (): JSX.Element => {
 				}
 			} else {
 				flightX1 = dateToX(flightModel.model.scheduledDepartureDate)
-				flightY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + BOARD_ITEM_HEIGHT * flightModel.index + (BOARD_ITEM_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
+				flightY = HEADER_HEIGHT + DATE_ITEM_HEIGHT + CELL_HEIGHT * flightModel.index + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5
 			}
 
 			flightModel.x = flightX1

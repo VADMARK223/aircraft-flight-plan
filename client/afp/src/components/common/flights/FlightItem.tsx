@@ -6,7 +6,7 @@
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_WIDTH } from '../../../utils/consts'
+import { FLIGHT_CELL_WIDTH } from '../../../utils/consts'
 import { Flight } from '../../../models/Flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../../store/style'
@@ -73,7 +73,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('stroke-width', 1)
 			.attr('x1', x + lineShiftX)
 			.attr('y1', y + lineShiftY)
-			.attr('x2', x + BOARD_ITEM_WIDTH - 2 * lineShiftX)
+			.attr('x2', x + FLIGHT_CELL_WIDTH - 2 * lineShiftX)
 			.attr('y2', y + lineShiftY)
 
 		container.append('text')

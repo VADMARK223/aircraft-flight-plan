@@ -6,7 +6,7 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { BOARD_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
+import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import { $flights, boardSelectResetFx } from '../../store/flight'
 import { flightSelectReset } from '../../store/route'
 import { useStore } from 'effector-react'
@@ -19,7 +19,7 @@ const Background = ({x,y}:CommonProps): JSX.Element => {
   const dates = useStore($dates)
   const boards = useStore($flights)
   const width = DATE_ITEM_WIDTH * dates.length
-  const height = BOARD_ITEM_HEIGHT * boards.length
+  const height = CELL_HEIGHT * boards.length
   const style = useStore($style)
 
   useEffect(() => {
@@ -35,9 +35,9 @@ const Background = ({x,y}:CommonProps): JSX.Element => {
       for (let i = 0; i < dates.length; i++) {
         container.append('rect')
           .attr('x', DATE_ITEM_WIDTH * i)
-          .attr('y', BOARD_ITEM_HEIGHT * j)
+          .attr('y', CELL_HEIGHT * j)
           .attr('width', DATE_ITEM_WIDTH)
-          .attr('height', BOARD_ITEM_HEIGHT)
+          .attr('height', CELL_HEIGHT)
           .attr('stroke', style.lineColor)
           .attr('stroke-dasharray', [2, 3])
           .attr('fill', style.backgroundColor)

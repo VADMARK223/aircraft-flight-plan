@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs'
-import { BOARD_ITEM_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
+import { FLIGHT_CELL_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 
 /**
@@ -70,7 +70,7 @@ export const appendRotateText = (svg: any, textColor: string, translateX: number
 
 export const dateToX = (date: dayjs.Dayjs): number => {
 	const startDay = dayjs().startOf('day')
-	return BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
+	return FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
 }
 
 export const dateToNew = (datesRange: RangeValueType<Dayjs>, date: Dayjs): number => {
@@ -79,11 +79,11 @@ export const dateToNew = (datesRange: RangeValueType<Dayjs>, date: Dayjs): numbe
 	}
 
 	const startDay = datesRange[0]
-	return BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
+	return FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH / MINUTES_IN_CELL * date.diff(startDay, 'minutes')
 }
 
 export const xToDate = (x: number): dayjs.Dayjs => {
-	const newStartX = x - BOARD_ITEM_WIDTH
+	const newStartX = x - FLIGHT_CELL_WIDTH
 	const newStartMinutes = newStartX * MINUTES_IN_CELL / DATE_ITEM_WIDTH
 	return dayjs().startOf('day').add(newStartMinutes, 'minutes')
 }

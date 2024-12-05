@@ -1,44 +1,36 @@
 /**
- * Компонент отображения полетов.
+ * Компонент контейнера для перелетов.
  *
  * @author Markitanov Vadim
- * @since 11.12.2023
+ * @since 03.11.2024
  */
-import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
-import { useStore } from 'effector-react'
-import { $dates, $datesRange } from '../../../store/date'
-import { Flight } from '../../../models/Flight'
-import { $flights } from '../../../store/flight'
-import { $contextMenu } from '../../../store/contextMenu'
+import React, { JSX, LegacyRef, useRef } from 'react'
+import { Flight } from '../../models/Flight'
+import { Route } from '../../models/Route'
+import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import * as d3 from 'd3'
-import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, DATE_ITEM_WIDTH } from '../../../utils/consts'
-import { Route } from '../../../models/Route'
-import RouteItem from './RouteItem'
-import ContextMenu from '../ContextMenu'
-import { $test } from '../../../store/test'
-import { flightClickFx, routeDeleteFx } from '../../../store/route'
+import RouteItem from '../common/routes/RouteItem'
+import ContextMenu from '../common/ContextMenu'
+import { flightClickFx, routeDeleteFx } from '../../store/route'
+import { useStore } from 'effector-react'
+import { $contextMenu } from '../../store/contextMenu'
+import { $flights } from '../../store/flight'
+import { $dates, $datesRange } from '../../store/date'
+import { CommonProps } from '../common/CommonProps'
 
-const Routes = (): JSX.Element => {
+const Routes = ({x,y}:CommonProps): JSX.Element => {
   const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-  const datesRange = useStore($datesRange)
-  const boards: Flight[] = useStore($flights)
-  const dates = useStore($dates)
   const contextMenu = useStore($contextMenu)
-  const test = useStore($test)
-
-  useEffect(() => {
-    if (!test) {
-      const container = d3.select(gRef.current)
-      container.attr('transform', `translate(${FLIGHT_CELL_WIDTH},${0})`)
-    }
-  }, [test])
+  const flights: Flight[] = useStore($flights)
+  const dates = useStore($dates)
+  const datesRange = useStore($datesRange)
 
   return (
-    <g ref={gRef} id={'flights-layout'}>
-      {boards.map((board: Flight, boardIndex) =>
+    <g ref={gRef} id={'routes'} transform={`translate(${x}, ${y})`}>
+      {flights.map((flight: Flight, boardIndex) =>
         (
-          <g key={board.id} id={`board-row-${board.id}`}>
-            {board.routes.map((flight: Route) => {
+          <g key={flight.id} id={`flight-row-${flight.id}`}>
+            {flight.routes.map((flight: Route) => {
                 if (!datesRange || !datesRange.every(date => date)) {
                   return undefined
                 }
@@ -86,7 +78,7 @@ const Routes = (): JSX.Element => {
           }, {
             title: 'Удалить',
             action: (datum: Route | Flight) => {
-              routeDeleteFx(datum as Route)
+                routeDeleteFx(datum as Route)
             }
           }
         ]}/>}

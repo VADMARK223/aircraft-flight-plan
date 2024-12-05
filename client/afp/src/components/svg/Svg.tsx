@@ -9,7 +9,7 @@ import { useDraggableSvg } from '../../hooks/useDraggableSvg'
 import { Space } from 'antd'
 import { $ui } from '../../store/ui'
 import { useStore } from 'effector-react'
-import { BOARD_ITEM_HEIGHT, BOARD_ITEM_WIDTH, DATE_ITEM_HEIGHT, HEADER_HEIGHT } from '../../utils/consts'
+import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, DATE_ITEM_HEIGHT, HEADER_HEIGHT } from '../../utils/consts'
 import Dates from './dates/Dates'
 import InfoPanel from '../frame/InfoPanel'
 import Boards from '../common/flights/Flights'
@@ -37,8 +37,8 @@ const Svg = (): JSX.Element => {
 			const screenWidth = window.innerWidth
 			const top = containerRef.current.getBoundingClientRect().top
 			const left = containerRef.current.getBoundingClientRect().left
-			const newContainerWidth = screenWidth - left - BOARD_ITEM_WIDTH - 15
-			const newContainerHeight = screenHeight - top - HEADER_HEIGHT - BOARD_ITEM_HEIGHT + 20
+			const newContainerWidth = screenWidth - left - FLIGHT_CELL_WIDTH - 15
+			const newContainerHeight = screenHeight - top - HEADER_HEIGHT - CELL_HEIGHT + 20
 			setSvgDimension({ width: newContainerWidth, height: newContainerHeight })
 		}
 		updateSvgDimensions()
@@ -57,7 +57,7 @@ const Svg = (): JSX.Element => {
 			<Space size={0} align={'start'}>
 				<div>
 					<svg
-						style={{ width: BOARD_ITEM_WIDTH, height: HEADER_HEIGHT + DATE_ITEM_HEIGHT }}
+						style={{ width: FLIGHT_CELL_WIDTH, height: HEADER_HEIGHT + DATE_ITEM_HEIGHT }}
 					>
 						<g cursor={'pointer'} id={'INFO'}>
 							<InfoPanel/>
@@ -81,8 +81,8 @@ const Svg = (): JSX.Element => {
 				<div style={{ marginTop: -5 }}>
 					<svg
 						ref={boardsRef}
-						viewBox={`0,${ui.y},${BOARD_ITEM_WIDTH},${svgDimensions.height}`}
-						style={{ width: BOARD_ITEM_WIDTH, height: svgDimensions.height }}
+						viewBox={`0,${ui.y},${FLIGHT_CELL_WIDTH},${svgDimensions.height}`}
+						style={{ width: FLIGHT_CELL_WIDTH, height: svgDimensions.height }}
 					>
 						<Boards/>
 

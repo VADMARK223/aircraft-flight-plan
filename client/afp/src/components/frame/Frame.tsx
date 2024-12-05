@@ -9,8 +9,8 @@ import InfoPanel from './InfoPanel'
 import Header from './Header'
 import DateItem from '../svg/dates/DateItem'
 import {
-	BOARD_ITEM_HEIGHT,
-	BOARD_ITEM_WIDTH,
+	CELL_HEIGHT,
+	FLIGHT_CELL_WIDTH,
 	DATE_ITEM_HEIGHT,
 	DATE_ITEM_WIDTH,
 	HEADER_HEIGHT
@@ -28,10 +28,10 @@ const Frame = (): JSX.Element => {
 	const dates = useStore($dates)
 	const boards = useStore($flights)
 	const [topCanvasHeight, setTopCanvasHeight] = useState(HEADER_HEIGHT + DATE_ITEM_HEIGHT)
-	const [bottomCanvasHeight, setBottomCanvasHeight] = useState(boards.length * BOARD_ITEM_HEIGHT)
+	const [bottomCanvasHeight, setBottomCanvasHeight] = useState(boards.length * CELL_HEIGHT)
 	const bottomSvgContainerRef = useRef<any>(null)
 	const [bottomSvgContainerHeight, setBottomSvgContainerHeight] = useState('100px')
-	const canvasWidth = dates.length * DATE_ITEM_WIDTH + BOARD_ITEM_WIDTH
+	const canvasWidth = dates.length * DATE_ITEM_WIDTH + FLIGHT_CELL_WIDTH
 
 	useEffect(() => {
 		const updateContainerHeight = () => {
@@ -56,7 +56,7 @@ const Frame = (): JSX.Element => {
 
 	useEffect(() => {
 		setTopCanvasHeight(HEADER_HEIGHT + DATE_ITEM_HEIGHT)
-		setBottomCanvasHeight(boards.length * BOARD_ITEM_HEIGHT)
+		setBottomCanvasHeight(boards.length * CELL_HEIGHT)
 	}, [boards])
 
 	return (
@@ -73,7 +73,7 @@ const Frame = (): JSX.Element => {
 						{dates.map((value, index) => (
 							<DateItem key={index}
 									  data={value}
-									  x={BOARD_ITEM_WIDTH + DATE_ITEM_WIDTH * index}
+									  x={FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * index}
 									  y={HEADER_HEIGHT}/>))}
 					</g>
 				</svg>

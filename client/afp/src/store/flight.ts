@@ -13,7 +13,13 @@ import { $routeSelect, routeAddFx, routeDeleteFx, flightSelectReset } from './ro
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
-import { requestAddFlightFx, fetchFlightsFx, requestDeleteAllFlightsFx, requestDeleteFlightFx } from '../api/flight'
+import {
+	requestAddFlightFx,
+	fetchFlightsFx,
+	requestDeleteAllFlightsFx,
+	requestDeleteFlightFx,
+	requestSaveFlightFx
+} from '../api/flight'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $selectedFlight = createStore<Flight | null>(null)
@@ -67,10 +73,11 @@ sample({
 	target: flightsDeleteAllFx
 })
 
-/*sample({
+sample({
 	source: requestSaveFlightFx.doneData,
+	filter: (payload): payload is Flight => payload != null,
 	target: flightSaveFx
-})*/
+})
 
 $flights.on(flightAddFx, (boards: Flight[], newBoard: Flight) => {
 	if (newBoard.id === -1) {
@@ -143,11 +150,14 @@ $flights.on(routeDeleteFx, (flights, route) => {
 })
 
 export const flightClickFx = createEffect<Flight, Flight>('Событие клика по рейсу')
-$selectedFlight.on(flightClickFx, (board, newBoard) => {
-	if (board?.id === newBoard.id) {
-		return null
-	}
-	return newBoard
-})
+export const flightSelectFx = createEffect<Flight, Flight>('Событие принудительного выбора рейса')
+$selectedFlight
+	.on(flightSelectFx, (_state, payload) => payload)
+	.on(flightClickFx, (flight, clickedFlight) => {
+		if (flight?.id === clickedFlight.id) {
+			return null
+		}
+		return clickedFlight
+	})
 export const boardSelectResetFx = createEvent()
 $selectedFlight.reset(boardSelectResetFx)

@@ -44,7 +44,7 @@ class RouteView {
     var aptDeptIata: String? = null
 
     @Column(name="apt_dept_icao")
-    var aptDeptIao: String? = null
+    var aptDeptIcao: String? = null
 
     @Column(name="apt_dept_name")
     var aptDeptName: String? = null
@@ -57,7 +57,7 @@ class RouteView {
     var aptArrIata: String? = null
 
     @Column(name="apt_arr_icao")
-    var aptArrIao: String? = null
+    var aptArrIcao: String? = null
 
     @Column(name="apt_arr_name")
     var aptArrName: String? = null

@@ -25,11 +25,11 @@ const RouteSchema = z.object({
 	scheduledArrivalDate: DateSchema,
 	aptDepartId:z.number(),
 	aptDeptIata: z.string(),
-	aptDeptIao: z.string(),
+	aptDeptIcao: z.string(),
 	aptDeptName: z.string(),
 	aptArrId:z.number(),
 	aptArrIata: z.string(),
-	aptArrIao: z.string(),
+	aptArrIcao: z.string(),
 	aptArrName: z.string()
 })
 

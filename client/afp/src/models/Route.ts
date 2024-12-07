@@ -11,6 +11,14 @@ export interface Route {
 	routeTypeId: RouteType // Тип перелета
 	scheduledDepartureDate: Dayjs // Плановая дата вылета
 	scheduledArrivalDate: Dayjs // Плановая дата прилета
-	aptDeptIata: string // ИАТА аэропорта вылета
-	aptArrIata: string // ИАТА аэропорта прилета
+	// Аэропорт вылета
+	aptDepartId?: number
+	aptDeptIata?: string
+	aptDeptIcao?: string
+	aptDeptName?: string
+	// Аэропорт прилета
+	aptArrId?: number
+	aptArrIata: string
+	aptArrIcao?: string
+	aptArrName?: string
 }

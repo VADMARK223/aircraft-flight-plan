@@ -1,7 +1,6 @@
 import { Flight } from '../models/Flight'
 import { RouteType } from '../models/RouteType'
 import dayjs from 'dayjs'
-import { Airport } from '../models/Airport'
 import { generateContractId } from './utils'
 import { DictDto } from '../models/dto/DictDto'
 
@@ -225,53 +224,13 @@ export const contractsDefault: DictDto[] = [
 	{ value: 999, label: 'Контракт 999' }
 ]
 
-export const airportsDefault: Airport[] = [
+export const airportsDefault: DictDto[] = [
 	{
-		name: 'Анапа, Краснодарский край',
-		country: 'Россия',
-		iata: 'AAQ',
-		icao: 'URKA'
+		value: 1,
+		label: 'Внуково'
 	},
 	{
-		name: 'Абакан, Республика Хакасия',
-		country: 'Россия',
-		iata: 'ABA',
-		icao: 'UNAA'
-	},
-	{
-		name: 'Ачинск, Красноярский край',
-		country: 'Россия',
-		iata: 'ACS',
-		icao: 'UNKS'
-	},
-	{
-		name: 'Алдан, Якутия',
-		country: 'Россия',
-		iata: 'ADH',
-		icao: 'UEEA'
-	},
-	{
-		name: 'Сочи, Краснодарский край',
-		country: 'Россия',
-		iata: 'AER',
-		icao: 'URSS'
-	},
-	{
-		name: 'Амдерма, Ненецкий АО',
-		country: 'Россия',
-		iata: 'AMV',
-		icao: 'ULDD'
-	},
-	{
-		name: 'Талаги, Архангельск',
-		country: 'Россия',
-		iata: 'ARH',
-		icao: 'ULAA'
-	},
-	{
-		name: 'Нариманово, Астрахань',
-		country: 'Россия',
-		iata: 'ASF',
-		icao: 'URWA'
+		value: 2,
+		label: 'Шереметьево'
 	}
 ]

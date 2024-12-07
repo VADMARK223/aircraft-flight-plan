@@ -33,3 +33,8 @@ $$
             END LOOP;
     END
 $$;
+
+INSERT INTO afp_schema.runway VALUES (1, 'ВВП Внуково 1', 1);
+INSERT INTO afp_schema.runway VALUES (2, 'ВВП Внуково 2', 1);
+INSERT INTO afp_schema.runway VALUES (3, 'ВВП Шереметьево 1', 2);
+INSERT INTO afp_schema.runway VALUES (4, 'ВВП Шереметьево 2', 2);

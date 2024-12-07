@@ -54,3 +54,10 @@ CREATE TABLE airport
     icao VARCHAR(4),
     airport_name VARCHAR(250)
 );
+
+CREATE TABLE IF NOT EXISTS afp_schema.runway
+(
+    runway_id INT8 NOT NULL UNIQUE,
+    runway_name VARCHAR(100) NOT NULL,
+    airport_id INT4 NOT NULL
+);

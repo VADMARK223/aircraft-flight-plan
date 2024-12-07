@@ -40,3 +40,8 @@ COMMENT ON COLUMN airport.airport_id IS 'Идентификатор аэропо
 COMMENT ON COLUMN airport.iata IS 'IATA';
 COMMENT ON COLUMN airport.icao IS 'ИКАО';
 COMMENT ON COLUMN airport.airport_name IS 'Название аэропорта';
+
+COMMENT ON TABLE afp_schema.runway IS 'ВВП';
+COMMENT ON COLUMN afp_schema.runway.runway_id IS 'Идентификатор ВВП';
+COMMENT ON COLUMN afp_schema.runway.runway_name IS 'Наименование ВВП';
+COMMENT ON COLUMN afp_schema.runway.airport_id IS 'Идентификатор аэропорта';

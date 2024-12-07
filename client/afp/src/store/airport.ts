@@ -3,7 +3,9 @@
  * @since 08.12.2023
  */
 import { createStore } from 'effector'
-import { Airport } from '../models/Airport'
-import { airportsDefault } from '../utils/consts'
+import { airportsDefault, LOCAL_MODE } from '../utils/consts'
+import { DictDto } from '../models/dto/DictDto'
+import { fetchAirportsFx } from '../api/dict'
 
-export const $airports = createStore<Airport[]>(airportsDefault)
+export const $airports = createStore<DictDto[]>(LOCAL_MODE ? airportsDefault : [])
+$airports.on(fetchAirportsFx.doneData, (state, payload) => payload)

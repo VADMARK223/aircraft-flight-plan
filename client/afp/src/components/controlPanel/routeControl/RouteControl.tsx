@@ -20,13 +20,14 @@ import { $airports } from '../../../store/airport'
 import { $routeTypeDictStore } from '../../../store/dict'
 import { DictDto } from '../../../models/dto/DictDto'
 import AircraftTypeSelect from './AircraftTypeSelect'
+import { fetchAirportsFx } from '../../../api/dict'
 
 const RouteControl = (): JSX.Element => {
 	const route = useStore($routeSelect)
 	const flights = useStore($flights)
 	const airports = useStore($airports)
 	const routeTypes = useStore($routeTypeDictStore)
-	const [editRouteButtonDisable, setEditRouteButtonDisable] = useState<boolean>(true)
+	const [doneButtonDisable, setDoneButtonDisable] = useState<boolean>(true)
 	const [flightId, setFlightId] = useState<number | undefined>()
 	const [routeType, setRouteType] = useState<number>(-1)
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
@@ -34,6 +35,10 @@ const RouteControl = (): JSX.Element => {
 	const [airportStart, setAirportStart] = useState<string | undefined>()
 	const [airportEnd, setAirportEnd] = useState<string | undefined>()
 	const [routeTypeOptions, setRouteTypeOptions] = useState<DictDto[]>([])
+
+	useEffect(() => {
+		fetchAirportsFx()
+	}, [])
 
 	useEffect(() => {
 		setFlightId(route?.flightId)
@@ -62,7 +67,7 @@ const RouteControl = (): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setEditRouteButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
+		setDoneButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
 	}, [flightId, dateRangeValue, timeRangeValue, airportStart, airportEnd])
 
 	const handlerFlightSelectChange = (value: number | undefined): void => {
@@ -133,7 +138,7 @@ const RouteControl = (): JSX.Element => {
 	}
 
 	const airportSelectOptions: SelectProps['options'] = airports.map(airport => {
-		return { label: airport.name, value: airport.iata }
+		return { value: airport.value, label: airport.label }
 	})
 
 	return (
@@ -197,7 +202,7 @@ const RouteControl = (): JSX.Element => {
 				<Space direction={'vertical'} align={'end'}>
 					<Space>
 						<Select
-							placeholder={'Вылет'}
+							placeholder={'Аэропорт вылета'}
 							value={airportStart}
 							options={airportSelectOptions}
 							onChange={setAirportStart}
@@ -205,7 +210,7 @@ const RouteControl = (): JSX.Element => {
 							popupMatchSelectWidth={false}
 						/>
 						<Select
-							placeholder={'Прилет'}
+							placeholder={'Аэропорт прилета'}
 							value={airportEnd}
 							options={airportSelectOptions}
 							onChange={setAirportEnd}
@@ -223,10 +228,10 @@ const RouteControl = (): JSX.Element => {
 					<Space direction={'vertical'}>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
-								disabled={editRouteButtonDisable}
+								disabled={doneButtonDisable}
 								onClick={handlerEditFlight}
 								style={{ width: '160px' }}
-						>Изменить перелета</Button>
+						>Изменить перелет</Button>
 						<Button type={'primary'}
 								danger
 								icon={<DeleteOutlined/>}
@@ -239,7 +244,7 @@ const RouteControl = (): JSX.Element => {
 					:
 					<Button type={'primary'}
 							icon={<PlusOutlined/>}
-							disabled={editRouteButtonDisable}
+							disabled={doneButtonDisable}
 							onClick={handlerAddRoute}
 							style={{ width: '160px' }}
 					>Добавить перелет</Button>

@@ -11,7 +11,7 @@ import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
 import * as d3 from 'd3'
 import RouteItem from '../common/routes/RouteItem'
 import ContextMenu from '../common/ContextMenu'
-import { flightClickFx, routeDeleteFx } from '../../store/route'
+import { routeClickFx, routeDeleteFx } from '../../store/route'
 import { useStore } from 'effector-react'
 import { $contextMenu } from '../../store/contextMenu'
 import { $flights } from '../../store/flight'
@@ -73,7 +73,7 @@ const Routes = ({x,y}:CommonProps): JSX.Element => {
           {
             title: 'Редактировать',
             action: (datum: Route | Flight) => {
-              flightClickFx(datum as Route)
+              routeClickFx(datum as Route)
             }
           }, {
             title: 'Удалить',

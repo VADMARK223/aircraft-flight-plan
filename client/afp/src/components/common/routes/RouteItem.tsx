@@ -7,7 +7,7 @@
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Route } from '../../../models/Route'
-import { $routeSelect, flightClickFx } from '../../../store/route'
+import { $routeSelect, routeClickFx } from '../../../store/route'
 import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
 import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'
@@ -41,7 +41,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 
 		container.attr('cursor', 'pointer')
 		container.on('click', (_: PointerEvent) => {
-			flightClickFx(data)
+			routeClickFx(data)
 		}).on('contextmenu', (event: PointerEvent) => {
 			event.preventDefault()
 			setContextMenuFx({

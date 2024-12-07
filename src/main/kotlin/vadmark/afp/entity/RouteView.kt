@@ -4,7 +4,7 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.Table
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 /**
  * @author Markitanov Vadim
@@ -26,11 +26,11 @@ class RouteView {
 
     // Плановая дата вылета
     @Column(name = "scheduled_departure_date")
-    var scheduledDepartureDate: LocalDateTime? = null
+    var scheduledDepartureDate: ZonedDateTime? = null
 
     // Плановая дата прилета
     @Column(name = "scheduled_arrival_date")
-    var scheduledArrivalDate: LocalDateTime? = null
+    var scheduledArrivalDate: ZonedDateTime? = null
 
     // Тип перелета
     @Column(name = "route_type_id")

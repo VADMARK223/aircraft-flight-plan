@@ -4,11 +4,17 @@
  */
 import { z } from 'zod'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+import { USER_TIME_ZONE } from '../utils/utils'
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 // Схема даты, что это строка, она соответствует формату, также конвертируем Dayjs
 const DateSchema = z.string()
 	.refine((date) => dayjs(date).isValid(), { message: 'Invalid date format' })
-	.transform((date) => dayjs(date))
+	.transform((serverTimeUTC) => dayjs.utc(serverTimeUTC).tz(USER_TIME_ZONE))
 
 // Схема перелета
 const RouteSchema = z.object({

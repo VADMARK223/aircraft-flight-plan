@@ -12,7 +12,7 @@ import { DictDto } from '../models/dto/DictDto'
  * @since 22.11.2023
  */
 export const LOCAL_MODE = false
-export const SHOW_TEST_TOGGLE: boolean = true
+export const SHOW_TEST_TOGGLE: boolean = false
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
 export const FLIGHT_CELL_WIDTH = 140 // Ширина ячейки рейсов

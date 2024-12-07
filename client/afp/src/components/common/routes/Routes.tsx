@@ -16,7 +16,7 @@ import { Route } from '../../../models/Route'
 import RouteItem from './RouteItem'
 import ContextMenu from '../ContextMenu'
 import { $test } from '../../../store/test'
-import { flightClickFx, routeDeleteFx } from '../../../store/route'
+import { routeClickFx, routeDeleteFx } from '../../../store/route'
 
 const Routes = (): JSX.Element => {
   const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -81,7 +81,7 @@ const Routes = (): JSX.Element => {
           {
             title: 'Редактировать',
             action: (datum: Route | Flight) => {
-              flightClickFx(datum as Route)
+              routeClickFx(datum as Route)
             }
           }, {
             title: 'Удалить',

@@ -36,11 +36,29 @@ class RouteView {
     @Column(name = "route_type_id")
     var routeTypeId: Int = 0
 
-    // ИАТА аэропорта вылета
+    // Аэропорт вылета
+    @Column(name = "apt_dept_id")
+    var aptDepartId: Int = 0
+
     @Column(name="apt_dept_iata")
     var aptDeptIata: String? = null
 
-    // ИАТА аэропорта прилета
-    @Column(name="apt_arr_icao")
+    @Column(name="apt_dept_icao")
+    var aptDeptIao: String? = null
+
+    @Column(name="apt_dept_name")
+    var aptDeptName: String? = null
+
+    // Аэропорт прилета
+    @Column(name = "apt_arr_id")
+    var aptArrId: Int = 0
+
+    @Column(name="apt_arr_iata")
     var aptArrIata: String? = null
+
+    @Column(name="apt_arr_icao")
+    var aptArrIao: String? = null
+
+    @Column(name="apt_arr_name")
+    var aptArrName: String? = null
 }

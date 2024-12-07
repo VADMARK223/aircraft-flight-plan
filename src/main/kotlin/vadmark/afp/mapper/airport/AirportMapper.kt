@@ -6,6 +6,7 @@ import org.mapstruct.Named
 import vadmark.afp.entity.Airport
 import vadmark.afp.model.dto.DictDto
 
+@Deprecated(message = "Not used anymore")
 @Mapper(componentModel = "spring")
 interface AirportMapper {
     @Mapping(source = "airportId", target = "value")

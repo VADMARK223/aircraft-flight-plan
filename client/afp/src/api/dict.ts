@@ -2,6 +2,7 @@ import { createEffect } from 'effector/compat'
 import { apiGet } from './common'
 import { DictSchema } from '../models/zodSchemas'
 import { DictDto } from '../models/dto/DictDto'
+import { Airport } from '../models/Airport'
 
 /**
  * @author Markitanov Vadim
@@ -20,7 +21,3 @@ export const fetchRouteTypeFx = createEffect<void, DictDto[]>(async () => {
 export const fetchContracts = async () => {
 	return await apiGet<DictDto[]>('dict/dict_contract')
 }
-
-export const fetchAirportsFx = createEffect(async () => {
-	return await apiGet<DictDto[]>('dict/dict_airport')
-})

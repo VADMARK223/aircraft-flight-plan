@@ -12,7 +12,7 @@ import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
 import { toast } from 'react-toastify'
-import { DATE_FORMAT } from '../../../utils/consts'
+import { DATE_FORMAT, LOCAL_MODE } from '../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
@@ -20,7 +20,7 @@ import { $airports } from '../../../store/airport'
 import { $routeTypeDictStore } from '../../../store/dict'
 import { DictDto } from '../../../models/dto/DictDto'
 import AircraftTypeSelect from './AircraftTypeSelect'
-import { fetchAirportsFx } from '../../../api/dict'
+import { fetchAirportsFx } from '../../../api/airport'
 
 const RouteControl = (): JSX.Element => {
 	const route = useStore($routeSelect)
@@ -32,18 +32,20 @@ const RouteControl = (): JSX.Element => {
 	const [routeType, setRouteType] = useState<number>(-1)
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
-	const [airportStart, setAirportStart] = useState<string | undefined>()
-	const [airportEnd, setAirportEnd] = useState<string | undefined>()
+	const [aptDeptIata, setAptDeptIata] = useState<string | undefined>()
+	const [aptArrIata, setAptArrIata] = useState<string | undefined>()
 	const [routeTypeOptions, setRouteTypeOptions] = useState<DictDto[]>([])
 
 	useEffect(() => {
-		fetchAirportsFx()
+		if (!LOCAL_MODE) {
+			fetchAirportsFx()
+		}
 	}, [])
 
 	useEffect(() => {
 		setFlightId(route?.flightId)
-		setAirportStart(route?.airportStart)
-		setAirportEnd(route?.airportEnd)
+		setAptDeptIata(route?.aptDeptIata)
+		setAptArrIata(route?.aptArrIata)
 		if (route) {
 			setDateRangeValue([route.scheduledDepartureDate, route.scheduledArrivalDate])
 			setTimeRangeValue([route.scheduledDepartureDate, route.scheduledArrivalDate])
@@ -67,8 +69,8 @@ const RouteControl = (): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setDoneButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined)
-	}, [flightId, dateRangeValue, timeRangeValue, airportStart, airportEnd])
+		setDoneButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || aptDeptIata === undefined || aptArrIata === undefined)
+	}, [flightId, dateRangeValue, timeRangeValue, aptDeptIata, aptArrIata])
 
 	const handlerFlightSelectChange = (value: number | undefined): void => {
 		setFlightId(value)
@@ -78,7 +80,7 @@ const RouteControl = (): JSX.Element => {
 	 * Метод подтверждения добавления перелета.
 	 */
 	const handlerAddRoute = (): void => {
-		if (flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportStart === undefined || airportEnd === undefined) {
+		if (flightId === undefined || dateRangeValue === null || timeRangeValue === null || aptDeptIata === undefined || aptArrIata === undefined) {
 			return
 		}
 
@@ -92,8 +94,8 @@ const RouteControl = (): JSX.Element => {
 				routeTypeId: routeType,
 				scheduledDepartureDate: newStartDate,
 				scheduledArrivalDate: newEndDate,
-				airportStart: airportStart,
-				airportEnd: airportEnd
+				aptDeptIata: aptDeptIata,
+				aptArrIata: aptArrIata
 			}
 
 			routeAddFx(newRoute)
@@ -104,8 +106,8 @@ const RouteControl = (): JSX.Element => {
 		setFlightId(undefined)
 		setDateRangeValue(null)
 		setTimeRangeValue(null)
-		setAirportStart(undefined)
-		setAirportEnd(undefined)
+		setAptDeptIata(undefined)
+		setAptArrIata(undefined)
 	}
 
 	/**
@@ -116,13 +118,13 @@ const RouteControl = (): JSX.Element => {
 			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
-				if (flightId && route && airportStart && airportEnd) {
+				if (flightId && route && aptDeptIata && aptArrIata) {
 					const updatedRoute: Route = {
 						...route,
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
-						airportStart: airportStart,
-						airportEnd: airportEnd
+						aptDeptIata: aptDeptIata,
+						aptArrIata: aptArrIata
 					}
 					if (route.flightId === flightId) {
 						routeEditFx(updatedRoute)
@@ -138,7 +140,7 @@ const RouteControl = (): JSX.Element => {
 	}
 
 	const airportSelectOptions: SelectProps['options'] = airports.map(airport => {
-		return { value: airport.value, label: airport.label }
+		return { value: airport.airportId, label: `${airport.airportName} (${airport.iata})` }
 	})
 
 	return (
@@ -203,17 +205,17 @@ const RouteControl = (): JSX.Element => {
 					<Space>
 						<Select
 							placeholder={'Аэропорт вылета'}
-							value={airportStart}
+							value={aptDeptIata}
 							options={airportSelectOptions}
-							onChange={setAirportStart}
+							onChange={setAptDeptIata}
 							style={{ width: '160px' }}
 							popupMatchSelectWidth={false}
 						/>
 						<Select
 							placeholder={'Аэропорт прилета'}
-							value={airportEnd}
+							value={aptArrIata}
 							options={airportSelectOptions}
-							onChange={setAirportEnd}
+							onChange={setAptArrIata}
 							style={{ width: '160px' }}
 							popupMatchSelectWidth={false}
 						/>

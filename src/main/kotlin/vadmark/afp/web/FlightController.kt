@@ -17,7 +17,7 @@ class FlightController(
     private val contractService: ContractService,
     private val flightMapper: FlightMapper
 ) {
-    @GetMapping("/get_all_flights")
+    @GetMapping("/get_flights")
     fun getAll(): ResponseEntity<ResponseDto<List<FlightDto>>> {
         val flights = flightService.findAll()
         return ResponseEntity.ok(Response.success(flightMapper.toDtoList(flights)))

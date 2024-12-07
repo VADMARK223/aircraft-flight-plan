@@ -11,7 +11,7 @@ import { flightSelectFx } from '../store/flight'
  * @since 28.11.2024
  */
 export const fetchFlightsFx = createEffect<void, Flight[]>(async () => {
-	const flightsFromServer = await apiGet<Flight[]>('flight/get_all_flights')
+	const flightsFromServer = await apiGet<Flight[]>('flight/get_flights')
 	const resultSafeParse = FlightsSchema.safeParse(flightsFromServer)
 	if (!resultSafeParse.success) {
 		return []

@@ -35,4 +35,12 @@ class RouteView {
     // Тип перелета
     @Column(name = "route_type_id")
     var routeTypeId: Int = 0
+
+    // ИАТА аэропорта вылета
+    @Column(name="apt_dept_iata")
+    var aptDeptIata: String? = null
+
+    // ИАТА аэропорта прилета
+    @Column(name="apt_arr_icao")
+    var aptArrIata: String? = null
 }

@@ -17,4 +17,7 @@ class Airport {
 
     @Column(name = "icao")
     var icao: String? = null
+
+    @Column(name = "iata")
+    var iata: String? = null
 }

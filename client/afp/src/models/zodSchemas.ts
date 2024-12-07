@@ -22,14 +22,16 @@ const RouteSchema = z.object({
 	flightId: z.number(),
 	routeTypeId: z.number(),
 	scheduledDepartureDate: DateSchema,
-	scheduledArrivalDate: DateSchema
+	scheduledArrivalDate: DateSchema,
+	aptDeptIata: z.string(),
+	aptArrIata: z.string()
 })
 
 // Схема рейса
 export const FlightSchema = z.object({
 	id: z.number(),
 	routes: z.array(RouteSchema),
-	contractId: z.number(),
+	contractId: z.number()
 })
 
 // Схема группы рейсов

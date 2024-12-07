@@ -18,7 +18,7 @@ export interface Route {
 	aptDeptName?: string
 	// Аэропорт прилета
 	aptArrId?: number
-	aptArrIata: string
+	aptArrIata?: string
 	aptArrIcao?: string
 	aptArrName?: string
 }

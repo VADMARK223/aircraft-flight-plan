@@ -68,7 +68,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		const textSelection = drawAirportText(container, data.aptDeptIata ?? '', x + 2, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + 1)
 		const textSelectionBox: SVGRect | undefined = textSelection.node().getBBox()
 		if (textSelectionBox !== undefined) {
-			drawAirportText(container, data.aptArrIata, textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
+			drawAirportText(container, data.aptArrIata ?? '', textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
 		}
 
 		const timeRotate: number = -19

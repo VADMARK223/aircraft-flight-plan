@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { routeEditFx,$routeSelected, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
+import { $routeSelected, routeAddOrSaveFx, routeDeleteFx } from '../../../store/route'
 import { $flights, $flightSelected } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
@@ -114,10 +114,7 @@ const RouteControl = (): JSX.Element => {
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-		console.log('newStartDate:', newStartDate)
-		console.log('newEndDate:', newEndDate)
 		if (newStartDate.isBefore(newEndDate)) {
-			console.log('routeType:', routeType)
 			if (routeType === null) {
 				toast.warn('Выберите тип перелета.')
 				return
@@ -139,7 +136,7 @@ const RouteControl = (): JSX.Element => {
 				aptArrName: airportArrival.airportName
 			}
 			if (LOCAL_MODE) {
-				routeAddFx(newRoute)
+				routeAddOrSaveFx({ route: newRoute })
 			} else {
 				requestAddOrSaveRouteFx(newRoute)
 			}
@@ -165,6 +162,7 @@ const RouteControl = (): JSX.Element => {
 				if (flightId && routeSelected && airportDeparture && airportArrival) {
 					const updatedRoute: Route = {
 						...routeSelected,
+						flightId: flightId,
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
 						aptDepartId: airportDeparture.airportId,
@@ -177,17 +175,17 @@ const RouteControl = (): JSX.Element => {
 						aptArrIcao: airportArrival.icao,
 						aptArrName: airportArrival.airportName
 					}
-					if (routeSelected.flightId === flightId) {
-						if (LOCAL_MODE) {
-							routeEditFx(updatedRoute)
-						} else {
-							console.log('Updated route:', updatedRoute)
-							requestAddOrSaveRouteFx(updatedRoute)
-						}
+					// if (routeSelected.flightId === flightId) {
+					if (LOCAL_MODE) {
+						routeAddOrSaveFx({ route: updatedRoute, oldFlightId: routeSelected.flightId })
 					} else {
-						routeDeleteFx(routeSelected)
-						flightBoardIdChanged(flightId)
+						requestAddOrSaveRouteFx(updatedRoute)
 					}
+					// } else {
+					// 	console.log('4:')
+					// routeDeleteFx(routeSelected)
+					// flightBoardIdChanged(flightId)
+					// }
 				}
 			} else {
 				toast.warn('Время вылета превышает или совпадает с временем прилета.')

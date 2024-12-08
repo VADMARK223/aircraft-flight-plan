@@ -1,4 +1,4 @@
-import { createEvent, createStore, sample } from 'effector'
+import { createEvent, createStore } from 'effector'
 import { Route } from '../models/Route'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
@@ -25,16 +25,19 @@ export const $routeSelected = createStore<Route | null>(null)
 	.on(routeSelectFx, (_state, payload) => payload)
 	.reset(flightSelectReset)
 
-export const routeAddFx = createEffect<Route, Flight[]>()
-export const routeEditFx = createEffect<Route, Flight[]>()
+export type RouteAddOrSaveParams = {
+	route: Route,
+	oldFlightId?: number
+}
+export const routeAddOrSaveFx = createEffect<RouteAddOrSaveParams, Flight[]>()
 export const routeDeleteFx = createEffect<Route, Flight[]>()
 
-sample({
+/*sample({
 	source: routeDeleteFx,
 	clock: flightBoardIdChanged,
 	fn: (route: Route, flightId: number) => {
 		route.flightId = flightId
 		return route
 	},
-	target: routeAddFx
-})
+	target: routeAddOrSaveFx
+})*/

@@ -7,9 +7,8 @@
 
 import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
-import { Route } from '../models/Route'
 import { createEvent, createStore, sample } from 'effector'
-import { $routeSelected, routeAddFx, routeDeleteFx, flightSelectReset, routeEditFx } from './route'
+import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, flightSelectReset, RouteAddOrSaveParams } from './route'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
@@ -96,6 +95,7 @@ $flights.on(flightSaveFx, (flights, flight) => {
 	}
 })
 $flights.on(flightDeleteFx, (boards, flightId) => {
+	console.log('DELETE:')
 	const findBoardIndex = getBoardIndexByBoardId(boards, flightId)
 	if (findBoardIndex === -1) {
 
@@ -104,28 +104,56 @@ $flights.on(flightDeleteFx, (boards, flightId) => {
 	}
 })
 $flights.on(flightsDeleteAllFx, _ => [])
-$flights.on(routeAddFx, (flights, route) => {
-	const flight = flights.find(value => value.id === route.flightId)
-	if (flight === undefined) {
-		return flights
-	}
+$flights.on(routeAddOrSaveFx, (flights, params: RouteAddOrSaveParams) => {
+	const { route, oldFlightId } = params
+	if (route.id === -1) { // Добавление перелета
+		const flight = flights.find(value => value.id === route.flightId)
+		if (flight === undefined) {
+			return flights
+		}
 
-	flight.routes = [...flight.routes, route]
-	const newFlights = [...flights]
-	newFlights[flights.indexOf(flight)] = flight
-	return newFlights
-})
-$flights.on(routeEditFx, (flights, route: Route) => {
-	const flight = flights.find(value => value.id === route.flightId)
-	if (flight === undefined) {
-		return flights
-	}
+		flight.routes = [...flight.routes, route]
+		const newFlights = [...flights]
+		newFlights[flights.indexOf(flight)] = flight
+		return newFlights
+	} else { // Редактирование перелета
+		let result
+		if (route.flightId === oldFlightId) { // Рейс не поменялся у перелета
+			const flight = flights.find(value => value.id === route.flightId)
+			if (flight === undefined) {
+				throw new Error(`При редактировании рейс ${route.flightId} не найден.`)
+			}
 
-	const routeIndex = flight.routes.findIndex(value => {
-		return route.id === value.id
-	})
-	flight.routes[routeIndex] = route
-	return [...flights]
+			const routeIndex = flight.routes.findIndex(value => {
+				return oldFlightId === value.flightId
+			})
+
+			flight.routes[routeIndex] = route
+			result = [...flights]
+		} else { // Рейс поменялся у перелета
+			result = flights.map(flight => {
+				// Если это старый рейс, удаляем перелет из его массива
+				if (flight.id === oldFlightId) {
+					return {
+						...flight,
+						routes: flight.routes.filter(r => r.id !== route.id)
+					}
+				}
+
+				// Если это новый рейс, добавляем перелет в его массив
+				if (flight.id === route.flightId) {
+					return {
+						...flight,
+						routes: [...flight.routes, route]
+					}
+				}
+
+				// Если это не старый и не новый рейс, возвращаем его как есть
+				return flight
+			})
+		}
+		return result
+	}
 })
 $flights.on(routeDeleteFx, (flights, route) => {
 	const routeId = route.id

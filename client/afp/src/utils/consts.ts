@@ -11,7 +11,7 @@ import { Airport } from '../models/Airport'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const LOCAL_MODE = false
+export const LOCAL_MODE = true
 export const SHOW_TEST_TOGGLE: boolean = false
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45

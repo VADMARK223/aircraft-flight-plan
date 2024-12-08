@@ -6,9 +6,9 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $routeSelected, routeAddFx, flightBoardIdChanged, routeDeleteFx, routeSelectFx } from '../../../store/route'
-import { routeEditFx, $flights, $flightSelected } from '../../../store/flight'
-import dayjs, { Dayjs } from 'dayjs'
+import { routeEditFx,$routeSelected, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
+import { $flights, $flightSelected } from '../../../store/flight'
+import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
 import { toast } from 'react-toastify'
@@ -23,7 +23,6 @@ import AircraftTypeSelect from './AircraftTypeSelect'
 import { fetchAirportsFx } from '../../../api/airport'
 import { Airport } from '../../../models/Airport'
 import { requestAddOrSaveRouteFx } from '../../../api/route'
-import { RouteType } from '../../../models/type/RouteType'
 
 const RouteControl = (): JSX.Element => {
 	const routeSelected = useStore($routeSelected)
@@ -46,22 +45,6 @@ const RouteControl = (): JSX.Element => {
 		if (!LOCAL_MODE) {
 			fetchAirportsFx()
 		}
-
-		routeSelectFx({
-			id: 11,
-			flightId: 1,
-			routeTypeId: RouteType.DEFAULT,
-			scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
-			scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
-			aptDepartId: 1,
-			aptDeptIata: 'VKO',
-			aptDeptIcao: 'UUWW',
-			aptDeptName: 'Внуково',
-			aptArrId: 2,
-			aptArrIata: 'SVO',
-			aptArrIcao: 'UUEE',
-			aptArrName: 'Шереметьево'
-		})
 	}, [])
 
 	useEffect(() => {
@@ -146,7 +129,14 @@ const RouteControl = (): JSX.Element => {
 				scheduledDepartureDate: newStartDate,
 				scheduledArrivalDate: newEndDate,
 				aptDepartId: airportDeparture.airportId,
-				aptArrId: airportArrival.airportId
+				aptDeptIata: airportDeparture.iata,
+				aptDeptIcao: airportDeparture.icao,
+				aptDeptName: airportDeparture.airportName,
+
+				aptArrId: airportArrival.airportId,
+				aptArrIata: airportArrival.iata,
+				aptArrIcao: airportArrival.icao,
+				aptArrName: airportArrival.airportName
 			}
 			if (LOCAL_MODE) {
 				routeAddFx(newRoute)
@@ -178,7 +168,14 @@ const RouteControl = (): JSX.Element => {
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
 						aptDepartId: airportDeparture.airportId,
-						aptArrId: airportArrival.airportId
+						aptDeptIata: airportDeparture.iata,
+						aptDeptIcao: airportDeparture.icao,
+						aptDeptName: airportDeparture.airportName,
+
+						aptArrId: airportArrival.airportId,
+						aptArrIata: airportArrival.iata,
+						aptArrIcao: airportArrival.icao,
+						aptArrName: airportArrival.airportName
 					}
 					if (routeSelected.flightId === flightId) {
 						if (LOCAL_MODE) {

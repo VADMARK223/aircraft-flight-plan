@@ -20,11 +20,7 @@ class RouteController(private val routeService: RouteService) {
     fun addOrSave(@RequestBody route: Route): ResponseEntity<ResponseDto<Route>> {
 //        return ResponseEntity.ok(Response.success(routeService.add(route)))
         if (route.routeId == -1) {
-            println("Add route: $route")
             route.routeId = null
-
-        } else {
-            println("Add save: $route")
         }
 
         routeService.addOrSave(route)

@@ -9,7 +9,7 @@ import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { Route } from '../models/Route'
 import { createEvent, createStore, sample } from 'effector'
-import { $routeSelected, routeAddFx, routeDeleteFx, flightSelectReset } from './route'
+import { $routeSelected, routeAddFx, routeDeleteFx, flightSelectReset, routeEditFx } from './route'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
@@ -56,8 +56,6 @@ export const flightsDeleteAllFx = createEffect<void, Flight[]>('Удаление
 export const flightSaveFx = createEffect<Flight, Flight[]>()
 export const flightDeleteFx = createEffect<number | null, Flight[]>()
 
-export const routeEditFx = createEffect<Route, Flight[]>()
-
 $flights.on(fetchFlightsFx.doneData, (_, payload) => payload)
 sample({
 	source: requestAddFlightFx.doneData,
@@ -87,16 +85,6 @@ $flights.on(flightAddFx, (boards: Flight[], newBoard: Flight) => {
 
 	return [...boards, newBoard]
 })
-$flights.on(routeAddFx, (boards, flight) => {
-	const findBoard = boards.find(value => value.id === flight.flightId)
-	if (findBoard === undefined) {
-		return boards
-	}
-	findBoard.routes = [...findBoard.routes, flight]
-	const newBoards = [...boards]
-	newBoards[boards.indexOf(findBoard)] = findBoard
-	return newBoards
-})
 $flights.on(flightSaveFx, (flights, flight) => {
 	const findBoardIndex = getBoardIndexByBoardId(flights, flight.id)
 	if (findBoardIndex === -1) {
@@ -116,12 +104,27 @@ $flights.on(flightDeleteFx, (boards, flightId) => {
 	}
 })
 $flights.on(flightsDeleteAllFx, _ => [])
+$flights.on(routeAddFx, (flights, route) => {
+	const flight = flights.find(value => value.id === route.flightId)
+	if (flight === undefined) {
+		return flights
+	}
+
+	flight.routes = [...flight.routes, route]
+	const newFlights = [...flights]
+	newFlights[flights.indexOf(flight)] = flight
+	return newFlights
+})
 $flights.on(routeEditFx, (flights, route: Route) => {
-	const flightIndex = flights.findIndex(value => value.id === route.flightId)
-	const routeIndex = flights[flightIndex].routes.findIndex(value => {
+	const flight = flights.find(value => value.id === route.flightId)
+	if (flight === undefined) {
+		return flights
+	}
+
+	const routeIndex = flight.routes.findIndex(value => {
 		return route.id === value.id
 	})
-	flights[flightIndex].routes[routeIndex] = route
+	flight.routes[routeIndex] = route
 	return [...flights]
 })
 $flights.on(routeDeleteFx, (flights, route) => {

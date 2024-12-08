@@ -12,13 +12,13 @@ export interface Route {
 	scheduledDepartureDate: Dayjs // Плановая дата вылета
 	scheduledArrivalDate: Dayjs // Плановая дата прилета
 	// Аэропорт вылета
-	aptDepartId?: number
-	aptDeptIata?: string
-	aptDeptIcao?: string
-	aptDeptName?: string
+	aptDepartId: number
+	aptDeptIata: string
+	aptDeptIcao: string
+	aptDeptName: string
 	// Аэропорт прилета
-	aptArrId?: number
-	aptArrIata?: string
-	aptArrIcao?: string
-	aptArrName?: string
+	aptArrId: number
+	aptArrIata: string
+	aptArrIcao: string
+	aptArrName: string
 }

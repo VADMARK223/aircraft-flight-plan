@@ -18,7 +18,7 @@ class RouteView {
     var id: Int = 0
 
     @Column(name = "aircraft_id")
-    var aircraftId: Int = 0
+    var aircraftId: Int? = null
 
     // Идентификатор рейса
     @Column(name = "flight_id")

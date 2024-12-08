@@ -6,9 +6,9 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $routeSelected, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
+import { $routeSelected, routeAddFx, flightBoardIdChanged, routeDeleteFx, routeSelectFx } from '../../../store/route'
 import { routeEditFx, $flights, $flightSelected } from '../../../store/flight'
-import { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
 import { toast } from 'react-toastify'
@@ -22,6 +22,8 @@ import { DictDto } from '../../../models/dto/DictDto'
 import AircraftTypeSelect from './AircraftTypeSelect'
 import { fetchAirportsFx } from '../../../api/airport'
 import { Airport } from '../../../models/Airport'
+import { requestAddOrSaveRouteFx } from '../../../api/route'
+import { RouteType } from '../../../models/type/RouteType'
 
 const RouteControl = (): JSX.Element => {
 	const routeSelected = useStore($routeSelected)
@@ -31,9 +33,9 @@ const RouteControl = (): JSX.Element => {
 	const routeTypes = useStore($routeTypeDictStore)
 
 	const [title, setTitle] = useState<string>()
-	const [doneButtonDisable, setDoneButtonDisable] = useState<boolean>(true)
+	const [addButtonDisable, setAddButtonDisable] = useState<boolean>(true)
 	const [flightId, setFlightId] = useState<number | undefined>()
-	const [routeType, setRouteType] = useState<number|null>(null)
+	const [routeType, setRouteType] = useState<number | null>(null)
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [airportDeparture, setAirportDeparture] = useState<Airport | null>(null)
@@ -44,6 +46,22 @@ const RouteControl = (): JSX.Element => {
 		if (!LOCAL_MODE) {
 			fetchAirportsFx()
 		}
+
+		routeSelectFx({
+			id: 11,
+			flightId: 1,
+			routeTypeId: RouteType.DEFAULT,
+			scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
+			scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
+			aptDepartId: 1,
+			aptDeptIata: 'VKO',
+			aptDeptIcao: 'UUWW',
+			aptDeptName: 'Внуково',
+			aptArrId: 2,
+			aptArrIata: 'SVO',
+			aptArrIcao: 'UUEE',
+			aptArrName: 'Шереметьево'
+		})
 	}, [])
 
 	useEffect(() => {
@@ -95,7 +113,7 @@ const RouteControl = (): JSX.Element => {
 	})
 
 	useEffect(() => {
-		setDoneButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportDeparture === null || airportArrival === null)
+		setAddButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportDeparture === null || airportArrival === null)
 	}, [flightId, dateRangeValue, timeRangeValue, airportDeparture, airportArrival])
 
 	const handlerFlightSelectChange = (value: number | undefined): void => {
@@ -113,27 +131,37 @@ const RouteControl = (): JSX.Element => {
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-		if (newStartDate.isBefore(newEndDate) && routeType) {
+		console.log('newStartDate:', newStartDate)
+		console.log('newEndDate:', newEndDate)
+		if (newStartDate.isBefore(newEndDate)) {
+			console.log('routeType:', routeType)
+			if (routeType === null) {
+				toast.warn('Выберите тип перелета.')
+				return
+			}
 			const newRoute: Route = {
 				id: -1,
 				flightId: flightId,
 				routeTypeId: routeType,
 				scheduledDepartureDate: newStartDate,
 				scheduledArrivalDate: newEndDate,
-				aptDeptIata: airportDeparture.iata,
-				aptArrIata: airportArrival.iata
+				aptDepartId: airportDeparture.airportId,
+				aptArrId: airportArrival.airportId
+			}
+			if (LOCAL_MODE) {
+				routeAddFx(newRoute)
+			} else {
+				requestAddOrSaveRouteFx(newRoute)
 			}
 
-			routeAddFx(newRoute)
+			setFlightId(undefined)
+			setDateRangeValue(null)
+			setTimeRangeValue(null)
+			setAirportDeparture(null)
+			setAirportArrival(null)
 		} else {
 			toast.warn('Время вылета превышает или совпадает с временем прилета.')
 		}
-
-		setFlightId(undefined)
-		setDateRangeValue(null)
-		setTimeRangeValue(null)
-		setAirportDeparture(null)
-		setAirportArrival(null)
 	}
 
 	/**
@@ -149,14 +177,15 @@ const RouteControl = (): JSX.Element => {
 						...routeSelected,
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
-						aptDeptIata: airportDeparture.iata,
-						aptArrIata: airportArrival.iata
+						aptDepartId: airportDeparture.airportId,
+						aptArrId: airportArrival.airportId
 					}
 					if (routeSelected.flightId === flightId) {
 						if (LOCAL_MODE) {
 							routeEditFx(updatedRoute)
 						} else {
 							console.log('Updated route:', updatedRoute)
+							requestAddOrSaveRouteFx(updatedRoute)
 						}
 					} else {
 						routeDeleteFx(routeSelected)
@@ -268,7 +297,7 @@ const RouteControl = (): JSX.Element => {
 					<Space direction={'vertical'}>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
-								disabled={doneButtonDisable}
+								disabled={addButtonDisable}
 								onClick={handlerEditFlight}
 								style={{ width: '160px' }}
 						>Изменить перелет</Button>
@@ -284,7 +313,7 @@ const RouteControl = (): JSX.Element => {
 					:
 					<Button type={'primary'}
 							icon={<PlusOutlined/>}
-							disabled={doneButtonDisable}
+							disabled={addButtonDisable}
 							onClick={handlerAddRoute}
 							style={{ width: '160px' }}
 					>Добавить перелет</Button>

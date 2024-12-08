@@ -2,7 +2,6 @@ import { createEffect } from 'effector/compat'
 import { apiGet } from './common'
 import { DictSchema } from '../models/zodSchemas'
 import { DictDto } from '../models/dto/DictDto'
-import { Airport } from '../models/Airport'
 
 /**
  * @author Markitanov Vadim

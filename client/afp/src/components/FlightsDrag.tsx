@@ -20,7 +20,7 @@ import {
 import dayjs from 'dayjs'
 import * as d3 from 'd3'
 import { FlightViewModelDrag } from '../models/FlightViewModelDrag'
-import { RouteType } from '../models/RouteType'
+import { RouteType } from '../models/type/RouteType'
 import { useStore } from 'effector-react'
 import { dateToX, drawRect, drawText, xToDate } from '../utils/utils'
 import { DragModel } from '../models/DragModel'

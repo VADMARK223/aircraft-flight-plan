@@ -1,13 +1,13 @@
 /**
- * Компонент управлением перелетами.
+ * Компонент добавления/изменения перелетов.
  *
  * @author Markitanov Vadim
  * @since 23.11.2023
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $routeSelect, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
-import { routeEditFx, $flights } from '../../../store/flight'
+import { $routeSelected, routeAddFx, flightBoardIdChanged, routeDeleteFx } from '../../../store/route'
+import { routeEditFx, $flights, $flightSelected } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
@@ -24,13 +24,16 @@ import { fetchAirportsFx } from '../../../api/airport'
 import { Airport } from '../../../models/Airport'
 
 const RouteControl = (): JSX.Element => {
-	const route = useStore($routeSelect)
+	const routeSelected = useStore($routeSelected)
+	const flightSelected = useStore($flightSelected)
 	const flights = useStore($flights)
 	const airports = useStore($airports)
 	const routeTypes = useStore($routeTypeDictStore)
+
+	const [title, setTitle] = useState<string>()
 	const [doneButtonDisable, setDoneButtonDisable] = useState<boolean>(true)
 	const [flightId, setFlightId] = useState<number | undefined>()
-	const [routeType, setRouteType] = useState<number>(-1)
+	const [routeType, setRouteType] = useState<number|null>(null)
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [airportDeparture, setAirportDeparture] = useState<Airport | null>(null)
@@ -44,40 +47,47 @@ const RouteControl = (): JSX.Element => {
 	}, [])
 
 	useEffect(() => {
-		setFlightId(route?.flightId)
+		setFlightId(routeSelected?.flightId)
 
-
-		if (route) {
-			setDateRangeValue([route.scheduledDepartureDate, route.scheduledArrivalDate])
-			setTimeRangeValue([route.scheduledDepartureDate, route.scheduledArrivalDate])
+		if (routeSelected) {
+			setTitle('Изменение перелета')
+			setRouteType(routeSelected.routeTypeId)
+			setDateRangeValue([routeSelected.scheduledDepartureDate, routeSelected.scheduledArrivalDate])
+			setTimeRangeValue([routeSelected.scheduledDepartureDate, routeSelected.scheduledArrivalDate])
 			setAirportDeparture({
-				airportId: route.aptDepartId,
-				iata: route.aptDeptIata,
-				icao: route.aptDeptIcao,
-				airportName: route.aptDeptName
+				airportId: routeSelected.aptDepartId,
+				iata: routeSelected.aptDeptIata,
+				icao: routeSelected.aptDeptIcao,
+				airportName: routeSelected.aptDeptName
 			})
 
 			setAirportArrival({
-				airportId: route.aptArrId,
-				iata: route.aptArrIata,
-				icao: route.aptArrIcao,
-				airportName: route.aptArrName
+				airportId: routeSelected.aptArrId,
+				iata: routeSelected.aptArrIata,
+				icao: routeSelected.aptArrIcao,
+				airportName: routeSelected.aptArrName
 			})
 		} else {
+			setTitle('Добавление перелета')
 			setDateRangeValue(null)
+			setRouteType(null)
 			setTimeRangeValue(null)
 			setAirportDeparture(null)
 			setAirportArrival(null)
 		}
 
-	}, [route])
+	}, [routeSelected])
 
 	useEffect(() => {
 		if (routeTypes.length !== 0) {
 			setRouteTypeOptions(routeTypes)
-			setRouteType(routeTypes[0].value)
+			setRouteType(routeTypes[1].value)
 		}
 	}, [routeTypes])
+
+	useEffect(() => {
+		setFlightId(flightSelected !== null ? flightSelected.id : undefined)
+	}, [flightSelected])
 
 	let flightOptions: SelectProps['options'] = []
 	flights.forEach(flight => {
@@ -103,7 +113,7 @@ const RouteControl = (): JSX.Element => {
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-		if (newStartDate.isBefore(newEndDate)) {
+		if (newStartDate.isBefore(newEndDate) && routeType) {
 			const newRoute: Route = {
 				id: -1,
 				flightId: flightId,
@@ -134,18 +144,22 @@ const RouteControl = (): JSX.Element => {
 			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 			if (newStartDate.isBefore(newEndDate)) {
-				if (flightId && route && airportDeparture && airportArrival) {
+				if (flightId && routeSelected && airportDeparture && airportArrival) {
 					const updatedRoute: Route = {
-						...route,
+						...routeSelected,
 						scheduledDepartureDate: newStartDate,
 						scheduledArrivalDate: newEndDate,
 						aptDeptIata: airportDeparture.iata,
 						aptArrIata: airportArrival.iata
 					}
-					if (route.flightId === flightId) {
-						routeEditFx(updatedRoute)
+					if (routeSelected.flightId === flightId) {
+						if (LOCAL_MODE) {
+							routeEditFx(updatedRoute)
+						} else {
+							console.log('Updated route:', updatedRoute)
+						}
 					} else {
-						routeDeleteFx(route)
+						routeDeleteFx(routeSelected)
 						flightBoardIdChanged(flightId)
 					}
 				}
@@ -156,7 +170,8 @@ const RouteControl = (): JSX.Element => {
 	}
 
 	const airportSelectOptions: SelectProps<Airport>['options'] = airports.map(airport => {
-		return { value: airport.airportId,
+		return {
+			value: airport.airportId,
 			label: `${airport.airportName} (${airport.iata})`,
 			data: airport
 		}
@@ -166,7 +181,7 @@ const RouteControl = (): JSX.Element => {
 		<Space direction={'vertical'}>
 			<Divider type={'horizontal'}
 					 orientation={'left'}
-					 className={'control-panel-divider'}>Изменение перелета</Divider>
+					 className={'control-panel-divider'}>{title}</Divider>
 			<Space align={'start'}>
 				<Space direction={'vertical'} align={'end'}>
 					<Space>
@@ -249,7 +264,7 @@ const RouteControl = (): JSX.Element => {
 					</Space>
 				</Space>
 
-				{route ?
+				{routeSelected ?
 					<Space direction={'vertical'}>
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
@@ -262,7 +277,7 @@ const RouteControl = (): JSX.Element => {
 								icon={<DeleteOutlined/>}
 								style={{ width: '160px' }}
 								onClick={() => {
-									routeDeleteFx(route)
+									routeDeleteFx(routeSelected)
 								}}
 						>Удалить перелет</Button>
 					</Space>

@@ -7,12 +7,12 @@
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Route } from '../../../models/Route'
-import { $routeSelect, routeClickFx } from '../../../store/route'
+import { $routeSelected, routeClickFx } from '../../../store/route'
 import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, FLIGHT_ITEM_HEIGHT } from '../../../utils/consts'
 import { $style, StyleStore } from '../../../store/style'
 import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText } from '../../../utils/utils'
-import { RouteType } from '../../../models/RouteType'
+import { RouteType } from '../../../models/type/RouteType'
 import { greenColor } from '../../../utils/style'
 import { setContextMenuFx } from '../../../store/contextMenu'
 import { $ui } from '../../../store/ui'
@@ -28,7 +28,7 @@ interface FlightItemProps {
 const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
 	const ui = useStore($ui)
-	const routeSelect = useStore($routeSelect)
+	const routeSelect = useStore($routeSelected)
 	const { x, y, width, data } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const isSelect = data.id === routeSelect?.id
@@ -52,6 +52,18 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			})
 		})
 
+		const getBackgroundColor = ():string=>{
+			if(isDefault) {
+				return greenColor
+			}
+
+			if(data.routeTypeId === RouteType.ROUTINE_MAINTENANCE) {
+				return 'gray'
+			}
+
+			return 'orange'
+		}
+
 		container.append('rect')
 			.attr('x', x)
 			.attr('y', y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5)
@@ -59,10 +71,11 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			.attr('height', FLIGHT_ITEM_HEIGHT)
 			.attr('stroke', isSelect ? 'red' : isDefault ? 'green' : 'orange')
 			.attr('stroke-width', isSelect ? '3' : '1')
-			.attr('fill', isDefault ? greenColor : 'orange')
+			.attr('fill', getBackgroundColor)
 
 		if (!isDefault) {
-			drawText(container, 'Тех. обслуживание', x + width * 0.5, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+			const routeTypeLabel = data.routeTypeId === RouteType.ROUTINE_MAINTENANCE ? 'Тех. обслуживание' : 'Срочный'
+			drawText(container, routeTypeLabel, x + width * 0.5, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
 		}
 
 		const textSelection = drawAirportText(container, data.aptDeptIata ?? '', x + 2, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + 1)

@@ -9,7 +9,7 @@ import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { Route } from '../models/Route'
 import { createEvent, createStore, sample } from 'effector'
-import { $routeSelect, routeAddFx, routeDeleteFx, flightSelectReset } from './route'
+import { $routeSelected, routeAddFx, routeDeleteFx, flightSelectReset } from './route'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
@@ -22,13 +22,13 @@ import {
 } from '../api/flight'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
-export const $selectedFlight = createStore<Flight | null>(null)
+export const $flightSelected = createStore<Flight | null>(null)
 $flights.watch((boards: Flight[]) => {
 	if (!boards.length) {
 		flightSelectReset()
 	}
 
-	const routeSelect = $routeSelect.getState()
+	const routeSelect = $routeSelected.getState()
 	if (routeSelect) {
 		let find = false
 		for (let i = 0; i < boards.length; i++) {
@@ -42,7 +42,7 @@ $flights.watch((boards: Flight[]) => {
 		}
 	}
 
-	const flightSelect = $selectedFlight.getState()
+	const flightSelect = $flightSelected.getState()
 	if (flightSelect !== null) {
 		const isBoardSelectInBoards = boards.find(value => flightSelect.id === value.id)
 		if (isBoardSelectInBoards === undefined) {
@@ -116,13 +116,13 @@ $flights.on(flightDeleteFx, (boards, flightId) => {
 	}
 })
 $flights.on(flightsDeleteAllFx, _ => [])
-$flights.on(routeEditFx, (boards, flight: Route) => {
-	const boardIndex = boards.findIndex(value => value.id === flight.flightId)
-	const flightIndex = boards[boardIndex].routes.findIndex(value => {
-		return flight.id === value.id
+$flights.on(routeEditFx, (flights, route: Route) => {
+	const flightIndex = flights.findIndex(value => value.id === route.flightId)
+	const routeIndex = flights[flightIndex].routes.findIndex(value => {
+		return route.id === value.id
 	})
-	boards[boardIndex].routes[flightIndex] = flight
-	return [...boards]
+	flights[flightIndex].routes[routeIndex] = route
+	return [...flights]
 })
 $flights.on(routeDeleteFx, (flights, route) => {
 	const routeId = route.id
@@ -151,7 +151,7 @@ $flights.on(routeDeleteFx, (flights, route) => {
 
 export const flightClickFx = createEffect<Flight, Flight>('Событие клика по рейсу')
 export const flightSelectFx = createEffect<Flight, Flight>('Событие принудительного выбора рейса')
-$selectedFlight
+$flightSelected
 	.on(flightSelectFx, (_state, payload) => payload)
 	.on(flightClickFx, (flight, clickedFlight) => {
 		if (flight?.id === clickedFlight.id) {
@@ -160,4 +160,4 @@ $selectedFlight
 		return clickedFlight
 	})
 export const boardSelectResetFx = createEvent()
-$selectedFlight.reset(boardSelectResetFx)
+$flightSelected.reset(boardSelectResetFx)

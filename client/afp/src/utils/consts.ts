@@ -1,5 +1,5 @@
 import { Flight } from '../models/Flight'
-import { RouteType } from '../models/RouteType'
+import { RouteType } from '../models/type/RouteType'
 import dayjs from 'dayjs'
 import { generateContractId } from './utils'
 import { DictDto } from '../models/dto/DictDto'
@@ -38,11 +38,17 @@ export const flightsDefault: Flight[] = [
 				flightId: 1,
 				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
-				scheduledArrivalDate: dayjs().startOf('day').add(2, 'hours'),
-				aptDeptIata: 'AAQ',
-				aptArrIata: 'ABA'
-			},
-			{
+				scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
+				aptDepartId: 1,
+				aptDeptIata: 'VKO',
+				aptDeptIcao: 'UUWW',
+				aptDeptName: 'Внуково',
+				aptArrId: 2,
+				aptArrIata: 'SVO',
+				aptArrIcao: 'UUEE',
+				aptArrName: 'Шереметьево'
+			}
+			/*{
 				id: 21,
 				flightId: 1,
 				routeTypeId: RouteType.DEFAULT,
@@ -59,14 +65,14 @@ export const flightsDefault: Flight[] = [
 				scheduledArrivalDate: dayjs().startOf('day').add(29, 'hours'),
 				aptDeptIata: 'ADH',
 				aptArrIata: 'AER'
-			}
+			}*/
 		]
 	},
 	{
 		id: 2,
 		contractId: generateContractId(),
 		routes: [
-			{
+			/*{
 				id: 12,
 				flightId: 2,
 				routeTypeId: RouteType.DEFAULT,
@@ -101,10 +107,10 @@ export const flightsDefault: Flight[] = [
 				scheduledArrivalDate: dayjs().startOf('day').add(33, 'hours'),
 				aptDeptIata: 'ADH',
 				aptArrIata: 'ACS'
-			}
+			}*/
 		]
-	},
-	{
+	}
+	/*{
 		id: 3,
 		contractId: generateContractId(),
 		routes: [
@@ -217,7 +223,7 @@ export const flightsDefault: Flight[] = [
 				aptArrIata: 'ADH'
 			}
 		]
-	}
+	}*/
 ]
 
 export const contractsDefault: DictDto[] = [

@@ -4,5 +4,6 @@
  */
 export enum RouteType {
 	ROUTINE_MAINTENANCE = 0,
-	DEFAULT = 1
+	DEFAULT = 1,
+	URGENT = 2
 }

@@ -14,7 +14,7 @@ export const routeSelectFx = createEffect<Route, Route>('Событие прин
 export const routeClickFx = createEffect<Route, Route>('Событие клика по перелету')
 export const flightSelectReset = createEvent()
 export const flightBoardIdChanged = createEvent<number>('Событие смены рейса у перелета.')
-export const $routeSelect = createStore<Route | null>(null)
+export const $routeSelected = createStore<Route | null>(null)
 	.on(routeClickFx, (state, payload) => {
 		if (state?.id === payload.id) {
 			return null

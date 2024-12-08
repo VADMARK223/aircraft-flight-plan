@@ -1,12 +1,12 @@
 /**
- * Компонент работы с рейсами.
+ * Компонент добавления/изменения рейсов.
  *
  * @author Markitanov Vadim
  * @since 05.12.2023
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $selectedFlight, flightAddFx, flightDeleteFx, flightSaveFx } from '../../../store/flight'
+import { $flightSelected, flightAddFx, flightDeleteFx, flightSaveFx } from '../../../store/flight'
 import { Flight } from '../../../models/Flight'
 import { Button, Divider, Space, Select } from 'antd'
 import { DeleteOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons'
@@ -17,7 +17,7 @@ import { fetchContracts } from '../../../api/dict'
 import { DictDto } from '../../../models/dto/DictDto'
 
 const FlightControl = (): JSX.Element => {
-	const selectedFlight = useStore($selectedFlight)
+	const selectedFlight = useStore($flightSelected)
 	const [title, setTitle] = useState<string>()
 	const [contractId, setContractId] = useState<number | undefined>()
 	const [contractOptions, setContractOptions] = useState<DictDto[]>([])
@@ -80,8 +80,10 @@ const FlightControl = (): JSX.Element => {
 	}
 
 	return (
-		<Space direction={'vertical'}>
-			<Divider type={'horizontal'} orientation={'left'} className={'control-panel-divider'}>{title}</Divider>
+		<Space direction={'vertical'} style={{width:'100%'}}>
+			<Divider type={'horizontal'}
+					 orientation={'left'}
+					 className={'control-panel-divider'}>{title}</Divider>
 			<Space>
 				<span>ID контракта:</span>
 				<Select

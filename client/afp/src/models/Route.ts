@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs'
-import { RouteType } from './RouteType'
+import { RouteType } from './type/RouteType'
 
 /**
  * @author Markitanov Vadim

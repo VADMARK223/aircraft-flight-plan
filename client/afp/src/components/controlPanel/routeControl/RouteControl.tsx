@@ -71,11 +71,7 @@ const RouteControl = (): JSX.Element => {
 			})
 		} else {
 			setTitle('Добавление перелета')
-			setDateRangeValue(null)
-			setRouteType(null)
-			setTimeRangeValue(null)
-			setAirportDeparture(null)
-			setAirportArrival(null)
+			resetData()
 		}
 
 	}, [routeSelected])
@@ -90,6 +86,14 @@ const RouteControl = (): JSX.Element => {
 	useEffect(() => {
 		setFlightId(flightSelected !== null ? flightSelected.id : undefined)
 	}, [flightSelected])
+
+	const resetData = (): void => {
+		setDateRangeValue(null)
+		setRouteType(null)
+		setTimeRangeValue(null)
+		setAirportDeparture(null)
+		setAirportArrival(null)
+	}
 
 	let flightOptions: SelectProps['options'] = []
 	flights.forEach(flight => {
@@ -158,6 +162,11 @@ const RouteControl = (): JSX.Element => {
 			} else {
 				requestAddOrSaveRouteFx(newRoute)
 			}
+		}
+
+		// Если добавление перелета, то сбрасываем все данные после добавления
+		if (routeSelected === null) {
+			resetData()
 		}
 	}
 

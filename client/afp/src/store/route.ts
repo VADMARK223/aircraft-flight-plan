@@ -9,10 +9,9 @@ import { Flight } from '../models/Flight'
  * @author Markitanov Vadim
  * @since 04.12.2023
  */
-
 export const routeSelectFx = createEffect<Route, Route>('Событие принудительного выбора перелета')
 export const routeClickFx = createEffect<Route, Route>('Событие клика по перелету')
-export const flightSelectReset = createEvent('Событие сброса выбранного перелета.')
+export const routeSelectReset = createEvent('Событие сброса выбранного перелета.')
 
 export const $routeSelected = createStore<Route | null>(null)
 	.on(routeClickFx, (state, payload) => {
@@ -22,7 +21,7 @@ export const $routeSelected = createStore<Route | null>(null)
 		return payload
 	})
 	.on(routeSelectFx, (_state, payload) => payload)
-	.reset(flightSelectReset)
+	.reset(routeSelectReset)
 
 export type RouteAddOrSaveParams = {
 	route: Route,
@@ -30,3 +29,8 @@ export type RouteAddOrSaveParams = {
 }
 export const routeAddOrSaveFx = createEffect<RouteAddOrSaveParams, Flight[]>()
 export const routeDeleteFx = createEffect<Route, Flight[]>()
+
+// $routeSelected.watch((state) => {
+// 	console.log('Route selected:', state)
+// 	console.trace('Trace')
+// })

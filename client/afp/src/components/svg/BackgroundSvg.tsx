@@ -1,25 +1,23 @@
 /**
- * Компонент фона рабочей области
+ * Компонент фона полётов.
  *
  * @author Markitanov Vadim
- * @since 22.11.2023
+ * @since 11.12.2023
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
-import * as d3 from 'd3'
-import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, DATE_ITEM_WIDTH } from '../../utils/consts'
 import { useStore } from 'effector-react'
-import { $flights, boardSelectResetFx } from '../../store/flight'
-import { $dates } from '../../store/date'
 import { $style } from '../../store/style'
-import { flightSelectReset } from '../../store/route'
+import { $dates } from '../../store/date'
+import { $flights, flightSelectResetFx } from '../../store/flight'
+import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
+import * as d3 from 'd3'
+import { routeSelectReset } from '../../store/route'
 
-const Background = (): JSX.Element => {
+const BackgroundSvg = (): JSX.Element => {
 	const style = useStore($style)
 	const dates = useStore($dates)
 	const boards = useStore($flights)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-	const x = FLIGHT_CELL_WIDTH
-	const y = 0
 	const width = DATE_ITEM_WIDTH * dates.length
 	const height = CELL_HEIGHT * boards.length
 
@@ -27,7 +25,6 @@ const Background = (): JSX.Element => {
 		const svg = d3.select(gRef.current)
 		svg.selectAll('*').remove()
 		const container = svg.append('g')
-		container.attr('transform', `translate(${x},${y})`)
 		for (let j = 0; j < boards.length; j++) {
 			for (let i = 0; i < dates.length; i++) {
 				container.append('rect')
@@ -42,15 +39,15 @@ const Background = (): JSX.Element => {
 		}
 
 		container.on('click', function (_: PointerEvent) {
-			boardSelectResetFx()
-			flightSelectReset()
+			flightSelectResetFx()
+			routeSelectReset()
 		})
 
-	}, [style, x, y, width, height, boards, dates])
+	}, [style, width, height, boards, dates])
 
 	return (
 		<g ref={gRef}></g>
 	)
 }
 
-export default Background
+export default BackgroundSvg

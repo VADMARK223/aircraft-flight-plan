@@ -13,7 +13,7 @@ import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, DATE_ITEM_HEIGHT, HEADER_HEIGHT } from 
 import Dates from './dates/Dates'
 import InfoPanel from '../frame/InfoPanel'
 import Boards from '../common/flights/Flights'
-import Background from './Background'
+import BackgroundSvg from './BackgroundSvg'
 import Routes from '../common/routes/Routes'
 import Header from './Header'
 
@@ -94,7 +94,7 @@ const Svg = (): JSX.Element => {
 						viewBox={`${ui.x},${ui.y},${svgDimensions.width},${svgDimensions.height}`}
 						style={{ width: svgDimensions.width, height: svgDimensions.height }}
 					>
-						<Background/>
+						<BackgroundSvg/>
 						<Routes/>
 
 					</svg>

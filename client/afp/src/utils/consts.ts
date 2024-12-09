@@ -31,7 +31,7 @@ export const RESIZE_STICK_WIDTH = 5
 export const flightsDefault: Flight[] = [
 	{
 		id: 1,
-		contractId: getRandomNumber(1,1000),
+		contractId: getRandomNumber(1, 1000),
 		routes: [
 			{
 				id: 11,
@@ -70,7 +70,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 2,
-		contractId: getRandomNumber(1,1000),
+		contractId: getRandomNumber(1, 1000),
 		routes: [
 			/*{
 				id: 12,

@@ -8,7 +8,7 @@
 import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { createEvent, createStore, sample } from 'effector'
-import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, flightSelectReset, RouteAddOrSaveParams } from './route'
+import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, routeSelectReset, RouteAddOrSaveParams } from './route'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import { flightsDefault, LOCAL_MODE } from '../utils/consts'
@@ -19,33 +19,40 @@ import {
 	requestDeleteFlightFx,
 	requestSaveFlightFx
 } from '../api/flight'
+import { Route } from '../models/Route'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $flightSelected = createStore<Flight | null>(null)
-$flights.watch((boards: Flight[]) => {
-	if (!boards.length) {
-		flightSelectReset()
+$flights.watch((flights: Flight[]) => {
+	if (!flights.length) {
+		routeSelectReset()
 	}
 
-	const routeSelect = $routeSelected.getState()
+	const routeSelect: Route | null = $routeSelected.getState()
 	if (routeSelect) {
 		let find = false
-		for (let i = 0; i < boards.length; i++) {
-			if (boards[i].routes.indexOf(routeSelect) !== -1) {
-				find = true
-				break
+		outerLoop:
+		for (let i = 0; i < flights.length; i++) {
+			const flight = flights[i]
+
+			for (let j = 0; j < flight.routes.length; i++) {
+				const route = flight.routes[j]
+				if (route.flightId === flight.id) {
+					find = true
+					break outerLoop
+				}
 			}
 		}
 		if (!find) {
-			flightSelectReset()
+			routeSelectReset()
 		}
 	}
 
 	const flightSelect = $flightSelected.getState()
 	if (flightSelect !== null) {
-		const isBoardSelectInBoards = boards.find(value => flightSelect.id === value.id)
+		const isBoardSelectInBoards = flights.find(flight => flightSelect.id === flight.id)
 		if (isBoardSelectInBoards === undefined) {
-			boardSelectResetFx()
+			flightSelectResetFx()
 		}
 	}
 })
@@ -111,6 +118,7 @@ $flights.on(routeAddOrSaveFx, (flights, params: RouteAddOrSaveParams) => {
 			return flights
 		}
 
+		route.id = getMaxRouteId(flights) + 1
 		flight.routes = [...flight.routes, route]
 		const newFlights = [...flights]
 		newFlights[flights.indexOf(flight)] = flight
@@ -189,5 +197,16 @@ $flightSelected
 		}
 		return clickedFlight
 	})
-export const boardSelectResetFx = createEvent()
-$flightSelected.reset(boardSelectResetFx)
+export const flightSelectResetFx = createEvent('Событие сброса выбранного рейса.')
+$flightSelected.reset(flightSelectResetFx)
+
+const getMaxRouteId = (flights: Flight[]): number => {
+	return flights.reduce((maxId, flight) => {
+		// Обойти routes текущего flight и найти максимальный id
+		const flightMax = flight.routes.reduce(
+			(max, route) => Math.max(max, route.id),
+			-Infinity // Начальное значение
+		)
+		return Math.max(maxId, flightMax) // обновить общий максимум
+	}, -Infinity)
+}

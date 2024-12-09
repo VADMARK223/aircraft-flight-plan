@@ -15,7 +15,7 @@ import {
 	DATE_ITEM_WIDTH,
 	HEADER_HEIGHT
 } from '../../utils/consts'
-import Background from './Background'
+import BackgroundFrame from './BackgroundFrame'
 import Border from './Border'
 import { Space } from 'antd'
 import { useStore } from 'effector-react'
@@ -98,7 +98,7 @@ const Frame = (): JSX.Element => {
 									   y={BOARD_ITEM_HEIGHT * index}
 									   width={BOARD_ITEM_WIDTH}
 									   height={BOARD_ITEM_HEIGHT}/>))}*/}
-						<Background/>
+						<BackgroundFrame/>
 						<Routes/>
 						<Border/>
 					</svg>

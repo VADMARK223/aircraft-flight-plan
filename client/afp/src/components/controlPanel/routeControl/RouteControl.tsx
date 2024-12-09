@@ -4,12 +4,12 @@
  * @author Markitanov Vadim
  * @since 23.11.2023
  */
-import React, { JSX, useEffect, useState } from 'react'
+import React, { JSX, useEffect, useState, useCallback } from 'react'
 import { useStore } from 'effector-react'
 import { $routeSelected, routeAddOrSaveFx, routeDeleteFx } from '../../../store/route'
 import { $flights, $flightSelected } from '../../../store/flight'
-import { Dayjs } from 'dayjs'
-import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
+import dayjs, { Dayjs } from 'dayjs'
+import { Button, DatePicker, Divider, Select, SelectProps, Space, Tooltip } from 'antd'
 import { combineDateTime, getRandomNumber } from '../../../utils/utils'
 import { toast } from 'react-toastify'
 import { DATE_FORMAT, LOCAL_MODE } from '../../../utils/consts'
@@ -31,8 +31,6 @@ const RouteControl = (): JSX.Element => {
 	const airports = useStore($airports)
 	const routeTypes = useStore($routeTypeDictStore)
 
-	const [title, setTitle] = useState<string>()
-	const [addButtonDisable, setAddButtonDisable] = useState<boolean>(true)
 	const [flightId, setFlightId] = useState<number | undefined>()
 	const [routeType, setRouteType] = useState<number | null>(null)
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
@@ -40,6 +38,9 @@ const RouteControl = (): JSX.Element => {
 	const [airportDeparture, setAirportDeparture] = useState<Airport | null>(null)
 	const [airportArrival, setAirportArrival] = useState<Airport | null>(null)
 	const [routeTypeOptions, setRouteTypeOptions] = useState<DictDto[]>([])
+
+	const [title, setTitle] = useState<string>()
+	const [disableButtonReason, setDisableButtonReason] = useState<string | null>('')
 
 	useEffect(() => {
 		if (!LOCAL_MODE) {
@@ -95,49 +96,36 @@ const RouteControl = (): JSX.Element => {
 		flightOptions?.push({ value: flight.id, label: `Рейс ${flight.id}` })
 	})
 
-	useEffect(() => {
-		setAddButtonDisable(flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportDeparture === null || airportArrival === null)
-	}, [flightId, dateRangeValue, timeRangeValue, airportDeparture, airportArrival])
-
 	const handlerFlightSelectChange = (value: number | undefined): void => {
 		setFlightId(value)
 	}
+
+	const getDisableButtonReason = useCallback((): string | null => {
+		if (flightId === undefined) return 'Выберите рейс перелета'
+		if (routeType === null) return 'Выберите тип перелета'
+		if (dateRangeValue === null) return 'Выберите даты'
+		if (timeRangeValue === null) return 'Выберите время'
+		if (airportDeparture === null) return 'Выберите аэропорт вылета'
+		if (airportArrival === null) return 'Выберите прилета вылета'
+		return null
+	}, [flightId, routeType, dateRangeValue, timeRangeValue, airportDeparture, airportArrival])
+
+	useEffect(() => {
+		setDisableButtonReason(getDisableButtonReason)
+	}, [getDisableButtonReason])
 
 	/**
 	 * Общий метод для добавления и редактирования перелета.
 	 */
 	const handlerAddOrEditRoute = (): void => {
-		if (flightId === undefined) {
-			toast.warn('Выберите рейс перелета.')
+		if (getDisableButtonReason() !== null) {
+			toast.warn(disableButtonReason)
 			return
 		}
 
-		if (routeType === null) {
-			toast.warn('Выберите тип перелета.')
-			return
-		}
-
-		if (dateRangeValue === null) {
-			toast.warn('Выберите даты.')
-			return
-		}
-
-		if (timeRangeValue === null) {
-			toast.warn('Выберите время.')
-			return
-		}
-
-		if (airportDeparture === null) {
-			toast.warn('Выберите аэропорт вылета.')
-			return
-		}
-
-		if (airportArrival === null) {
-			toast.warn('Выберите прилета вылета.')
-			return
-		}
-
+		// @ts-ignore
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
+		// @ts-ignore
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
 		if (newStartDate.isAfter(newEndDate)) {
@@ -147,19 +135,19 @@ const RouteControl = (): JSX.Element => {
 
 		const newRoute: Route = {
 			id: routeSelected ? routeSelected.id : -1,
-			flightId: flightId,
-			routeTypeId: routeType,
+			flightId: flightId as number,
+			routeTypeId: routeType as number,
 			scheduledDepartureDate: newStartDate,
 			scheduledArrivalDate: newEndDate,
-			aptDepartId: airportDeparture.airportId,
-			aptDeptIata: airportDeparture.iata,
-			aptDeptIcao: airportDeparture.icao,
-			aptDeptName: airportDeparture.airportName,
+			aptDepartId: (airportDeparture as Airport).airportId,
+			aptDeptIata: (airportDeparture as Airport).iata,
+			aptDeptIcao: (airportDeparture as Airport).icao,
+			aptDeptName: (airportDeparture as Airport).airportName,
 
-			aptArrId: airportArrival.airportId,
-			aptArrIata: airportArrival.iata,
-			aptArrIcao: airportArrival.icao,
-			aptArrName: airportArrival.airportName
+			aptArrId: (airportArrival as Airport).airportId,
+			aptArrIata: (airportArrival as Airport).iata,
+			aptArrIcao: (airportArrival as Airport).icao,
+			aptArrName: (airportArrival as Airport).airportName
 		}
 
 		if (LOCAL_MODE) {
@@ -183,6 +171,13 @@ const RouteControl = (): JSX.Element => {
 
 	const handlerGenerateRoute = () => {
 		setFlightId(flights[getRandomNumber(0, flights.length)].id)
+		setRouteType(routeTypes[getRandomNumber(0, routeTypes.length)].value)
+		const scheduledDepartureDate = dayjs().startOf('day').add(0, 'hours')
+		const scheduledArrivalDate = dayjs().startOf('day').add(6, 'hours')
+		setDateRangeValue([scheduledDepartureDate, scheduledArrivalDate])
+		setTimeRangeValue([scheduledDepartureDate, scheduledArrivalDate])
+		setAirportDeparture(airports[getRandomNumber(0, airports.length)])
+		setAirportArrival(airports[getRandomNumber(0, airports.length)])
 	}
 
 	return (
@@ -274,12 +269,14 @@ const RouteControl = (): JSX.Element => {
 
 				{routeSelected ?
 					<Space direction={'vertical'}>
-						<Button type={'primary'}
-								icon={<EditOutlined/>}
-								disabled={addButtonDisable}
-								onClick={handlerAddOrEditRoute}
-								style={{ width: '160px' }}
-						>Изменить перелет</Button>
+						<Tooltip title={disableButtonReason}>
+							<Button type={'primary'}
+									icon={<EditOutlined/>}
+									disabled={disableButtonReason !== null}
+									onClick={handlerAddOrEditRoute}
+									style={{ width: '160px' }}
+							>Изменить перелет</Button>
+						</Tooltip>
 						<Button type={'primary'}
 								danger
 								icon={<DeleteOutlined/>}
@@ -291,19 +288,16 @@ const RouteControl = (): JSX.Element => {
 					</Space>
 					:
 					<Space direction={'vertical'}>
-						<Button type={'primary'}
-								icon={<PlusOutlined/>}
-								disabled={addButtonDisable}
-								onClick={handlerAddOrEditRoute}
-								style={{ width: '160px' }}
-						>Добавить перелет</Button>
+						<Tooltip title={disableButtonReason}>
+							<Button type={'primary'} icon={<PlusOutlined/>} disabled={disableButtonReason !== null}
+									onClick={handlerAddOrEditRoute} style={{ width: '160px' }}>Добавить перелет</Button>
+						</Tooltip>
+
 						<Button onClick={handlerGenerateRoute}
 								style={{ width: '160px' }}
 						>Генерировать перелет</Button>
 					</Space>
 				}
-
-
 			</Space>
 		</Space>
 	)

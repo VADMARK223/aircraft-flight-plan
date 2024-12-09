@@ -32,17 +32,17 @@ $flights.watch((flights: Flight[]) => {
 	if (routeSelect) {
 		let find = false
 		outerLoop:
-		for (let i = 0; i < flights.length; i++) {
-			const flight = flights[i]
+			for (let i = 0; i < flights.length; i++) {
+				const flight = flights[i]
 
-			for (let j = 0; j < flight.routes.length; i++) {
-				const route = flight.routes[j]
-				if (route.flightId === flight.id) {
-					find = true
-					break outerLoop
+				for (let j = 0; j < flight.routes.length; i++) {
+					const route = flight.routes[j]
+					if (route.flightId === flight.id) {
+						find = true
+						break outerLoop
+					}
 				}
 			}
-		}
 		if (!find) {
 			routeSelectReset()
 		}
@@ -112,7 +112,7 @@ $flights.on(flightDeleteFx, (boards, flightId) => {
 $flights.on(flightsDeleteAllFx, _ => [])
 $flights.on(routeAddOrSaveFx, (flights, params: RouteAddOrSaveParams) => {
 	const { route, oldFlightId } = params
-	if (route.id === -1) { // Добавление перелета
+	if (route.id === -1) {// Добавление перелета
 		const flight = flights.find(value => value.id === route.flightId)
 		if (flight === undefined) {
 			return flights

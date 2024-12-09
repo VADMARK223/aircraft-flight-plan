@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState, useCallback } from 'react'
 import { useStore } from 'effector-react'
-import { $routeSelected, routeAddOrSaveFx, routeDeleteFx } from '../../../store/route'
+import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, routeSelectUpdateFlightId } from '../../../store/route'
 import { $flights, $flightSelected } from '../../../store/flight'
 import dayjs, { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space, Tooltip } from 'antd'
@@ -156,6 +156,11 @@ const RouteControl = (): JSX.Element => {
 
 		if (LOCAL_MODE) {
 			routeAddOrSaveFx({ route: newRoute, oldFlightId: routeSelected?.flightId })
+			if (routeSelected?.routeTypeId !== flightId) {
+				if (flightId !== undefined) {
+					routeSelectUpdateFlightId(flightId)
+				}
+			}
 		} else {
 			if (routeSelected) {
 				requestAddOrSaveRouteFx(newRoute)

@@ -95,7 +95,6 @@ $flights.on(flightSaveFx, (flights, flight) => {
 	}
 })
 $flights.on(flightDeleteFx, (boards, flightId) => {
-	console.log('DELETE:')
 	const findBoardIndex = getBoardIndexByBoardId(boards, flightId)
 	if (findBoardIndex === -1) {
 

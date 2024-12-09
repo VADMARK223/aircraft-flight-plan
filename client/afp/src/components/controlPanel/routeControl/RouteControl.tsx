@@ -10,7 +10,7 @@ import { $routeSelected, routeAddOrSaveFx, routeDeleteFx } from '../../../store/
 import { $flights, $flightSelected } from '../../../store/flight'
 import { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space } from 'antd'
-import { combineDateTime } from '../../../utils/utils'
+import { combineDateTime, getRandomNumber } from '../../../utils/utils'
 import { toast } from 'react-toastify'
 import { DATE_FORMAT, LOCAL_MODE } from '../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
@@ -104,91 +104,71 @@ const RouteControl = (): JSX.Element => {
 	}
 
 	/**
-	 * Метод подтверждения добавления перелета.
+	 * Общий метод для добавления и редактирования перелета.
 	 */
-	const handlerAddRoute = (): void => {
-		if (flightId === undefined || dateRangeValue === null || timeRangeValue === null || airportDeparture === null || airportArrival === null) {
+	const handlerAddOrEditRoute = (): void => {
+		if (flightId === undefined) {
+			toast.warn('Выберите рейс перелета.')
+			return
+		}
+
+		if (routeType === null) {
+			toast.warn('Выберите тип перелета.')
+			return
+		}
+
+		if (dateRangeValue === null) {
+			toast.warn('Выберите даты.')
+			return
+		}
+
+		if (timeRangeValue === null) {
+			toast.warn('Выберите время.')
+			return
+		}
+
+		if (airportDeparture === null) {
+			toast.warn('Выберите аэропорт вылета.')
+			return
+		}
+
+		if (airportArrival === null) {
+			toast.warn('Выберите прилета вылета.')
 			return
 		}
 
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
 
-		if (newStartDate.isBefore(newEndDate)) {
-			if (routeType === null) {
-				toast.warn('Выберите тип перелета.')
-				return
-			}
-			const newRoute: Route = {
-				id: -1,
-				flightId: flightId,
-				routeTypeId: routeType,
-				scheduledDepartureDate: newStartDate,
-				scheduledArrivalDate: newEndDate,
-				aptDepartId: airportDeparture.airportId,
-				aptDeptIata: airportDeparture.iata,
-				aptDeptIcao: airportDeparture.icao,
-				aptDeptName: airportDeparture.airportName,
+		if (newStartDate.isAfter(newEndDate)) {
+			toast.warn('Время вылета превышает или совпадает с временем прилета.')
+			return
+		}
 
-				aptArrId: airportArrival.airportId,
-				aptArrIata: airportArrival.iata,
-				aptArrIcao: airportArrival.icao,
-				aptArrName: airportArrival.airportName
-			}
-			if (LOCAL_MODE) {
-				routeAddOrSaveFx({ route: newRoute })
+		const newRoute: Route = {
+			id: routeSelected ? routeSelected.id : -1,
+			flightId: flightId,
+			routeTypeId: routeType,
+			scheduledDepartureDate: newStartDate,
+			scheduledArrivalDate: newEndDate,
+			aptDepartId: airportDeparture.airportId,
+			aptDeptIata: airportDeparture.iata,
+			aptDeptIcao: airportDeparture.icao,
+			aptDeptName: airportDeparture.airportName,
+
+			aptArrId: airportArrival.airportId,
+			aptArrIata: airportArrival.iata,
+			aptArrIcao: airportArrival.icao,
+			aptArrName: airportArrival.airportName
+		}
+
+		if (LOCAL_MODE) {
+			routeAddOrSaveFx({ route: newRoute, oldFlightId: routeSelected?.flightId })
+		} else {
+			if (routeSelected) {
+				requestAddOrSaveRouteFx(newRoute)
 			} else {
 				requestAddOrSaveRouteFx(newRoute)
-			}
-
-			setFlightId(undefined)
-			setDateRangeValue(null)
-			setTimeRangeValue(null)
-			setAirportDeparture(null)
-			setAirportArrival(null)
-		} else {
-			toast.warn('Время вылета превышает или совпадает с временем прилета.')
-		}
-	}
-
-	/**
-	 * Метод подтверждения изменения полета.
-	 */
-	const handlerEditFlight = (): void => {
-		if (dateRangeValue != null && timeRangeValue != null) {
-			const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
-			const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
-			if (newStartDate.isBefore(newEndDate)) {
-				if (flightId && routeSelected && airportDeparture && airportArrival) {
-					const updatedRoute: Route = {
-						...routeSelected,
-						flightId: flightId,
-						scheduledDepartureDate: newStartDate,
-						scheduledArrivalDate: newEndDate,
-						aptDepartId: airportDeparture.airportId,
-						aptDeptIata: airportDeparture.iata,
-						aptDeptIcao: airportDeparture.icao,
-						aptDeptName: airportDeparture.airportName,
-
-						aptArrId: airportArrival.airportId,
-						aptArrIata: airportArrival.iata,
-						aptArrIcao: airportArrival.icao,
-						aptArrName: airportArrival.airportName
-					}
-					// if (routeSelected.flightId === flightId) {
-					if (LOCAL_MODE) {
-						routeAddOrSaveFx({ route: updatedRoute, oldFlightId: routeSelected.flightId })
-					} else {
-						requestAddOrSaveRouteFx(updatedRoute)
-					}
-					// } else {
-					// 	console.log('4:')
-					// routeDeleteFx(routeSelected)
-					// flightBoardIdChanged(flightId)
-					// }
-				}
-			} else {
-				toast.warn('Время вылета превышает или совпадает с временем прилета.')
 			}
 		}
 	}
@@ -200,6 +180,10 @@ const RouteControl = (): JSX.Element => {
 			data: airport
 		}
 	})
+
+	const handlerGenerateRoute = () => {
+		setFlightId(flights[getRandomNumber(0, flights.length)].id)
+	}
 
 	return (
 		<Space direction={'vertical'}>
@@ -293,7 +277,7 @@ const RouteControl = (): JSX.Element => {
 						<Button type={'primary'}
 								icon={<EditOutlined/>}
 								disabled={addButtonDisable}
-								onClick={handlerEditFlight}
+								onClick={handlerAddOrEditRoute}
 								style={{ width: '160px' }}
 						>Изменить перелет</Button>
 						<Button type={'primary'}
@@ -306,12 +290,17 @@ const RouteControl = (): JSX.Element => {
 						>Удалить перелет</Button>
 					</Space>
 					:
-					<Button type={'primary'}
-							icon={<PlusOutlined/>}
-							disabled={addButtonDisable}
-							onClick={handlerAddRoute}
-							style={{ width: '160px' }}
-					>Добавить перелет</Button>
+					<Space direction={'vertical'}>
+						<Button type={'primary'}
+								icon={<PlusOutlined/>}
+								disabled={addButtonDisable}
+								onClick={handlerAddOrEditRoute}
+								style={{ width: '160px' }}
+						>Добавить перелет</Button>
+						<Button onClick={handlerGenerateRoute}
+								style={{ width: '160px' }}
+						>Генерировать перелет</Button>
+					</Space>
 				}
 
 

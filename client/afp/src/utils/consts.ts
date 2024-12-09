@@ -1,7 +1,7 @@
 import { Flight } from '../models/Flight'
 import { RouteType } from '../models/type/RouteType'
 import dayjs from 'dayjs'
-import { generateContractId } from './utils'
+import { getRandomNumber } from './utils'
 import { DictDto } from '../models/dto/DictDto'
 import { Airport } from '../models/Airport'
 
@@ -31,7 +31,7 @@ export const RESIZE_STICK_WIDTH = 5
 export const flightsDefault: Flight[] = [
 	{
 		id: 1,
-		contractId: generateContractId(),
+		contractId: getRandomNumber(1,1000),
 		routes: [
 			{
 				id: 11,
@@ -70,7 +70,7 @@ export const flightsDefault: Flight[] = [
 	},
 	{
 		id: 2,
-		contractId: generateContractId(),
+		contractId: getRandomNumber(1,1000),
 		routes: [
 			/*{
 				id: 12,

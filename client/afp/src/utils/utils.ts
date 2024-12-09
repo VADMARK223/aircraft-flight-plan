@@ -8,8 +8,7 @@ import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
  */
 export const USER_TIME_ZONE: string = Intl.DateTimeFormat().resolvedOptions().timeZone
 const OFFSET_HOURS = -(new Date().getTimezoneOffset() / 60)
-export const FORMATTED_OFFSET = `GMT${OFFSET_HOURS >= 0 ? "+" : ""}${OFFSET_HOURS}:00`
-
+export const FORMATTED_OFFSET = `GMT${OFFSET_HOURS >= 0 ? '+' : ''}${OFFSET_HOURS}:00`
 
 export const getWeekCount = (current: dayjs.Dayjs): number => {
 	const startOfYear = dayjs().startOf('year')
@@ -132,7 +131,11 @@ export const getDayNameByCount = (count: number): string => {
 	}
 }
 
-export const generateContractId = () => {
-	return Math.floor(Math.random() * 1000) + 1
+export const getRandomNumber = (min: number, max: number): number => {
+	if (min > max) {
+		throw new Error('Начальное значение должно быть меньше или равно конечному')
+	}
+
+	return Math.floor(Math.random() * (max - min)) + min
 }
 

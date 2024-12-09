@@ -13,7 +13,6 @@ import { Flight } from '../models/Flight'
 export const routeSelectFx = createEffect<Route, Route>('Событие принудительного выбора перелета')
 export const routeClickFx = createEffect<Route, Route>('Событие клика по перелету')
 export const flightSelectReset = createEvent()
-export const flightBoardIdChanged = createEvent<number>('Событие смены рейса у перелета.')
 
 export const $routeSelected = createStore<Route | null>(null)
 	.on(routeClickFx, (state, payload) => {
@@ -32,12 +31,7 @@ export type RouteAddOrSaveParams = {
 export const routeAddOrSaveFx = createEffect<RouteAddOrSaveParams, Flight[]>()
 export const routeDeleteFx = createEffect<Route, Flight[]>()
 
-/*sample({
-	source: routeDeleteFx,
-	clock: flightBoardIdChanged,
-	fn: (route: Route, flightId: number) => {
-		route.flightId = flightId
-		return route
-	},
-	target: routeAddOrSaveFx
-})*/
+
+routeAddOrSaveFx.watch(payload => {
+	console.log('route arr or save:', payload)
+})

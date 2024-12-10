@@ -30,4 +30,13 @@ class Route {
 
     @Column(name="route_type_id")
     var routeTypeId: Int? = null
+
+    @Column(name="flight_id")
+    var flightId: Int? = null
+
+    override fun toString(): String {
+        return "Route(routeId=$routeId, flightId=$flightId, routeTypeId=$routeTypeId)"
+    }
 }
+
+

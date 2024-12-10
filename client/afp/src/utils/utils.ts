@@ -96,7 +96,7 @@ export /**
  * Метод объединяет объект даты и объект времени в одну временную метку.
  * @param {dayjs.Dayjs | null} date - дата для объединения.
  * @param {dayjs.Dayjs | null} time - время для объединения.
- * @returns {dayjs.Dayjs} результатирующая дата.
+ * @returns {dayjs.Dayjs} дата.
  */
 const combineDateTime = (date: Dayjs | null | undefined, time: Dayjs | null | undefined): Dayjs => {
 	if (date === null || date === undefined || time === null || time === undefined) {
@@ -129,13 +129,5 @@ export const getDayNameByCount = (count: number): string => {
 		default:
 			return 'Неизвестно'
 	}
-}
-
-export const getRandomNumber = (min: number, max: number): number => {
-	if (min > max) {
-		throw new Error('Начальное значение должно быть меньше или равно конечному')
-	}
-
-	return Math.floor(Math.random() * (max - min)) + min
 }
 

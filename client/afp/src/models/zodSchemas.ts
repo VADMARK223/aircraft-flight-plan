@@ -17,7 +17,7 @@ const DateSchema = z.string()
 	.transform((serverTimeUTC) => dayjs.utc(serverTimeUTC).tz(USER_TIME_ZONE))
 
 // Схема перелета
-const RouteSchema = z.object({
+export const RouteSchema = z.object({
 	id: z.number(),
 	flightId: z.number(),
 	routeTypeId: z.number(),

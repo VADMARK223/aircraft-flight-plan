@@ -1,7 +1,7 @@
 import { Flight } from '../models/Flight'
 import { RouteType } from '../models/type/RouteType'
 import dayjs from 'dayjs'
-import { getRandomNumber } from './utils'
+import { getRandomNumber } from './math'
 import { DictDto } from '../models/dto/DictDto'
 import { Airport } from '../models/Airport'
 
@@ -11,7 +11,7 @@ import { Airport } from '../models/Airport'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const LOCAL_MODE = true
+export const LOCAL_MODE = false
 export const SHOW_TEST_TOGGLE: boolean = false
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
@@ -31,6 +31,7 @@ export const RESIZE_STICK_WIDTH = 5
 export const flightsDefault: Flight[] = [
 	{
 		id: 1,
+		// contractId: 666,
 		contractId: getRandomNumber(1, 1000),
 		routes: [
 			{
@@ -68,11 +69,11 @@ export const flightsDefault: Flight[] = [
 			}*/
 		]
 	},
-	{
+	/*{
 		id: 2,
 		contractId: getRandomNumber(1, 1000),
 		routes: [
-			/*{
+			{
 				id: 12,
 				flightId: 2,
 				routeTypeId: RouteType.DEFAULT,
@@ -107,9 +108,9 @@ export const flightsDefault: Flight[] = [
 				scheduledArrivalDate: dayjs().startOf('day').add(33, 'hours'),
 				aptDeptIata: 'ADH',
 				aptArrIata: 'ACS'
-			}*/
+			}
 		]
-	}
+	}*/
 	/*{
 		id: 3,
 		contractId: generateContractId(),

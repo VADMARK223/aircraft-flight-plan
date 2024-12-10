@@ -1,6 +1,8 @@
 import { createEffect } from 'effector/effector.umd'
 import { Route } from '../models/Route'
-import { apiPost } from './common'
+import { apiPost, showError } from './common'
+import { RouteAddOrSaveParams } from '../store/route'
+import { RouteSchema } from '../models/zodSchemas'
 
 /**
  * API для работы с перелетами.
@@ -10,18 +12,35 @@ import { apiPost } from './common'
 
 const mapper = require('object-mapper')
 
-export const requestAddOrSaveRouteFx = createEffect<Route, void>(async (route: Route) => {
-	const mappingResult = mapper(route, map)
-	return await apiPost<void>('route/add_or_save_route', {
-		json: mappingResult
+export const requestAddOrSaveRouteFx = createEffect<Route, RouteAddOrSaveParams|null>(async (route: Route) => {
+	const mapped = mapper(route, mapObject)
+
+	const response = await apiPost<Route>('route/add_or_save_route', {
+		json: mapped
 	})
+	console.log('response:', response)
+
+	const safeParse = RouteSchema.safeParse(response)
+	if (!safeParse.success) {
+		showError(`Ошибка валидации перелета.`)
+		console.log(`Ошибка валидации перелета: ${safeParse.error}`)
+		return null
+	}
+
+
+	 // console.log('validated:', validated)
+
+
+	const result: RouteAddOrSaveParams = { route: response }
+	return result
 })
 
-const map = {
+const mapObject = {
 	'id': 'routeId',
 	'aptDepartId': 'airportDepartureId',
 	'aptArrId': 'airportArrivalId',
 	'scheduledDepartureDate': 'scheduledDepartureDate',
 	'scheduledArrivalDate': 'scheduledArrivalDate',
-	'routeTypeId': 'routeTypeId'
+	'routeTypeId': 'routeTypeId',
+	'flightId': 'flightId'
 }

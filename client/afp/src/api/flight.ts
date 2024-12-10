@@ -39,7 +39,8 @@ export const requestSaveFlightFx = createEffect<Flight, Flight | null>(async (fl
 
 	const resultParse = FlightSchema.safeParse(response)
 	if (!resultParse.success) {
-		showError(`Ошибка валидации рейса: ${resultParse.error}`)
+		showError('Ошибка валидации рейса.')
+		console.log(`Ошибка валидации рейса: ${resultParse.error}`)
 		return null
 	}
 	const parsedFlight: Flight = resultParse.data as unknown as Flight

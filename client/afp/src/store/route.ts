@@ -1,7 +1,8 @@
-import { createEvent, createStore } from 'effector'
+import { createEvent, createStore, sample } from 'effector'
 import { Route } from '../models/Route'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
+import { requestAddOrSaveRouteFx } from '../api/route'
 
 /**
  * Хранилище перелетов.
@@ -38,11 +39,12 @@ export type RouteAddOrSaveParams = {
 export const routeAddOrSaveFx = createEffect<RouteAddOrSaveParams, Flight[]>()
 export const routeDeleteFx = createEffect<Route, Flight[]>()
 
-// $routeSelected.watch((state) => {
-// console.log('Route selected:', state)
-// console.trace('Trace')
-// })
-
 routeDeleteFx.watch(() => {
 	routeSelectReset()
+})
+
+sample({
+	source: requestAddOrSaveRouteFx.doneData,
+	filter: (params: RouteAddOrSaveParams | null): params is RouteAddOrSaveParams => params != null,
+	target: routeAddOrSaveFx
 })

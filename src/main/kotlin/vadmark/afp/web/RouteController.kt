@@ -18,12 +18,17 @@ class RouteController(private val routeService: RouteService) {
 
     @PostMapping("/add_or_save_route")
     fun addOrSave(@RequestBody route: Route): ResponseEntity<ResponseDto<Route>> {
-//        return ResponseEntity.ok(Response.success(routeService.add(route)))
+        println("addOrSave $route")
+        if (route.flightId == null) {
+            return ResponseEntity.ok(Response.failure("У перелета '${route.routeId}' нету идентификатора рейса."))
+        }
+
         if (route.routeId == -1) {
             route.routeId = null
         }
 
-        routeService.addOrSave(route)
+        val result = routeService.addOrSave(route)
+        println("Result: $result")
 
         return ResponseEntity.ok(Response.success(route))
     }

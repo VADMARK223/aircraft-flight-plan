@@ -1,5 +1,5 @@
 COMMENT ON TABLE route IS 'Перелеты';
-COMMENT ON COLUMN route.route_id IS 'Идентификатор';
+COMMENT ON COLUMN route.id IS 'Идентификатор перелета';
 COMMENT ON COLUMN route.airport_departure IS 'Идентификатор аэропорта вылета';
 COMMENT ON COLUMN route.airport_arrival IS 'Идентификатор аэропорта прилета';
 COMMENT ON COLUMN route.weight_load IS 'Вес загрузки';

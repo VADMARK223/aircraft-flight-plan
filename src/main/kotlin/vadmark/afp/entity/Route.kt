@@ -13,8 +13,8 @@ import java.time.ZonedDateTime
 class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "route_id")
-    var routeId: Int? = null
+    @Column(name = "id")
+    var id: Int? = null
 
     @Column(name="airport_departure")
     var airportDepartureId: Int? = null
@@ -35,7 +35,7 @@ class Route {
     var flightId: Int? = null
 
     override fun toString(): String {
-        return "Route(routeId=$routeId, flightId=$flightId, routeTypeId=$routeTypeId)"
+        return "Route(idd=$id, flightId=$flightId, routeTypeId=$routeTypeId)"
     }
 }
 

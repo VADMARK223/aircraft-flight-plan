@@ -1,5 +1,5 @@
 CREATE OR REPLACE VIEW afp_schema.v_route AS
-SELECT r.route_id,
+SELECT r.id,
        r.scheduled_departure_date,
        r.scheduled_arrival_date,
        r.actual_departure_date,

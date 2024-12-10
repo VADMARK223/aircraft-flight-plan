@@ -20,11 +20,11 @@ class RouteController(private val routeService: RouteService) {
     fun addOrSave(@RequestBody route: Route): ResponseEntity<ResponseDto<Route>> {
         println("addOrSave $route")
         if (route.flightId == null) {
-            return ResponseEntity.ok(Response.failure("У перелета '${route.routeId}' нету идентификатора рейса."))
+            return ResponseEntity.ok(Response.failure("У перелета '${route.id}' нету идентификатора рейса."))
         }
 
-        if (route.routeId == -1) {
-            route.routeId = null
+        if (route.id == -1) {
+            route.id = null
         }
 
         val result = routeService.addOrSave(route)

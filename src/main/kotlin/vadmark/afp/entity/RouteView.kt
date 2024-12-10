@@ -14,7 +14,7 @@ import java.time.ZonedDateTime
 @Table(schema = "afp_schema", name = "v_route")
 class RouteView {
     @Id
-    @Column(name = "route_id")
+    @Column(name = "id")
     var id: Int = 0
 
     @Column(name = "aircraft_id")

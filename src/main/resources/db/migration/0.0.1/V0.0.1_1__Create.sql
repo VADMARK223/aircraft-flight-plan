@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS route
 (
-    route_id SERIAL NOT NULL CONSTRAINT route_pk PRIMARY KEY,
+    id SERIAL NOT NULL CONSTRAINT route_pk PRIMARY KEY,
     airport_departure INT4 NOT NULL,
     airport_arrival INT4 NOT NULL,
     weight_load INT4,

@@ -35,7 +35,7 @@ class Route {
     var flightId: Int? = null
 
     override fun toString(): String {
-        return "Route(idd=$id, flightId=$flightId, routeTypeId=$routeTypeId)"
+        return "Route(id=$id, flightId=$flightId, routeTypeId=$routeTypeId)"
     }
 }
 

@@ -17,7 +17,7 @@ class RouteController(private val routeService: RouteService) {
     }
 
     @PostMapping("/add_or_save_route")
-    fun addOrSave(@RequestBody route: Route): ResponseEntity<ResponseDto<Route>> {
+    fun addOrSave(@RequestBody route: Route): ResponseEntity<ResponseDto<RouteView>> {
         println("addOrSave $route")
         if (route.flightId == null) {
             return ResponseEntity.ok(Response.failure("У перелета '${route.id}' нету идентификатора рейса."))
@@ -30,6 +30,12 @@ class RouteController(private val routeService: RouteService) {
         val result = routeService.addOrSave(route)
         println("Result: $result")
 
-        return ResponseEntity.ok(Response.success(route))
+        val viewOptional = routeService.findById(result.id!!)
+        if (!viewOptional.isPresent) {
+            return ResponseEntity.ok(Response.failure("Представление перелетов ${result.id} не найдено."))
+        }
+        println("View: ${viewOptional.get()}")
+
+        return ResponseEntity.ok(Response.success(viewOptional.get()))
     }
 }

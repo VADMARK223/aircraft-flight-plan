@@ -38,7 +38,7 @@ class RouteView {
 
     // Аэропорт вылета
     @Column(name = "apt_dept_id")
-    var aptDepartId: Int = 0
+    var airportDepartureId: Int = 0
 
     @Column(name="apt_dept_iata")
     var aptDeptIata: String? = null
@@ -61,4 +61,8 @@ class RouteView {
 
     @Column(name="apt_arr_name")
     var aptArrName: String? = null
+
+    override fun toString(): String {
+        return "RouteView(id=$id, flightId=$flightId, routeTypeId=$routeTypeId)"
+    }
 }

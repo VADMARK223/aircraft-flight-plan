@@ -2,6 +2,8 @@ import { Dayjs } from 'dayjs'
 import { RouteType } from './type/RouteType'
 
 /**
+ * На сервере route_view.
+ *
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
@@ -12,7 +14,7 @@ export interface Route {
 	scheduledDepartureDate: Dayjs // Плановая дата вылета
 	scheduledArrivalDate: Dayjs // Плановая дата прилета
 	// Аэропорт вылета
-	aptDepartId: number
+	airportDepartureId: number
 	aptDeptIata: string
 	aptDeptIcao: string
 	aptDeptName: string

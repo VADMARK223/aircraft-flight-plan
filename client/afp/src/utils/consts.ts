@@ -40,7 +40,7 @@ export const flightsDefault: Flight[] = [
 				routeTypeId: RouteType.DEFAULT,
 				scheduledDepartureDate: dayjs().startOf('day').add(0, 'hours'),
 				scheduledArrivalDate: dayjs().startOf('day').add(6, 'hours'),
-				aptDepartId: 1,
+				airportDepartureId: 1,
 				aptDeptIata: 'VKO',
 				aptDeptIcao: 'UUWW',
 				aptDeptName: 'Внуково',

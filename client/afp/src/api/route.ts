@@ -12,7 +12,7 @@ import { RouteSchema } from '../models/zodSchemas'
 
 const mapper = require('object-mapper')
 
-export const requestAddOrSaveRouteFx = createEffect<Route, RouteAddOrSaveParams|null>(async (route: Route) => {
+export const requestAddOrSaveRouteFx = createEffect<Route, RouteAddOrSaveParams | null>(async (route: Route) => {
 	const mapped = mapper(route, mapObject)
 
 	const response = await apiPost<Route>('route/add_or_save_route', {
@@ -27,17 +27,16 @@ export const requestAddOrSaveRouteFx = createEffect<Route, RouteAddOrSaveParams|
 		return null
 	}
 
+	const validated: Route = safeParse.data as unknown as Route
+	console.log('validated:', validated)
 
-	 // console.log('validated:', validated)
-
-
-	const result: RouteAddOrSaveParams = { route: response }
+	const result: RouteAddOrSaveParams = { route: validated }
 	return result
 })
 
 const mapObject = {
-	'id': 'routeId',
-	'aptDepartId': 'airportDepartureId',
+	'id': 'id',
+	'airportDepartureId': 'airportDepartureId',
 	'aptArrId': 'airportArrivalId',
 	'scheduledDepartureDate': 'scheduledDepartureDate',
 	'scheduledArrivalDate': 'scheduledArrivalDate',

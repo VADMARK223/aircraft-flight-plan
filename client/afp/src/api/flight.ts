@@ -17,7 +17,7 @@ export const fetchFlightsFx = createEffect<void, Flight[]>(async () => {
 		return []
 	}
 
-	return resultSafeParse.data as Flight[]
+	return resultSafeParse.data as unknown as Flight[]
 })
 
 export const requestAddFlightFx = createEffect<number, Flight | null>(async (contractId: number) => {

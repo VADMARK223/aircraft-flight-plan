@@ -23,11 +23,11 @@ export const RouteSchema = z.object({
 	routeTypeId: z.number(),
 	scheduledDepartureDate: DateSchema,
 	scheduledArrivalDate: DateSchema,
-	aptDepartId:z.number(),
+	airportDepartureId: z.number(),
 	aptDeptIata: z.string(),
 	aptDeptIcao: z.string(),
 	aptDeptName: z.string(),
-	aptArrId:z.number(),
+	aptArrId: z.number(),
 	aptArrIata: z.string(),
 	aptArrIcao: z.string(),
 	aptArrName: z.string()

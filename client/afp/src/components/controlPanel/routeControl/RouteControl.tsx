@@ -58,7 +58,7 @@ const RouteControl = (): JSX.Element => {
 			setDateRangeValue([routeSelected.scheduledDepartureDate, routeSelected.scheduledArrivalDate])
 			setTimeRangeValue([routeSelected.scheduledDepartureDate, routeSelected.scheduledArrivalDate])
 			setAirportDeparture({
-				airportId: routeSelected.aptDepartId,
+				airportId: routeSelected.airportDepartureId,
 				iata: routeSelected.aptDeptIata,
 				icao: routeSelected.aptDeptIcao,
 				airportName: routeSelected.aptDeptName
@@ -144,7 +144,7 @@ const RouteControl = (): JSX.Element => {
 			routeTypeId: routeType as number,
 			scheduledDepartureDate: newStartDate,
 			scheduledArrivalDate: newEndDate,
-			aptDepartId: (airportDeparture as Airport).airportId,
+			airportDepartureId: (airportDeparture as Airport).airportId,
 			aptDeptIata: (airportDeparture as Airport).iata,
 			aptDeptIcao: (airportDeparture as Airport).icao,
 			aptDeptName: (airportDeparture as Airport).airportName,

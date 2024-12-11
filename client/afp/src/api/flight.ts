@@ -10,14 +10,20 @@ import { flightSelectFx } from '../store/flight'
  * @since 28.11.2024
  */
 export const fetchFlightsFx = createEffect<void, Flight[]>(async () => {
-	const flightsFromServer = await apiGet<Flight[]>('flight/get_flights')
+	const flightsFromServer: Flight[] = await apiGet<Flight[]>('flight/get_flights')
+	return safeParseFlights(flightsFromServer)
+})
+
+export const safeParseFlights = (flightsFromServer: Flight[]): Flight[] => {
 	const resultSafeParse = FlightsSchema.safeParse(flightsFromServer)
 	if (!resultSafeParse.success) {
+		showError('Ошибка валидации рейсов.')
+		console.error(`Ошибка валидации рейсов: ${resultSafeParse.error}`)
 		return []
 	}
 
-	return resultSafeParse.data as unknown as Flight[]
-})
+	return resultSafeParse.data
+}
 
 export const requestAddFlightFx = createEffect<number, Flight | null>(async (contractId: number) => {
 	return await apiPost<Flight>('flight/add_flight', {
@@ -39,10 +45,10 @@ export const requestSaveFlightFx = createEffect<Flight, Flight | null>(async (fl
 	const resultParse = FlightSchema.safeParse(response)
 	if (!resultParse.success) {
 		showError('Ошибка валидации рейса.')
-		console.log(`Ошибка валидации рейса: ${resultParse.error}`)
+		console.error(`Ошибка валидации рейса: ${resultParse.error}`)
 		return null
 	}
-	const parsedFlight: Flight = resultParse.data as unknown as Flight
+	const parsedFlight: Flight = resultParse.data
 
 	showSuccess(`Рейс "${response.id}" успешно изменен.`)
 

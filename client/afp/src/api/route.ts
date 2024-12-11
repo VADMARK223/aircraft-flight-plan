@@ -1,7 +1,8 @@
 import { createEffect } from 'effector/effector.umd'
 import { Route } from '../models/Route'
 import { apiPost } from './common'
-import { Flight, FlightsSchema } from '../models/Flight'
+import { Flight } from '../models/Flight'
+import { safeParseFlights } from './flight'
 
 /**
  * API для работы с перелетами.
@@ -14,16 +15,10 @@ const mapper = require('object-mapper')
 export const requestAddOrSaveRouteFx = createEffect<Route, Flight[]>(async (route: Route) => {
 	const mapped = mapper(route, mapObject)
 
-	const response = await apiPost<Route>('route/add_or_save_route', {
+	const flightsFromServer: Flight[] = await apiPost<Flight[]>('route/add_or_save_route', {
 		json: mapped
 	})
-
-	const resultSafeParse = FlightsSchema.safeParse(response)
-	if (!resultSafeParse.success) {
-		return []
-	}
-
-	return resultSafeParse.data as unknown as Flight[]
+	return safeParseFlights(flightsFromServer)
 })
 
 const mapObject = {
@@ -37,14 +32,8 @@ const mapObject = {
 }
 
 export const requestDeleteRouteFx = createEffect<number, Flight[]>(async (routeId: number) => {
-	const flightsFromServer =  await apiPost<Flight[]>('route/delete_route', {
+	const flightsFromServer = await apiPost<Flight[]>('route/delete_route', {
 		json: routeId
 	})
-
-	const resultSafeParse = FlightsSchema.safeParse(flightsFromServer)
-	if (!resultSafeParse.success) {
-		return []
-	}
-
-	return resultSafeParse.data as unknown as Flight[]
+	return safeParseFlights(flightsFromServer)
 })

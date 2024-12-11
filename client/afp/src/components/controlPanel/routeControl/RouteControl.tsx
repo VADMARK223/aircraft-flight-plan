@@ -23,7 +23,8 @@ import { DictDto } from '../../../models/dto/DictDto'
 import AircraftTypeSelect from './AircraftTypeSelect'
 import { fetchAirportsFx } from '../../../api/airport'
 import { Airport } from '../../../models/Airport'
-import { requestAddOrSaveRouteFx } from '../../../api/route'
+import { requestAddOrSaveRouteFx, requestDeleteRouteFx } from '../../../api/route'
+import { showWarn } from '../../../api/common'
 
 const RouteControl = (): JSX.Element => {
 	const routeSelected = useStore($routeSelected)
@@ -297,7 +298,15 @@ const RouteControl = (): JSX.Element => {
 								icon={<DeleteOutlined/>}
 								style={{ width: '160px' }}
 								onClick={() => {
-									routeDeleteFx(routeSelected)
+									if (LOCAL_MODE) {
+										routeDeleteFx(routeSelected)
+									} else {
+										if (routeSelected) {
+											requestDeleteRouteFx(routeSelected.id)
+										} else {
+											showWarn('Перелет не выбраню')
+										}
+									}
 								}}
 						>Удалить перелет</Button>
 					</Space>

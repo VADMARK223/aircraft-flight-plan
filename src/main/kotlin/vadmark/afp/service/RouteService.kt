@@ -5,7 +5,7 @@ import vadmark.afp.entity.Route
 import vadmark.afp.entity.RouteView
 import vadmark.afp.repository.RouteRepository
 import vadmark.afp.repository.RouteViewRepository
-import java.util.Optional
+import java.util.*
 
 @Service
 class RouteService(
@@ -17,4 +17,5 @@ class RouteService(
     fun findById(routeId: Int): Optional<RouteView> = viewRepo.findById(routeId)
 
     fun addOrSave(route: Route): Route = repo.save(route)
+    fun delete(routeId: Int) = repo.deleteById(routeId)
 }

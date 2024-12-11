@@ -20,6 +20,7 @@ import {
 	requestSaveFlightFx
 } from '../api/flight'
 import { Route } from '../models/Route'
+import { requestAddOrSaveRouteFx, requestDeleteRouteFx } from '../api/route'
 
 export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
 export const $flightSelected = createStore<Flight | null>(null)
@@ -63,6 +64,9 @@ export const flightSaveFx = createEffect<Flight, Flight[]>()
 export const flightDeleteFx = createEffect<number | null, Flight[]>()
 
 $flights.on(fetchFlightsFx.doneData, (_, payload) => payload)
+$flights.on(requestAddOrSaveRouteFx.doneData, (_, payload) => payload)
+$flights.on(requestDeleteRouteFx.doneData, (_, payload) => payload)
+
 sample({
 	source: requestAddFlightFx.doneData,
 	filter: (payload): payload is Flight => payload != null,

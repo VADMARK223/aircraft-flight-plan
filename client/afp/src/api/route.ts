@@ -1,8 +1,8 @@
 import { createEffect } from 'effector/effector.umd'
 import { Route } from '../models/Route'
-import { apiPost, showError } from './common'
-import { RouteAddOrSaveParams } from '../store/route'
-import { RouteSchema } from '../models/zodSchemas'
+import { apiPost } from './common'
+import { FlightsSchema } from '../models/zodSchemas'
+import { Flight } from '../models/Flight'
 
 /**
  * API для работы с перелетами.
@@ -12,26 +12,19 @@ import { RouteSchema } from '../models/zodSchemas'
 
 const mapper = require('object-mapper')
 
-export const requestAddOrSaveRouteFx = createEffect<Route, RouteAddOrSaveParams | null>(async (route: Route) => {
+export const requestAddOrSaveRouteFx = createEffect<Route, Flight[]>(async (route: Route) => {
 	const mapped = mapper(route, mapObject)
 
 	const response = await apiPost<Route>('route/add_or_save_route', {
 		json: mapped
 	})
-	console.log('response:', response)
 
-	const safeParse = RouteSchema.safeParse(response)
-	if (!safeParse.success) {
-		showError(`Ошибка валидации перелета.`)
-		console.log(`Ошибка валидации перелета: ${safeParse.error}`)
-		return null
+	const resultSafeParse = FlightsSchema.safeParse(response)
+	if (!resultSafeParse.success) {
+		return []
 	}
 
-	const validated: Route = safeParse.data as unknown as Route
-	console.log('validated:', validated)
-
-	const result: RouteAddOrSaveParams = { route: validated }
-	return result
+	return resultSafeParse.data as unknown as Flight[]
 })
 
 const mapObject = {
@@ -43,3 +36,16 @@ const mapObject = {
 	'routeTypeId': 'routeTypeId',
 	'flightId': 'flightId'
 }
+
+export const requestDeleteRouteFx = createEffect<number, Flight[]>(async (routeId: number) => {
+	const flightsFromServer =  await apiPost<Flight[]>('route/delete_route', {
+		json: routeId
+	})
+
+	const resultSafeParse = FlightsSchema.safeParse(flightsFromServer)
+	if (!resultSafeParse.success) {
+		return []
+	}
+
+	return resultSafeParse.data as unknown as Flight[]
+})

@@ -18,7 +18,7 @@ export const RouteSchema = z.object({
 	aptDeptIata: z.string(),
 	aptDeptIcao: z.string(),
 	aptDeptName: z.string(),
-	aptArrId: z.number(),
+	airportArrivalId: z.number(),
 	aptArrIata: z.string(),
 	aptArrIcao: z.string(),
 	aptArrName: z.string()

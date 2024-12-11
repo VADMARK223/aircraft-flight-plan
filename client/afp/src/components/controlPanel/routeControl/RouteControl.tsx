@@ -66,7 +66,7 @@ const RouteControl = (): JSX.Element => {
 			})
 
 			setAirportArrival({
-				airportId: routeSelected.aptArrId,
+				airportId: routeSelected.airportArrivalId,
 				iata: routeSelected.aptArrIata,
 				icao: routeSelected.aptArrIcao,
 				airportName: routeSelected.aptArrName
@@ -150,7 +150,7 @@ const RouteControl = (): JSX.Element => {
 			aptDeptIcao: (airportDeparture as Airport).icao,
 			aptDeptName: (airportDeparture as Airport).airportName,
 
-			aptArrId: (airportArrival as Airport).airportId,
+			airportArrivalId: (airportArrival as Airport).airportId,
 			aptArrIata: (airportArrival as Airport).iata,
 			aptArrIcao: (airportArrival as Airport).icao,
 			aptArrName: (airportArrival as Airport).airportName

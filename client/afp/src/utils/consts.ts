@@ -44,7 +44,7 @@ export const flightsDefault: Flight[] = [
 				aptDeptIata: 'VKO',
 				aptDeptIcao: 'UUWW',
 				aptDeptName: 'Внуково',
-				aptArrId: 2,
+				airportArrivalId: 2,
 				aptArrIata: 'SVO',
 				aptArrIcao: 'UUEE',
 				aptArrName: 'Шереметьево'

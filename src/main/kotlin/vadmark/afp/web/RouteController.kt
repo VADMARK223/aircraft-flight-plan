@@ -25,7 +25,6 @@ class RouteController(
 
     @PostMapping("/add_or_save_route")
     fun addOrSave(@RequestBody route: Route): ResponseEntity<ResponseDto<List<FlightDto>>> {
-        println("addOrSave $route")
         if (route.flightId == null) {
             return ResponseEntity.ok(Response.failure("У перелета '${route.id}' нету идентификатора рейса."))
         }

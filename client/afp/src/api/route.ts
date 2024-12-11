@@ -9,27 +9,13 @@ import { safeParseFlights } from './flight'
  * @author Markitanov Vadim
  * @since 08.12.2024
  */
-
-const mapper = require('object-mapper')
-
 export const requestAddOrSaveRouteFx = createEffect<Route, Flight[]>(async (route: Route) => {
-	const mapped = mapper(route, mapObject)
-
 	const flightsFromServer: Flight[] = await apiPost<Flight[]>('route/add_or_save_route', {
-		json: mapped
+		json: route
 	})
 	return safeParseFlights(flightsFromServer)
 })
 
-const mapObject = {
-	'id': 'id',
-	'airportDepartureId': 'airportDepartureId',
-	'aptArrId': 'airportArrivalId',
-	'scheduledDepartureDate': 'scheduledDepartureDate',
-	'scheduledArrivalDate': 'scheduledArrivalDate',
-	'routeTypeId': 'routeTypeId',
-	'flightId': 'flightId'
-}
 
 export const requestDeleteRouteFx = createEffect<number, Flight[]>(async (routeId: number) => {
 	const flightsFromServer = await apiPost<Flight[]>('route/delete_route', {

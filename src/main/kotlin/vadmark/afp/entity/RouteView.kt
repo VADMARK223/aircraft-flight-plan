@@ -51,7 +51,7 @@ class RouteView {
 
     // Аэропорт прилета
     @Column(name = "apt_arr_id")
-    var aptArrId: Int = 0
+    var airportArrivalId: Int = 0
 
     @Column(name="apt_arr_iata")
     var aptArrIata: String? = null

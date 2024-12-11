@@ -1,8 +1,7 @@
 import { createEffect } from 'effector/effector.umd'
 import { Route } from '../models/Route'
 import { apiPost } from './common'
-import { FlightsSchema } from '../models/zodSchemas'
-import { Flight } from '../models/Flight'
+import { Flight, FlightsSchema } from '../models/Flight'
 
 /**
  * API для работы с перелетами.

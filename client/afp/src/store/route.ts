@@ -1,8 +1,7 @@
-import { createEvent, createStore, sample } from 'effector'
+import { createEvent, createStore } from 'effector'
 import { Route } from '../models/Route'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
-import { requestAddOrSaveRouteFx } from '../api/route'
 
 /**
  * Хранилище перелетов.

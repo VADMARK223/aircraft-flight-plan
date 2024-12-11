@@ -2,7 +2,7 @@ import { Flight } from '../models/Flight'
 import { RouteType } from '../models/type/RouteType'
 import dayjs from 'dayjs'
 import { getRandomNumber } from './math'
-import { DictDto } from '../models/dto/DictDto'
+import { DictData } from '../models/DictData'
 import { Airport } from '../models/Airport'
 
 /**
@@ -227,7 +227,7 @@ export const flightsDefault: Flight[] = [
 	}*/
 ]
 
-export const contractsDefault: DictDto[] = [
+export const contractsDefault: DictData[] = [
 	{ value: 888, label: 'Контракт 888' },
 	{ value: 999, label: 'Контракт 999' }
 ]

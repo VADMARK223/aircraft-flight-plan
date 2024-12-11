@@ -14,13 +14,13 @@ import DeleteAllButton from './DeleteAllButton'
 import { LOCAL_MODE, contractsDefault } from '../../../utils/consts'
 import { requestAddFlightFx, requestDeleteFlightFx, requestSaveFlightFx } from '../../../api/flight'
 import { fetchContracts } from '../../../api/dict'
-import { DictDto } from '../../../models/dto/DictDto'
+import { DictData } from '../../../models/DictData'
 
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
 	const [title, setTitle] = useState<string>()
 	const [contractId, setContractId] = useState<number | undefined>()
-	const [contractOptions, setContractOptions] = useState<DictDto[]>([])
+	const [contractOptions, setContractOptions] = useState<DictData[]>([])
 	const [addButtonDisabled, setAddButtonDisabled] = useState<boolean>(true)
 	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)
 

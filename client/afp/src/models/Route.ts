@@ -1,26 +1,27 @@
-import { Dayjs } from 'dayjs'
-import { RouteType } from './type/RouteType'
+import { DateSchema } from './zodSchemas'
+import { z } from 'zod'
 
 /**
- * На сервере route_view.
+ * Модель перелета.
  *
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export interface Route {
-	id: number
-	flightId: number // Идентификатор рейса
-	routeTypeId: RouteType // Тип перелета
-	scheduledDepartureDate: Dayjs // Плановая дата вылета
-	scheduledArrivalDate: Dayjs // Плановая дата прилета
-	// Аэропорт вылета
-	airportDepartureId: number
-	aptDeptIata: string
-	aptDeptIcao: string
-	aptDeptName: string
-	// Аэропорт прилета
-	aptArrId: number
-	aptArrIata: string
-	aptArrIcao: string
-	aptArrName: string
-}
+// Схема перелета
+export const RouteSchema = z.object({
+	id: z.number(),
+	flightId: z.number(),
+	routeTypeId: z.number(),
+	scheduledDepartureDate: DateSchema,
+	scheduledArrivalDate: DateSchema,
+	airportDepartureId: z.number(),
+	aptDeptIata: z.string(),
+	aptDeptIcao: z.string(),
+	aptDeptName: z.string(),
+	aptArrId: z.number(),
+	aptArrIata: z.string(),
+	aptArrIcao: z.string(),
+	aptArrName: z.string()
+})
+
+export type Route = z.infer<typeof RouteSchema>

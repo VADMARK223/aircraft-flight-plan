@@ -8,11 +8,11 @@ import React, { JSX, useEffect, useState } from 'react'
 import { Select } from 'antd'
 import { useStore } from 'effector-react'
 import { $aircraftTypeDictStore } from '../../../store/dict'
-import { DictDto } from '../../../models/dto/DictDto'
+import { DictData } from '../../../models/DictData'
 
 const AircraftTypeSelect = (): JSX.Element => {
 	const store = useStore($aircraftTypeDictStore)
-	const [aircraftTypeOptions, setAircraftTypeOptions] = useState<DictDto[]>([])
+	const [aircraftTypeOptions, setAircraftTypeOptions] = useState<DictData[]>([])
 
 	useEffect(() => {
 		if (store.length !== 0) {

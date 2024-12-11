@@ -1,4 +1,6 @@
-import { FlightDto } from './dto/FlightDto'
+
+import { z } from 'zod'
+import { RouteSchema } from './Route'
 
 /**
  * Модель рейса.
@@ -6,5 +8,14 @@ import { FlightDto } from './dto/FlightDto'
  * @author Markitanov Vadim
  * @since 02.12.2023
  */
-export interface Flight extends FlightDto {
-}
+// Схема рейса
+export const FlightSchema = z.object({
+	id: z.number(),
+	routes: z.array(RouteSchema),
+	contractId: z.number()
+})
+
+// Схема группы рейсов
+export const FlightsSchema = z.array(FlightSchema)
+
+export type Flight = z.infer<typeof FlightSchema>

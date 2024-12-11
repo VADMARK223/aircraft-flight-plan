@@ -19,7 +19,7 @@ import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
 import { $airports } from '../../../store/airport'
 import { $routeTypeDictStore } from '../../../store/dict'
-import { DictDto } from '../../../models/dto/DictDto'
+import { DictData } from '../../../models/DictData'
 import AircraftTypeSelect from './AircraftTypeSelect'
 import { fetchAirportsFx } from '../../../api/airport'
 import { Airport } from '../../../models/Airport'
@@ -39,7 +39,7 @@ const RouteControl = (): JSX.Element => {
 	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
 	const [airportDeparture, setAirportDeparture] = useState<Airport | null>(null)
 	const [airportArrival, setAirportArrival] = useState<Airport | null>(null)
-	const [routeTypeOptions, setRouteTypeOptions] = useState<DictDto[]>([])
+	const [routeTypeOptions, setRouteTypeOptions] = useState<DictData[]>([])
 
 	const [title, setTitle] = useState<string>()
 	const [disableButtonReason, setDisableButtonReason] = useState<string | null>('')

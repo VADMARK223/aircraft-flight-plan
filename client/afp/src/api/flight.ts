@@ -1,7 +1,6 @@
 import { createEffect } from 'effector/compat'
-import { Flight } from '../models/Flight'
+import { Flight, FlightSchema, FlightsSchema } from '../models/Flight'
 import { apiPost, apiGet, showSuccess, showError } from './common'
-import { FlightsSchema, FlightSchema } from '../models/zodSchemas'
 import { flightSelectFx } from '../store/flight'
 
 /**

@@ -9,7 +9,7 @@ import jakarta.persistence.Table
 import java.time.ZonedDateTime
 
 @Entity
-@Table(name = "route", schema = "afp_schema")
+@Table(name = "route")
 class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

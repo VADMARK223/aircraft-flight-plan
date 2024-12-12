@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-#./gradlew :clear bootJar
+./gradlew :clean bootJar
 
 docker build -t ghcr.io/fondorg/aircraft-flight-plan-api:latest .

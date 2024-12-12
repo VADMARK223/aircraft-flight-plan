@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS route
     fuel_uplift INT4
 );
 
-CREATE TABLE IF NOT EXISTS afp_schema.dict_aircraft_type
+CREATE TABLE IF NOT EXISTS dict_aircraft_type
 (
     aircraft_type_id INT2 NOT NULL UNIQUE,
     aircraft_type_name VARCHAR(10)
@@ -55,7 +55,7 @@ CREATE TABLE airport
     airport_name VARCHAR(250)
 );
 
-CREATE TABLE IF NOT EXISTS afp_schema.runway
+CREATE TABLE IF NOT EXISTS runway
 (
     runway_id INT8 NOT NULL UNIQUE,
     runway_name VARCHAR(100) NOT NULL,

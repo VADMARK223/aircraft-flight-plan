@@ -14,9 +14,9 @@ COMMENT ON COLUMN route.aircraft_id IS 'Идентификатор самоле�
 COMMENT ON COLUMN route.flight_id IS 'Идентификатор рейса';
 COMMENT ON COLUMN route.fuel_uplift IS 'Заправка топлива';
 
-COMMENT ON TABLE afp_schema.dict_aircraft_type IS 'Словарь типов бортов';
-COMMENT ON COLUMN afp_schema.dict_aircraft_type.aircraft_type_id IS 'Идентификатор типа борта';
-COMMENT ON COLUMN afp_schema.dict_aircraft_type.aircraft_type_name IS 'Наименование типа борта';
+COMMENT ON TABLE dict_aircraft_type IS 'Словарь типов бортов';
+COMMENT ON COLUMN dict_aircraft_type.aircraft_type_id IS 'Идентификатор типа борта';
+COMMENT ON COLUMN dict_aircraft_type.aircraft_type_name IS 'Наименование типа борта';
 
 COMMENT ON TABLE aircraft IS 'Борта';
 COMMENT ON COLUMN aircraft.aircraft_id IS 'Идентификатор борта';
@@ -41,7 +41,7 @@ COMMENT ON COLUMN airport.iata IS 'IATA';
 COMMENT ON COLUMN airport.icao IS 'ИКАО';
 COMMENT ON COLUMN airport.airport_name IS 'Название аэропорта';
 
-COMMENT ON TABLE afp_schema.runway IS 'ВВП';
-COMMENT ON COLUMN afp_schema.runway.runway_id IS 'Идентификатор ВВП';
-COMMENT ON COLUMN afp_schema.runway.runway_name IS 'Наименование ВВП';
-COMMENT ON COLUMN afp_schema.runway.airport_id IS 'Идентификатор аэропорта';
+COMMENT ON TABLE runway IS 'ВВП';
+COMMENT ON COLUMN runway.runway_id IS 'Идентификатор ВВП';
+COMMENT ON COLUMN runway.runway_name IS 'Наименование ВВП';
+COMMENT ON COLUMN runway.airport_id IS 'Идентификатор аэропорта';

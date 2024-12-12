@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "flight", schema = "afp_schema")
+@Table(name = "flight")
 class Flight {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

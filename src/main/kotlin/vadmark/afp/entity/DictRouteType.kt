@@ -6,7 +6,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(schema = "afp_schema", name = "dict_route_type")
+@Table(name = "dict_route_type")
 class DictRouteType {
     @Id
     @Column(name = "route_type_id")

@@ -22,6 +22,6 @@ ALTER TABLE flight
     ADD CONSTRAINT flight_contract_fk
         FOREIGN KEY (contract_id) REFERENCES contract(contract_id);
 
-ALTER TABLE afp_schema.runway
+ALTER TABLE runway
     ADD CONSTRAINT runway_airport__fk
-        FOREIGN KEY (airport_id) REFERENCES afp_schema.airport(airport_id);
+        FOREIGN KEY (airport_id) REFERENCES airport(airport_id);

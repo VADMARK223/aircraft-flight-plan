@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
  * @since 11.11.2024
  */
 @Entity
-@Table(schema = "afp_schema", name = "v_route")
+@Table(name = "v_route")
 class RouteView {
     @Id
     @Column(name = "id")

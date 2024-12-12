@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "contract", schema = "afp_schema")
+@Table(name = "contract")
 class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

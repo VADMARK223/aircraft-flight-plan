@@ -116,7 +116,7 @@ $flights.on(flightDeleteFx, (boards, flightId) => {
 $flights.on(flightsDeleteAllFx, _ => [])
 $flights.on(routeAddOrSaveFx, (flights, params: RouteAddOrSaveParams) => {
 	const { route, oldFlightId } = params
-	if (route.id === -1) {// Добавление перелета
+	if (route.id == null) {// Добавление перелета
 		const flight = flights.find(value => value.id === route.flightId)
 		if (flight === undefined) {
 			return flights
@@ -208,7 +208,7 @@ const getMaxRouteId = (flights: Flight[]): number => {
 	return flights.reduce((maxId, flight) => {
 		// Обойти routes текущего flight и найти максимальный id
 		const flightMax = flight.routes.reduce(
-			(max, route) => Math.max(max, route.id),
+			(max, route) => Math.max(max, route.id as number),
 			-Infinity // Начальное значение
 		)
 		return Math.max(maxId, flightMax) // обновить общий максимум

@@ -9,7 +9,7 @@ import { z } from 'zod'
  */
 // Схема перелета
 export const RouteSchema = z.object({
-	id: z.number(),
+	id: z.number().nullable(),
 	flightId: z.number(),
 	routeTypeId: z.number(),
 	scheduledDepartureDate: DateSchema,

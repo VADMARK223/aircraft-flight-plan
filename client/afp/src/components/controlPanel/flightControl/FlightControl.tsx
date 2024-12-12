@@ -19,7 +19,7 @@ import { DictData } from '../../../models/DictData'
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
 	const [title, setTitle] = useState<string>()
-	const [contractId, setContractId] = useState<number | undefined>()
+	const [contractId, setContractId] = useState<number>()
 	const [contractOptions, setContractOptions] = useState<DictData[]>([])
 	const [addButtonDisabled, setAddButtonDisabled] = useState<boolean>(true)
 	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)

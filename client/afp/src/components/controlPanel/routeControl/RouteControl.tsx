@@ -33,16 +33,16 @@ const RouteControl = (): JSX.Element => {
 	const airports = useStore($airports)
 	const routeTypes = useStore($routeTypeDictStore)
 
-	const [flightId, setFlightId] = useState<number | undefined>()
-	const [routeType, setRouteType] = useState<number | null>(null)
-	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
-	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>(null)
-	const [airportDeparture, setAirportDeparture] = useState<Airport | null>(null)
-	const [airportArrival, setAirportArrival] = useState<Airport | null>(null)
+	const [flightId, setFlightId] = useState<number>()
+	const [routeType, setRouteType] = useState<number | null>()
+	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>()
+	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>()
+	const [airportDeparture, setAirportDeparture] = useState<Airport | null>()
+	const [airportArrival, setAirportArrival] = useState<Airport | null>()
 	const [routeTypeOptions, setRouteTypeOptions] = useState<DictData[]>([])
 
 	const [title, setTitle] = useState<string>()
-	const [disableButtonReason, setDisableButtonReason] = useState<string | null>('')
+	const [disableButtonReason, setDisableButtonReason] = useState<string | null>()
 
 	useEffect(() => {
 		if (!LOCAL_MODE) {
@@ -109,10 +109,11 @@ const RouteControl = (): JSX.Element => {
 	const getDisableButtonReason = useCallback((): string | null => {
 		if (flightId === undefined) return 'Выберите рейс перелета'
 		if (routeType === null) return 'Выберите тип перелета'
-		if (dateRangeValue === null) return 'Выберите даты'
-		if (timeRangeValue === null) return 'Выберите время'
-		if (airportDeparture === null) return 'Выберите аэропорт вылета'
-		if (airportArrival === null) return 'Выберите прилета вылета'
+		if (dateRangeValue == null) return 'Выберите даты'
+		if (timeRangeValue == null) return 'Выберите время'
+		if (airportDeparture == null) return 'Выберите аэропорт вылета'
+		if (airportArrival == null) return 'Выберите прилета вылета'
+
 		return null
 	}, [flightId, routeType, dateRangeValue, timeRangeValue, airportDeparture, airportArrival])
 
@@ -140,7 +141,7 @@ const RouteControl = (): JSX.Element => {
 		}
 
 		const newRoute: Route = {
-			id: routeSelected ? routeSelected.id : -1,
+			id: routeSelected ? routeSelected.id : null,
 			flightId: flightId as number,
 			routeTypeId: routeType as number,
 			scheduledDepartureDate: newStartDate,
@@ -159,7 +160,7 @@ const RouteControl = (): JSX.Element => {
 		if (LOCAL_MODE) {
 			routeAddOrSaveFx({ route: newRoute, oldFlightId: routeSelected?.flightId })
 			if (routeSelected?.routeTypeId !== flightId) {
-				if (flightId !== undefined) {
+				if (flightId != null) {
 					routeSelectUpdateFlightId(flightId)
 				}
 			}
@@ -186,7 +187,9 @@ const RouteControl = (): JSX.Element => {
 	})
 
 	const handlerGenerateRoute = () => {
-		setFlightId(flights[getRandomNumber(0, flights.length)].id)
+		if (flightId === undefined || flightSelected == null) {
+			setFlightId(flights[getRandomNumber(0, flights.length)].id)
+		}
 		setRouteType(routeTypes[getRandomNumber(0, routeTypes.length)].value)
 		const scheduledDepartureDate = dayjs().startOf('day').add(0, 'hours')
 		const scheduledArrivalDate = dayjs().startOf('day').add(6, 'hours')
@@ -302,19 +305,25 @@ const RouteControl = (): JSX.Element => {
 										routeDeleteFx(routeSelected)
 									} else {
 										if (routeSelected) {
-											requestDeleteRouteFx(routeSelected.id)
+											if (routeSelected.id != null && routeSelected.id !== routeSelected.id) {
+												requestDeleteRouteFx(routeSelected.id)
+											} else {
+												showWarn('У удаляемого перелета пустой идентификатор.')
+											}
 										} else {
 											showWarn('Перелет не выбраню')
 										}
 									}
-								}}
+								}
+								}
 						>Удалить перелет</Button>
 					</Space>
 					:
 					<Space direction={'vertical'}>
 						<Tooltip title={disableButtonReason}>
 							<Button type={'primary'} icon={<PlusOutlined/>} disabled={disableButtonReason !== null}
-									onClick={handlerAddOrEditRoute} style={{ width: '160px' }}>Добавить перелет</Button>
+									onClick={handlerAddOrEditRoute} style={{ width: '160px' }}>Добавить
+								перелет</Button>
 						</Tooltip>
 
 						<Button onClick={handlerGenerateRoute}

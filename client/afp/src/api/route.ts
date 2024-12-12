@@ -16,7 +16,6 @@ export const requestAddOrSaveRouteFx = createEffect<Route, Flight[]>(async (rout
 	return safeParseFlights(flightsFromServer)
 })
 
-
 export const requestDeleteRouteFx = createEffect<number, Flight[]>(async (routeId: number) => {
 	const flightsFromServer = await apiPost<Flight[]>('route/delete_route', {
 		json: routeId

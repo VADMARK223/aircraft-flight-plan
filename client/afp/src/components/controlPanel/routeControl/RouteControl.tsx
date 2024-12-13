@@ -9,7 +9,7 @@ import { useStore } from 'effector-react'
 import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, routeSelectUpdateFlightId } from '../../../store/route'
 import { $flights, $flightSelected } from '../../../store/flight'
 import dayjs, { Dayjs } from 'dayjs'
-import { Button, DatePicker, Divider, Select, SelectProps, Space, Tooltip } from 'antd'
+import { Button, DatePicker, Divider, Select, SelectProps, Space, Tooltip, TimePicker } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
 import { getRandomNumber } from '../../../utils/math'
 import { toast } from 'react-toastify'
@@ -36,7 +36,8 @@ const RouteControl = (): JSX.Element => {
 	const [flightId, setFlightId] = useState<number>()
 	const [routeType, setRouteType] = useState<number | null>()
 	const [dateRangeValue, setDateRangeValue] = useState<RangeValueType<Dayjs> | null>()
-	const [timeRangeValue, setTimeRangeValue] = useState<RangeValueType<Dayjs> | null>()
+	const [startTime, setStartTime] = useState<Dayjs | null>()
+	const [endTime, setEndTime] = useState<Dayjs | null>()
 	const [airportDeparture, setAirportDeparture] = useState<Airport | null>()
 	const [airportArrival, setAirportArrival] = useState<Airport | null>()
 	const [routeTypeOptions, setRouteTypeOptions] = useState<DictData[]>([])
@@ -57,7 +58,8 @@ const RouteControl = (): JSX.Element => {
 			setTitle('Изменение перелета')
 			setRouteType(routeSelected.routeTypeId)
 			setDateRangeValue([routeSelected.scheduledDepartureDate, routeSelected.scheduledArrivalDate])
-			setTimeRangeValue([routeSelected.scheduledDepartureDate, routeSelected.scheduledArrivalDate])
+			setStartTime(routeSelected.scheduledDepartureDate)
+			setEndTime(routeSelected.scheduledArrivalDate)
 			setAirportDeparture({
 				airportId: routeSelected.airportDepartureId,
 				iata: routeSelected.aptDeptIata,
@@ -92,7 +94,8 @@ const RouteControl = (): JSX.Element => {
 	const resetData = (): void => {
 		setDateRangeValue(null)
 		setRouteType(null)
-		setTimeRangeValue(null)
+		setStartTime(null)
+		setEndTime(null)
 		setAirportDeparture(null)
 		setAirportArrival(null)
 	}
@@ -110,12 +113,13 @@ const RouteControl = (): JSX.Element => {
 		if (flightId === undefined) return 'Выберите рейс перелета'
 		if (routeType === null) return 'Выберите тип перелета'
 		if (dateRangeValue == null) return 'Выберите даты'
-		if (timeRangeValue == null) return 'Выберите время'
+		if (startTime == null) return 'Выберите время вылета'
+		if (endTime == null) return 'Выберите время прилета'
 		if (airportDeparture == null) return 'Выберите аэропорт вылета'
 		if (airportArrival == null) return 'Выберите прилета вылета'
 
 		return null
-	}, [flightId, routeType, dateRangeValue, timeRangeValue, airportDeparture, airportArrival])
+	}, [flightId, routeType, dateRangeValue, /*timeRangeValue,*/startTime, endTime, airportDeparture, airportArrival])
 
 	useEffect(() => {
 		setDisableButtonReason(getDisableButtonReason)
@@ -130,10 +134,8 @@ const RouteControl = (): JSX.Element => {
 			return
 		}
 
-		// @ts-ignore
-		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], timeRangeValue[0])
-		// @ts-ignore
-		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], timeRangeValue[1])
+		const newStartDate: Dayjs = combineDateTime(dateRangeValue!![0], startTime)
+		const newEndDate: Dayjs = combineDateTime(dateRangeValue!![1], endTime)
 
 		if (newStartDate.isAfter(newEndDate)) {
 			toast.warn('Время вылета превышает или совпадает с временем прилета.')
@@ -194,7 +196,8 @@ const RouteControl = (): JSX.Element => {
 		const scheduledDepartureDate = dayjs().startOf('day').add(0, 'hours')
 		const scheduledArrivalDate = dayjs().startOf('day').add(6, 'hours')
 		setDateRangeValue([scheduledDepartureDate, scheduledArrivalDate])
-		setTimeRangeValue([scheduledDepartureDate, scheduledArrivalDate])
+		setStartTime(scheduledDepartureDate)
+		setEndTime(scheduledArrivalDate)
 		setAirportDeparture(airports[getRandomNumber(0, airports.length)])
 		setAirportArrival(airports[getRandomNumber(0, airports.length)])
 	}
@@ -246,13 +249,23 @@ const RouteControl = (): JSX.Element => {
 												picker={'date'}
 						/>
 					</Space>
-					<Space>
+					<Space size={0}>
 						<span>Время:</span>
-						<DatePicker.RangePicker value={timeRangeValue}
-												style={{ minWidth: '300px' }}
-												onChange={setTimeRangeValue}
-												picker={'time'}
-												format={'HH:mm'}
+						<TimePicker
+							value={startTime}
+							style={{ minWidth: '150px' }}
+							onChange={(value: Dayjs) => {
+								setStartTime(value)
+							}}
+							format={'HH:mm'}
+						/>
+						<TimePicker
+							value={endTime}
+							style={{ minWidth: '150px' }}
+							onChange={(value: Dayjs) => {
+								setEndTime(value)
+							}}
+							format={'HH:mm'}
 						/>
 					</Space>
 				</Space>
@@ -305,7 +318,8 @@ const RouteControl = (): JSX.Element => {
 										routeDeleteFx(routeSelected)
 									} else {
 										if (routeSelected) {
-											if (routeSelected.id != null && routeSelected.id !== routeSelected.id) {
+											// if (routeSelected.id != null && routeSelected.id !== routeSelected.id) {
+											if (routeSelected.id != null) {
 												requestDeleteRouteFx(routeSelected.id)
 											} else {
 												showWarn('У удаляемого перелета пустой идентификатор.')

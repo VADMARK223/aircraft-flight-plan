@@ -7,7 +7,7 @@
 import React, { JSX } from 'react'
 import { Space } from 'antd'
 import FlightControl from './flightControl/FlightControl'
-import ThemeControl from './ThemeControl'
+import InfoPanel from './InfoPanel'
 import PlanControl from './planControl/PlanControl'
 import RouteControl from './routeControl/RouteControl'
 
@@ -21,7 +21,7 @@ const ControlPanel = (): JSX.Element => {
 					<PlanControl/>
 				</div>
 			</Space>
-			<ThemeControl/>
+			<InfoPanel/>
 		</Space>
 	)
 }

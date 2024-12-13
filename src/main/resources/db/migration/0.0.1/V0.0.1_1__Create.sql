@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS flight
     contract_id INT4
 );
 
-CREATE TABLE airport
+CREATE TABLE IF NOT EXISTS airport
 (
     airport_id INT4 NOT NULL CONSTRAINT airport_pk PRIMARY KEY,
     iata VARCHAR(3),

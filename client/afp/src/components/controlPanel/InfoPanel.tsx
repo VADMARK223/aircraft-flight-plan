@@ -10,10 +10,10 @@ import { $style, setDarkThemeFx, THEME_LOCAL_STORAGE_KEY, THEME_LOCAL_STORAGE_VA
 import { Space, Switch, Tooltip } from 'antd'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { $test, setTestFx, TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE } from '../../store/test'
-import { SHOW_TEST_TOGGLE } from '../../utils/consts'
+import { SHOW_TEST_TOGGLE, LOCAL_MODE } from '../../utils/consts'
 import { USER_TIME_ZONE, FORMATTED_OFFSET } from '../../utils/utils'
 
-const ThemeControl = (): JSX.Element => {
+const InfoPanel = (): JSX.Element => {
 	const style = useStore($style)
 	const test = useStore($test)
 	const onStyleChangeHandler = (value: boolean): void => {
@@ -62,9 +62,11 @@ const ThemeControl = (): JSX.Element => {
 					defaultChecked={style.isDarkTheme}
 				/>
 			</Space>
+			<div>Режим: {LOCAL_MODE ? <span style={{ color: 'yellow', fontWeight:'bold' }}>LOCAL</span> :
+				<span style={{ color: 'green', fontWeight:'bold' }}>REMOTE</span>}</div>
 		</Space>
 
 	)
 }
 
-export default ThemeControl
+export default InfoPanel

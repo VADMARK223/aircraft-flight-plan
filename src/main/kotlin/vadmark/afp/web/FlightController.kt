@@ -36,15 +36,15 @@ class FlightController(
 
     @PostMapping("/save_flight")
     fun save(@RequestBody flightDto: FlightDto): ResponseEntity<ResponseDto<FlightDto>> {
-        val (id, _, contractId) = flightDto
+        val (id, _, contract) = flightDto
         val flight = Flight()
         flight.flightId = flightDto.id!!
 
-        val contract = contractService.findById(contractId!!)
-        if (!contract.isPresent) {
-            return ResponseEntity.ok(Response.failure("У рейса $id. Контракт $contractId не найден."))
+        val contractOptional = contractService.findById(contract?.value ?: -1)
+        if (!contractOptional.isPresent) {
+            return ResponseEntity.ok(Response.failure("У рейса $id. Контракт ${contract?.value} не найден."))
         }
-        flight.contract = contract.get()
+        flight.contract = contractOptional.get()
         flightService.save(flight)
         return ResponseEntity.ok(Response.success(flightDto))
     }

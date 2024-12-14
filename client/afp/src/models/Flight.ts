@@ -1,6 +1,6 @@
-
 import { z } from 'zod'
 import { RouteSchema } from './Route'
+import { DictItemSchema } from './DictData'
 
 /**
  * Модель рейса.
@@ -12,7 +12,7 @@ import { RouteSchema } from './Route'
 export const FlightSchema = z.object({
 	id: z.number(),
 	routes: z.array(RouteSchema),
-	contractId: z.number()
+	contract: DictItemSchema
 })
 
 // Схема группы рейсов

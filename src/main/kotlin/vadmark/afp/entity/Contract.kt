@@ -17,9 +17,16 @@ class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contract_id")
-    var contractId: Int = 0
+    var value: Int = 0
+
+    @Column(name = "name")
+    var label: String = "Unknown"
 
     @OneToMany(mappedBy = "contract", cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY)
     @JsonIgnore
     var flights: List<Flight> = mutableListOf()
+
+    override fun toString(): String {
+        return "Contract(contractId=$value, name=$label)"
+    }
 }

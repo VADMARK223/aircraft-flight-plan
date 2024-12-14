@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS dict_route_type
 
 CREATE TABLE IF NOT EXISTS contract
 (
-    contract_id SERIAL4 NOT NULL CONSTRAINT contract_pk PRIMARY KEY
+    contract_id SERIAL4 NOT NULL CONSTRAINT contract_pk PRIMARY KEY,
+    name VARCHAR(20) NOT NULL DEFAULT 'Unknown'
 );
 
 CREATE TABLE IF NOT EXISTS flight

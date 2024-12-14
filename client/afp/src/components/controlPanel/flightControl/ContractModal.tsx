@@ -8,17 +8,25 @@ import React, { JSX, useCallback, useEffect, useState } from 'react'
 import { Button, Table } from 'antd'
 import Modal from 'antd/es/modal/Modal'
 import { ColumnsType } from 'antd/es/table'
+import { SelectOutlined } from '@ant-design/icons'
+import { Flight } from '../../../models/Flight'
+import { fetchContracts } from '../../../api/dict'
+import { LOCAL_MODE, contractsDefault } from '../../../utils/consts'
+import { DictData } from '../../../models/DictData'
+import { Key } from 'antd/es/table/interface'
 
 const PAGE_SIZE: number = 5
 
-interface ContractType {
-	id: number
-	name: string
+interface ContractModalProps {
+	flight: Flight | null
 }
 
-const ContractModal = (): JSX.Element => {
+const ContractModal = ({ flight }: ContractModalProps): JSX.Element => {
+	const [title, setTitle] = useState<string>('фф')
 	const [isContractsModalOpen, setIsContractsModalOpen] = useState<boolean>(false)
 	const [currentPage, setCurrentPage] = useState<number>(1)
+	const [data, setData] = useState<DictData[]>([])
+	const [rowSelected, setRowSelected] = useState<DictData | null>(null)
 
 	const getModalWidth = (): number => {
 		const screenWidth = window.innerWidth
@@ -26,6 +34,38 @@ const ContractModal = (): JSX.Element => {
 	}
 
 	const [modalWidth, setModalWidth] = useState<number>(getModalWidth())
+
+	useEffect(() => {
+		if (!LOCAL_MODE) {
+			fetchContracts().then((contracts: DictData[]) => {
+				if (contracts.length !== 0) {
+					setData(contracts)
+				}
+			})
+		} else {
+			setData(contractsDefault)
+		}
+	}, [])
+
+	useEffect(() => {
+		if (flight?.contract.value !== undefined) {
+			setRowSelected(flight.contract)
+		}
+	}, [flight])
+
+	useEffect(() => {
+		let result = ''
+		if (flight === null) {
+			if (rowSelected === null) {
+				result = 'Выберите контракт для нового рейса'
+			} else {
+				result = `Для нового рейса контракт сейчас '${rowSelected.value}'.`
+			}
+		} else {
+			result = `Для рейса '${flight.id}' контракт сейчас '${flight.contract.value}'.`
+		}
+		setTitle(result)
+	}, [flight, rowSelected])
 
 	const handleWindowResize = useCallback(() => {
 		setModalWidth(getModalWidth())
@@ -38,10 +78,10 @@ const ContractModal = (): JSX.Element => {
 		}
 	}, [handleWindowResize])
 
-	const columns: ColumnsType<ContractType> = [
+	const columns: ColumnsType<DictData> = [
 		{
 			title: 'ID',
-			dataIndex: 'id',
+			dataIndex: 'value',
 			fixed: 'left',
 			render: (value: number): number | undefined => {
 				if (value >= 0) {
@@ -51,52 +91,19 @@ const ContractModal = (): JSX.Element => {
 		},
 		{
 			title: 'Наименование',
-			dataIndex: 'name'
-		},
-		{
-			title: 'Наименование1',
-			dataIndex: 'name'
-		},
-		{
-			title: 'Наименование2',
-			dataIndex: 'name'
-		},
-		{
-			title: 'Наименование3',
-			dataIndex: 'name'
-		},
-		{
-			title: 'Наименование4',
-			dataIndex: 'name'
-		},
-		{
-			title: 'Наименование5',
-			dataIndex: 'name'
-		},
-		{
-			title: 'Наименование6',
-			dataIndex: 'name'
-		},
-		{
-			title: 'Наименование7',
-			dataIndex: 'name'
+			dataIndex: 'label'
 		},
 		{
 			title: 'Действия',
 			dataIndex: 'actions',
 			fixed: 'right',
-			render: (_: undefined, record: ContractType): JSX.Element | undefined => {
-				if (record.id >= 0) {
+			render: (_: undefined, record: DictData): JSX.Element | undefined => {
+				if (record.value >= 0) {
 					return (<Button danger>Удалить</Button>)
 				}
 			}
 		}
 	]
-
-	const data: ContractType[] = Array.from({ length: 21 }, (_: ContractType, index) => ({
-		id: index + 1,
-		name: `name_${index + 1}`
-	}))
 
 	const showContractsModal = (): void => {
 		setIsContractsModalOpen(true)
@@ -104,6 +111,8 @@ const ContractModal = (): JSX.Element => {
 
 	const hideContractsModal = (): void => {
 		setIsContractsModalOpen(false)
+		setRowSelected(null)
+		setCurrentPage(1)
 	}
 
 	const paginatedData = () => {
@@ -111,8 +120,10 @@ const ContractModal = (): JSX.Element => {
 		const end = start + PAGE_SIZE
 		const pageData = data.slice(start, end)
 
-		while (pageData.length < PAGE_SIZE) {
-			pageData.push({ /*key: `empty-${pageData.length}`,*/ id: 0 - pageData.length, name: '' })
+		// Если на первой странице мало строк, то не заполняем пустые строки, иначе, чтобы таблица не прыгала, заполняем пустыми
+		const calcLength = currentPage === 1 ? Math.min(pageData.length, PAGE_SIZE) : PAGE_SIZE
+		while (pageData.length < calcLength) {
+			pageData.push({ value: 0 - pageData.length, label: '' })
 		}
 
 		return pageData
@@ -122,13 +133,19 @@ const ContractModal = (): JSX.Element => {
 		setCurrentPage(page)
 	}
 
+	const getCheckboxProps = (record: DictData) => ({
+		style: record.value < 0 ? { display: 'none' } : undefined
+	})
+
 	return (
 		<>
-			<Button type={'primary'} onClick={showContractsModal}>
+			<Button type={'primary'}
+					icon={<SelectOutlined/>}
+					onClick={showContractsModal}>
 				Контракты
 			</Button>
 			<Modal
-				title={'Список контрактов'}
+				title={title}
 				open={isContractsModalOpen}
 				onCancel={hideContractsModal}
 				style={{ top: 20 }}
@@ -136,14 +153,23 @@ const ContractModal = (): JSX.Element => {
 				width={modalWidth}
 			>
 				<Table
-					rowKey={'id'}
+					rowKey={'value'}
 					columns={columns}
 					dataSource={paginatedData()}
 					pagination={{
+						current: currentPage,
 						pageSize: PAGE_SIZE,
 						total: data.length,
 						hideOnSinglePage: true,
 						onChange: handlerPageChange
+					}}
+					rowSelection={{
+						type: 'radio',
+						selectedRowKeys: rowSelected ? [rowSelected.value] : [],
+						getCheckboxProps: getCheckboxProps,
+						onChange: (_selectedRowKeys: Key[], selectedRows: DictData[]) => {
+							setRowSelected(selectedRows[0])
+						}
 					}}
 					rowClassName={'fixed-height-row'}
 					scroll={{ x: 'max-content' }}

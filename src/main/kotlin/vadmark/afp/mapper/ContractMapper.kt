@@ -8,8 +8,9 @@ import vadmark.afp.model.dto.DictDto
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 interface ContractMapper {
-    @Mapping(source = "contractId", target = "value")
-    @Mapping(expression = "java(\"Контракт \" + contract.getContractId())", target = "label")
+    @Mapping(source = "value", target = "value")
+    @Mapping(source = "label", target = "label")
+//    @Mapping(expression = "java(\"Контракт \" + contract.getContractId())", target = "label")
     fun toDto(contract: Contract): DictDto
 
     fun toDoList(entities: List<Contract>): List<DictDto>

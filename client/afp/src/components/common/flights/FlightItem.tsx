@@ -64,7 +64,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('font-weight', 'bold')
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
-			.text(`Рейс ${data.id} (${data.contractId})`)
+			.text(`Рейс ${data.id} (${data.contract.value})`)
 
 		const lineShiftX = 5
 		const lineShiftY = 25

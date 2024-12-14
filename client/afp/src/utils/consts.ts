@@ -1,7 +1,6 @@
 import { Flight } from '../models/Flight'
 import { RouteType } from '../models/type/RouteType'
 import dayjs from 'dayjs'
-import { getRandomNumber } from './math'
 import { DictData } from '../models/DictData'
 import { Airport } from '../models/Airport'
 
@@ -11,7 +10,7 @@ import { Airport } from '../models/Airport'
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const LOCAL_MODE = false
+export const LOCAL_MODE = true
 export const SHOW_TEST_TOGGLE: boolean = false
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
@@ -28,11 +27,28 @@ export const SHOW_FLIGHT_ID = false
 export const SHOW_OLD_STICKS = false
 export const RESIZE_STICK_WIDTH = 5
 
+export const contractsDefault: DictData[] = [
+	{ value: 888, label: 'Контракт 888' },
+	{ value: 999, label: 'Контракт 999' },
+	{ value: 111, label: 'Контракт 111' },
+	{ value: 222, label: 'Контракт 222' },
+	{ value: 555, label: 'Контракт 555' },
+	{ value: 666, label: 'Контракт 666' }
+]
+
+const getRandomContract = (contracts: DictData[]): DictData => {
+	if (!contracts || contracts.length === 0) {
+		throw new Error('Contracts is empty or not defined.')
+	}
+
+	const randomNumber = Math.floor(Math.random() * contracts.length)
+	return contracts[randomNumber]
+}
+
 export const flightsDefault: Flight[] = [
 	{
 		id: 1,
-		// contractId: 666,
-		contractId: getRandomNumber(1, 1000),
+		contract: getRandomContract(contractsDefault),
 		routes: [
 			{
 				id: 11,
@@ -68,7 +84,7 @@ export const flightsDefault: Flight[] = [
 				aptArrIata: 'AER'
 			}*/
 		]
-	},
+	}
 	/*{
 		id: 2,
 		contractId: getRandomNumber(1, 1000),
@@ -225,11 +241,6 @@ export const flightsDefault: Flight[] = [
 			}
 		]
 	}*/
-]
-
-export const contractsDefault: DictData[] = [
-	{ value: 888, label: 'Контракт 888' },
-	{ value: 999, label: 'Контракт 999' }
 ]
 
 export const airportsDefault: Airport[] = [

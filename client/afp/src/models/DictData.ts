@@ -7,7 +7,7 @@ import { z } from 'zod'
  * @since 03.12.2024
  */
 // Схема элемента словаря
-const DictItemSchema = z.object({
+export const DictItemSchema = z.object({
 		value: z.number(),
 		label: z.string()
 	})

@@ -15,6 +15,7 @@ import { LOCAL_MODE, contractsDefault } from '../../../utils/consts'
 import { requestAddFlightFx, requestDeleteFlightFx, requestSaveFlightFx } from '../../../api/flight'
 import { fetchContracts } from '../../../api/dict'
 import { DictData } from '../../../models/DictData'
+import ContractModal from './ContractModal'
 
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
@@ -80,7 +81,7 @@ const FlightControl = (): JSX.Element => {
 	}
 
 	return (
-		<Space direction={'vertical'} style={{width:'100%'}}>
+		<Space direction={'vertical'} style={{ width: '100%' }}>
 			<Divider type={'horizontal'}
 					 orientation={'left'}
 					 className={'control-panel-divider'}>{title}</Divider>
@@ -119,6 +120,7 @@ const FlightControl = (): JSX.Element => {
 					>Добавить</Button>
 				}
 				<DeleteAllButton/>
+				<ContractModal/>
 			</Space>
 		</Space>
 	)

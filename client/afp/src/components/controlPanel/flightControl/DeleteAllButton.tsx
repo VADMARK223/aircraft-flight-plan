@@ -6,9 +6,8 @@
  */
 import React, { JSX } from 'react'
 import { Button, Popconfirm } from 'antd'
-import { $flights, flightsDeleteAllFx } from '../../../store/flight'
+import { $flights } from '../../../store/flight'
 import { useStore } from 'effector-react'
-import { LOCAL_MODE } from '../../../utils/consts'
 import { requestDeleteAllFlightsFx } from '../../../api/flight'
 import { CloseOutlined } from '@ant-design/icons'
 
@@ -16,11 +15,7 @@ const DeleteAllButton = (): JSX.Element => {
 	const flights = useStore($flights)
 
 	const handlerConfirm = () => {
-		if (LOCAL_MODE) {
-			flightsDeleteAllFx()
-		} else {
-			requestDeleteAllFlightsFx()
-		}
+		requestDeleteAllFlightsFx()
 	}
 
 	return (

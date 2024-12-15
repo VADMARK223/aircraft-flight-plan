@@ -11,7 +11,6 @@ import { createEvent, createStore, sample } from 'effector'
 import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, routeSelectReset, RouteAddOrSaveParams } from './route'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
-import { flightsDefault, LOCAL_MODE } from '../utils/consts'
 import {
 	requestAddFlightFx,
 	fetchFlightsFx,
@@ -22,7 +21,7 @@ import {
 import { Route } from '../models/Route'
 import { requestAddOrSaveRouteFx, requestDeleteRouteFx } from '../api/route'
 
-export const $flights = createStore<Flight[]>(LOCAL_MODE ? flightsDefault : [])
+export const $flights = createStore<Flight[]>([])
 export const $flightSelected = createStore<Flight | null>(null)
 $flights.watch((flights: Flight[]) => {
 	if (!flights.length) {

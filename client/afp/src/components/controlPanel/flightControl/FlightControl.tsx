@@ -6,11 +6,10 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelected, flightDeleteFx, flightAddFx, flightSaveFx } from '../../../store/flight'
+import { $flightSelected } from '../../../store/flight'
 import { Button, Divider, Space } from 'antd'
 import { DeleteOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
-import { LOCAL_MODE } from '../../../utils/consts'
 import { requestDeleteFlightFx, requestAddFlightFx, requestSaveFlightFx } from '../../../api/flight'
 import { DictData } from '../../../models/DictData'
 import ContractModal from './ContractModal'
@@ -24,11 +23,11 @@ const FlightControl = (): JSX.Element => {
 	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)
 	const [resetSelection, setResetSelection] = useState<boolean>(false)
 
-	useEffect(():void => {
-		setTitle(selectedFlight != null ? `Изменение рейса ${selectedFlight.id}`: 'Добавление рейса')
+	useEffect((): void => {
+		setTitle(selectedFlight != null ? `Изменение рейса ${selectedFlight.id}` : 'Добавление рейса')
 	}, [selectedFlight])
 
-	useEffect(():void => {
+	useEffect((): void => {
 		setAddButtonDisabled(contract == null)
 		setEditButtonDisabled(contract == null || selectedFlight?.contract.value === contract.value)
 	}, [contract, selectedFlight?.contract.value])
@@ -42,11 +41,7 @@ const FlightControl = (): JSX.Element => {
 			routes: [],
 			contract: contract
 		}
-		if (LOCAL_MODE) {
-			flightAddFx(newFlight)
-		} else {
-			requestAddFlightFx(contract)
-		}
+		requestAddFlightFx(contract)
 
 		setContract(null)
 		setResetSelection(true)
@@ -55,11 +50,7 @@ const FlightControl = (): JSX.Element => {
 	const handlerEditFlight = (): void => {
 		if (contract != null && selectedFlight?.id) {
 			const editedFlight = { ...selectedFlight, contract: contract }
-			if (LOCAL_MODE) {
-				flightSaveFx(editedFlight)
-			} else {
-				requestSaveFlightFx(editedFlight)
-			}
+			requestSaveFlightFx(editedFlight)
 			setEditButtonDisabled(true)
 		}
 	}
@@ -72,7 +63,6 @@ const FlightControl = (): JSX.Element => {
 			<Space>
 				<ContractModal flight={selectedFlight}
 							   onApply={(contract: DictData): void => {
-								   console.log('Apply cont:', contract)
 								   setContract(contract)
 							   }}
 							   resetSelection={resetSelection}
@@ -89,11 +79,7 @@ const FlightControl = (): JSX.Element => {
 								danger
 								icon={<DeleteOutlined/>}
 								onClick={() => {
-									if (LOCAL_MODE) {
-										flightDeleteFx(selectedFlight?.id)
-									} else {
-										requestDeleteFlightFx(selectedFlight?.id)
-									}
+									requestDeleteFlightFx(selectedFlight?.id)
 								}}>Удалить</Button>
 					</>
 					:

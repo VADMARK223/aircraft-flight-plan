@@ -6,14 +6,14 @@
  */
 import React, { JSX, useEffect, useState, useCallback } from 'react'
 import { useStore } from 'effector-react'
-import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, routeSelectUpdateFlightId } from '../../../store/route'
+import { $routeSelected } from '../../../store/route'
 import { $flights, $flightSelected } from '../../../store/flight'
 import dayjs, { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space, Tooltip, TimePicker } from 'antd'
 import { combineDateTime } from '../../../utils/utils'
 import { getRandomNumber } from '../../../utils/math'
 import { toast } from 'react-toastify'
-import { DATE_FORMAT, LOCAL_MODE } from '../../../utils/consts'
+import { DATE_FORMAT } from '../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { Route } from '../../../models/Route'
@@ -46,9 +46,7 @@ const RouteControl = (): JSX.Element => {
 	const [disableButtonReason, setDisableButtonReason] = useState<string | null>()
 
 	useEffect(() => {
-		if (!LOCAL_MODE) {
-			fetchAirportsFx()
-		}
+		fetchAirportsFx()
 	}, [])
 
 	useEffect(() => {
@@ -159,20 +157,7 @@ const RouteControl = (): JSX.Element => {
 			aptArrName: (airportArrival as Airport).airportName
 		}
 
-		if (LOCAL_MODE) {
-			routeAddOrSaveFx({ route: newRoute, oldFlightId: routeSelected?.flightId })
-			if (routeSelected?.routeTypeId !== flightId) {
-				if (flightId != null) {
-					routeSelectUpdateFlightId(flightId)
-				}
-			}
-		} else {
-			if (routeSelected) {
-				requestAddOrSaveRouteFx(newRoute)
-			} else {
-				requestAddOrSaveRouteFx(newRoute)
-			}
-		}
+		requestAddOrSaveRouteFx(newRoute)
 
 		// Если добавление перелета, то сбрасываем все данные после добавления
 		if (routeSelected === null) {
@@ -314,19 +299,14 @@ const RouteControl = (): JSX.Element => {
 								icon={<DeleteOutlined/>}
 								style={{ width: '160px' }}
 								onClick={() => {
-									if (LOCAL_MODE) {
-										routeDeleteFx(routeSelected)
-									} else {
-										if (routeSelected) {
-											// if (routeSelected.id != null && routeSelected.id !== routeSelected.id) {
-											if (routeSelected.id != null) {
-												requestDeleteRouteFx(routeSelected.id)
-											} else {
-												showWarn('У удаляемого перелета пустой идентификатор.')
-											}
+									if (routeSelected) {
+										if (routeSelected.id != null) {
+											requestDeleteRouteFx(routeSelected.id)
 										} else {
-											showWarn('Перелет не выбраню')
+											showWarn('У удаляемого перелета пустой идентификатор.')
 										}
+									} else {
+										showWarn('Перелет не выбраню')
 									}
 								}
 								}

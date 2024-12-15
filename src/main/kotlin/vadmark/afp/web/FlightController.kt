@@ -6,6 +6,7 @@ import vadmark.afp.dto.FlightDto
 import vadmark.afp.dto.ResponseDto
 import vadmark.afp.entity.Flight
 import vadmark.afp.mapper.flight.FlightMapper
+import vadmark.afp.model.dto.DictDto
 import vadmark.afp.service.ContractService
 import vadmark.afp.service.FlightService
 import vadmark.afp.util.Response
@@ -24,8 +25,8 @@ class FlightController(
     }
 
     @PostMapping("/add_flight")
-    fun add(@RequestBody contractId: Int): ResponseEntity<ResponseDto<FlightDto>> {
-        return ResponseEntity.ok(Response.success(flightMapper.toDto(flightService.add(contractId))))
+    fun add(@RequestBody contract: DictDto): ResponseEntity<ResponseDto<FlightDto>> {
+        return ResponseEntity.ok(Response.success(flightMapper.toDto(flightService.add(contract.value as Int))))
     }
 
     @PostMapping("/delete_flight")

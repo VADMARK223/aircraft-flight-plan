@@ -8,18 +8,15 @@ import React, { JSX, useEffect } from 'react'
 import ControlPanel from './components/controlPanel/ControlPanel'
 import Viewer from './components/viewer/Viewer'
 import { fetchFlightsFx } from './api/flight'
-import { LOCAL_MODE } from './utils/consts'
 import { fetchAircraftTypeFx, fetchRouteTypeFx } from './api/dict'
 
 const Main = (): JSX.Element => {
 	// const test = useStore($test)
 
 	useEffect(() => {
-		if (!LOCAL_MODE) {
-			fetchFlightsFx()
-			fetchRouteTypeFx()
-			fetchAircraftTypeFx()
-		}
+		fetchFlightsFx()
+		fetchRouteTypeFx()
+		fetchAircraftTypeFx()
 	}, [])
 
 	return (

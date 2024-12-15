@@ -24,12 +24,10 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 	const flights: Flight[] = useStore($flights)
 	const dates = useStore($dates)
 	const datesRange = useStore($datesRange)
-	// console.log('flights:', flights)
 
 	return (
 		<g ref={gRef} id={'routes'} transform={`translate(${x}, ${y})`}>
 			{flights.map((flight: Flight, flightIndex) => {
-					// console.log('flight:', flight)
 					return (
 						<g key={flight.id} id={`flight-row-${flight.id}`}>
 							{flight.routes.map((flight: Route) => {

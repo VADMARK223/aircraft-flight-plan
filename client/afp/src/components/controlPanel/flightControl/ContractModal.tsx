@@ -11,7 +11,6 @@ import { ColumnsType } from 'antd/es/table'
 import { SelectOutlined } from '@ant-design/icons'
 import { Flight } from '../../../models/Flight'
 import { fetchContracts } from '../../../api/dict'
-import { LOCAL_MODE, contractsDefault } from '../../../utils/consts'
 import { DictData } from '../../../models/DictData'
 import { Key, TableRowSelection } from 'antd/es/table/interface'
 import { showError } from '../../../api/common'
@@ -43,15 +42,11 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 	const [modalWidth, setModalWidth] = useState<number>(getModalWidth())
 
 	useEffect((): void => {
-		if (!LOCAL_MODE) {
-			fetchContracts().then((contracts: DictData[]) => {
-				if (contracts.length !== 0) {
-					setData(contracts)
-				}
-			})
-		} else {
-			setData(contractsDefault)
-		}
+		fetchContracts().then((contracts: DictData[]) => {
+			if (contracts.length !== 0) {
+				setData(contracts)
+			}
+		})
 	}, [])
 
 	useEffect((): void => {
@@ -131,7 +126,6 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 	}
 
 	const hideContractsModal = (): void => {
-		console.log('HIDE:')
 		setIsContractsModalOpen(false)
 		setCurrentPage(1)
 

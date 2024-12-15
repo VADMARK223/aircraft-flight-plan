@@ -6,78 +6,62 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelected, flightAddFx, flightDeleteFx, flightSaveFx } from '../../../store/flight'
-import { Flight } from '../../../models/Flight'
-import { Button, Divider, Space, Select } from 'antd'
+import { $flightSelected, flightDeleteFx, flightAddFx, flightSaveFx } from '../../../store/flight'
+import { Button, Divider, Space } from 'antd'
 import { DeleteOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
-import { LOCAL_MODE, contractsDefault } from '../../../utils/consts'
-import { requestAddFlightFx, requestDeleteFlightFx, requestSaveFlightFx } from '../../../api/flight'
-import { fetchContracts } from '../../../api/dict'
+import { LOCAL_MODE } from '../../../utils/consts'
+import { requestDeleteFlightFx, requestAddFlightFx, requestSaveFlightFx } from '../../../api/flight'
 import { DictData } from '../../../models/DictData'
 import ContractModal from './ContractModal'
+import { Flight } from '../../../models/Flight'
 
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
 	const [title, setTitle] = useState<string>()
-	// const [contractId, setContractId] = useState<number>()
-	// const [contractOptions, setContractOptions] = useState<DictData[]>([])
+	const [contract, setContract] = useState<DictData | null>(null)
 	const [addButtonDisabled, setAddButtonDisabled] = useState<boolean>(true)
 	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)
+	const [resetSelection, setResetSelection] = useState<boolean>(false)
 
-	// useEffect(() => {
-	// 	if (!LOCAL_MODE) {
-	// 		fetchContracts().then(contracts => {
-	// 			if (contracts.length !== 0) {
-	// 				setContractOptions(contracts)
-	// 			}
-	// 		})
-	// 	} else {
-	// 		setContractOptions(contractsDefault)
-	// 	}
-	// }, [])
-
-	useEffect(() => {
-		if (selectedFlight) {
-			setTitle('Изменение рейса')
-			// setContractId(selectedFlight.contractId)
-		} else {
-			setTitle('Добавление рейса')
-			// setContractId(undefined)
-		}
+	useEffect(():void => {
+		setTitle(selectedFlight != null ? `Изменение рейса ${selectedFlight.id}`: 'Добавление рейса')
 	}, [selectedFlight])
 
-	/*useEffect(() => {
-		setAddButtonDisabled(contractId === undefined)
-		setEditButtonDisabled(contractId === undefined || selectedFlight?.contractId === contractId)
-	}, [contractId, selectedFlight?.contractId])*/
+	useEffect(():void => {
+		setAddButtonDisabled(contract == null)
+		setEditButtonDisabled(contract == null || selectedFlight?.contract.value === contract.value)
+	}, [contract, selectedFlight?.contract.value])
 
 	const handlerAddFlight = (): void => {
-		/*if (contractId === undefined) {
+		if (contract == null) {
 			return
 		}
 		const newFlight: Flight = {
 			id: -1,
 			routes: [],
-			contractId: contractId
+			contract: contract
 		}
 		if (LOCAL_MODE) {
 			flightAddFx(newFlight)
 		} else {
-			requestAddFlightFx(Number(contractId))
-		}*/
+			requestAddFlightFx(contract)
+		}
+
+		setContract(null)
+		setResetSelection(true)
 	}
 
 	const handlerEditFlight = (): void => {
-		/*if (contractId !== undefined && selectedFlight?.id) {
-			const editedFlight = { ...selectedFlight, contractId: contractId }
+		if (contract != null && selectedFlight?.id) {
+			const editedFlight = { ...selectedFlight, contract: contract }
 			if (LOCAL_MODE) {
 				flightSaveFx(editedFlight)
 			} else {
 				requestSaveFlightFx(editedFlight)
 			}
 			setEditButtonDisabled(true)
-		}*/
+		}
 	}
 
 	return (
@@ -86,17 +70,14 @@ const FlightControl = (): JSX.Element => {
 					 orientation={'left'}
 					 className={'control-panel-divider'}>{title}</Divider>
 			<Space>
-				{/*<span>ID контракта:</span>
-				<Select
-					placeholder={'Выберите контракт'}
-					style={{ width: '160px' }}
-					value={contractId}
-					options={contractOptions}
-					allowClear
-					onChange={value => setContractId(value)}
-				/>*/}
-
-				<ContractModal flight={selectedFlight}/>
+				<ContractModal flight={selectedFlight}
+							   onApply={(contract: DictData): void => {
+								   console.log('Apply cont:', contract)
+								   setContract(contract)
+							   }}
+							   resetSelection={resetSelection}
+							   onReset={() => setResetSelection(false)}
+				/>
 
 				{selectedFlight ?
 					<>

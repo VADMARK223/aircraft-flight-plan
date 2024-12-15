@@ -1,17 +1,16 @@
 /**
- * Компонент контроля диапозона дат обображения полетов
+ * Компонент контроля диапазона дат отображения полетов
  *
  * @author Markitanov Vadim
  * @since 04.12.2023
  */
 import React, { JSX, useEffect, useState } from 'react'
-import { DatePicker, Space } from 'antd'
+import { DatePicker, Space, CheckboxOptionType, Radio } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { DATE_FORMAT } from '../../../utils/consts'
 import { $datesRange, updateDatesRangeFx } from '../../../store/date'
 import { useStore } from 'effector-react'
-import { CheckboxOptionType, Radio } from 'antd/lib'
 
 enum DateControlMode {
   TODAY_TOMORROW,

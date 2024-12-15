@@ -13,7 +13,6 @@ import DeleteAllButton from './DeleteAllButton'
 import { requestDeleteFlightFx, requestAddFlightFx, requestSaveFlightFx } from '../../../api/flight'
 import { DictData } from '../../../models/DictData'
 import ContractModal from './ContractModal'
-import { Flight } from '../../../models/Flight'
 
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
@@ -35,11 +34,6 @@ const FlightControl = (): JSX.Element => {
 	const handlerAddFlight = (): void => {
 		if (contract == null) {
 			return
-		}
-		const newFlight: Flight = {
-			id: -1,
-			routes: [],
-			contract: contract
 		}
 		requestAddFlightFx(contract)
 

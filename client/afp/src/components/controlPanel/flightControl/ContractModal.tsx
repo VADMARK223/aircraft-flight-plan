@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 14.12.2024
  */
-import React, { JSX, useCallback, useEffect, useState } from 'react'
+import React, { JSX, useCallback, useEffect, useState, useRef } from 'react'
 import { Button, Table, TablePaginationConfig, CheckboxProps } from 'antd'
 import Modal from 'antd/es/modal/Modal'
 import { ColumnsType } from 'antd/es/table'
@@ -27,12 +27,13 @@ interface ContractModalProps {
 const DEFAULT_BUTTON_LABEL: string = 'Выберите контракт'
 
 const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractModalProps): JSX.Element => {
-	const [buttonLabel, setButtonLabel] = useState<string>(DEFAULT_BUTTON_LABEL)
+	const [mainButtonLabel, setMainButtonLabel] = useState<string>(DEFAULT_BUTTON_LABEL)
 	const [title, setTitle] = useState<string | null>(null)
 	const [isContractsModalOpen, setIsContractsModalOpen] = useState<boolean>(false)
 	const [currentPage, setCurrentPage] = useState<number>(1)
 	const [data, setData] = useState<DictData[]>([])
 	const [rowSelected, setRowSelected] = useState<DictData | null>(null)
+	const [applyButtonDisabled, setApplyButtonDisabled] = useState<boolean>(true)
 
 	const getModalWidth = (): number => {
 		const screenWidth = window.innerWidth
@@ -40,14 +41,32 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 	}
 
 	const [modalWidth, setModalWidth] = useState<number>(getModalWidth())
+	const buttonApplyRef = useRef<HTMLButtonElement>(null)
 
-	useEffect((): void => {
-		fetchContracts().then((contracts: DictData[]) => {
-			if (contracts.length !== 0) {
-				setData(contracts)
+	useEffect(() => {
+		const handlerKeyDown = (event: KeyboardEvent) => {
+			if (event.code === 'Enter') {
+				event.preventDefault()
+				buttonApplyRef.current?.click()
 			}
-		})
-	}, [])
+		}
+		if (isContractsModalOpen) {
+			fetchContracts().then((contracts: DictData[]) => {
+				if (contracts.length !== 0) {
+					setData(contracts)
+				}
+			})
+
+			document.addEventListener('keydown', handlerKeyDown)
+		} else {
+			document.removeEventListener('keydown', handlerKeyDown)
+		}
+
+		return () => {
+			document.removeEventListener('keydown', handlerKeyDown)
+		}
+
+	}, [isContractsModalOpen])
 
 	useEffect((): void => {
 		setRowSelected(flight != null ? flight.contract : null)
@@ -56,23 +75,21 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 	useEffect((): void => {
 		let resultButtonLabel: string = DEFAULT_BUTTON_LABEL
 		let resultTitle: string
-		if (flight == null) {
-			if (rowSelected == null) {
-				resultTitle = 'Выберите контракт для нового рейса'
+		if (flight != null) {
+			if (flight.contract.value === rowSelected?.value) {
+				resultTitle = `Для рейса '${flight.id}'. Старый и новый контракты совпадают`
 			} else {
-				resultButtonLabel = `Контракт: ${rowSelected.value}`
-				resultTitle = `Для нового рейса контракт сейчас '${rowSelected.value}'.`
+				resultTitle = `Для рейса '${flight.id}'. Старый контракт: '${flight.contract.value}' новый: '${rowSelected?.value}'`
 			}
 		} else {
-			if (rowSelected == null) {
-				resultButtonLabel = `Контракт: ${flight.contract.value}`
-			} else {
+			if (rowSelected != null) {
 				resultButtonLabel = `Контракт: ${rowSelected.value}`
+				resultTitle = `Для нового рейса контракт будет: '${rowSelected.value}'`
+			} else {
+				resultTitle = 'Выберите контракт для нового рейса'
 			}
-
-			resultTitle = `Для рейса '${flight.id}' контракт сейчас '${flight.contract.value}'.`
 		}
-		setButtonLabel(resultButtonLabel)
+		setMainButtonLabel(resultButtonLabel)
 		setTitle(resultTitle)
 	}, [flight, rowSelected])
 
@@ -82,6 +99,10 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 			onReset()
 		}
 	}, [resetSelection, onReset])
+
+	useEffect(() => {
+		setApplyButtonDisabled(!rowSelected || flight?.contract.value === rowSelected?.value)
+	}, [rowSelected, flight])
 
 	const handleWindowResize = useCallback((): void => {
 		setModalWidth(getModalWidth())
@@ -131,6 +152,8 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 
 		if (flight != null) {
 			setRowSelected(flight.contract)
+		} else {
+			setRowSelected(null)
 		}
 	}
 
@@ -178,8 +201,9 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 			<Button type={'primary'}
 					icon={<SelectOutlined/>}
 					onClick={showContractsModal}>
-				{buttonLabel}
+				{mainButtonLabel}
 			</Button>
+
 			<Modal
 				title={title}
 				open={isContractsModalOpen}
@@ -188,10 +212,10 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 				footer={[
 					<Button key={'cancel'} onClick={hideContractsModal}>Отмена</Button>,
 					<Button key={'apply'}
+							ref={buttonApplyRef}
 							type={'primary'}
-							disabled={!rowSelected}
+							disabled={applyButtonDisabled}
 							onClick={() => {
-								// hideContractsModal()
 								setIsContractsModalOpen(false)
 								if (rowSelected != null) {
 									onApply(rowSelected)
@@ -200,8 +224,7 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 								}
 							}}>Применить</Button>
 				]}
-				width={modalWidth}
-			>
+				width={modalWidth}>
 				<Table
 					rowKey={'value'}
 					columns={columns}

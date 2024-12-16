@@ -1,6 +1,7 @@
 INSERT INTO contract (contract_id, name) VALUES (999, 'Контракт Бишкека');
-INSERT INTO contract (contract_id,name) VALUES (888, 'Контракт Москвы');
-INSERT INTO contract (contract_id,name) VALUES (111, 'Контракт Каракола');
+INSERT INTO contract (contract_id, name) VALUES (888, 'Контракт Москвы');
+INSERT INTO contract (contract_id, name) VALUES (111, 'Контракт Каракола');
+INSERT INTO contract (contract_id, name) VALUES (222, 'Asman Airlines');
 
 INSERT INTO flight (contract_id) VALUES (999);
 INSERT INTO flight (contract_id) VALUES (888);
@@ -10,6 +11,8 @@ INSERT INTO aircraft (aircraft_name, aircraft_type_id, tail) VALUES ('Airbus', 4
 
 INSERT INTO airport VALUES (1, 'VKO', 'UUWW ', 'Внуково');
 INSERT INTO airport VALUES (2, 'SVO', 'UUEE ', 'Шереметьево');
+INSERT INTO airport VALUES (3, 'FRU', 'UCFM ', 'Манас');
+INSERT INTO airport VALUES (4, 'KRV', 'UCFP ', 'Каракол');
 
 DO
 $$

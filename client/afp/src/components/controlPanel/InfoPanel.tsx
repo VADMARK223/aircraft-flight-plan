@@ -12,6 +12,7 @@ import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { $test, setTestFx, TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE } from '../../store/test'
 import { SHOW_TEST_TOGGLE } from '../../utils/consts'
 import { USER_TIME_ZONE, FORMATTED_OFFSET } from '../../utils/utils'
+import TempPanel from './TempPanel'
 
 const InfoPanel = (): JSX.Element => {
 	const style = useStore($style)
@@ -62,6 +63,7 @@ const InfoPanel = (): JSX.Element => {
 					defaultChecked={style.isDarkTheme}
 				/>
 			</Space>
+			<TempPanel/>
 		</Space>
 
 	)

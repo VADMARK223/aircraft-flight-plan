@@ -76,6 +76,10 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 		let resultButtonLabel: string = DEFAULT_BUTTON_LABEL
 		let resultTitle: string
 		if (flight != null) {
+			if(rowSelected != null) {
+				resultButtonLabel = `Контракт: ${rowSelected.value}`
+			}
+
 			if (flight.contract.value === rowSelected?.value) {
 				resultTitle = `Для рейса '${flight.id}'. Старый и новый контракты совпадают`
 			} else {

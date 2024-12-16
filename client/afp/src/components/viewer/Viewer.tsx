@@ -57,18 +57,15 @@ const Viewer = (): JSX.Element => {
       <div
         ref={bottomSvgContainerRef}
         style={{
-          // width: '100%',
           width: FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length + 35,
           height: bottomSvgContainerHeight,
-          overflowY: 'scroll',
-          // marginTop: -5
+          overflowY: 'auto',
         }}
       >
         <svg id={'viewer-bottom'}
              width={FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length}
              height={boards.length * CELL_HEIGHT}
         >
-          {/*<rect width={'100%'} height={'100%'} fill={'gray'}/>*/}
           <Flights x={0} y={0}/>
           <Background x={FLIGHT_CELL_WIDTH} y={0}/>
           <Routes x={FLIGHT_CELL_WIDTH} y={0}/>

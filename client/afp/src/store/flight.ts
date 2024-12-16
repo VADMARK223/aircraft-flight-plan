@@ -213,7 +213,3 @@ const getMaxRouteId = (flights: Flight[]): number => {
 		return Math.max(maxId, flightMax) // обновить общий максимум
 	}, -Infinity)
 }
-
-$flights.watch(state => {
-	console.log('Рейсы::', state)
-})

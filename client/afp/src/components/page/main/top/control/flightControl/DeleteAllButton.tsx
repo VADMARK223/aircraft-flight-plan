@@ -6,9 +6,9 @@
  */
 import React, { JSX } from 'react'
 import { Button, Popconfirm } from 'antd'
-import { $flights } from '../../../store/flight'
+import { $flights } from '../../../../../../store/flight'
 import { useStore } from 'effector-react'
-import { requestDeleteAllFlightsFx } from '../../../api/flight'
+import { requestDeleteAllFlightsFx } from '../../../../../../api/flight'
 import { CloseOutlined } from '@ant-design/icons'
 
 const DeleteAllButton = (): JSX.Element => {

@@ -7,8 +7,8 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { Select } from 'antd'
 import { useStore } from 'effector-react'
-import { $aircraftTypeDictStore } from '../../../store/dict'
-import { DictData } from '../../../models/DictData'
+import { $aircraftTypeDictStore } from '../../../../../../store/dict'
+import { DictData } from '../../../../../../models/DictData'
 
 const AircraftTypeSelect = (): JSX.Element => {
 	const store = useStore($aircraftTypeDictStore)

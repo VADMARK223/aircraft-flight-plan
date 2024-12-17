@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { Space } from 'antd'
 import Input from 'antd/es/input/Input'
 
-const CURRENT_FOLLOWERS: number = 8_775
+const CURRENT_FOLLOWERS: number = 8_820
 const FOLLOWERS_TARGET: number = 10_000
 
 const StatsPage = (): JSX.Element => {

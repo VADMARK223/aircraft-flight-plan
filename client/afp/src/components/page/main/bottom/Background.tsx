@@ -6,13 +6,13 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
-import { $flights, flightSelectResetFx } from '../../store/flight'
+import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
+import { $flights, flightSelectResetFx } from '../../../../store/flight'
 import { useStore } from 'effector-react'
-import { $dates } from '../../store/date'
-import { $style } from '../../store/style'
-import { CommonProps } from '../common/CommonProps'
-import { routeSelectReset } from '../../store/route'
+import { $dates } from '../../../../store/date'
+import { $style } from '../../../../store/style'
+import { CommonProps } from '../../../common/CommonProps'
+import { routeSelectReset } from '../../../../store/route'
 
 const Background = ({x,y}:CommonProps): JSX.Element => {
   const svgRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)

@@ -6,9 +6,9 @@
  */
 import React, { JSX, useRef } from 'react'
 import { useStore } from 'effector-react'
-import { DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
-import { CommonProps } from '../common/CommonProps'
-import { $dates } from '../../store/date'
+import { DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
+import { CommonProps } from '../../../common/CommonProps'
+import { $dates } from '../../../../store/date'
 import DateItem from './DateItem'
 
 const DatesPanel = ({ x, y }: CommonProps): JSX.Element => {

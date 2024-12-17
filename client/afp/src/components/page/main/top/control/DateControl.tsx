@@ -8,8 +8,8 @@ import React, { JSX, useEffect, useState } from 'react'
 import { DatePicker, Space, CheckboxOptionType, Radio } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
-import { DATE_FORMAT } from '../../../utils/consts'
-import { $datesRange, updateDatesRangeFx } from '../../../store/date'
+import { DATE_FORMAT } from '../../../../../utils/consts'
+import { $datesRange, updateDatesRangeFx } from '../../../../../store/date'
 import { useStore } from 'effector-react'
 
 enum DateControlMode {

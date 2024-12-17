@@ -6,11 +6,11 @@
  */
 import React, { JSX, useEffect, useRef } from 'react'
 import { useStore } from 'effector-react'
-import { $style } from '../../store/style'
-import { DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../../utils/consts'
+import { $style } from '../../../../store/style'
+import { DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../../../../utils/consts'
 import * as d3 from 'd3'
-import { CommonProps } from '../common/CommonProps'
-import { $dates } from '../../store/date'
+import { CommonProps } from '../../../common/CommonProps'
+import { $dates } from '../../../../store/date'
 
 const Header = ({ x, y }: CommonProps): JSX.Element => {
   const style = useStore($style)

@@ -9,11 +9,11 @@ import { Button, Table, TablePaginationConfig, CheckboxProps } from 'antd'
 import Modal from 'antd/es/modal/Modal'
 import { ColumnsType } from 'antd/es/table'
 import { SelectOutlined } from '@ant-design/icons'
-import { Flight } from '../../../models/Flight'
-import { fetchContracts } from '../../../api/dict'
-import { DictData } from '../../../models/DictData'
+import { Flight } from '../../../../../../models/Flight'
+import { fetchContracts } from '../../../../../../api/dict'
+import { DictData } from '../../../../../../models/DictData'
 import { Key, TableRowSelection } from 'antd/es/table/interface'
-import { showError } from '../../../api/common'
+import { showError } from '../../../../../../api/common'
 
 const PAGE_SIZE: number = 5
 

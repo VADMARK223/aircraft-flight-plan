@@ -1,22 +1,22 @@
 /**
- * Компонент управления темой приложения
+ * Компонент
  *
  * @author Markitanov Vadim
- * @since 06.12.2023
+ * @since 18.12.2024
  */
-import { JSX } from 'react'
+import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { Space, Switch, Tooltip } from 'antd'
+import { $test, setTest, TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE } from '../../../../store/test'
+import { Space, Tooltip, Switch } from 'antd'
+import { SHOW_TEST_TOGGLE } from '../../../../utils/consts'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
-import { $test, setTestFx, TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE } from '../../store/test'
-import { SHOW_TEST_TOGGLE } from '../../utils/consts'
-import { USER_TIME_ZONE, FORMATTED_OFFSET } from '../../utils/utils'
+import { USER_TIME_ZONE, FORMATTED_OFFSET } from '../../../../utils/utils'
 
 const InfoPanel = (): JSX.Element => {
 	const test = useStore($test)
 
 	const onTestChangeHandler = (value: boolean): void => {
-		setTestFx(value)
+		setTest(value)
 		if (value) {
 			localStorage.setItem(TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE)
 		} else {

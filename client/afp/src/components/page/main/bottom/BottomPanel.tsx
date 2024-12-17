@@ -13,16 +13,16 @@ import {
   DATE_ITEM_HEIGHT,
   DATE_ITEM_WIDTH,
   HEADER_HEIGHT
-} from '../../utils/consts'
+} from '../../../../utils/consts'
 import { useStore } from 'effector-react'
-import { $dates } from '../../store/date'
+import { $dates } from '../../../../store/date'
 import DatesPanel from './DatesPanel'
 import Flights from './Flights'
-import { $flights } from '../../store/flight'
+import { $flights } from '../../../../store/flight'
 import Routes from './Routes'
 import Background from './Background'
 
-const Viewer = (): JSX.Element => {
+const BottomPanel = (): JSX.Element => {
   const dates = useStore($dates)
   const boards = useStore($flights)
   const bottomSvgContainerRef = useRef<any>(null)
@@ -75,4 +75,4 @@ const Viewer = (): JSX.Element => {
   )
 }
 
-export default Viewer
+export default BottomPanel

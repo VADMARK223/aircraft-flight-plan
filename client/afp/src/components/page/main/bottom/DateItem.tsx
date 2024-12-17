@@ -5,12 +5,12 @@
  * @since 25.10.2024
  */
 import { JSX, LegacyRef, useEffect, useRef } from 'react'
-import { DateModel } from '../../models/DateModel'
+import { DateModel } from '../../../../models/DateModel'
 import { useStore } from 'effector-react'
-import { $style } from '../../store/style'
-import { DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../utils/consts'
+import { $style } from '../../../../store/style'
+import { DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
 import * as d3 from 'd3'
-import { getDayNameByCount } from '../../utils/utils'
+import { getDayNameByCount } from '../../../../utils/utils'
 
 interface DateItemProps {
   data: DateModel

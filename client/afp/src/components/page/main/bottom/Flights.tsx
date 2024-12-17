@@ -6,14 +6,14 @@
  */
 import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { CELL_HEIGHT, FLIGHT_CELL_WIDTH } from '../../utils/consts'
-import { CommonProps } from '../common/CommonProps'
-import FlightItem from '../common/flights/FlightItem'
-import ContextMenu from '../common/ContextMenu'
-import { Route } from '../../models/Route'
-import { Flight } from '../../models/Flight'
-import { $flights, flightClickFx, flightDeleteFx } from '../../store/flight'
-import { $contextMenu } from '../../store/contextMenu'
+import { CELL_HEIGHT, FLIGHT_CELL_WIDTH } from '../../../../utils/consts'
+import { CommonProps } from '../../../common/CommonProps'
+import FlightItem from '../../../common/flights/FlightItem'
+import ContextMenu from '../../../common/ContextMenu'
+import { Route } from '../../../../models/Route'
+import { Flight } from '../../../../models/Flight'
+import { $flights, flightClickFx, flightDeleteFx } from '../../../../store/flight'
+import { $contextMenu } from '../../../../store/contextMenu'
 
 const Flights = ({ x, y }: CommonProps): JSX.Element => {
 	const flights = useStore($flights)

@@ -6,12 +6,12 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelected } from '../../../store/flight'
+import { $flightSelected } from '../../../../../../store/flight'
 import { Button, Divider, Space } from 'antd'
 import { DeleteOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
-import { requestDeleteFlightFx, requestAddFlightFx, requestSaveFlightFx } from '../../../api/flight'
-import { DictData } from '../../../models/DictData'
+import { requestDeleteFlightFx, requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/flight'
+import { DictData } from '../../../../../../models/DictData'
 import ContractModal from './ContractModal'
 
 const FlightControl = (): JSX.Element => {

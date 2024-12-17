@@ -12,7 +12,7 @@ import { HomeOutlined, SettingOutlined, BarsOutlined } from '@ant-design/icons'
 
 const Navigation = (): JSX.Element => {
 	return (
-		<nav style={{ marginBottom: '5px' }}>
+		<nav>
 			<Space>
 				<NavigationLink to={'/'} icon={<HomeOutlined/>} label={'Главная'}/>
 				<NavigationLink to={'/settings'} icon={<SettingOutlined/>} label={'Настройки'}/>

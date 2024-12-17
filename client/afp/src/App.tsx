@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { JSX, useEffect } from 'react'
 import { ConfigProvider, theme } from 'antd'
 import ruRu from 'antd/locale/ru_RU'
 import { useStore } from 'effector-react'
@@ -10,11 +10,12 @@ import {
 	setLineColorFx,
 	setTextColorFx
 } from './store/style'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
+import Header from './components/header/Header'
 import MainPage from './components/page/main/MainPage'
 import SettingsPage from './components/page/settings/SettingsPage'
 import StatsPage from './components/page/stats/StatsPage'
-import Header from './components/header/Header'
+import ErrorPage from './components/page/ErrorPage'
 
 function App () {
 	const style = useStore($style)
@@ -38,30 +39,13 @@ function App () {
 		[
 			{
 				path: '/',
-				element: (
-					<>
-						<Header/>
-						<MainPage/>
-					</>
-				)
-			},
-			{
-				path: '/settings',
-				element: (
-					<>
-						<Header/>
-						<SettingsPage/>
-					</>
-				)
-			},
-			{
-				path: '/stats',
-				element: (
-					<>
-						<Header/>
-						<StatsPage/>
-					</>
-				)
+				element: <RootLayout/>,
+				errorElement: <ErrorPage/>,
+				children: [
+					{ index: true, element: <MainPage/> },
+					{ path: 'settings', element: <SettingsPage/> },
+					{ path: 'stats', element: <StatsPage/> }
+				]
 			}
 		]
 	)
@@ -79,10 +63,6 @@ function App () {
 				}
 			}}
 		>
-			{/*<div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
-					<Header/>
-					<Router/>
-				</div>*/}
 			<div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
 				<RouterProvider router={router}/>
 			</div>
@@ -91,3 +71,13 @@ function App () {
 }
 
 export default App
+
+const RootLayout = (): JSX.Element => (
+	<div>
+		<div style={{ marginBottom: '5px' }}>
+			<Header/>
+		</div>
+		<Outlet/>
+
+	</div>
+)

@@ -12,7 +12,7 @@ import Input from 'antd/es/input/Input'
 const FOLLOWERS_TARGET = 10_000
 
 const StatsPage = (): JSX.Element => {
-	const [followers, setFollowers] = useState<number>(8750)
+	const [followers, setFollowers] = useState<number>(8753)
 	const [followersInDay, setFollowersInDay] = useState<number>(0)
 	const diffInDays = dayjs(`${dayjs().year() + 1}-01-01`).diff(dayjs(), 'day')
 

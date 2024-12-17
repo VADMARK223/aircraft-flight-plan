@@ -176,7 +176,7 @@ const FlightsDrag = (): JSX.Element => {
 				setCurDragFlight(undefined)
 			})
 		)
-	}, [flightViewModels, shiftsRef, height, width, boards, curDragFlight])
+	}, [flightViewModels, shiftsRef, height, width, boards, curDragFlight, dates.length])
 
 	useEffect(() => {
 		const temp: FlightViewModelDrag[] = []

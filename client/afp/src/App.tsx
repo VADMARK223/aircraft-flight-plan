@@ -4,11 +4,11 @@ import ruRu from 'antd/locale/ru_RU'
 import { useStore } from 'effector-react'
 import {
 	$style,
-	setBackgroundColorFx,
-	setContextMenuBackgroundColorFx,
-	setContextMenuLineColorFx,
-	setLineColorFx,
-	setTextColorFx
+	setBackgroundColor,
+	setContextMenuBackgroundColor,
+	setContextMenuLineColor,
+	setLineColor,
+	setTextColor
 } from './store/style'
 import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
 import Header from './components/header/Header'
@@ -28,11 +28,11 @@ function App () {
 	useEffect(() => {
 		const backgroundColor = getComputedStyleByPropertyValue('backgroundColor', isDarkTheme)
 		document.documentElement.style.backgroundColor = backgroundColor
-		setBackgroundColorFx(backgroundColor)
-		setTextColorFx(getComputedStyleByPropertyValue('textColor', isDarkTheme))
-		setLineColorFx(getComputedStyleByPropertyValue('lineColor', isDarkTheme))
-		setContextMenuBackgroundColorFx(getComputedStyleByPropertyValue('contextMenuBackgroundColor', isDarkTheme))
-		setContextMenuLineColorFx(getComputedStyleByPropertyValue('contextMenuLineColor', isDarkTheme))
+		setBackgroundColor(backgroundColor)
+		setTextColor(getComputedStyleByPropertyValue('textColor', isDarkTheme))
+		setLineColor(getComputedStyleByPropertyValue('lineColor', isDarkTheme))
+		setContextMenuBackgroundColor(getComputedStyleByPropertyValue('contextMenuBackgroundColor', isDarkTheme))
+		setContextMenuLineColor(getComputedStyleByPropertyValue('contextMenuLineColor', isDarkTheme))
 	}, [isDarkTheme])
 
 	const router = createBrowserRouter(
@@ -58,8 +58,6 @@ function App () {
 
 				token: {
 					motion: true // Настройка анимаций
-					// colorPrimary: '#57965c',
-					// colorBgContainer: '#f6ffed',
 				}
 			}}
 		>

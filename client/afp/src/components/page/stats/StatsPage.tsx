@@ -9,10 +9,11 @@ import dayjs from 'dayjs'
 import { Space } from 'antd'
 import Input from 'antd/es/input/Input'
 
-const FOLLOWERS_TARGET = 10_000
+const CURRENT_FOLLOWERS: number = 8_775
+const FOLLOWERS_TARGET: number = 10_000
 
 const StatsPage = (): JSX.Element => {
-	const [followers, setFollowers] = useState<number>(8753)
+	const [followers, setFollowers] = useState<number>(CURRENT_FOLLOWERS)
 	const [followersInDay, setFollowersInDay] = useState<number>(0)
 	const diffInDays = dayjs(`${dayjs().year() + 1}-01-01`).diff(dayjs(), 'day')
 

@@ -1,5 +1,4 @@
-import { createStore } from 'effector'
-import { createEffect } from 'effector/compat'
+import { createStore, createEvent } from 'effector'
 
 /**
  * @author Markitanov Vadim
@@ -15,7 +14,7 @@ export interface StyleStore {
 	textColor: string
 	lineColor: string
 	contextMenuBackgroundColor: string
-	contextMenuLineColor:string
+	contextMenuLineColor: string
 }
 
 const defaultStyleStore: StyleStore = {
@@ -24,27 +23,20 @@ const defaultStyleStore: StyleStore = {
 	textColor: '',
 	lineColor: '',
 	contextMenuBackgroundColor: '',
-	contextMenuLineColor:''
+	contextMenuLineColor: ''
 }
 
-export const setDarkThemeFx = createEffect<boolean, StyleStore>()
-export const setBackgroundColorFx = createEffect<string, StyleStore>()
-export const setTextColorFx = createEffect<string, StyleStore>()
-export const setLineColorFx = createEffect<string, StyleStore>()
-export const setContextMenuBackgroundColorFx = createEffect<string, StyleStore>()
-export const setContextMenuLineColorFx = createEffect<string, StyleStore>()
+export const setDarkTheme = createEvent<boolean>('Событие включение темной темы.')
+export const setBackgroundColor = createEvent<string>('Событие изменения цвета фона приложения.')
+export const setTextColor = createEvent<string>('Событие изменения цвета.')
+export const setLineColor = createEvent<string>('Событие изменения цвета линий.')
+export const setContextMenuBackgroundColor = createEvent<string>()
+export const setContextMenuLineColor = createEvent<string>()
+
 export const $style = createStore<StyleStore>(defaultStyleStore)
-	.on(setDarkThemeFx, (state, payload) => {
-		return { ...state, isDarkTheme: payload }
-	})
-	.on(setBackgroundColorFx, (state, payload) => {
-		return { ...state, backgroundColor: payload }
-	}).on(setTextColorFx, (state, payload) => {
-		return { ...state, textColor: payload }
-	}).on(setLineColorFx, (state, payload) => {
-		return { ...state, lineColor: payload }
-	}).on(setContextMenuBackgroundColorFx, (state, payload) => {
-		return { ...state, contextMenuBackgroundColor: payload }
-	}).on(setContextMenuLineColorFx, (state, payload) => {
-		return { ...state, contextMenuLineColor: payload }
-	})
+$style.on(setDarkTheme, (state, payload) => ({ ...state, isDarkTheme: payload }))
+$style.on(setBackgroundColor, (state, payload) => ({ ...state, backgroundColor: payload }))
+$style.on(setTextColor, (state, payload) => ({ ...state, textColor: payload }))
+$style.on(setLineColor, (state, payload) => ({ ...state, lineColor: payload }))
+$style.on(setContextMenuBackgroundColor, (state, payload) => ({ ...state, contextMenuBackgroundColor: payload }))
+$style.on(setContextMenuLineColor, (state, payload) => ({ ...state, contextMenuLineColor: payload }))

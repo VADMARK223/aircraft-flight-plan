@@ -10,9 +10,11 @@ import {
 	setLineColorFx,
 	setTextColorFx
 } from './store/style'
-import { BrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import MainPage from './components/page/main/MainPage'
+import SettingsPage from './components/page/settings/SettingsPage'
+import StatsPage from './components/page/stats/StatsPage'
 import Header from './components/header/Header'
-import Router from './components/header/Router'
 
 function App () {
 	const style = useStore($style)
@@ -32,26 +34,59 @@ function App () {
 		setContextMenuLineColorFx(getComputedStyleByPropertyValue('contextMenuLineColor', isDarkTheme))
 	}, [isDarkTheme])
 
-	return (
-		<BrowserRouter future={{ v7_startTransition: true }}>
-			<ConfigProvider
-				locale={ruRu}
-				theme={{
-					algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
+	const router = createBrowserRouter(
+		[
+			{
+				path: '/',
+				element: (
+					<>
+						<Header/>
+						<MainPage/>
+					</>
+				)
+			},
+			{
+				path: '/settings',
+				element: (
+					<>
+						<Header/>
+						<SettingsPage/>
+					</>
+				)
+			},
+			{
+				path: '/stats',
+				element: (
+					<>
+						<Header/>
+						<StatsPage/>
+					</>
+				)
+			}
+		]
+	)
 
-					token: {
-						motion: true // Настройка анимаций
-						// colorPrimary: '#57965c',
-						// colorBgContainer: '#f6ffed',
-					}
-				}}
-			>
-				<div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
+	return (
+		<ConfigProvider
+			locale={ruRu}
+			theme={{
+				algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
+
+				token: {
+					motion: true // Настройка анимаций
+					// colorPrimary: '#57965c',
+					// colorBgContainer: '#f6ffed',
+				}
+			}}
+		>
+			{/*<div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
 					<Header/>
 					<Router/>
-				</div>
-			</ConfigProvider>
-		</BrowserRouter>
+				</div>*/}
+			<div className={`app ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
+				<RouterProvider router={router}/>
+			</div>
+		</ConfigProvider>
 	)
 }
 

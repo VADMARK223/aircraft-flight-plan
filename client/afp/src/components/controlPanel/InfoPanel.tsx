@@ -6,25 +6,14 @@
  */
 import { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { $style, setDarkThemeFx, THEME_LOCAL_STORAGE_KEY, THEME_LOCAL_STORAGE_VALUE } from '../../store/style'
 import { Space, Switch, Tooltip } from 'antd'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { $test, setTestFx, TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE } from '../../store/test'
 import { SHOW_TEST_TOGGLE } from '../../utils/consts'
 import { USER_TIME_ZONE, FORMATTED_OFFSET } from '../../utils/utils'
-import TempPanel from './TempPanel'
 
 const InfoPanel = (): JSX.Element => {
-	const style = useStore($style)
 	const test = useStore($test)
-	const onStyleChangeHandler = (value: boolean): void => {
-		setDarkThemeFx(value)
-		if (value) {
-			localStorage.setItem(THEME_LOCAL_STORAGE_KEY, THEME_LOCAL_STORAGE_VALUE)
-		} else {
-			localStorage.removeItem(THEME_LOCAL_STORAGE_KEY)
-		}
-	}
 
 	const onTestChangeHandler = (value: boolean): void => {
 		setTestFx(value)
@@ -54,18 +43,7 @@ const InfoPanel = (): JSX.Element => {
 				<span>Временная зона:</span>
 				<b>{USER_TIME_ZONE + ' ' + FORMATTED_OFFSET}</b>
 			</Space>
-			<Space direction={'horizontal'}>
-				<span>Тёмная тема:</span>
-				<Switch
-					checkedChildren={<CheckOutlined/>}
-					unCheckedChildren={<CloseOutlined/>}
-					onChange={onStyleChangeHandler}
-					defaultChecked={style.isDarkTheme}
-				/>
-			</Space>
-			<TempPanel/>
 		</Space>
-
 	)
 }
 

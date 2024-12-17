@@ -2,7 +2,7 @@
  * Компонент
  *
  * @author Markitanov Vadim
- * @since 16.12.2024
+ * @since 17.12.2024
  */
 import React, { JSX, useState, useEffect } from 'react'
 import dayjs from 'dayjs'
@@ -11,8 +11,8 @@ import Input from 'antd/es/input/Input'
 
 const FOLLOWERS_TARGET = 10_000
 
-const TempPanel = (): JSX.Element => {
-	const [followers, setFollowers] = useState<number>(8697)
+const StatsPage = (): JSX.Element => {
+	const [followers, setFollowers] = useState<number>(8750)
 	const [followersInDay, setFollowersInDay] = useState<number>(0)
 	const diffInDays = dayjs(`${dayjs().year() + 1}-01-01`).diff(dayjs(), 'day')
 
@@ -40,4 +40,4 @@ const TempPanel = (): JSX.Element => {
 	)
 }
 
-export default TempPanel
+export default StatsPage

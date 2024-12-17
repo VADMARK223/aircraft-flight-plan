@@ -1,16 +1,16 @@
 /**
- * Компонент для рабочих областей.
+ * Главная страница.
  *
  * @author Markitanov Vadim
  * @since 06.12.2023
  */
 import React, { JSX, useEffect } from 'react'
-import ControlPanel from './components/controlPanel/ControlPanel'
-import Viewer from './components/viewer/Viewer'
-import { fetchFlightsFx } from './api/flight'
-import { fetchAircraftTypeFx, fetchRouteTypeFx } from './api/dict'
+import ControlPanel from '../../controlPanel/ControlPanel'
+import Viewer from '../../viewer/Viewer'
+import { fetchFlightsFx } from '../../../api/flight'
+import { fetchAircraftTypeFx, fetchRouteTypeFx } from '../../../api/dict'
 
-const Main = (): JSX.Element => {
+const MainPage = (): JSX.Element => {
 	// const test = useStore($test)
 
 	useEffect(() => {
@@ -29,4 +29,4 @@ const Main = (): JSX.Element => {
 	)
 }
 
-export default Main
+export default MainPage

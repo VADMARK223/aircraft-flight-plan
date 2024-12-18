@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 25.10.2024
  */
-import { JSX, useEffect, useRef, useState } from 'react'
+import React,{ JSX, useEffect, useRef, useState } from 'react'
 import InfoPanel from './InfoPanel'
 import Header from './Header'
 import {

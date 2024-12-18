@@ -132,8 +132,12 @@ const RouteControl = (): JSX.Element => {
 			return
 		}
 
-		const newStartDate: Dayjs = combineDateTime(dateRangeValue![0], startTime)
-		const newEndDate: Dayjs = combineDateTime(dateRangeValue![1], endTime)
+		if (dateRangeValue == null) {
+			return
+		}
+
+		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], startTime)
+		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], endTime)
 
 		if (newStartDate.isAfter(newEndDate)) {
 			toast.warn('Время вылета превышает или совпадает с временем прилета.')

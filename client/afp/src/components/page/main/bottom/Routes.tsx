@@ -32,12 +32,14 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 						<g key={flight.id} id={`flight-row-${flight.id}`}>
 							{flight.routes.map((flight: Route) => {
 									if (!datesRange || !datesRange.every(date => date)) {
-										return undefined
+										return
 									}
 
-									// @ts-ignore
+									if (datesRange[0] == null || datesRange[1] == null) {
+										return
+									}
+
 									const startDate = datesRange[0].toDate()
-									// @ts-ignore
 									const endDate = datesRange[1].add(1, 'day').toDate()
 									const rangeEnd = DATE_ITEM_WIDTH * dates.length
 									const scaleTime = d3.scaleTime([startDate, endDate], [0, rangeEnd])

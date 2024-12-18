@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-import { JSX, LegacyRef, useEffect, useRef } from 'react'
+import React,{ JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { FLIGHT_CELL_WIDTH } from '../../../utils/consts'
 import { Flight } from '../../../models/Flight'
@@ -34,7 +34,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 	useEffect(() => {
 		const container = d3.select(gRef.current)
 			.attr('cursor', 'pointer')
-			.on('click', (_: PointerEvent): void => {
+			.on('click', (): void => {
 				flightClickFx(data)
 			})
 			.on('contextmenu', (event: PointerEvent) => {

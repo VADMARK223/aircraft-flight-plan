@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 25.10.2024
  */
-import { JSX, LegacyRef, useEffect, useRef } from 'react'
+import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import { DateModel } from '../../../../models/DateModel'
 import { useStore } from 'effector-react'
 import { $style } from '../../../../store/style'

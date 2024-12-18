@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-import { JSX, LegacyRef, useEffect, useRef } from 'react'
+import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import { DateModel } from '../../../models/DateModel'
 import { DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../../utils/consts'
 import * as d3 from 'd3'

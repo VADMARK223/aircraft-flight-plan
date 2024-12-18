@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 07.12.2023
  */
-import { JSX, LegacyRef, useEffect, useRef } from 'react'
+import React,{ JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Route } from '../../models/Route'
 import { useStore } from 'effector-react'

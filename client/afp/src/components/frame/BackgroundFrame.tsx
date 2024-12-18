@@ -41,7 +41,7 @@ const BackgroundFrame = (): JSX.Element => {
 			}
 		}
 
-		container.on('click', function (_: PointerEvent) {
+		container.on('click', function () {
 			flightSelectResetFx()
 			routeSelectReset()
 		})

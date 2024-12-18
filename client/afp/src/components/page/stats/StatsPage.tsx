@@ -25,15 +25,11 @@ const StatsPage = (): JSX.Element => {
 	return (
 		<Space direction={'vertical'}>
 			<span>До Нового года осталось {diffInDays} дней!</span>
-			<Input value={followers}
-				   style={{ width: '240px' }}
-				   type={'number'}
-				   placeholder={'Введите кол-во подписчиков'}
-				   suffix={'тек. кол-во подписчиков'}
-				   onChange={(e) => {
-					   const newFollowers = Number(e.target.value)
-					   setFollowers(newFollowers)
-				   }}
+			<Input value={followers} style={{ width: '240px' }} type={'number'}
+				   placeholder={'Введите кол-во подписчиков'} suffix={'тек. кол-во подписчиков'} onChange={(e) => {
+				const newFollowers = Number(e.target.value)
+				setFollowers(newFollowers)
+			}}
 			/>
 			<span>В день подписчиков: <b style={{ color: 'red' }}>{followersInDay}</b></span>
 			<span>Осталось до 10К: <b style={{ color: 'green' }}>{FOLLOWERS_TARGET - followers}</b></span>

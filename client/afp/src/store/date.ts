@@ -18,7 +18,7 @@ export const updateDatesRangeFx = createEffect<RangeValueType<Dayjs>, RangeValue
 export const $datesRange = createStore<RangeValueType<Dayjs>>([dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')])
 // export const $datesRange = createStore<RangeValue<Dayjs>>([dayjs().startOf('day'), dayjs().startOf('day')])
 $datesRange.on(updateDatesRangeFx, (state, payload) => payload)
-$datesRange.watch((state, payload) => {
+$datesRange.watch((state) => {
 	if (state && state[0] && state[1]) {
 		const newStartDate = state[0]
 		const diffHours = state[1].add(1, 'day').diff(newStartDate, 'hours') / HOURS_IN_CELL

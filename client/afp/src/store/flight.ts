@@ -106,13 +106,11 @@ $flights.on(flightSaveFx, (flights, flight) => {
 })
 $flights.on(flightDeleteFx, (boards, flightId) => {
 	const findBoardIndex = getBoardIndexByBoardId(boards, flightId)
-	if (findBoardIndex === -1) {
-
-	} else {
+	if (findBoardIndex !== -1) {
 		return [...boards.slice(0, findBoardIndex), ...boards.slice(findBoardIndex + 1)]
 	}
 })
-$flights.on(flightsDeleteAllFx, _ => [])
+$flights.on(flightsDeleteAllFx, () => [])
 $flights.on(routeAddOrSaveFx, (flights, params: RouteAddOrSaveParams) => {
 	const { route, oldFlightId } = params
 	if (route.id == null) {// Добавление перелета

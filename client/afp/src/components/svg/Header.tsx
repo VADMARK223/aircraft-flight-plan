@@ -18,7 +18,7 @@ const Header = (): JSX.Element => {
 	const dates = useStore($dates)
 	const boards = useStore($flights)
 	const ui = useStore($ui)
-	const gRef: LegacyRef<any> = useRef<SVGGElement>(null)
+	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const width = DATE_ITEM_WIDTH * dates.length
 	const height = HEADER_HEIGHT
 

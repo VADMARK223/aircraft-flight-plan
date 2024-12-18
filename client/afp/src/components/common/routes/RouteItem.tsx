@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 07.12.2023
  */
-import { JSX, LegacyRef, useEffect, useRef } from 'react'
+import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { Route } from '../../../models/Route'
 import { $routeSelected, routeClickFx } from '../../../store/route'
@@ -40,7 +40,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		container.selectAll('*').remove()
 
 		container.attr('cursor', 'pointer')
-		container.on('click', (_: PointerEvent) => {
+		container.on('click', () => {
 			routeClickFx(data)
 		}).on('contextmenu', (event: PointerEvent) => {
 			event.preventDefault()
@@ -52,12 +52,12 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			})
 		})
 
-		const getBackgroundColor = ():string=>{
-			if(isDefault) {
+		const getBackgroundColor = (): string => {
+			if (isDefault) {
 				return greenColor
 			}
 
-			if(data.routeTypeId === RouteType.ROUTINE_MAINTENANCE) {
+			if (data.routeTypeId === RouteType.ROUTINE_MAINTENANCE) {
 				return 'gray'
 			}
 

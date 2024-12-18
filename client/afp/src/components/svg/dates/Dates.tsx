@@ -16,10 +16,7 @@ const Dates = (): JSX.Element => {
 		<g cursor={'pointer'} id={'DATES'}>
 			{/*<DatesHeader/>*/}
 			{dates.map((value, index) => (
-				<DateItem key={index}
-						  data={value}
-						  x={DATE_ITEM_WIDTH * index}
-						  y={HEADER_HEIGHT}/>))}
+				<DateItem key={index} data={value} x={DATE_ITEM_WIDTH * index} y={HEADER_HEIGHT}/>))}
 		</g>
 	)
 }

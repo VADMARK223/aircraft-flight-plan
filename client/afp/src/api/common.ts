@@ -6,7 +6,7 @@ import ky, { Options } from 'ky'
 import { ResponseDto } from '../models/dto/ResponseDto'
 import { toast } from 'react-toastify'
 
-const BASE_API_URL: string = `${process.env.REACT_APP_BASE_API_URL || 'http://localhost:8080'}/api/v1`
+const BASE_API_URL = `${process.env.REACT_APP_BASE_API_URL || 'http://localhost:8080'}/api/v1`
 
 export const commonApi = ky.create({
 	prefixUrl: BASE_API_URL,

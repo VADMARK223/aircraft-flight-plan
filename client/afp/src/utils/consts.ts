@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const SHOW_TEST_TOGGLE: boolean = false
+export const SHOW_TEST_TOGGLE = false
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
 export const FLIGHT_CELL_WIDTH = 140 // Ширина ячейки рейсов

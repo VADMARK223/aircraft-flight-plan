@@ -98,7 +98,7 @@ const RouteControl = (): JSX.Element => {
 		setAirportArrival(null)
 	}
 
-	let flightOptions: SelectProps['options'] = []
+	const flightOptions: SelectProps['options'] = []
 	flights.forEach(flight => {
 		flightOptions?.push({ value: flight.id, label: `Рейс ${flight.id}` })
 	})
@@ -132,8 +132,8 @@ const RouteControl = (): JSX.Element => {
 			return
 		}
 
-		const newStartDate: Dayjs = combineDateTime(dateRangeValue!![0], startTime)
-		const newEndDate: Dayjs = combineDateTime(dateRangeValue!![1], endTime)
+		const newStartDate: Dayjs = combineDateTime(dateRangeValue![0], startTime)
+		const newEndDate: Dayjs = combineDateTime(dateRangeValue![1], endTime)
 
 		if (newStartDate.isAfter(newEndDate)) {
 			toast.warn('Время вылета превышает или совпадает с временем прилета.')

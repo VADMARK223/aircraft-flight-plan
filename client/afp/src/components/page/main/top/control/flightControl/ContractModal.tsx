@@ -15,7 +15,7 @@ import { DictData } from '../../../../../../models/DictData'
 import { Key, TableRowSelection } from 'antd/es/table/interface'
 import { showError } from '../../../../../../api/common'
 
-const PAGE_SIZE: number = 5
+const PAGE_SIZE = 5
 
 interface ContractModalProps {
 	flight: Flight | null
@@ -24,7 +24,7 @@ interface ContractModalProps {
 	onReset: () => void
 }
 
-const DEFAULT_BUTTON_LABEL: string = 'Выберите контракт'
+const DEFAULT_BUTTON_LABEL = 'Выберите контракт'
 
 const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractModalProps): JSX.Element => {
 	const [mainButtonLabel, setMainButtonLabel] = useState<string>(DEFAULT_BUTTON_LABEL)

@@ -84,11 +84,11 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			drawAirportText(container, data.aptArrIata ?? '', textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
 		}
 
-		const timeRotate: number = -19
+		const timeRotate = -19
 		appendRotateText(container, style.textColor, x, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledDepartureDate.format('HH:mm'), timeRotate)
 		appendRotateText(container, style.textColor, x + width, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5, data.scheduledArrivalDate.format('HH:mm'), timeRotate)
 
-		const dateRotate: number = 19
+		const dateRotate = 19
 		appendRotateText(container, style.textColor, x, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		appendRotateText(container, style.textColor, x + width, y + (CELL_HEIGHT - FLIGHT_ITEM_HEIGHT) * 0.5 + FLIGHT_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y, test])

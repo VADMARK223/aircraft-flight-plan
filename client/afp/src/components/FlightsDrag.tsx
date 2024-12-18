@@ -210,8 +210,8 @@ const FlightsDrag = (): JSX.Element => {
 			const flightWidth = DATE_ITEM_WIDTH / MINUTES_IN_CELL * flightDurationMinutes
 			const oldX1: number = dateToX(flightModel.model.scheduledDepartureDate)
 			const oldX2: number = dateToX(flightModel.model.scheduledArrivalDate)
-			let flightX1: number = 0
-			let flightY: number = 0
+			let flightX1 = 0
+			let flightY = 0
 			const isDragging = flightModel.model.id === dragModelRef.current?.flight.model.id
 			const cursor: string = isDragging ? 'grabbing' : 'grab'
 			const isDefault = flightModel.model.routeTypeId === RouteType.DEFAULT

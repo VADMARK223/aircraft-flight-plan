@@ -61,7 +61,7 @@ export const drawAirportText = (svg: any, text: string, x: number, y: number): a
 	return result
 }
 
-export const appendRotateText = (svg: any, textColor: string, translateX: number, translateY: number, text: string, rotate: number, dominantBaseline: string = 'auto') => {
+export const appendRotateText = (svg: any, textColor: string, translateX: number, translateY: number, text: string, rotate: number, dominantBaseline = 'auto') => {
 	const endDateContainer = svg.append('g')
 	endDateContainer.attr('transform', `translate(${translateX},${translateY})`)
 	endDateContainer.append('text')

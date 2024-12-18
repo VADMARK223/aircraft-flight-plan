@@ -54,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/d3": "^7.4.3",
     "@types/object-mapper": "^6.2.2",
     "eslint": "^8.57.1",

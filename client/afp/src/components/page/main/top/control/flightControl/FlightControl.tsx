@@ -8,18 +8,20 @@ import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $flightSelected } from '../../../../../../store/flight'
 import { Button, Divider, Space } from 'antd'
-import { DeleteOutlined, SaveOutlined, PlusOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 import DeleteAllButton from './DeleteAllButton'
-import { requestDeleteFlightFx, requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/flight'
+import { requestAddFlightFx } from '../../../../../../api/flight'
 import { DictData } from '../../../../../../models/DictData'
 import ContractModal from './ContractModal'
+import DeleteButton from './DeleteButton'
+import SaveButton from './SaveButton'
 
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
 	const [title, setTitle] = useState<string>()
 	const [contract, setContract] = useState<DictData | null>(null)
 	const [addButtonDisabled, setAddButtonDisabled] = useState<boolean>(true)
-	const [editButtonDisabled, setEditButtonDisabled] = useState<boolean>(true)
+
 	const [resetSelection, setResetSelection] = useState<boolean>(false)
 
 	useEffect((): void => {
@@ -28,7 +30,6 @@ const FlightControl = (): JSX.Element => {
 
 	useEffect((): void => {
 		setAddButtonDisabled(contract == null)
-		setEditButtonDisabled(contract == null || selectedFlight?.contract.value === contract.value)
 	}, [contract, selectedFlight?.contract.value])
 
 	const handlerAddFlight = (): void => {
@@ -39,14 +40,6 @@ const FlightControl = (): JSX.Element => {
 
 		setContract(null)
 		setResetSelection(true)
-	}
-
-	const handlerEditFlight = (): void => {
-		if (contract != null && selectedFlight?.id) {
-			const editedFlight = { ...selectedFlight, contract: contract }
-			requestSaveFlightFx(editedFlight)
-			setEditButtonDisabled(true)
-		}
 	}
 
 	return (
@@ -65,19 +58,12 @@ const FlightControl = (): JSX.Element => {
 
 				{selectedFlight ?
 					<>
-						<Button type={'primary'}
-								icon={<SaveOutlined/>}
-								disabled={editButtonDisabled}
-								onClick={handlerEditFlight}>Сохранить</Button>
-						<Button type={'primary'}
-								danger
-								icon={<DeleteOutlined/>}
-								onClick={() => {
-									requestDeleteFlightFx(selectedFlight?.id)
-								}}>Удалить</Button>
+						<SaveButton contract={contract}/>
+						<DeleteButton/>
 					</>
 					:
 					<Button type={'primary'}
+							style={{ minWidth: 150 }}
 							icon={<PlusOutlined/>}
 							onClick={handlerAddFlight}
 							disabled={addButtonDisabled}

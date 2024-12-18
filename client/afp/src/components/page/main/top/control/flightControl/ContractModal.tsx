@@ -204,6 +204,7 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 		<>
 			<Button type={'primary'}
 					icon={<SelectOutlined/>}
+					style={{ minWidth: 200 }}
 					onClick={showContractsModal}>
 				{mainButtonLabel}
 			</Button>

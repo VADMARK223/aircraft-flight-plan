@@ -26,11 +26,11 @@ const DeleteAllButton = (): JSX.Element => {
 			cancelText={'Отмена'}
 			onConfirm={handlerConfirm}
 		>
-			<Button
-				type={'primary'}
-				danger
-				icon={<CloseOutlined/>}
-				disabled={flights.length === 0}
+			<Button type={'primary'}
+					style={{minWidth: 150}}
+					danger
+					icon={<CloseOutlined/>}
+					disabled={flights.length === 0}
 			>Удалить все</Button>
 		</Popconfirm>
 	)

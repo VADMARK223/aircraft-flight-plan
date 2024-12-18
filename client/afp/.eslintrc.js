@@ -17,10 +17,23 @@ module.exports = {
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "import"
     ],
     "rules": {
+        "import/no-cycle": ["error", {"maxDepth": 1}], // Предотвращает циклические зависимости. Опция maxDepth указывает, насколько глубоко он должен искать циклы (по умолчанию Infinity)
+        "import/no-self-import": "error", //  Предотвращает импорт файла самим собой, что иногда может быть источником циклов.
         "@typescript-eslint/no-explicit-any": "off",
         "no-mixed-spaces-and-tabs": "off"
+    },
+    "settings": {
+        "react": {
+            "version": "detect" // Автоматически определяет версию React
+        },
+        "import/resolver": {
+            "typescript": { // Подключаем поддержку TypeScript
+                project: "./tsconfig.json"
+            }
+        }
     }
 }

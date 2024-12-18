@@ -192,7 +192,7 @@ const RouteControl = (): JSX.Element => {
 	}
 
 	return (
-		<Space direction={'vertical'}>
+		<Space direction={'vertical'} style={{ width: '100%' }}>
 			<Divider type={'horizontal'}
 					 orientation={'left'}
 					 className={'control-panel-divider'}>{title}</Divider>

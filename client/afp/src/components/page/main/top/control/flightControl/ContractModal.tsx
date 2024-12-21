@@ -13,27 +13,38 @@ import { Flight } from '../../../../../../models/Flight'
 import { fetchContracts } from '../../../../../../api/dict'
 import { DictData } from '../../../../../../models/DictData'
 import { Key, TableRowSelection } from 'antd/es/table/interface'
-import { showError } from '../../../../../../api/common'
+import Checkbox from 'antd/es/checkbox/Checkbox'
+import { emptyFlight } from './FlightControl'
 
 const PAGE_SIZE = 5
 
 interface ContractModalProps {
-	flight: Flight | null
-	onApply: (contract: DictData) => void
-	resetSelection: boolean
-	onReset: () => void
+	selectedFlight: Flight | null,
+	outFlightState: [Flight, React.Dispatch<React.SetStateAction<Flight>>]
+	inFlightState: [Flight, React.Dispatch<React.SetStateAction<Flight>>]
+	onApply: (autoAddSave: boolean) => void
+	applyButtonDisabled: boolean
+	isNewFlight: boolean
 }
 
-const DEFAULT_BUTTON_LABEL = 'Выберите контракт'
+const DEFAULT_BUTTON_LABEL = 'Выбор контракта'
 
-const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractModalProps): JSX.Element => {
+const ContractModal = ({
+						   selectedFlight,
+						   inFlightState,
+						   outFlightState,
+						   onApply,
+						   applyButtonDisabled,
+						   isNewFlight
+					   }: ContractModalProps): JSX.Element => {
+	const [inFlight, setInFlight] = inFlightState
+	const [outFlight, setOutFlight] = outFlightState  // Выходящий рейс
 	const [mainButtonLabel, setMainButtonLabel] = useState<string>(DEFAULT_BUTTON_LABEL)
 	const [title, setTitle] = useState<string | null>(null)
 	const [isContractsModalOpen, setIsContractsModalOpen] = useState<boolean>(false)
 	const [currentPage, setCurrentPage] = useState<number>(1)
 	const [data, setData] = useState<DictData[]>([])
-	const [rowSelected, setRowSelected] = useState<DictData | null>(null)
-	const [applyButtonDisabled, setApplyButtonDisabled] = useState<boolean>(true)
+	const [autoAddSave, setAutoAddSave] = useState<boolean>(true)
 
 	const getModalWidth = (): number => {
 		const screenWidth = window.innerWidth
@@ -42,6 +53,47 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 
 	const [modalWidth, setModalWidth] = useState<number>(getModalWidth())
 	const buttonApplyRef = useRef<HTMLButtonElement>(null)
+
+	useEffect(() => {
+		setInFlight(selectedFlight || emptyFlight)
+	}, [selectedFlight])
+
+	useEffect(() => {
+		setOutFlight(inFlight.id !== -1 ? inFlight : emptyFlight)
+	}, [inFlight])
+
+	// Установка заголовка модального окна
+	useEffect(() => {
+		let result: string
+		if (isNewFlight) {
+			if (outFlight.contract.value === -1) {
+				result = 'Выберите контракт для нового рейса'
+			} else {
+				result = `Для нового рейса контракт будет: '${outFlight.contract.value}'`
+			}
+		} else {
+			if (inFlight.contract.value === outFlight.contract.value) {
+				result = `Для рейса '${inFlight.id}'. Старый и новый контракты совпадают`
+			} else {
+				result = `Для рейса '${inFlight.id}'. Старый контракт: '${inFlight.contract.value}' новый: '${outFlight.contract.value}'`
+			}
+		}
+		setTitle(result)
+	}, [isNewFlight, inFlight, outFlight])
+
+	// Установка подписи кнопки вызова модального окна
+	useEffect(() => {
+		if (isNewFlight) {
+			if (outFlight.contract.value !== -1) {
+				setMainButtonLabel(`Новый контракт: ${outFlight.contract.value}`)
+			} else {
+				setMainButtonLabel(DEFAULT_BUTTON_LABEL)
+			}
+
+		} else {
+			setMainButtonLabel(DEFAULT_BUTTON_LABEL)
+		}
+	}, [isNewFlight, outFlight])
 
 	useEffect(() => {
 		const handlerKeyDown = (event: KeyboardEvent) => {
@@ -67,46 +119,6 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 		}
 
 	}, [isContractsModalOpen])
-
-	useEffect((): void => {
-		setRowSelected(flight != null ? flight.contract : null)
-	}, [flight])
-
-	useEffect((): void => {
-		let resultButtonLabel: string = DEFAULT_BUTTON_LABEL
-		let resultTitle: string
-		if (flight != null) {
-			if(rowSelected != null) {
-				resultButtonLabel = `Контракт: ${rowSelected.value}`
-			}
-
-			if (flight.contract.value === rowSelected?.value) {
-				resultTitle = `Для рейса '${flight.id}'. Старый и новый контракты совпадают`
-			} else {
-				resultTitle = `Для рейса '${flight.id}'. Старый контракт: '${flight.contract.value}' новый: '${rowSelected?.value}'`
-			}
-		} else {
-			if (rowSelected != null) {
-				resultButtonLabel = `Контракт: ${rowSelected.value}`
-				resultTitle = `Для нового рейса контракт будет: '${rowSelected.value}'`
-			} else {
-				resultTitle = 'Выберите контракт для нового рейса'
-			}
-		}
-		setMainButtonLabel(resultButtonLabel)
-		setTitle(resultTitle)
-	}, [flight, rowSelected])
-
-	useEffect((): void => {
-		if (resetSelection) {
-			setRowSelected(null)
-			onReset()
-		}
-	}, [resetSelection, onReset])
-
-	useEffect(() => {
-		setApplyButtonDisabled(!rowSelected || flight?.contract.value === rowSelected?.value)
-	}, [rowSelected, flight])
 
 	const handleWindowResize = useCallback((): void => {
 		setModalWidth(getModalWidth())
@@ -140,7 +152,7 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 			fixed: 'right',
 			render: (_: undefined, record: DictData): JSX.Element | undefined => {
 				if (record.value >= 0) {
-					return (<Button danger>Удалить</Button>)
+					return (<Button danger disabled>Удалить</Button>)
 				}
 			}
 		}
@@ -153,11 +165,10 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 	const hideContractsModal = (): void => {
 		setIsContractsModalOpen(false)
 		setCurrentPage(1)
-
-		if (flight != null) {
-			setRowSelected(flight.contract)
+		if (isNewFlight) {
+			setOutFlight(emptyFlight)
 		} else {
-			setRowSelected(null)
+			setOutFlight(inFlight)
 		}
 	}
 
@@ -193,12 +204,19 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 
 	const getSelectionConfig = (): TableRowSelection<DictData> => ({
 		type: 'radio',
-		selectedRowKeys: rowSelected ? [rowSelected.value] : [],
+		selectedRowKeys: [outFlight.contract.value],
 		getCheckboxProps: getCheckboxProps,
 		onChange: (_selectedRowKeys: Key[], selectedRows: DictData[]) => {
-			setRowSelected(selectedRows[0])
+			if (inFlight) {
+				setOutFlight({ ...outFlight, contract: selectedRows[0] })
+			}
 		}
 	})
+
+	const handleApplyButton = (): void => {
+		setIsContractsModalOpen(false)
+		onApply(autoAddSave)
+	}
 
 	return (
 		<>
@@ -215,19 +233,16 @@ const ContractModal = ({ flight, onApply, resetSelection, onReset }: ContractMod
 				onCancel={hideContractsModal}
 				style={{ top: 20 }}
 				footer={[
+					<Checkbox key={'checkbox'}
+							  checked={autoAddSave}
+							  onChange={e => setAutoAddSave(e.target.checked)}>
+						Автоматически {isNewFlight ? 'добавлять' : 'сохранять'} после применения</Checkbox>,
 					<Button key={'cancel'} onClick={hideContractsModal}>Отмена</Button>,
 					<Button key={'apply'}
 							ref={buttonApplyRef}
 							type={'primary'}
 							disabled={applyButtonDisabled}
-							onClick={() => {
-								setIsContractsModalOpen(false)
-								if (rowSelected != null) {
-									onApply(rowSelected)
-								} else {
-									showError('Не выбран контракт')
-								}
-							}}>Применить</Button>
+							onClick={handleApplyButton}>Применить</Button>
 				]}
 				width={modalWidth}>
 				<Table

@@ -1,6 +1,6 @@
 import { createEffect } from 'effector/compat'
 import { Flight, FlightSchema, FlightsSchema } from '../models/Flight'
-import { apiPost, apiGet, showSuccess, showError } from './common'
+import { apiPost, apiGet, showSuccess, showError, showWarn } from './common'
 import { flightSelectResetFx } from '../store/flight'
 import { DictData } from '../models/DictData'
 
@@ -27,15 +27,21 @@ export const safeParseFlights = (flightsFromServer: Flight[]): Flight[] => {
 }
 
 export const requestAddFlightFx = createEffect<DictData, Flight | null>(async (contract: DictData) => {
-	return await apiPost<Flight>('flight/add_flight', {
+	const response: Flight = await apiPost<Flight>('flight/add_flight', {
 		json: contract
 	})
+
+	showSuccess(`Добавлен новый рейс: '${response.id}'.`)
+
+	return response
 })
 
 export const requestDeleteFlightFx = createEffect<number, number | null>(async (flightId: number) => {
-	return await apiPost<number>('flight/delete_flight', {
+	const response: number = await apiPost<number>('flight/delete_flight', {
 		json: flightId
 	})
+	showWarn(`Рейс: '${response}' удален.`)
+	return response
 })
 
 export const requestSaveFlightFx = createEffect<Flight, Flight | null>(async (flight: Flight) => {

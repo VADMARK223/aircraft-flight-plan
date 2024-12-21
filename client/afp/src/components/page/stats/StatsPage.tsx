@@ -9,8 +9,8 @@ import dayjs from 'dayjs'
 import { Space } from 'antd'
 import Input from 'antd/es/input/Input'
 
-const CURRENT_FOLLOWERS = 8_838
-const FOLLOWERS_TARGET = 10_000
+const CURRENT_FOLLOWERS = 9_121
+const FOLLOWERS_TARGET = 10_008
 
 const StatsPage = (): JSX.Element => {
 	const [followers, setFollowers] = useState<number>(CURRENT_FOLLOWERS)

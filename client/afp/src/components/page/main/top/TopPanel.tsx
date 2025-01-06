@@ -5,7 +5,6 @@
  * @since 18.12.2024
  */
 import React, { JSX } from 'react'
-import InfoPanel from './InfoPanel'
 import { Space } from 'antd'
 import FlightControl from './control/flightControl/FlightControl'
 import RouteControl from './control/routeControl/RouteControl'
@@ -23,7 +22,7 @@ const TopPanel = (): JSX.Element => {
 					<DateControl/>
 				</Space>
 			</div>
-			<InfoPanel/>
+			{/*<InfoPanel/>*/}
 		</div>
 	)
 }

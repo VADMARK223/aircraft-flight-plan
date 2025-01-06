@@ -9,6 +9,7 @@ import { useLocation } from 'react-router'
 import { Space, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import { HomeOutlined, SettingOutlined, BarsOutlined } from '@ant-design/icons'
+import InfoPanel from '../page/main/top/InfoPanel'
 
 const Navigation = (): JSX.Element => {
 	return (
@@ -17,10 +18,10 @@ const Navigation = (): JSX.Element => {
 				<NavigationLink to={'/'} icon={<HomeOutlined/>} label={'Главная'}/>
 				<NavigationLink to={'/settings'} icon={<SettingOutlined/>} label={'Настройки'}/>
 				<NavigationLink to={'/stats'} icon={<BarsOutlined/>} label={'Статистика'}/>
+				<InfoPanel/>
 			</Space>
 		</nav>
 	)
-
 }
 
 interface NavigationLinkProps {

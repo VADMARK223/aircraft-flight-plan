@@ -6,7 +6,7 @@ import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
  * @author Markitanov Vadim
  * @since 23.11.2023
  */
-export const USER_TIME_ZONE: string = Intl.DateTimeFormat().resolvedOptions().timeZone
+export const LOCAL_TIME_ZONE: string = Intl.DateTimeFormat().resolvedOptions().timeZone
 const OFFSET_HOURS = -(new Date().getTimezoneOffset() / 60)
 export const FORMATTED_OFFSET = `GMT${OFFSET_HOURS >= 0 ? '+' : ''}${OFFSET_HOURS}:00`
 

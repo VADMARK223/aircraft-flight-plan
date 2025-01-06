@@ -8,7 +8,7 @@
 import { Flight } from '../models/Flight'
 import { createEffect } from 'effector/compat'
 import { createEvent, createStore, sample } from 'effector'
-import { $routeSelected, routeAddOrSaveFx, routeDeleteFx, routeSelectReset, RouteAddOrSaveParams } from './route'
+import { $routeSelected, routeAddOrSaveFx, routeSelectReset, RouteAddOrSaveParams } from './route'
 import { toast } from 'react-toastify'
 import { getBoardIndexByBoardId } from '../utils/board'
 import {
@@ -162,30 +162,6 @@ $flights.on(routeAddOrSaveFx, (flights, params: RouteAddOrSaveParams) => {
 		}
 		return result
 	}
-})
-$flights.on(routeDeleteFx, (flights, route) => {
-	const routeId = route.id
-	let findBoardIndex = -1, findFlightIndex = -1, stopFind = false
-	for (let i = 0; i < flights.length; i++) {
-		if (stopFind) {
-			break
-		}
-		const board = flights[i]
-		for (let j = 0; j < board.routes.length; j++) {
-			const flight = board.routes[j]
-			stopFind = flight.id === routeId
-			if (stopFind) {
-				findBoardIndex = flights.indexOf(board)
-				findFlightIndex = board.routes.indexOf(flight)
-				break
-			}
-		}
-	}
-
-	const newFlights = [...flights]
-	const newRoutes = [...flights[findBoardIndex].routes]
-	newFlights[findBoardIndex].routes = [...newRoutes.slice(0, findFlightIndex), ...newRoutes.slice(findFlightIndex + 1)]
-	return newFlights
 })
 
 export const flightClickFx = createEffect<Flight, Flight>('Событие клика по рейсу')

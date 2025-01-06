@@ -16,7 +16,10 @@ export const requestAddOrSaveRouteFx = createEffect<Route, Flight[]>(async (rout
 	return safeParseFlights(flightsFromServer)
 })
 
-export const requestDeleteRouteFx = createEffect<number, Flight[]>(async (routeId: number) => {
+export const requestDeleteRouteFx = createEffect<number | null, Flight[]>(async (routeId: number | null) => {
+	if (routeId == null) {
+		throw new Error('У удаляемого перелета пустой идентификатор.')
+	}
 	const flightsFromServer = await apiPost<Flight[]>('route/delete_route', {
 		json: routeId
 	})

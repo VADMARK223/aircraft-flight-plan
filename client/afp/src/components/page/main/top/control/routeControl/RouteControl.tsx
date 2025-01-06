@@ -304,11 +304,7 @@ const RouteControl = (): JSX.Element => {
 								style={{ width: '160px' }}
 								onClick={() => {
 									if (routeSelected) {
-										if (routeSelected.id != null) {
-											requestDeleteRouteFx(routeSelected.id)
-										} else {
-											showWarn('У удаляемого перелета пустой идентификатор.')
-										}
+										requestDeleteRouteFx(routeSelected.id)
 									} else {
 										showWarn('Перелет не выбраню')
 									}

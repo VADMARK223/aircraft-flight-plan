@@ -10,7 +10,7 @@ import { $test, setTest, TEST_LOCAL_STORAGE_KEY, TEST_LOCAL_STORAGE_VALUE } from
 import { Space, Tooltip, Switch } from 'antd'
 import { SHOW_TEST_TOGGLE } from '../../../../utils/consts'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
-import { USER_TIME_ZONE, FORMATTED_OFFSET } from '../../../../utils/utils'
+import { LOCAL_TIME_ZONE, FORMATTED_OFFSET } from '../../../../utils/utils'
 
 const InfoPanel = (): JSX.Element => {
 	const test = useStore($test)
@@ -41,7 +41,7 @@ const InfoPanel = (): JSX.Element => {
 			}
 			<Space direction={'horizontal'}>
 				<span>Временная зона:</span>
-				<b>{USER_TIME_ZONE + ' ' + FORMATTED_OFFSET}</b>
+				<b>{LOCAL_TIME_ZONE + ' ' + FORMATTED_OFFSET}</b>
 			</Space>
 		</Space>
 	)

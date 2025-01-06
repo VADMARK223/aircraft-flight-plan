@@ -11,12 +11,13 @@ import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
 import * as d3 from 'd3'
 import RouteItem from '../../../common/routes/RouteItem'
 import ContextMenu from '../../../common/ContextMenu'
-import { routeClickFx, routeDeleteFx } from '../../../../store/route'
+import { routeClickFx } from '../../../../store/route'
 import { useStore } from 'effector-react'
 import { $contextMenu } from '../../../../store/contextMenu'
 import { $flights } from '../../../../store/flight'
 import { $dates, $datesRange } from '../../../../store/date'
 import { CommonProps } from '../../../common/CommonProps'
+import { requestDeleteRouteFx } from '../../../../api/route'
 
 const Routes = ({ x, y }: CommonProps): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -81,7 +82,7 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 					}, {
 						title: 'Удалить',
 						action: (datum: Route | Flight) => {
-							routeDeleteFx(datum as Route)
+							requestDeleteRouteFx((datum as Route).id)
 						}
 					}
 				]}/>}

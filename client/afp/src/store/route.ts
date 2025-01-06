@@ -2,6 +2,7 @@ import { createEvent, createStore } from 'effector'
 import { Route } from '../models/Route'
 import { createEffect } from 'effector/compat'
 import { Flight } from '../models/Flight'
+import { requestDeleteRouteFx } from '../api/route'
 
 /**
  * Хранилище перелетов.
@@ -36,9 +37,8 @@ export type RouteAddOrSaveParams = {
 	oldFlightId?: number
 }
 export const routeAddOrSaveFx = createEffect<RouteAddOrSaveParams, Flight[]>()
-export const routeDeleteFx = createEffect<Route, Flight[]>()
 
-routeDeleteFx.watch(() => {
+requestDeleteRouteFx.doneData.watch(() => {
 	routeSelectReset()
 })
 

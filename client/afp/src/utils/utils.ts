@@ -54,6 +54,7 @@ export const drawAirportText = (svg: any, text: string, x: number, y: number): a
 	result.attr('x', x)
 	result.attr('y', y)
 	result.attr('font-size', 11)
+	result.attr('font-weight', 'bold')
 	result.attr('fill', 'white')
 	result.attr('text-anchor', 'start')
 	result.attr('dominant-baseline', 'hanging')

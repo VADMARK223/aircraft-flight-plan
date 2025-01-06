@@ -9,7 +9,7 @@ import { Flight } from '../../../../models/Flight'
 import { Route } from '../../../../models/Route'
 import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
 import * as d3 from 'd3'
-import RouteItem from '../../../common/routes/RouteItem'
+import RouteItem, { CropType } from '../../../common/routes/RouteItem'
 import ContextMenu from '../../../common/ContextMenu'
 import { routeClickFx } from '../../../../store/route'
 import { useStore } from 'effector-react'
@@ -47,6 +47,7 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 									let startX = scaleTime(flight.scheduledDepartureDate.toDate())
 									const endX = scaleTime(flight.scheduledArrivalDate.toDate())
 									let w = endX - startX
+									let cropType = CropType.NONE
 
 									if (endX <= 0 || startX >= rangeEnd) {
 										return undefined
@@ -55,6 +56,12 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 									if (startX <= 0) {
 										startX = 0
 										w = endX
+										cropType = CropType.START
+									}
+
+									if (endX >= rangeEnd) {
+										w = rangeEnd - startX
+										cropType = CropType.END
 									}
 
 									return (
@@ -64,6 +71,7 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 											y={CELL_HEIGHT * flightIndex}
 											width={w}
 											data={flight}
+											cropType={cropType}
 										/>)
 								}
 							)

@@ -7,14 +7,13 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $flightSelected } from '../../../../../../store/flight'
-import { Button, Divider, Space } from 'antd'
-import { SaveOutlined, PlusOutlined } from '@ant-design/icons'
+import { Divider, Space, Switch } from 'antd'
 import DeleteAllButton from './DeleteAllButton'
-import ContractModal from './ContractModal'
-import { Flight } from '../../../../../../models/Flight'
-import { showError } from '../../../../../../api/common'
-import { requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/flight'
 import DeleteButton from './DeleteButton'
+import FlightControlModal from './FlightControlModal'
+import FlightControlSelect from './FlightControlSelect'
+import { Flight } from '../../../../../../models/Flight'
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 
 export const emptyFlight: Flight = {
 	id: -1,
@@ -25,62 +24,14 @@ export const emptyFlight: Flight = {
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
 	const [title, setTitle] = useState<string>()
-	const [addSaveButtonDisabled, setAddSaveButtonDisabled] = useState<boolean>(true)
-	const inFlightState = useState<Flight>(emptyFlight)  // Выходящий рейс
-	const outFlightState = useState<Flight>(emptyFlight)  // Выходящий рейс
-	const [isNewFlight, setIsNewFlight] = useState<boolean>(true)
+	const [modalMode, setModalMode] = useState<boolean>(true)
 
 	useEffect((): void => {
 		setTitle(selectedFlight != null ? `Изменение рейса ${selectedFlight.id} (Контракт: ${selectedFlight.contract.value})` : 'Добавление рейса')
 	}, [selectedFlight])
 
-	useEffect(() => {
-		setIsNewFlight(inFlightState[0].id === -1)
-	}, [inFlightState[0]])
-
-	// Настройка доступности кнопки применения
-	useEffect(() => {
-		let result: boolean
-		// Если новый рейс и у него выбран контракт
-		if (isNewFlight && outFlightState[0].contract.value !== -1) {
-			result = false
-		} else {
-			result = inFlightState[0].contract.value === outFlightState[0].contract.value
-		}
-		setAddSaveButtonDisabled(result)
-	}, [inFlightState[0], outFlightState[0]])
-
-	/**
-	 * Хендлер добавления/сохранения рейса
-	 */
-	const handleAddSaveFlight = (): void => {
-		if (outFlightState[0] == null) {
-			showError('Рейс пустой.')
-			return
-		}
-
-		if (outFlightState[0].contract.value === -1) {
-			showError('Контракт не выбран у рейса.')
-			return
-		}
-
-		if (isNewFlight) {
-			requestAddFlightFx(outFlightState[0].contract)
-		} else {
-			requestSaveFlightFx(outFlightState[0])
-		}
-
-		outFlightState[1](emptyFlight)
-	}
-
-	/**
-	 * Хендлер применения в модальном окне
-	 * @param {boolean} autoAddSave - флаг авто добавления / сохранения.
-	 */
-	const handleModalApply = (autoAddSave: boolean): void => {
-		if (autoAddSave) {
-			handleAddSaveFlight()
-		}
+	const onModeChangeHandler = (value: boolean) => {
+		setModalMode(value)
 	}
 
 	return (
@@ -89,21 +40,13 @@ const FlightControl = (): JSX.Element => {
 					 orientation={'left'}
 					 className={'control-panel-divider'}>{title}</Divider>
 			<Space>
-				<ContractModal selectedFlight={selectedFlight}
-							   inFlightState={inFlightState}
-							   outFlightState={outFlightState}
-							   onApply={handleModalApply}
-							   applyButtonDisabled={addSaveButtonDisabled}
-							   isNewFlight={isNewFlight}
+				<Switch
+					checkedChildren={'Модальное'}
+					unCheckedChildren={'Селектор'}
+					onChange={onModeChangeHandler}
+					defaultChecked={modalMode}
 				/>
-
-				<Button type={'primary'}
-						style={{ minWidth: 150 }}
-						icon={isNewFlight ? <PlusOutlined/> : <SaveOutlined/>}
-						onClick={handleAddSaveFlight}
-						disabled={addSaveButtonDisabled}
-				>{isNewFlight ? 'Добавить' : 'Сохранить'}</Button>
-
+				{modalMode ? <FlightControlModal/> : <FlightControlSelect/>}
 				{selectedFlight ? <DeleteButton/> : undefined}
 				<DeleteAllButton/>
 			</Space>

@@ -5,7 +5,7 @@
  * @since 07.12.2023
  */
 import React, { JSX } from 'react'
-import { Button, Popconfirm } from 'antd'
+import { Button, Popconfirm, Tooltip } from 'antd'
 import { $flights } from '../../../../../../store/flight'
 import { useStore } from 'effector-react'
 import { requestDeleteAllFlightsFx } from '../../../../../../api/flight'
@@ -26,12 +26,14 @@ const DeleteAllButton = (): JSX.Element => {
 			cancelText={'Отмена'}
 			onConfirm={handlerConfirm}
 		>
-			<Button type={'primary'}
-					style={{minWidth: 150}}
-					danger
-					icon={<CloseOutlined/>}
-					disabled={flights.length === 0}
-			>Удалить все</Button>
+			<Tooltip title={'Удалить все рейсы'}>
+				<Button type={'primary'}
+						style={{minWidth: 150}}
+						danger
+						icon={<CloseOutlined/>}
+						disabled={flights.length === 0}
+				>Удалить все</Button>
+			</Tooltip>
 		</Popconfirm>
 	)
 }

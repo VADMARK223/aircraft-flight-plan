@@ -1,7 +1,5 @@
-INSERT INTO contract (contract_id, name) VALUES (999, 'Контракт Бишкека');
-INSERT INTO contract (contract_id, name) VALUES (888, 'Контракт Москвы');
-INSERT INTO contract (contract_id, name) VALUES (111, 'Контракт Каракола');
-INSERT INTO contract (contract_id, name) VALUES (222, 'Asman Airlines');
+INSERT INTO contract (name) VALUES ( 'Контракт Москвы');
+INSERT INTO contract (name) VALUES ( 'Контракт Лондона');
 
 INSERT INTO flight (contract_id) VALUES (999);
 INSERT INTO flight (contract_id) VALUES (888);

@@ -20,7 +20,7 @@ import { requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/f
 import { emptyFlight } from './FlightControl'
 
 const DEFAULT_BUTTON_LABEL = 'Добавление рейса'
-const PAGE_SIZE = 5
+const PAGE_SIZE = 3
 
 const FlightControlModal = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)

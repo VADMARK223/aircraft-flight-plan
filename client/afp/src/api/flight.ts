@@ -1,7 +1,6 @@
 import { createEffect } from 'effector/compat'
 import { Flight, FlightSchema, FlightsSchema } from '../models/Flight'
 import { apiPost, apiGet, showSuccess, showError, showWarn } from './common'
-import { flightSelectResetFx } from '../store/flight'
 import { DictData } from '../models/DictData'
 
 /**
@@ -57,9 +56,7 @@ export const requestSaveFlightFx = createEffect<Flight, Flight | null>(async (fl
 	}
 	const parsedFlight: Flight = resultParse.data
 
-	showSuccess(`Рейса: '${parsedFlight.id}' теперь контракт: '${parsedFlight.contract.value}'.`)
-
-	flightSelectResetFx()
+	showSuccess(`У рейса: '${parsedFlight.id}' теперь контракт: '${parsedFlight.contract.value}'.`)
 
 	return parsedFlight
 })

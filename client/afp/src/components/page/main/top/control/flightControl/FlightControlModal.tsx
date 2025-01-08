@@ -18,6 +18,7 @@ import { Flight } from '../../../../../../models/Flight'
 import { showError } from '../../../../../../api/common'
 import { requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/flight'
 import { emptyFlight } from './FlightControl'
+import { requestDeleteContractFx } from '../../../../../../api/contract'
 
 const DEFAULT_BUTTON_LABEL = 'Добавление рейса'
 const PAGE_SIZE = 3
@@ -133,7 +134,7 @@ const FlightControlModal = (): JSX.Element => {
 
 	const resetCurrentFlight = (): void => {
 
-			setCurrentFlight(emptyFlight)
+		setCurrentFlight(emptyFlight)
 
 	}
 
@@ -158,7 +159,7 @@ const FlightControlModal = (): JSX.Element => {
 			fixed: 'right',
 			render: (_: undefined, record: DictData): JSX.Element | undefined => {
 				if (record.value >= 0) {
-					return (<Button danger disabled>Удалить</Button>)
+					return (<Button danger onClick={() => requestDeleteContractFx(record.value)}>Удалить</Button>)
 				}
 			}
 		}

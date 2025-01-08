@@ -187,3 +187,8 @@ const getMaxRouteId = (flights: Flight[]): number => {
 		return Math.max(maxId, flightMax) // обновить общий максимум
 	}, -Infinity)
 }
+
+requestSaveFlightFx.doneData.watch(() => {
+	console.log('AFTER SAVE')
+	flightSelectResetFx()
+})

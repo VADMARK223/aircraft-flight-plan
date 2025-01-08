@@ -179,7 +179,9 @@ const RouteControl = (): JSX.Element => {
 
 	const handlerGenerateRoute = () => {
 		if (flightId === undefined || flightSelected == null) {
-			setFlightId(flights[getRandomNumber(0, flights.length)].id)
+			if (flights.length !== 0) {
+				setFlightId(flights[getRandomNumber(0, flights.length)].id)
+			}
 		}
 		setRouteType(routeTypes[getRandomNumber(0, routeTypes.length)].value)
 		const scheduledDepartureDate = dayjs().startOf('day').add(0, 'hours')

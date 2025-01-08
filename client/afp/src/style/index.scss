@@ -37,3 +37,13 @@ body {
 .fixed-height-row {
   height: 64.8px;
 }
+
+// Однотонный переключатель
+.monochromatic-switch.ant-switch,
+.monochromatic-switch.ant-switch-checked {
+  background-color: #1677ff;
+}
+.monochromatic-switch.ant-switch:hover,
+.monochromatic-switch.ant-switch-checked:hover {
+  background-color: #4096ff;
+}

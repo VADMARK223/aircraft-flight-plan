@@ -7,8 +7,9 @@
 import React, { JSX } from 'react'
 import { Space, Switch } from 'antd'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
-import { setDarkTheme, THEME_LOCAL_STORAGE_KEY, THEME_LOCAL_STORAGE_VALUE, $style } from '../../../store/style'
+import { setDarkTheme, LocalStoreValue, $style, LocalStoreKey } from '../../../store/style'
 import { useStore } from 'effector-react'
+import FlightEditorModeSwitcher from './FlightEditorModeSwitcher'
 
 const SettingsPage = (): JSX.Element => {
 	const style = useStore($style)
@@ -16,9 +17,9 @@ const SettingsPage = (): JSX.Element => {
 	const onStyleChangeHandler = (value: boolean): void => {
 		setDarkTheme(value)
 		if (value) {
-			localStorage.setItem(THEME_LOCAL_STORAGE_KEY, THEME_LOCAL_STORAGE_VALUE)
+			localStorage.setItem(LocalStoreKey.THEME, LocalStoreValue.THEME)
 		} else {
-			localStorage.removeItem(THEME_LOCAL_STORAGE_KEY)
+			localStorage.removeItem(LocalStoreKey.THEME)
 		}
 	}
 
@@ -32,6 +33,10 @@ const SettingsPage = (): JSX.Element => {
 					onChange={onStyleChangeHandler}
 					defaultChecked={style.isDarkTheme}
 				/>
+			</Space>
+			<Space direction={'horizontal'}>
+				<span>Режим редактирования рейса:</span>
+				<FlightEditorModeSwitcher/>
 			</Space>
 		</Space>
 	)

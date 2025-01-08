@@ -9,30 +9,25 @@ import { useLocation } from 'react-router'
 import { Space, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import { HomeOutlined, SettingOutlined, BarsOutlined } from '@ant-design/icons'
-import InfoPanel from '../page/main/top/InfoPanel'
+import { Paths } from './Paths'
 
 const Navigation = (): JSX.Element => {
 	return (
 		<nav>
-			<div style={{display: 'flex', justifyContent: 'space-between' }}>
-				<Space align={'center'}>
-					<NavigationLink to={'/'} icon={<HomeOutlined/>} label={'Главная'}/>
-					<NavigationLink to={'/settings'} icon={<SettingOutlined/>} label={'Настройки'}/>
-					{/*<NavigationLink to={'/stats'} icon={<BarsOutlined/>} label={'Статистика'}/>*/}
-				</Space>
-				<div style={{flexShrink: 0}}>
-					<InfoPanel/>
-				</div>
-			</div>
+			<Space align={'center'}>
+				<NavigationLink to={Paths.HOME} icon={<HomeOutlined/>} label={'Главная'}/>
+				<NavigationLink to={Paths.SETTINGS} icon={<SettingOutlined/>} label={'Настройки'}/>
+				<NavigationLink to={Paths.STATS} icon={<BarsOutlined/>} label={'Статистика'}/>
+			</Space>
 		</nav>
-)
+	)
 }
 
 interface NavigationLinkProps {
 	to: string,
-		icon
-:
-	React.ReactNode
+	icon
+		:
+		React.ReactNode
 	label: string
 }
 

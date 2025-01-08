@@ -21,7 +21,7 @@ import { EMPTY_FLIGHT } from '../../../../../../utils/flight'
 import { $contracts } from '../../../../../../store/contract'
 
 const DEFAULT_BUTTON_LABEL = 'Добавление рейса'
-const PAGE_SIZE = 3
+const PAGE_SIZE = 5
 
 const FlightControlModal = (): JSX.Element => {
 	const store = useStore($contracts)
@@ -37,7 +37,6 @@ const FlightControlModal = (): JSX.Element => {
 		return screenWidth > 1200 ? 1000 : screenWidth * 0.9
 	}
 	const [modalWidth, setModalWidth] = useState<number>(getModalWidth())
-	// const [data, setData] = useState<DictData[]>([])
 	const buttonApplyRef = useRef<HTMLButtonElement>(null)
 	const [applyButtonLabel, setApplyButtonLabel] = useState<string | null>('Добавить')
 	const [applyButtonDisabled, setApplyButtonDisabled] = useState<boolean>(true)
@@ -85,12 +84,6 @@ const FlightControlModal = (): JSX.Element => {
 			}
 		}
 		if (isModalOpen) {
-			// fetchContractsFx().then((contracts: DictData[]) => {
-			// 	if (contracts.length !== 0) {
-			// 		setData(contracts)
-			// 	}
-			// })
-
 			document.addEventListener('keydown', handlerKeyDown)
 		} else {
 			document.removeEventListener('keydown', handlerKeyDown)

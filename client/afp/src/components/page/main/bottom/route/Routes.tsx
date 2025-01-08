@@ -5,19 +5,19 @@
  * @since 03.11.2024
  */
 import React, { JSX, LegacyRef, useRef } from 'react'
-import { Flight } from '../../../../models/Flight'
-import { Route } from '../../../../models/Route'
-import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
+import { Flight } from '../../../../../models/Flight'
+import { Route } from '../../../../../models/Route'
+import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../../../../utils/consts'
 import * as d3 from 'd3'
-import RouteItem, { CropType } from '../../../common/routes/RouteItem'
-import ContextMenu from '../../../common/ContextMenu'
-import { routeClickFx } from '../../../../store/route'
+import RouteItem, { CropType } from './RouteItem'
+import ContextMenu from '../../../../common/ContextMenu'
+import { routeClickFx } from '../../../../../store/route'
 import { useStore } from 'effector-react'
-import { $contextMenu } from '../../../../store/contextMenu'
-import { $flights } from '../../../../store/flight'
-import { $dates, $datesRange } from '../../../../store/date'
-import { CommonProps } from '../../../common/CommonProps'
-import { requestDeleteRouteFx } from '../../../../api/route'
+import { $contextMenu } from '../../../../../store/contextMenu'
+import { $flights } from '../../../../../store/flight'
+import { $dates, $datesRange } from '../../../../../store/date'
+import { CommonProps } from '../../../../common/CommonProps'
+import { requestDeleteRouteFx } from '../../../../../api/route'
 
 const Routes = ({ x, y }: CommonProps): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -53,7 +53,7 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 										return undefined
 									}
 
-									if (startX <= 0) {
+									if (startX < 0) {
 										startX = 0
 										w = endX
 										cropType = CropType.START

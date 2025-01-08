@@ -19,7 +19,7 @@ import { $dates } from '../../../../store/date'
 import DatesPanel from './DatesPanel'
 import Flights from './Flights'
 import { $flights } from '../../../../store/flight'
-import Routes from './Routes'
+import Routes from './route/Routes'
 import Background from './Background'
 
 const SCROLL_SIZE = 20

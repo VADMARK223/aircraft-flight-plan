@@ -6,10 +6,14 @@
  */
 import React, { JSX } from 'react'
 import Navigation from './Navigation'
+import InfoPanel from './InfoPanel'
 
 const Header = (): JSX.Element => {
 	return (
-		<Navigation/>
+		 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+			<Navigation/>
+			<InfoPanel/>
+		</div>
 	)
 }
 

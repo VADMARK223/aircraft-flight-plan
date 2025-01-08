@@ -6,17 +6,16 @@
  */
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { Route } from '../../../models/Route'
-import { $routeSelected, routeClickFx } from '../../../store/route'
-import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, ROUTE_ITEM_HEIGHT } from '../../../utils/consts'
-import { $style, StyleStore } from '../../../store/style'
+import { Route } from '../../../../../models/Route'
+import { $routeSelected, routeClickFx } from '../../../../../store/route'
+import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, ROUTE_ITEM_HEIGHT } from '../../../../../utils/consts'
+import { $style, StyleStore } from '../../../../../store/style'
 import { useStore } from 'effector-react'
-import { appendRotateText, drawAirportText, drawText } from '../../../utils/utils'
-import { RouteType } from '../../../models/type/RouteType'
-import { greenColor } from '../../../utils/style'
-import { setContextMenuFx } from '../../../store/contextMenu'
-import { $ui } from '../../../store/ui'
-import { $test } from '../../../store/test'
+import { appendRotateText, drawAirportText, drawText } from '../../../../../utils/utils'
+import { RouteType } from '../../../../../models/type/RouteType'
+import { greenColor } from '../../../../../utils/style'
+import { setContextMenuFx } from '../../../../../store/contextMenu'
+import { $ui } from '../../../../../store/ui'
 
 // Тип обрезки перелета
 export enum CropType {
@@ -33,6 +32,8 @@ interface FlightItemProps {
 	cropType: CropType
 }
 
+const CROP_MARKER_COLOR = 'black'
+
 const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
 	const ui = useStore($ui)
@@ -41,7 +42,6 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const isSelect = data.id === routeSelect?.id
 	const isDefault = data.routeTypeId === RouteType.DEFAULT
-	const test = useStore($test)
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)
@@ -54,8 +54,8 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			event.preventDefault()
 			setContextMenuFx({
 				isFlight: true,
-				x: test ? event.offsetX + ui.x : event.offsetX - FLIGHT_CELL_WIDTH,
-				y: test ? event.offsetY + ui.y : event.offsetY,
+				x: event.offsetX - FLIGHT_CELL_WIDTH,
+				y: event.offsetY,
 				data: data
 			})
 		})
@@ -93,14 +93,14 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 				${x},${y + (CELL_HEIGHT) * 0.5} 
 				${x + ARROW_WIDTH},${TOP_Y}
 				${x + ARROW_WIDTH},${TOP_Y + ROUTE_ITEM_HEIGHT}`)
-				.attr('fill', 'green')
+				.attr('fill', CROP_MARKER_COLOR)
 		} else if (cropType === CropType.END) {
 			container.append('polygon')
 				.attr('points', `
 				${x + width - ARROW_WIDTH},${TOP_Y}
 				${x + width},${y + (CELL_HEIGHT) * 0.5}
 				${x + width - ARROW_WIDTH},${TOP_Y + ROUTE_ITEM_HEIGHT}`)
-				.attr('fill', 'green')
+				.attr('fill', CROP_MARKER_COLOR)
 		}
 
 		if (!isDefault) {
@@ -121,7 +121,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		const dateRotate = 19
 		appendRotateText(container, style.textColor, x, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		appendRotateText(container, style.textColor, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y, test])
+	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y])
 
 	return (
 		<g ref={gRef} id={`flight-item-${data.id}`}/>

@@ -7,23 +7,25 @@
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
 import { $flightSelected } from '../../../../../../store/flight'
-import { Divider, Space, Switch } from 'antd'
+import { Divider, Space } from 'antd'
 import DeleteAllButton from './DeleteAllButton'
 import DeleteButton from './DeleteButton'
 import FlightControlModal from './FlightControlModal'
 import FlightControlSelect from './FlightControlSelect'
+import { LocalStoreKey } from '../../../../../../store/style'
+import FlightEditorModeSwitcher from '../../../../settings/FlightEditorModeSwitcher'
 
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
 	const [title, setTitle] = useState<string>()
-	const [modalMode, setModalMode] = useState<boolean>(true)
+	const [selectorMode, setSelectorMode] = useState<boolean>(!!localStorage.getItem(LocalStoreKey.FLIGHT_EDIT_MODE))
 
 	useEffect((): void => {
 		setTitle(selectedFlight != null ? `Изменение рейса ${selectedFlight.id} (Контракт: ${selectedFlight.contract.value})` : 'Добавление рейса')
 	}, [selectedFlight])
 
 	const onModeChangeHandler = (value: boolean) => {
-		setModalMode(value)
+		setSelectorMode(value)
 	}
 
 	return (
@@ -32,13 +34,8 @@ const FlightControl = (): JSX.Element => {
 					 orientation={'left'}
 					 className={'control-panel-divider'}>{title}</Divider>
 			<Space>
-				<Switch
-					checkedChildren={'Модальное'}
-					unCheckedChildren={'Селектор'}
-					onChange={onModeChangeHandler}
-					defaultChecked={modalMode}
-				/>
-				{modalMode ? <FlightControlModal/> : <FlightControlSelect/>}
+				<FlightEditorModeSwitcher callback={onModeChangeHandler}/>
+				{selectorMode ? <FlightControlSelect/> : <FlightControlModal/>}
 				{selectedFlight ? <DeleteButton/> : undefined}
 				<DeleteAllButton/>
 			</Space>

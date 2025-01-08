@@ -16,6 +16,7 @@ import MainPage from './components/page/main/MainPage'
 import SettingsPage from './components/page/settings/SettingsPage'
 import StatsPage from './components/page/stats/StatsPage'
 import ErrorPage from './components/page/ErrorPage'
+import { Paths } from './components/header/Paths'
 
 function App () {
 	const style = useStore($style)
@@ -38,13 +39,13 @@ function App () {
 	const router = createBrowserRouter(
 		[
 			{
-				path: '/',
+				path: Paths.HOME,
 				element: <RootLayout/>,
 				errorElement: <ErrorPage/>,
 				children: [
 					{ index: true, element: <MainPage/> },
-					{ path: 'settings', element: <SettingsPage/> },
-					{ path: 'stats', element: <StatsPage/> }
+					{ path: Paths.SETTINGS, element: <SettingsPage/> },
+					{ path: Paths.STATS, element: <StatsPage/> }
 				],
 			}
 		]

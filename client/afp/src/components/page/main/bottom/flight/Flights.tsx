@@ -6,13 +6,13 @@
  */
 import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { $flights, flightClickFx, flightDeleteFx } from '../../../store/flight'
+import { $flights, flightClickFx, flightDeleteFx } from '../../../../../store/flight'
 import FlightItem from './FlightItem'
-import { CELL_HEIGHT, FLIGHT_CELL_WIDTH } from '../../../utils/consts'
-import ContextMenu from '../ContextMenu'
-import { $contextMenu } from '../../../store/contextMenu'
-import { Route } from '../../../models/Route'
-import { Flight } from '../../../models/Flight'
+import { CELL_HEIGHT, FLIGHT_CELL_WIDTH } from '../../../../../utils/consts'
+import ContextMenu from '../../../../common/ContextMenu'
+import { $contextMenu } from '../../../../../store/contextMenu'
+import { Route } from '../../../../../models/Route'
+import { Flight } from '../../../../../models/Flight'
 
 const Flights = (): JSX.Element => {
 	const flights = useStore($flights)

@@ -4,9 +4,15 @@ import { createStore, createEvent } from 'effector'
  * @author Markitanov Vadim
  * @since 06.12.2023
  */
+export enum LocalStoreKey {
+	THEME = 'afp_theme',
+	FLIGHT_EDIT_MODE = 'afp_flight_edit_mode'
+}
 
-export const THEME_LOCAL_STORAGE_KEY = 'aircraft_flight_plan_theme'
-export const THEME_LOCAL_STORAGE_VALUE = 'dark'
+export enum LocalStoreValue {
+	THEME = 'dark',
+	FLIGHT_EDIT_MODE = 'selector'
+}
 
 export interface StyleStore {
 	isDarkTheme: boolean
@@ -18,7 +24,7 @@ export interface StyleStore {
 }
 
 const defaultStyleStore: StyleStore = {
-	isDarkTheme: localStorage.getItem(THEME_LOCAL_STORAGE_KEY) === THEME_LOCAL_STORAGE_VALUE,
+	isDarkTheme: localStorage.getItem(LocalStoreKey.THEME) === LocalStoreValue.THEME,
 	backgroundColor: '',
 	textColor: '',
 	lineColor: '',

@@ -1,19 +1,18 @@
 /**
- * Компонент представления перелета.
+ * Компонент представления рейса.
  *
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
 import React,{ JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { FLIGHT_CELL_WIDTH } from '../../../utils/consts'
-import { Flight } from '../../../models/Flight'
+import { FLIGHT_CELL_WIDTH } from '../../../../../utils/consts'
+import { Flight } from '../../../../../models/Flight'
 import { useStore } from 'effector-react'
-import { $style } from '../../../store/style'
-import { $flightSelected, flightClickFx } from '../../../store/flight'
-import { $test } from '../../../store/test'
-import { $ui } from '../../../store/ui'
-import { setContextMenuFx } from '../../../store/contextMenu'
+import { $style } from '../../../../../store/style'
+import { $flightSelected, flightClickFx } from '../../../../../store/flight'
+import { $ui } from '../../../../../store/ui'
+import { setContextMenuFx } from '../../../../../store/contextMenu'
 
 interface BoardItemProps {
 	data: Flight
@@ -28,7 +27,6 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 	const style = useStore($style)
 	const boardSelect = useStore($flightSelected)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-	const test = useStore($test)
 	const ui = useStore($ui)
 
 	useEffect(() => {
@@ -42,7 +40,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 				setContextMenuFx({
 					isFlight: false,
 					x: 0,
-					y: test ? event.offsetY + ui.y : event.offsetY,
+					y: event.offsetY,
 					data: data
 				})
 			})
@@ -96,7 +94,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 				.attr('stroke-width', selectStrokeWidth)
 		}
 
-	}, [test, ui.y, style, x, y, width, height, data.routes.length, data, boardSelect])
+	}, [ui.y, style, x, y, width, height, data.routes.length, data, boardSelect])
 
 	return (
 		<g ref={gRef}/>

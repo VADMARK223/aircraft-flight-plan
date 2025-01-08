@@ -6,10 +6,16 @@
  */
 import { createEffect } from 'effector/compat'
 import { DictData } from '../models/DictData'
-import { apiPost, showSuccess, showWarn } from './common'
+import { apiPost, showSuccess, showWarn, apiGet } from './common'
+
+const ENDPOINT = 'contract'
+
+export const fetchContractsFx = createEffect<void, DictData[]>(async () => {
+	return await apiGet<DictData[]>(`${ENDPOINT}/get_contracts`)
+})
 
 export const requestAddContractFx = createEffect<string, DictData | null>(async (contractName: string) => {
-	const response: DictData = await apiPost<DictData>('contract/add_contract', {
+	const response: DictData = await apiPost<DictData>(`${ENDPOINT}/add_contract`, {
 		json: { name: contractName }
 	})
 
@@ -23,7 +29,7 @@ export const requestDeleteContractFx = createEffect<number | undefined, number |
 		showWarn('Контракт для удаления не выбран.')
 		return null
 	}
-	const response: number = await apiPost<number>('contract/delete_contract', {
+	const response: number = await apiPost<number>(`${ENDPOINT}/delete_contract`, {
 		json: contractId
 	})
 

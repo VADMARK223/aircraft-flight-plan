@@ -9,23 +9,15 @@ import { Space, Divider, Button, Select } from 'antd'
 import Input from 'antd/es/input/Input'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import { requestAddContractFx, requestDeleteContractFx } from '../../../../../../api/contract'
-import { DictData } from '../../../../../../models/DictData'
-import { fetchContracts } from '../../../../../../api/dict'
+import { useStore } from 'effector-react'
+import { $contracts } from '../../../../../../store/contract'
 
 const ContractEditor = (): JSX.Element => {
+	const store = useStore($contracts)
 	const [addButtonDisabled, setAddButtonDisabled] = React.useState<boolean>(true)
 	const [contractName, setContractName] = React.useState<string>('')
-	const [contractOptions, setContractOptions] = useState<DictData[]>([])
 	const [selectedId, setSelectedId] = useState<number>()
 	const [deleteButtonDisabled, setDeleteButtonDisabled] = React.useState<boolean>(true)
-
-	useEffect(() => {
-		fetchContracts().then(contracts => {
-			if (contracts.length !== 0) {
-				setContractOptions(contracts)
-			}
-		})
-	}, [])
 
 	useEffect(() => {
 		setAddButtonDisabled(contractName === '')
@@ -53,7 +45,7 @@ const ContractEditor = (): JSX.Element => {
 						placeholder={'Выберите контракт'}
 						style={{ width: '160px' }}
 						value={selectedId}
-						options={contractOptions}
+						options={store}
 						allowClear
 						onChange={value => {
 							setSelectedId(value)

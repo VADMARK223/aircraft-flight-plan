@@ -10,7 +10,6 @@ import { Button, Table, TablePaginationConfig, CheckboxProps } from 'antd'
 import Modal from 'antd/es/modal/Modal'
 import { ColumnsType } from 'antd/es/table'
 import { DictData } from '../../../../../../models/DictData'
-import { fetchContracts } from '../../../../../../api/dict'
 import { TableRowSelection, Key } from 'antd/es/table/interface'
 import { useStore } from 'effector-react'
 import { $flightSelected } from '../../../../../../store/flight'
@@ -19,11 +18,13 @@ import { showError } from '../../../../../../api/common'
 import { requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/flight'
 import { requestDeleteContractFx } from '../../../../../../api/contract'
 import { EMPTY_FLIGHT } from '../../../../../../utils/flight'
+import { $contracts } from '../../../../../../store/contract'
 
 const DEFAULT_BUTTON_LABEL = 'Добавление рейса'
 const PAGE_SIZE = 3
 
 const FlightControlModal = (): JSX.Element => {
+	const store = useStore($contracts)
 	const selectedFlight = useStore($flightSelected)
 	const [mainButtonLabel, setMainButtonLabel] = useState<string>(DEFAULT_BUTTON_LABEL)
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -36,7 +37,7 @@ const FlightControlModal = (): JSX.Element => {
 		return screenWidth > 1200 ? 1000 : screenWidth * 0.9
 	}
 	const [modalWidth, setModalWidth] = useState<number>(getModalWidth())
-	const [data, setData] = useState<DictData[]>([])
+	// const [data, setData] = useState<DictData[]>([])
 	const buttonApplyRef = useRef<HTMLButtonElement>(null)
 	const [applyButtonLabel, setApplyButtonLabel] = useState<string | null>('Добавить')
 	const [applyButtonDisabled, setApplyButtonDisabled] = useState<boolean>(true)
@@ -84,11 +85,11 @@ const FlightControlModal = (): JSX.Element => {
 			}
 		}
 		if (isModalOpen) {
-			fetchContracts().then((contracts: DictData[]) => {
-				if (contracts.length !== 0) {
-					setData(contracts)
-				}
-			})
+			// fetchContractsFx().then((contracts: DictData[]) => {
+			// 	if (contracts.length !== 0) {
+			// 		setData(contracts)
+			// 	}
+			// })
 
 			document.addEventListener('keydown', handlerKeyDown)
 		} else {
@@ -166,7 +167,7 @@ const FlightControlModal = (): JSX.Element => {
 	const paginatedData = (): DictData[] => {
 		const start: number = (currentPage - 1) * PAGE_SIZE
 		const end: number = start + PAGE_SIZE
-		const pageData: DictData[] = data.slice(start, end)
+		const pageData: DictData[] = store.slice(start, end)
 
 		// Если на первой странице мало строк, то не заполняем пустые строки, иначе, чтобы таблица не прыгала, заполняем пустыми
 		const calcLength = currentPage === 1 ? Math.min(pageData.length, PAGE_SIZE) : PAGE_SIZE
@@ -184,7 +185,7 @@ const FlightControlModal = (): JSX.Element => {
 	const getPaginationConfig = (): TablePaginationConfig => ({
 		current: currentPage,
 		pageSize: PAGE_SIZE,
-		total: data.length,
+		total: store.length,
 		hideOnSinglePage: true,
 		onChange: handlerPageChange
 	})

@@ -5,8 +5,6 @@
  * @since 07.01.2025
  */
 import React, { JSX, useState, useEffect } from 'react'
-import { DictData } from '../../../../../../models/DictData'
-import { fetchContracts } from '../../../../../../api/dict'
 import { Select, Space, Button, Tooltip } from 'antd'
 import { useStore } from 'effector-react'
 import { $flightSelected } from '../../../../../../store/flight'
@@ -15,23 +13,16 @@ import { Flight } from '../../../../../../models/Flight'
 import { showError } from '../../../../../../api/common'
 import { requestSaveFlightFx, requestAddFlightFx } from '../../../../../../api/flight'
 import { EMPTY_FLIGHT } from '../../../../../../utils/flight'
+import { $contracts } from '../../../../../../store/contract'
 
 const FlightControlSelect = (): JSX.Element => {
+	const store = useStore($contracts)
 	const selectedFlight = useStore($flightSelected)
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
 	const [currentFlight, setCurrentFlight] = useState<Flight>(EMPTY_FLIGHT)
 
-	const [contractOptions, setContractOptions] = useState<DictData[]>([])
 	const [addSaveButtonDisabled, setAddSaveButtonDisabled] = useState<boolean>(true)
 	const [addSaveButtonTooltip, setAddSaveButtonTooltip] = useState<string | null>(null)
-
-	useEffect(() => {
-		fetchContracts().then(contracts => {
-			if (contracts.length !== 0) {
-				setContractOptions(contracts)
-			}
-		})
-	}, [])
 
 	useEffect(() => {
 		setIsEditMode(selectedFlight != null)
@@ -80,7 +71,7 @@ const FlightControlSelect = (): JSX.Element => {
 				placeholder={'Выберите контракт'}
 				style={{ width: '160px' }}
 				value={currentFlight.contract.value === -1 ? undefined : currentFlight.contract.value}
-				options={contractOptions}
+				options={store}
 				allowClear
 				onChange={value => {
 					setCurrentFlight({ ...currentFlight, contract: { ...currentFlight.contract, value: value } })

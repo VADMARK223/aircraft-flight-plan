@@ -1,6 +1,6 @@
-import { createStore } from 'effector'
+import { createStore, forward } from 'effector'
 import { DictData } from '../models/DictData'
-import { fetchContractsFx } from '../api/contract'
+import { fetchContractsFx, requestAddContractFx, requestDeleteContractFx } from '../api/contract'
 
 /**
  * Хранилище контрактов.
@@ -10,3 +10,8 @@ import { fetchContractsFx } from '../api/contract'
  */
 export const $contracts = createStore<DictData[]>([])
 $contracts.on(fetchContractsFx.doneData, (_, payload) => payload)
+
+forward({
+	from: [requestAddContractFx.doneData, requestDeleteContractFx.doneData],
+	to: fetchContractsFx
+})

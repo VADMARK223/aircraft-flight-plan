@@ -33,7 +33,7 @@ export const requestDeleteContractFx = createEffect<number | undefined, number |
 		json: contractId
 	})
 
-	showSuccess(`Контракт '${response}' успешно удален.`)
+	showWarn(`Контракт '${response}' успешно удален.`)
 
 	return response
 })

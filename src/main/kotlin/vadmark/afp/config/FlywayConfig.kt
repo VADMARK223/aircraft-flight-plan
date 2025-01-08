@@ -2,10 +2,12 @@ package vadmark.afp.config
 
 import org.flywaydb.core.Flyway
 import org.springframework.boot.CommandLineRunner
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
+@ConditionalOnProperty(name = ["afp.clean-flyway"], havingValue = "true", matchIfMissing = true)
 class FlywayConfig {
     @Bean
     fun flyway(): Flyway {

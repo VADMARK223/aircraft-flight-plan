@@ -12,14 +12,6 @@ import DeleteAllButton from './DeleteAllButton'
 import DeleteButton from './DeleteButton'
 import FlightControlModal from './FlightControlModal'
 import FlightControlSelect from './FlightControlSelect'
-import { Flight } from '../../../../../../models/Flight'
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
-
-export const emptyFlight: Flight = {
-	id: -1,
-	contract: { value: -1, label: 'Пустой контракт' },
-	routes: []
-}
 
 const FlightControl = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)

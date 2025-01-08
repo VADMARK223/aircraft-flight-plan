@@ -1,2 +1,2 @@
 # Madge
-npx madge --extensions ts,js .\src\ -c  
+npx madge --extensions ts,tsx .\src\ -c

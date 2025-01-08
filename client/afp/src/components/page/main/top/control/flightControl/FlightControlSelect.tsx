@@ -12,14 +12,14 @@ import { useStore } from 'effector-react'
 import { $flightSelected } from '../../../../../../store/flight'
 import { PlusOutlined, SaveOutlined } from '@ant-design/icons'
 import { Flight } from '../../../../../../models/Flight'
-import { emptyFlight } from './FlightControl'
 import { showError } from '../../../../../../api/common'
 import { requestSaveFlightFx, requestAddFlightFx } from '../../../../../../api/flight'
+import { EMPTY_FLIGHT } from '../../../../../../utils/flight'
 
 const FlightControlSelect = (): JSX.Element => {
 	const selectedFlight = useStore($flightSelected)
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
-	const [currentFlight, setCurrentFlight] = useState<Flight>(emptyFlight)
+	const [currentFlight, setCurrentFlight] = useState<Flight>(EMPTY_FLIGHT)
 
 	const [contractOptions, setContractOptions] = useState<DictData[]>([])
 	const [addSaveButtonDisabled, setAddSaveButtonDisabled] = useState<boolean>(true)
@@ -35,7 +35,7 @@ const FlightControlSelect = (): JSX.Element => {
 
 	useEffect(() => {
 		setIsEditMode(selectedFlight != null)
-		setCurrentFlight(selectedFlight ? selectedFlight : emptyFlight)
+		setCurrentFlight(selectedFlight ? selectedFlight : EMPTY_FLIGHT)
 	}, [selectedFlight])
 
 	useEffect(() => {
@@ -70,7 +70,7 @@ const FlightControlSelect = (): JSX.Element => {
 	}
 
 	const resetCurrentFlight = () => {
-		setCurrentFlight(emptyFlight)
+		setCurrentFlight(EMPTY_FLIGHT)
 	}
 
 	return (

@@ -17,8 +17,8 @@ import { $flightSelected } from '../../../../../../store/flight'
 import { Flight } from '../../../../../../models/Flight'
 import { showError } from '../../../../../../api/common'
 import { requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/flight'
-import { emptyFlight } from './FlightControl'
 import { requestDeleteContractFx } from '../../../../../../api/contract'
+import { EMPTY_FLIGHT } from '../../../../../../utils/flight'
 
 const DEFAULT_BUTTON_LABEL = 'Добавление рейса'
 const PAGE_SIZE = 3
@@ -40,11 +40,11 @@ const FlightControlModal = (): JSX.Element => {
 	const buttonApplyRef = useRef<HTMLButtonElement>(null)
 	const [applyButtonLabel, setApplyButtonLabel] = useState<string | null>('Добавить')
 	const [applyButtonDisabled, setApplyButtonDisabled] = useState<boolean>(true)
-	const [currentFlight, setCurrentFlight] = useState<Flight>(emptyFlight)
+	const [currentFlight, setCurrentFlight] = useState<Flight>(EMPTY_FLIGHT)
 
 	useEffect(() => {
 		setIsEditMode(selectedFlight != null)
-		setCurrentFlight(selectedFlight ? selectedFlight : emptyFlight)
+		setCurrentFlight(selectedFlight ? selectedFlight : EMPTY_FLIGHT)
 	}, [selectedFlight])
 
 	useEffect(() => {
@@ -133,9 +133,7 @@ const FlightControlModal = (): JSX.Element => {
 	}
 
 	const resetCurrentFlight = (): void => {
-
-		setCurrentFlight(emptyFlight)
-
+		setCurrentFlight(EMPTY_FLIGHT)
 	}
 
 	const columns: ColumnsType<DictData> = [

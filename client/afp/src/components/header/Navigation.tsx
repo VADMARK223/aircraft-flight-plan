@@ -14,19 +14,25 @@ import InfoPanel from '../page/main/top/InfoPanel'
 const Navigation = (): JSX.Element => {
 	return (
 		<nav>
-			<Space>
-				<NavigationLink to={'/'} icon={<HomeOutlined/>} label={'Главная'}/>
-				<NavigationLink to={'/settings'} icon={<SettingOutlined/>} label={'Настройки'}/>
-				<NavigationLink to={'/stats'} icon={<BarsOutlined/>} label={'Статистика'}/>
-				<InfoPanel/>
-			</Space>
+			<div style={{display: 'flex', justifyContent: 'space-between' }}>
+				<Space align={'center'}>
+					<NavigationLink to={'/'} icon={<HomeOutlined/>} label={'Главная'}/>
+					<NavigationLink to={'/settings'} icon={<SettingOutlined/>} label={'Настройки'}/>
+					{/*<NavigationLink to={'/stats'} icon={<BarsOutlined/>} label={'Статистика'}/>*/}
+				</Space>
+				<div style={{flexShrink: 0}}>
+					<InfoPanel/>
+				</div>
+			</div>
 		</nav>
-	)
+)
 }
 
 interface NavigationLinkProps {
 	to: string,
-	icon: React.ReactNode
+		icon
+:
+	React.ReactNode
 	label: string
 }
 

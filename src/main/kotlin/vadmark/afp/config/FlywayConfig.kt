@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConditionalOnProperty(name = ["afp.clean-flyway"], havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = ["afp.clean-flyway"], havingValue = "true")
 class FlywayConfig {
     @Bean
     fun flyway(): Flyway {

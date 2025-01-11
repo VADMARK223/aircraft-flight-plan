@@ -38,3 +38,6 @@ out/
 
 **/private-values.yaml
 client/afp/.env.production
+
+**/helm/values-dev.yaml
+**/helm/values-prod.yaml

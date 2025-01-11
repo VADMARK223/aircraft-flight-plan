@@ -1,0 +1,57 @@
+on:
+  push:
+    branches:
+      - master
+
+env:
+  KUBECONFIG: /home/greek/.kube/config
+
+jobs:
+  build-api:
+    runs-on: self-hosted
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build
+        run: ./build.sh
+
+  build-client:
+    needs: build-api
+    runs-on: self-hosted
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: build
+        working-directory: client/afp
+        env:
+          REACT_APP_BASE_API_URL: ${{ secrets.REACT_APP_BASE_API_URL_DEV }}
+        run: export NVM_DIR=~/.nvm && source ~/.nvm/nvm.sh && ./build.sh
+
+  deploy-api:
+    needs: build-client
+    runs-on: self-hosted
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: helm upgrade
+        working-directory: helm
+        run: helm upgrade flight-plan-api -f ~/helm_values/flight-plan-api/values-dev.yaml ./flight-plan-api
+
+      - name: rollout
+        run: kubectl rollout restart deployment flight-plan-api
+
+  deploy-web:
+    needs: deploy-api
+    runs-on: self-hosted
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: helm upgrade
+        working-directory: client/afp/helm
+        run: helm upgrade flight-plan-client -f ~/helm_values/flight-plan-client/values-dev.yaml ./flight-plan-client
+
+      - name: rollout
+        run: kubectl rollout restart deployment flight-plan-client

@@ -6,3 +6,4 @@ npm install
 npm run build
 
 docker build -t ghcr.io/fondorg/aircraft-flight-plan-client:latest .
+docker push ghcr.io/fondorg/aircraft-flight-plan-client:latest

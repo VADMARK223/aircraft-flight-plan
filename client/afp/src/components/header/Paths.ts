@@ -4,6 +4,7 @@
  */
 export enum Paths {
 	HOME = '/',
+	MAIN = '/main',
 	SETTINGS = '/settings',
 	STATS = '/stats',
 }

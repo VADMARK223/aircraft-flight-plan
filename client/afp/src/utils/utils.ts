@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from 'dayjs'
 import { FLIGHT_CELL_WIDTH, DATE_ITEM_WIDTH, MINUTES_IN_CELL } from './consts'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
+import { toast } from 'react-toastify'
 
 /**
  * @author Markitanov Vadim
@@ -109,6 +110,26 @@ const combineDateTime = (date: Dayjs | null | undefined, time: Dayjs | null | un
 		.set('day', date.day())
 		.set('hour', time.hour())
 		.set('minute', time.minute())
+}
+
+const checkDates = (start: Dayjs, end: Dayjs): string | undefined => {
+	if (start.isSame(end, 'day')) {
+		// Даты совпадают, сравниваем время.
+		if (!end.isAfter(start, 'minute')) {
+			toast.warn('Время вылета превышает дату прилета.')
+		} else {
+			toast.success('Все хорошо.')
+		}
+	} else {
+		// Даты не совпадают, проверяем, чтобы финишная дата не была раньше стартовой.
+		if (end.isAfter(start, 'day')) {
+			toast.warn('Дата вылета превышает дату прилета.')
+		} else {
+			toast.success('Все хорошо.')
+		}
+	}
+
+	return 'asd'
 }
 
 export const getDayNameByCount = (count: number): string => {

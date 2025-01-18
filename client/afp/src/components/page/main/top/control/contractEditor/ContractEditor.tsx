@@ -31,7 +31,7 @@ const ContractEditor = (): JSX.Element => {
 		<Space direction={'vertical'} style={{ width: '100%' }}>
 			<Divider type={'horizontal'}
 					 orientation={'left'}
-					 className={'control-panel-divider'}>Добавление контракта</Divider>
+					 className={'control-panel-divider'}>Добавление/удаление контракта</Divider>
 			<Space>
 				<Space direction={'horizontal'}>
 					<Input value={contractName} placeholder={'Наименование контракта'} allowClear

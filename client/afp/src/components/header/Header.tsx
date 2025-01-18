@@ -8,9 +8,17 @@ import React, { JSX } from 'react'
 import Navigation from './Navigation'
 import InfoPanel from './InfoPanel'
 
+export const HEADER_HEIGHT = 24
+
 const Header = (): JSX.Element => {
 	return (
-		 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+		<div id={'afp-header'}
+			style={{
+			display: 'flex',
+			justifyContent: 'space-between',
+			height: HEADER_HEIGHT,
+			alignItems: 'flex-start'
+		}}>
 			<Navigation/>
 			<InfoPanel/>
 		</div>

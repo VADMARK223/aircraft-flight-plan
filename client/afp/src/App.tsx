@@ -17,6 +17,7 @@ import SettingsPage from './components/page/settings/SettingsPage'
 import StatsPage from './components/page/stats/StatsPage'
 import ErrorPage from './components/page/ErrorPage'
 import { Paths } from './components/header/Paths'
+import HomePage from './components/page/home/HomePage'
 
 function App () {
 	const style = useStore($style)
@@ -43,7 +44,8 @@ function App () {
 				element: <RootLayout/>,
 				errorElement: <ErrorPage/>,
 				children: [
-					{ index: true, element: <MainPage/> },
+					{ index: true, element: <HomePage/> },
+					{ path: Paths.MAIN, element: <MainPage/> },
 					{ path: Paths.SETTINGS, element: <SettingsPage/> },
 					{ path: Paths.STATS, element: <StatsPage/> }
 				],
@@ -77,6 +79,5 @@ const RootLayout = (): JSX.Element => (
 			<Header/>
 		</div>
 		<Outlet/>
-
 	</div>
 )

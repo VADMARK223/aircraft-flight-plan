@@ -16,15 +16,15 @@ import { toast } from 'react-toastify'
 import { DATE_FORMAT } from '../../../../../../utils/consts'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
-import { Route } from '../../../../../../models/Route'
 import { $airports } from '../../../../../../store/airport'
 import { $routeTypeDictStore } from '../../../../../../store/dict'
 import { DictData } from '../../../../../../models/DictData'
 import AircraftTypeSelect from './AircraftTypeSelect'
 import { fetchAirportsFx } from '../../../../../../api/airport'
 import { Airport } from '../../../../../../models/Airport'
-import { requestAddOrSaveRouteFx, requestDeleteRouteFx } from '../../../../../../api/route'
+import { requestDeleteRouteFx, requestAddOrSaveRouteFx } from '../../../../../../api/route'
 import { showWarn } from '../../../../../../api/common'
+import { Route } from '../../../../../../models/Route'
 
 const RouteControl = (): JSX.Element => {
 	const routeSelected = useStore($routeSelected)
@@ -139,10 +139,28 @@ const RouteControl = (): JSX.Element => {
 		const newStartDate: Dayjs = combineDateTime(dateRangeValue[0], startTime)
 		const newEndDate: Dayjs = combineDateTime(dateRangeValue[1], endTime)
 
-		if (newStartDate.isAfter(newEndDate)) {
-			toast.warn('Время вылета превышает или совпадает с временем прилета.')
-			return
+		if (newStartDate.isSame(newEndDate, 'day')) {
+			// Даты совпадают, сравниваем время.
+			if (!newEndDate.isAfter(newStartDate, 'minute')) {
+				toast.warn('Время вылета превышает дату прилета.')
+			} else {
+				// toast.success('Все хорошо.')
+				toast.success('Перелет успешно добавлен.')
+			}
+		} else {
+			// Даты не совпадают, проверяем, чтобы финишная дата не была раньше стартовой.
+			if (newEndDate.isAfter(newStartDate, 'day')) {
+				toast.warn('Дата вылета превышает дату прилета.')
+			} else {
+				// toast.success('Все хорошо.')
+				toast.success('Перелет успешно добавлен.')
+			}
 		}
+
+		// if (newStartDate.isAfter(newEndDate)) {
+		// 	toast.warn('Время вылета превышает или совпадает с временем прилета.')
+		// 	return
+		// }
 
 		const newRoute: Route = {
 			id: routeSelected ? routeSelected.id : null,

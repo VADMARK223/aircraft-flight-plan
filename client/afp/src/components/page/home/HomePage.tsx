@@ -5,7 +5,7 @@
  * @since 18.01.2025
  */
 import React, { JSX, useState, useEffect } from 'react'
-import { Button, Layout, Menu } from 'antd'
+import { Layout } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import { HEADER_HEIGHT } from '../../header/Header'
@@ -15,12 +15,20 @@ import { $style } from '../../../store/style'
 import { fetchContractsFx } from '../../../api/contract'
 import { fetchFlightsFx } from '../../../api/flight'
 import { fetchRouteTypeFx, fetchAircraftTypeFx } from '../../../api/dict'
+import Properties from './Properties'
 
 const { Footer } = Layout
 
 const HomePage = (): JSX.Element => {
 	const [collapsed, setCollapsed] = useState(false)
 	const style = useStore($style)
+	const [showFooter, setShowFooter] = useState(false)
+
+	const [footerOptions, setFooterOptions] = useState({
+		option1: true,
+		option2: false,
+		properties: true
+	})
 
 	useEffect(() => {
 		fetchContractsFx()
@@ -29,50 +37,79 @@ const HomePage = (): JSX.Element => {
 		fetchAircraftTypeFx()
 	}, [])
 
+	useEffect(() => {
+		if ('properties' in footerOptions && footerOptions.properties === true) {
+			setShowFooter(true)
+		} else {
+			setShowFooter(false)
+		}
+	}, [footerOptions])
+
+	const handleCheckboxChange = (value: any) => {
+		setFooterOptions((prev: any) => ({
+			...prev,
+			[value]: !prev[value]
+		}))
+	}
+
 	return (
 		<Layout style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }}>
 			<Layout>
 				<Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-					<Menu
-						mode="inline"
-						defaultSelectedKeys={['1']}
-						items={[
-							{ key: '1', label: 'Properties' },
-							{ key: '2', label: 'Graph', disabled: true },
-							{ key: '3', label: 'Options', disabled: true },
-							{ key: '4', label: 'Flight', disabled: true }
-						]}
-					/>
+					<div>
+						<label>
+							<input
+								type="checkbox"
+								checked={footerOptions.option1}
+								onChange={() => handleCheckboxChange('option1')}
+								disabled
+							/>
+							Graph
+						</label>
+					</div>
+					<div>
+						<label>
+							<input
+								type="checkbox"
+								checked={footerOptions.properties}
+								onChange={() => handleCheckboxChange('properties')}
+							/>
+							Properties
+						</label>
+					</div>
+					{/*<div>
+						<label>
+							<input
+								type="checkbox"
+								checked={footerOptions.option2}
+								onChange={() => handleCheckboxChange('option2')}
+								disabled
+							/>
+							Options
+						</label>
+					</div>*/}
 				</Sider>
 
-				<Layout style={{ padding: '16px' }}>
+				<Layout
+					style={{
+						padding: '16px'
+				}}
+				>
 					<Content
 						style={{
-							// backgroundColor: '#fff',
 							backgroundColor: style.backgroundColor,
-							overflow: 'auto' // Прокрутка для центрального контента
+							overflow: 'auto'
 						}}
 					>
-						{/*<div
-							style={{
-								width: '200%',
-								height: '200%',
-								border: '1px solid #ddd'
-							}}
-						>
-							Контент с горизонтальной и вертикальной прокруткой
-						</div>*/}
 						<BottomPanel/>
 					</Content>
 
-					<Footer style={{ textAlign: 'center', padding: '10px' }}>
-						<Button
-							type="primary"
-							onClick={() => setCollapsed(!collapsed)}
-						>
-							{collapsed ? 'Открыть меню' : 'Закрыть меню'}
-						</Button>
-					</Footer>
+					{(showFooter ?? false) && (<Footer style={{
+						textAlign: 'left',
+						padding: '10px'
+					}}>
+						<Properties/>
+					</Footer>)}
 				</Layout>
 			</Layout>
 		</Layout>

@@ -7,7 +7,7 @@
 import React, { JSX, useState, useEffect } from 'react'
 import { Select, Space, Button, Tooltip } from 'antd'
 import { useStore } from 'effector-react'
-import { $flightSelected } from '../../../../../../store/flight'
+import { $flightsSelected } from '../../../../../../store/flight'
 import { PlusOutlined, SaveOutlined } from '@ant-design/icons'
 import { Flight } from '../../../../../../models/Flight'
 import { showError } from '../../../../../../api/common'
@@ -17,17 +17,22 @@ import { $contracts } from '../../../../../../store/contract'
 
 const FlightControlSelect = (): JSX.Element => {
 	const store = useStore($contracts)
-	const selectedFlight = useStore($flightSelected)
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)
-	const [currentFlight, setCurrentFlight] = useState<Flight>(EMPTY_FLIGHT)
+	const flightsSelected = useStore($flightsSelected)
+	const lastFlightSelected = flightsSelected.at(-1)
+	const [currentFlight, setCurrentFlight] = useState<Flight>(lastFlightSelected ? lastFlightSelected : EMPTY_FLIGHT)
 
 	const [addSaveButtonDisabled, setAddSaveButtonDisabled] = useState<boolean>(true)
 	const [addSaveButtonTooltip, setAddSaveButtonTooltip] = useState<string | null>(null)
 
 	useEffect(() => {
-		setIsEditMode(selectedFlight != null)
-		setCurrentFlight(selectedFlight ? selectedFlight : EMPTY_FLIGHT)
-	}, [selectedFlight])
+		console.log('lastFlightSelected:', lastFlightSelected)
+	}, [lastFlightSelected])
+
+	useEffect(() => {
+		setIsEditMode(lastFlightSelected != null)
+		setCurrentFlight(lastFlightSelected ? lastFlightSelected : EMPTY_FLIGHT)
+	}, [lastFlightSelected])
 
 	useEffect(() => {
 		let applyButtonDisabled = true
@@ -36,13 +41,13 @@ const FlightControlSelect = (): JSX.Element => {
 				applyButtonDisabled = false
 			}
 		} else {
-			if (currentFlight.contract.value !== selectedFlight?.contract.value) {
+			if (currentFlight.contract.value !== lastFlightSelected?.contract.value) {
 				applyButtonDisabled = false
 			}
 		}
 
 		setAddSaveButtonDisabled(applyButtonDisabled)
-		setAddSaveButtonTooltip(currentFlight.contract.value === selectedFlight?.contract.value ? 'Выберите другой контракт' : 'Сохранить')
+		setAddSaveButtonTooltip(currentFlight.contract.value === lastFlightSelected?.contract.value ? 'Выберите другой контракт' : 'Сохранить')
 	}, [currentFlight])
 
 	const handleAddSaveFlight = () => {

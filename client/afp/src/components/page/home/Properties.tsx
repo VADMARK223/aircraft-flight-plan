@@ -6,22 +6,21 @@
  */
 import React, { JSX } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelected } from '../../../store/flight'
 import { $routeSelected } from '../../../store/route'
+import { $flightsSelected } from '../../../store/flight'
+import FlightsInfo from './flights/FlightsInfo'
 
 const Properties = (): JSX.Element => {
-	const selectedFlight = useStore($flightSelected)
+	const flightsSelected = useStore($flightsSelected)
 	const routeSelected = useStore($routeSelected)
 
 	return (
 		<div>
-			{selectedFlight == null
-				? <span>Рейс не выбран</span>
-				: <span>Выбран рейс: {selectedFlight.id}</span>}
-			<br/>
+			<FlightsInfo data={flightsSelected}/><br/>
 			{routeSelected == null
 				? <span>Перелет не выбран</span>
 				: <span>Выбран перелет: {routeSelected.id}</span>}
+
 		</div>
 	)
 }

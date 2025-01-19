@@ -6,7 +6,7 @@
  */
 import React, { JSX, useEffect, useState } from 'react'
 import { useStore } from 'effector-react'
-import { $flightSelected } from '../../../../../../store/flight'
+import { $flightsSelected } from '../../../../../../store/flight'
 import { Divider, Space } from 'antd'
 import DeleteAllButton from './DeleteAllButton'
 import DeleteButton from './DeleteButton'
@@ -16,13 +16,14 @@ import { LocalStoreKey } from '../../../../../../store/style'
 import FlightEditorModeSwitcher from '../../../../settings/FlightEditorModeSwitcher'
 
 const FlightControl = (): JSX.Element => {
-	const selectedFlight = useStore($flightSelected)
+	const flightsSelected = useStore($flightsSelected)
+	const lastFlightSelected = flightsSelected.at(-1);
 	const [title, setTitle] = useState<string>()
 	const [selectorMode, setSelectorMode] = useState<boolean>(!!localStorage.getItem(LocalStoreKey.FLIGHT_EDIT_MODE))
 
 	useEffect((): void => {
-		setTitle(selectedFlight != null ? `Изменение рейса ${selectedFlight.id} (Контракт: ${selectedFlight.contract.value})` : 'Добавление рейса')
-	}, [selectedFlight])
+		setTitle(lastFlightSelected != null ? `Изменение рейса ${lastFlightSelected.id} (Контракт: ${lastFlightSelected.contract.value})` : 'Добавление рейса')
+	}, [lastFlightSelected])
 
 	const onModeChangeHandler = (value: boolean) => {
 		setSelectorMode(value)
@@ -36,7 +37,7 @@ const FlightControl = (): JSX.Element => {
 			<Space>
 				<FlightEditorModeSwitcher callback={onModeChangeHandler}/>
 				{selectorMode ? <FlightControlSelect/> : <FlightControlModal/>}
-				{selectedFlight ? <DeleteButton/> : undefined}
+				{lastFlightSelected ? <DeleteButton/> : undefined}
 				<DeleteAllButton/>
 			</Space>
 		</Space>

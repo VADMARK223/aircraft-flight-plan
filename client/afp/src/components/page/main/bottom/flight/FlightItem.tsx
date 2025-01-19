@@ -4,13 +4,19 @@
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-import React,{ JSX, LegacyRef, useEffect, useRef } from 'react'
+import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { FLIGHT_CELL_WIDTH } from '../../../../../utils/consts'
 import { Flight } from '../../../../../models/Flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../../../../store/style'
-import { $flightSelected, flightClickFx } from '../../../../../store/flight'
+import {
+	$flightSelected,
+	flightClickFx,
+	flightsSelectAdded,
+	$flightsSelected,
+	flightsSelectReplaced
+} from '../../../../../store/flight'
 import { $ui } from '../../../../../store/ui'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
 
@@ -25,15 +31,21 @@ interface BoardItemProps {
 const FlightItem = (props: BoardItemProps): JSX.Element => {
 	const { data, x, y, width, height } = props
 	const style = useStore($style)
-	const boardSelect = useStore($flightSelected)
+	const flightSelect = useStore($flightSelected)
+	const flightSelected = useStore($flightsSelected)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const ui = useStore($ui)
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)
 			.attr('cursor', 'pointer')
-			.on('click', (): void => {
-				flightClickFx(data)
+			.on('click', (event: MouseEvent): void => {
+				if (event.ctrlKey || event.shiftKey) {
+					flightsSelectAdded(data)
+				} else {
+					flightsSelectReplaced(data)
+					// flightClickFx(data)
+				}
 			})
 			.on('contextmenu', (event: PointerEvent) => {
 				event.preventDefault()
@@ -45,7 +57,16 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 				})
 			})
 
-		const isSelect = data.id === boardSelect?.id
+		const isSelect = (): boolean => {
+			if (Array.isArray(flightSelected)) {
+				return flightSelected.some((flight) => flight.id === data.id)
+			}
+
+			if (flightSelect) {
+				return data.id === flightSelect?.id
+			}
+			return false
+		}
 
 		container.append('rect')
 			.attr('x', x)
@@ -82,7 +103,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('dominant-baseline', 'hanging')
 			.text(data.routes.length ? `Перелетов: ${data.routes.length}` : 'Нет перелетов')
 
-		if (isSelect) {
+		if (isSelect()) {
 			const selectStrokeWidth = 3
 			container.append('rect')
 				.attr('x', x + selectStrokeWidth)
@@ -94,7 +115,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 				.attr('stroke-width', selectStrokeWidth)
 		}
 
-	}, [ui.y, style, x, y, width, height, data.routes.length, data, boardSelect])
+	}, [ui.y, style, x, y, width, height, data.routes.length, data, flightSelect, flightSelected])
 
 	return (
 		<g ref={gRef}/>

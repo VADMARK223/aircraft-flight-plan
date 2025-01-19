@@ -38,7 +38,7 @@ const Header = ({ x, y }: CommonProps): JSX.Element => {
       .attr('dominant-baseline', 'hanging')
       .attr('font-weight', 'bold')
       .attr('font-size', 18)
-      .text('ПЛАН ПОЛЕТОВ ВОЗДУШНЫХ СУДОВ')
+      .text('Н ПОЛЕТОВ ВОЗДУШНЫХ СУДОВ')
 
   }, [style, width, height])
 

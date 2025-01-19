@@ -7,7 +7,7 @@
 import React, { JSX, LegacyRef, useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
-import { $flights, flightSelectResetFx } from '../../../../store/flight'
+import { $flights, flightSelectResetFx, flightsSelectReset } from '../../../../store/flight'
 import { useStore } from 'effector-react'
 import { $dates } from '../../../../store/date'
 import { $style } from '../../../../store/style'
@@ -45,7 +45,8 @@ const Background = ({x,y}:CommonProps): JSX.Element => {
     }
 
     container.on('click', function () {
-      flightSelectResetFx()
+      flightSelectResetFx() // Deprecated
+      flightsSelectReset() // Сброс выбранных рейсов
       routeSelectReset()
     })
 

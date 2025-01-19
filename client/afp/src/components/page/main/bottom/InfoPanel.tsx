@@ -46,10 +46,7 @@ const InfoPanel = ({x,y}:CommonProps): JSX.Element => {
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'auto')
       .attr('font-size', 14)
-      .text(`Неделя ${getWeekCount(now)}`)
-
-    // const { width: svgWidth, height: svgHeight } = svgElement.getBoundingClientRect()
-
+      .text(`Week ${getWeekCount(now)}`)
   }, [style, width, height, now])
 
   return (

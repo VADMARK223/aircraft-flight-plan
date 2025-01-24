@@ -1,6 +1,5 @@
 import React, { JSX, useEffect } from 'react'
 import { ConfigProvider, theme } from 'antd'
-import ruRu from 'antd/locale/ru_RU'
 import { useStore } from 'effector-react'
 import {
 	$style,
@@ -57,7 +56,6 @@ function App () {
 
 	return (
 		<ConfigProvider
-			locale={ruRu}
 			theme={{
 				algorithm: isDarkTheme ? theme.darkAlgorithm : theme.defaultAlgorithm,
 

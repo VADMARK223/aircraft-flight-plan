@@ -72,7 +72,7 @@ const RouteControl = (): JSX.Element => {
 				airportName: routeSelected.aptArrName
 			})
 		} else {
-			setTitle('Добавление перелета')
+			setTitle('Adding a route')
 			resetData()
 		}
 
@@ -145,7 +145,7 @@ const RouteControl = (): JSX.Element => {
 				toast.warn('Время вылета превышает дату прилета.')
 			} else {
 				// toast.success('Все хорошо.')
-				toast.success('Перелет успешно добавлен.')
+				toast.success('The route has been added successfully.')
 			}
 		} else {
 			// Даты не совпадают, проверяем, чтобы финишная дата не была раньше стартовой.
@@ -153,14 +153,9 @@ const RouteControl = (): JSX.Element => {
 				toast.warn('Дата вылета превышает дату прилета.')
 			} else {
 				// toast.success('Все хорошо.')
-				toast.success('Перелет успешно добавлен.')
+				toast.success('The route has been added successfully.')
 			}
 		}
-
-		// if (newStartDate.isAfter(newEndDate)) {
-		// 	toast.warn('Время вылета превышает или совпадает с временем прилета.')
-		// 	return
-		// }
 
 		const newRoute: Route = {
 			id: routeSelected ? routeSelected.id : null,
@@ -219,8 +214,8 @@ const RouteControl = (): JSX.Element => {
 			<Space align={'start'}>
 				<Space direction={'vertical'} align={'end'}>
 					<Space>
-						<span>Рейс:</span>
-						<Select placeholder={'Выберите рейс'}
+						<span>Flight:</span>
+						<Select placeholder={'Select flight'}
 								value={flightId}
 								options={flightOptions}
 								style={{ minWidth: '150px' }}
@@ -233,7 +228,7 @@ const RouteControl = (): JSX.Element => {
 						/>
 					</Space>
 					<Space>
-						<span>Тип:</span>
+						<span>Type:</span>
 						<Select placeholder={'Выберите тип'}
 								value={routeType}
 								options={routeTypeOptions}
@@ -250,7 +245,7 @@ const RouteControl = (): JSX.Element => {
 				</Space>
 				<Space direction={'vertical'} align={'end'}>
 					<Space>
-						<span>Дата:</span>
+						<span>Date:</span>
 						<DatePicker.RangePicker value={dateRangeValue}
 												style={{ minWidth: '300px' }}
 												onChange={setDateRangeValue}
@@ -259,7 +254,7 @@ const RouteControl = (): JSX.Element => {
 						/>
 					</Space>
 					<Space size={0}>
-						<span>Время:</span>
+						<span>Time:</span>
 						<TimePicker
 							value={startTime}
 							style={{ minWidth: '150px' }}
@@ -282,7 +277,7 @@ const RouteControl = (): JSX.Element => {
 				<Space direction={'vertical'} align={'end'}>
 					<Space>
 						<Select
-							placeholder={'Аэропорт вылета'}
+							placeholder={'Departure airport'}
 							value={airportDeparture?.airportId}
 							options={airportSelectOptions}
 							onChange={(_value: number, option: any) => {
@@ -292,7 +287,7 @@ const RouteControl = (): JSX.Element => {
 							popupMatchSelectWidth={false}
 						/>
 						<Select
-							placeholder={'Аэропорт прилета'}
+							placeholder={'Arrival airport'}
 							value={airportArrival?.airportId}
 							options={airportSelectOptions}
 							onChange={(_value: number, option: any) => {
@@ -303,7 +298,7 @@ const RouteControl = (): JSX.Element => {
 						/>
 					</Space>
 					<Space>
-						<span>Тип борта:</span>
+						<span>Board type:</span>
 						<AircraftTypeSelect/>
 					</Space>
 				</Space>
@@ -336,13 +331,12 @@ const RouteControl = (): JSX.Element => {
 					<Space direction={'vertical'}>
 						<Tooltip title={disableButtonReason}>
 							<Button type={'primary'} icon={<PlusOutlined/>} disabled={disableButtonReason !== null}
-									onClick={handlerAddOrEditRoute} style={{ width: '160px' }}>Добавить
-								перелет</Button>
+									onClick={handlerAddOrEditRoute} style={{ width: '160px' }}>Add route</Button>
 						</Tooltip>
 
 						<Button onClick={handlerGenerateRoute}
 								style={{ width: '160px' }}
-						>Генерировать перелет</Button>
+						>Generate route</Button>
 					</Space>
 				}
 			</Space>

@@ -63,15 +63,15 @@ const DateControl = (): JSX.Element => {
   }
 
   const dateControlModeOptions: CheckboxOptionType[] = [
-    { label: 'Сегодня-завтра', value: DateControlMode.TODAY_TOMORROW },
-    { label: 'Сегодня', value: DateControlMode.TODAY },
-    { label: 'Завтра', value: DateControlMode.TOMORROW },
-    { label: 'Пользовательская', value: DateControlMode.CUSTOM, disabled: true }
+    { label: 'Today-tomorrow', value: DateControlMode.TODAY_TOMORROW },
+    { label: 'Today', value: DateControlMode.TODAY },
+    { label: 'Tomorrow', value: DateControlMode.TOMORROW },
+    { label: 'Custom', value: DateControlMode.CUSTOM, disabled: true }
   ]
 
   return (
     <Space>
-      <span>Диапозон дат:</span>
+      <span>Date range::</span>
       <DatePicker.RangePicker value={datesRange}
                               onChange={setDateChange}
                               style={{ minWidth: '300px' }}

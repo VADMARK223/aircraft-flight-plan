@@ -77,17 +77,6 @@ const HomePage = (): JSX.Element => {
 							Properties
 						</label>
 					</div>
-					{/*<div>
-						<label>
-							<input
-								type="checkbox"
-								checked={footerOptions.option2}
-								onChange={() => handleCheckboxChange('option2')}
-								disabled
-							/>
-							Options
-						</label>
-					</div>*/}
 				</Sider>
 
 				<Layout

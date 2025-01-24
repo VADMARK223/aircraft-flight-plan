@@ -23,7 +23,7 @@ const AircraftTypeSelect = (): JSX.Element => {
 	return (
 		<Select
 			disabled
-			placeholder={'Тип борта'}
+			placeholder={'Board type'}
 			options={aircraftTypeOptions}
 			style={{ width: '160px' }}
 			popupMatchSelectWidth={false}

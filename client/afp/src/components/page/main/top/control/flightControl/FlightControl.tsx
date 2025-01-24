@@ -22,7 +22,7 @@ const FlightControl = (): JSX.Element => {
 	const [selectorMode, setSelectorMode] = useState<boolean>(!!localStorage.getItem(LocalStoreKey.FLIGHT_EDIT_MODE))
 
 	useEffect((): void => {
-		setTitle(lastFlightSelected != null ? `Изменение рейса ${lastFlightSelected.id} (Контракт: ${lastFlightSelected.contract.value})` : 'Adding a flight')
+		setTitle(lastFlightSelected != null ? `Flight change ${lastFlightSelected.id} (Reg. number: ${lastFlightSelected.contract.label})` : 'Adding a flight')
 	}, [lastFlightSelected])
 
 	const onModeChangeHandler = (value: boolean) => {

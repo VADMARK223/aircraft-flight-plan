@@ -12,7 +12,6 @@ import { useStore } from 'effector-react'
 import { $style } from '../../../../../store/style'
 import {
 	$flightSelected,
-	flightClickFx,
 	flightsSelectAdded,
 	$flightsSelected,
 	flightsSelectReplaced
@@ -83,7 +82,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('font-weight', 'bold')
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
-			.text(`Рейс ${data.id} (${data.contract.value})`)
+			.text(`Flight ${data.id} (${data.contract.label})`)
 
 		const lineShiftX = 5
 		const lineShiftY = 25

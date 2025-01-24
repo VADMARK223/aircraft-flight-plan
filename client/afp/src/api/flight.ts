@@ -30,7 +30,7 @@ export const requestAddFlightFx = createEffect<DictData, Flight | null>(async (c
 		json: contract
 	})
 
-	showSuccess(`New flight added: '${response.id}'.`)
+	showSuccess(`New flight with reg. number: '${response.contract.label}' added.`)
 
 	return response
 })

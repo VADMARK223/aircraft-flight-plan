@@ -5,7 +5,7 @@
 export enum Paths {
 	HOME = '/',
 	MAIN = '/main',
+	ADMIN = '/admin',
 	SETTINGS = '/settings',
-	FLIGHT = '/flight',
 	STATS = '/stats',
 }

@@ -28,7 +28,7 @@ const DeleteAllButton = (): JSX.Element => {
 		>
 			<Tooltip title={'Delete all flights'}>
 				<Button type={'primary'}
-						style={{minWidth: 150}}
+						style={{minWidth: 100}}
 						danger
 						icon={<CloseOutlined/>}
 						disabled={flights.length === 0}

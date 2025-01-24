@@ -135,21 +135,22 @@ const checkDates = (start: Dayjs, end: Dayjs): string | undefined => {
 export const getDayNameByCount = (count: number): string => {
 	switch (count) {
 		case 0:
-			return 'Понедельник'
+			return 'Monday';
 		case 1:
-			return 'Вторник'
+			return 'Tuesday';
 		case 2:
-			return 'Среда'
+			return 'Wednesday';
 		case 3:
-			return 'Четверг'
+			return 'Thursday';
 		case 4:
-			return 'Пятница'
+			return 'Friday';
 		case 5:
-			return 'Суббота'
+			return 'Saturday';
 		case 6:
-			return 'Воскресенье'
+			return 'Sunday';
 		default:
-			return 'Неизвестно'
+			return 'Unknown';
 	}
-}
+};
+
 

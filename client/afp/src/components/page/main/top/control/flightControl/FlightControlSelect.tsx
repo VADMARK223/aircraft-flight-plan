@@ -21,13 +21,8 @@ const FlightControlSelect = (): JSX.Element => {
 	const flightsSelected = useStore($flightsSelected)
 	const lastFlightSelected = flightsSelected.at(-1)
 	const [currentFlight, setCurrentFlight] = useState<Flight>(lastFlightSelected ? lastFlightSelected : EMPTY_FLIGHT)
-
 	const [addSaveButtonDisabled, setAddSaveButtonDisabled] = useState<boolean>(true)
 	const [addSaveButtonTooltip, setAddSaveButtonTooltip] = useState<string | null>(null)
-
-	useEffect(() => {
-		console.log('lastFlightSelected:', lastFlightSelected)
-	}, [lastFlightSelected])
 
 	useEffect(() => {
 		setIsEditMode(lastFlightSelected != null)
@@ -85,7 +80,7 @@ const FlightControlSelect = (): JSX.Element => {
 
 			<Tooltip title={addSaveButtonTooltip}>
 				<Button type={'primary'}
-						style={{ minWidth: 150 }}
+						style={{ minWidth: 100 }}
 						icon={isEditMode ? <SaveOutlined/> : <PlusOutlined/>}
 						onClick={handleAddSaveFlight}
 						disabled={addSaveButtonDisabled}

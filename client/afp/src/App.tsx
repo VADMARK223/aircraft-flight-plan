@@ -18,7 +18,7 @@ import StatsPage from './components/page/stats/StatsPage'
 import ErrorPage from './components/page/ErrorPage'
 import { Paths } from './components/header/Paths'
 import HomePage from './components/page/home/HomePage'
-import FlightPage from './components/page/flight/FlightPage'
+import AdminPage from './components/page/admin/AdminPage'
 
 function App () {
 	const style = useStore($style)
@@ -47,10 +47,10 @@ function App () {
 				children: [
 					{ index: true, element: <HomePage/> },
 					{ path: Paths.MAIN, element: <MainPage/> },
+					{ path: Paths.ADMIN, element: <AdminPage/> },
 					{ path: Paths.SETTINGS, element: <SettingsPage/> },
-					{ path: Paths.FLIGHT, element: <FlightPage/> },
 					{ path: Paths.STATS, element: <StatsPage/> }
-				],
+				]
 			}
 		]
 	)

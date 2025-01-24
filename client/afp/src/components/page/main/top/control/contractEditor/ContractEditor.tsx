@@ -31,36 +31,42 @@ const ContractEditor = (): JSX.Element => {
 		<Space direction={'vertical'} style={{ width: '100%' }}>
 			<Divider type={'horizontal'}
 					 orientation={'left'}
-					 className={'control-panel-divider'}>Добавление/удаление контракта</Divider>
+					 className={'control-panel-divider'}>Adding registration number</Divider>
 			<Space>
 				<Space direction={'horizontal'}>
-					<Input value={contractName} placeholder={'Наименование контракта'} allowClear
+					<Input value={contractName} placeholder={'Reg. number'} allowClear
 						   onChange={(e) => setContractName(e.target.value)}/>
-					<Button type={'primary'} icon={<PlusOutlined/>} disabled={addButtonDisabled} onClick={() => {
+					<Button type={'primary'} icon={<PlusOutlined/>}
+							disabled={addButtonDisabled} onClick={() => {
 						requestAddContractFx(contractName)
 						setContractName('')
 					}}>Add</Button>
-
-					<Select
-						placeholder={'Выберите контракт'}
-						style={{ width: '160px' }}
-						value={selectedId}
-						options={store}
-						allowClear
-						onChange={value => {
-							setSelectedId(value)
-						}}
-					/>
-					<Button type={'primary'}
-							danger
-							icon={<DeleteOutlined/>}
-							disabled={deleteButtonDisabled}
-							onClick={() => {
-								requestDeleteContractFx(selectedId)
-								setSelectedId(undefined)
-							}}>Delete</Button>
 				</Space>
 			</Space>
+			<Divider type={'horizontal'}
+					 orientation={'left'}
+					 className={'control-panel-divider'}>Removing registration number</Divider>
+			<Space>
+				<Select
+					placeholder={'Select reg. number'}
+					style={{ width: '160px' }}
+					value={selectedId}
+					options={store}
+					allowClear
+					onChange={value => {
+						setSelectedId(value)
+					}}
+				/>
+				<Button type={'primary'}
+						danger
+						icon={<DeleteOutlined/>}
+						disabled={deleteButtonDisabled}
+						onClick={() => {
+							requestDeleteContractFx(selectedId)
+							setSelectedId(undefined)
+						}}>Delete</Button>
+				</Space>
+
 		</Space>
 	)
 }

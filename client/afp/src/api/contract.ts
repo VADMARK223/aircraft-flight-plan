@@ -19,21 +19,21 @@ export const requestAddContractFx = createEffect<string, DictData | null>(async 
 		json: { name: contractName }
 	})
 
-	showSuccess(`Добавлен новый контракт: '${response.value}'.`)
+	showSuccess(`New reg. number added: '${response.value}'.`)
 
 	return response
 })
 
 export const requestDeleteContractFx = createEffect<number | undefined, number | null>(async (contractId?: number) => {
 	if (contractId === undefined) {
-		showWarn('Контракт для удаления не выбран.')
+		showWarn('No reg.number selected for deletion.')
 		return null
 	}
 	const response: number = await apiPost<number>(`${ENDPOINT}/delete_contract`, {
 		json: contractId
 	})
 
-	showWarn(`Контракт '${response}' успешно удален.`)
+	showWarn(`Reg.number '${response}' successfully deleted.`)
 
 	return response
 })

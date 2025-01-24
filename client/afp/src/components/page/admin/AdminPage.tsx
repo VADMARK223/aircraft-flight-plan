@@ -5,12 +5,16 @@
  * @since 24.01.2025
  */
 import React, { JSX } from 'react'
+import ContractEditor from '../main/top/control/contractEditor/ContractEditor'
 import FlightControl from '../main/top/control/flightControl/FlightControl'
 
-const FlightPage = (): JSX.Element => {
+const AdminPage = (): JSX.Element => {
 	return (
-		<FlightControl/>
+		<>
+			<ContractEditor/>
+			<FlightControl/>
+		</>
 	)
 }
 
-export default FlightPage
+export default AdminPage

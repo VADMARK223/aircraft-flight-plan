@@ -9,23 +9,25 @@ import { Layout, Button, Space } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import { HEADER_HEIGHT } from '../../header/Header'
-import BottomPanel from '../main/bottom/BottomPanel'
 import { useStore } from 'effector-react'
 import { $style } from '../../../store/style'
 import { fetchContractsFx } from '../../../api/contract'
 import { fetchFlightsFx } from '../../../api/flight'
 import { fetchRouteTypeFx, fetchAircraftTypeFx } from '../../../api/dict'
 import Properties from './Properties'
+import BottomPanel from '../main/bottom/BottomPanel'
+import { PropertySafetyOutlined } from '@ant-design/icons'
+import HomeTable from './HomeTable'
 
 const { Footer } = Layout
 
 const HomePage = (): JSX.Element => {
 	const style = useStore($style)
 	const [showFooter, setShowFooter] = useState(false)
+	const [title, setTitle] = useState('Graph')
 
 	const [footerOptions, setFooterOptions] = useState({
-		option1: true,
-		option2: false,
+		main: true,
 		properties: true
 	})
 
@@ -36,11 +38,21 @@ const HomePage = (): JSX.Element => {
 		fetchAircraftTypeFx()
 	}, [])
 
+	const isGraph = (): boolean => {
+		return 'main' in footerOptions && footerOptions.main === true
+	}
+
 	useEffect(() => {
 		if ('properties' in footerOptions && footerOptions.properties === true) {
 			setShowFooter(true)
 		} else {
 			setShowFooter(false)
+		}
+
+		if (isGraph()) {
+			setTitle('Graph')
+		} else {
+			setTitle('Table')
 		}
 	}, [footerOptions])
 
@@ -59,41 +71,36 @@ const HomePage = (): JSX.Element => {
 				   width={130}
 				   style={{ padding: '10px', backgroundColor: `${style.backgroundColor}` }}
 			>
-				<Space direction={'vertical'} style={{width:'100%'}}>
+				<Space direction={'vertical'} style={{ width: '100%' }}>
 					<Button
-						type={footerOptions.option1 ? 'primary' : 'default'}
-						onClick={() => handleCheckboxChange('option1')}
+						type={'primary'}
+						onClick={() => handleCheckboxChange('main')}
 						block
-						disabled
 					>
-						Graph
+						{title}
 					</Button>
 					<Button
 						block
 						type={footerOptions.properties ? 'primary' : 'default'}
+						icon={<PropertySafetyOutlined/>}
 						onClick={() => handleCheckboxChange('properties')}
 					>
 						Properties
 					</Button>
 				</Space>
 			</Sider>
-			<Layout
-				style={{
-					padding: '16px'
-				}}
-			>
+			<Layout>
 				<Content
 					style={{
 						backgroundColor: style.backgroundColor,
 						overflow: 'auto'
 					}}
 				>
-					<BottomPanel/>
+					{isGraph() ? <BottomPanel/> : <HomeTable/>}
 				</Content>
 
 				{(showFooter ?? false) && (<Footer style={{
-					textAlign: 'left',
-					padding: '10px'
+					textAlign: 'left'
 				}}>
 					<Properties/>
 				</Footer>)}

@@ -5,7 +5,7 @@
  * @since 18.01.2025
  */
 import React, { JSX, useState, useEffect } from 'react'
-import { Layout } from 'antd'
+import { Layout, Button, Space } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import Sider from 'antd/es/layout/Sider'
 import { HEADER_HEIGHT } from '../../header/Header'
@@ -20,7 +20,6 @@ import Properties from './Properties'
 const { Footer } = Layout
 
 const HomePage = (): JSX.Element => {
-	const [collapsed, setCollapsed] = useState(false)
 	const style = useStore($style)
 	const [showFooter, setShowFooter] = useState(false)
 
@@ -54,52 +53,50 @@ const HomePage = (): JSX.Element => {
 
 	return (
 		<Layout style={{ height: `calc(100vh - ${HEADER_HEIGHT}px)` }}>
-			<Layout>
-				<Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-					<div>
-						<label>
-							<input
-								type="checkbox"
-								checked={footerOptions.option1}
-								onChange={() => handleCheckboxChange('option1')}
-								disabled
-							/>
-							Graph
-						</label>
-					</div>
-					<div>
-						<label>
-							<input
-								type="checkbox"
-								checked={footerOptions.properties}
-								onChange={() => handleCheckboxChange('properties')}
-							/>
-							Properties
-						</label>
-					</div>
-				</Sider>
-
-				<Layout
-					style={{
-						padding: '16px'
-				}}
-				>
-					<Content
-						style={{
-							backgroundColor: style.backgroundColor,
-							overflow: 'auto'
-						}}
+			<Sider collapsible
+				   collapsed={false}
+				   trigger={null}
+				   width={130}
+				   style={{ padding: '10px', backgroundColor: `${style.backgroundColor}` }}
+			>
+				<Space direction={'vertical'} style={{width:'100%'}}>
+					<Button
+						type={footerOptions.option1 ? 'primary' : 'default'}
+						onClick={() => handleCheckboxChange('option1')}
+						block
+						disabled
 					>
-						<BottomPanel/>
-					</Content>
+						Graph
+					</Button>
+					<Button
+						block
+						type={footerOptions.properties ? 'primary' : 'default'}
+						onClick={() => handleCheckboxChange('properties')}
+					>
+						Properties
+					</Button>
+				</Space>
+			</Sider>
+			<Layout
+				style={{
+					padding: '16px'
+				}}
+			>
+				<Content
+					style={{
+						backgroundColor: style.backgroundColor,
+						overflow: 'auto'
+					}}
+				>
+					<BottomPanel/>
+				</Content>
 
-					{(showFooter ?? false) && (<Footer style={{
-						textAlign: 'left',
-						padding: '10px'
-					}}>
-						<Properties/>
-					</Footer>)}
-				</Layout>
+				{(showFooter ?? false) && (<Footer style={{
+					textAlign: 'left',
+					padding: '10px'
+				}}>
+					<Properties/>
+				</Footer>)}
 			</Layout>
 		</Layout>
 	)

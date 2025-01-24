@@ -16,8 +16,8 @@ const StatsPage = (): JSX.Element => {
 
 	return (
 		<Space direction={'vertical'}>
-			<span>Всего контрактов: <b style={{ color: 'green' }}>{contracts.length}</b></span>
-			<span>Всего рейсов: <b style={{ color: 'green' }}>{flights.length}</b></span>
+			<span>Total reg. numbers: <b style={{ color: 'green' }}>{contracts.length}</b></span>
+			<span>Total flights: <b style={{ color: 'green' }}>{flights.length}</b></span>
 		</Space>
 	)
 }

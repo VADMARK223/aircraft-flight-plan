@@ -30,7 +30,7 @@ export const requestAddFlightFx = createEffect<DictData, Flight | null>(async (c
 		json: contract
 	})
 
-	showSuccess(`Добавлен новый рейс: '${response.id}'.`)
+	showSuccess(`New flight added: '${response.id}'.`)
 
 	return response
 })
@@ -39,7 +39,7 @@ export const requestDeleteFlightFx = createEffect<number, number | null>(async (
 	const response: number = await apiPost<number>('flight/delete_flight', {
 		json: flightId
 	})
-	showWarn(`Рейс: '${response}' удален.`)
+	showWarn(`Flight: '${response}' has been removed.`)
 	return response
 })
 

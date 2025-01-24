@@ -20,19 +20,19 @@ const DeleteAllButton = (): JSX.Element => {
 
 	return (
 		<Popconfirm
-			title={'Удаление всех рейсов.'}
-			description={'Вы уверены, что хотите удалить все рейсы?'}
-			okText={'Да'}
-			cancelText={'Отмена'}
+			title={'Delete all flights.'}
+			description={'Are you sure you want to delete all flights?'}
+			okText={'Yes'}
+			cancelText={'Cancel'}
 			onConfirm={handlerConfirm}
 		>
-			<Tooltip title={'Удалить все рейсы'}>
+			<Tooltip title={'Delete all flights'}>
 				<Button type={'primary'}
 						style={{minWidth: 150}}
 						danger
 						icon={<CloseOutlined/>}
 						disabled={flights.length === 0}
-				>Удалить все</Button>
+				>Delete all</Button>
 			</Tooltip>
 		</Popconfirm>
 	)

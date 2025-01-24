@@ -101,7 +101,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('fill', style.textColor)
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
-			.text(data.routes.length ? `Перелетов: ${data.routes.length}` : 'Нет перелетов')
+			.text(data.routes.length ? `Flights: ${data.routes.length}` : 'No routes')
 
 		if (isSelect()) {
 			const selectStrokeWidth = 3

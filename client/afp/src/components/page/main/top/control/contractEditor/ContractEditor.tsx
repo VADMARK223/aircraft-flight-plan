@@ -39,7 +39,7 @@ const ContractEditor = (): JSX.Element => {
 					<Button type={'primary'} icon={<PlusOutlined/>} disabled={addButtonDisabled} onClick={() => {
 						requestAddContractFx(contractName)
 						setContractName('')
-					}}>Добавить</Button>
+					}}>Add</Button>
 
 					<Select
 						placeholder={'Выберите контракт'}
@@ -58,7 +58,7 @@ const ContractEditor = (): JSX.Element => {
 							onClick={() => {
 								requestDeleteContractFx(selectedId)
 								setSelectedId(undefined)
-							}}>Удалить</Button>
+							}}>Delete</Button>
 				</Space>
 			</Space>
 		</Space>

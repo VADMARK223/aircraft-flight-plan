@@ -8,17 +8,18 @@ import React, { JSX } from 'react'
 import { useLocation } from 'react-router'
 import { Space, Button } from 'antd'
 import { Link } from 'react-router-dom'
-import { HomeOutlined, SettingOutlined, BarsOutlined } from '@ant-design/icons'
+import { HomeOutlined, SettingOutlined, BarsOutlined, CrownOutlined  } from '@ant-design/icons'
 import { Paths } from './Paths'
 
 const Navigation = (): JSX.Element => {
 	return (
 		<nav>
 			<Space align={'center'}>
-				<NavigationLink to={Paths.HOME} icon={<HomeOutlined/>} label={'Главная'}/>
-				<NavigationLink to={Paths.MAIN} icon={<HomeOutlined/>} label={'Старая главная страница'}/>
-				<NavigationLink to={Paths.SETTINGS} icon={<SettingOutlined/>} label={'Настройки'}/>
-				<NavigationLink to={Paths.STATS} icon={<BarsOutlined/>} label={'Статистика'}/>
+				<NavigationLink to={Paths.HOME} icon={<HomeOutlined/>} label={'Home'}/>
+				<NavigationLink to={Paths.MAIN} icon={<HomeOutlined/>} label={'Main'}/>
+				<NavigationLink to={Paths.FLIGHT} icon={<CrownOutlined/>} label={'Flight'}/>
+				<NavigationLink to={Paths.SETTINGS} icon={<SettingOutlined/>} label={'Settings'}/>
+				<NavigationLink to={Paths.STATS} icon={<BarsOutlined/>} label={'Stats'}/>
 			</Space>
 		</nav>
 	)

@@ -20,7 +20,7 @@ import { requestDeleteContractFx } from '../../../../../../api/contract'
 import { EMPTY_FLIGHT } from '../../../../../../utils/flight'
 import { $contracts } from '../../../../../../store/contract'
 
-const DEFAULT_BUTTON_LABEL = 'Добавление рейса'
+const DEFAULT_BUTTON_LABEL = 'Adding a flight'
 const PAGE_SIZE = 5
 
 const FlightControlModal = (): JSX.Element => {
@@ -49,7 +49,7 @@ const FlightControlModal = (): JSX.Element => {
 
 	useEffect(() => {
 		setMainButtonLabel(isEditMode ? 'Редактирование рейса' : DEFAULT_BUTTON_LABEL)
-		setApplyButtonLabel(isEditMode ? 'Применить' : 'Добавить')
+		setApplyButtonLabel(isEditMode ? 'Apply' : 'Add')
 	}, [isEditMode])
 
 	useEffect(() => {
@@ -57,9 +57,9 @@ const FlightControlModal = (): JSX.Element => {
 		let applyButtonDisabled = true
 		if (!isEditMode) {
 			if (currentFlight.contract.value === -1) {
-				resultTitle = `Добавление рейса (выберите контракт)`
+				resultTitle = `Add a flight (select a reg.number)`
 			} else {
-				resultTitle = `Добавление рейса`
+				resultTitle = `Adding a flight`
 				applyButtonDisabled = false
 			}
 		} else {
@@ -142,16 +142,16 @@ const FlightControlModal = (): JSX.Element => {
 			}
 		},
 		{
-			title: 'Наименование',
+			title: 'Reg. number',
 			dataIndex: 'label'
 		},
 		{
-			title: 'Действия',
+			title: 'Action',
 			dataIndex: 'actions',
 			fixed: 'right',
 			render: (_: undefined, record: DictData): JSX.Element | undefined => {
 				if (record.value >= 0) {
-					return (<Button danger onClick={() => requestDeleteContractFx(record.value)}>Удалить</Button>)
+					return (<Button danger onClick={() => requestDeleteContractFx(record.value)}>Delete</Button>)
 				}
 			}
 		}
@@ -222,7 +222,7 @@ const FlightControlModal = (): JSX.Element => {
 				onCancel={hideModal}
 				style={{ top: 20 }}
 				footer={[
-					<Button key={'cancel'} onClick={hideModal}>Отмена</Button>,
+					<Button key={'cancel'} onClick={hideModal}>Cancel</Button>,
 					<Button key={'apply'}
 							ref={buttonApplyRef}
 							type={'primary'}

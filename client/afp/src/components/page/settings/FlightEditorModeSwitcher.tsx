@@ -28,8 +28,8 @@ const FlightEditorModeSwitcher = ({ callback }: FlightEditorModeSwitcherProps): 
 	return (
 		<Switch
 			className={'monochromatic-switch'}
-			checkedChildren={'Селектор'}
-			unCheckedChildren={'Модалка'}
+			checkedChildren={'Select'}
+			unCheckedChildren={'Modal'}
 			onChange={changeHandler}
 			defaultChecked={!!localStorage.getItem(LocalStoreKey.FLIGHT_EDIT_MODE)}
 		/>

@@ -13,10 +13,10 @@ const VERSION = '1.0.0'
 const InfoPanel = (): JSX.Element => {
 	return (
 		<Space direction={'horizontal'}>
-			<span>Временная зона:</span>
+			<span>Time zone:</span>
 			<b>{LOCAL_TIME_ZONE + ' ' + FORMATTED_OFFSET}</b>
 			<Divider type={'vertical'} />
-			<span>Версия:</span>
+			<span>Version:</span>
 			<b>{VERSION}</b>
 		</Space>
 	)

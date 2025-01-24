@@ -4,30 +4,38 @@
  * @author Markitanov Vadim
  * @since 19.01.2025
  */
-import React, { JSX } from 'react'
+import React, { JSX, useEffect, useState } from 'react'
 import { Tree } from 'antd'
-import { Flight } from '../../../../models/Flight'
 import FlightIInfoItem from './FlightIInfoItem'
+import type { DataNode } from 'antd/es/tree'
+import { useStore } from 'effector-react'
+import { $flightsSelected } from '../../../../store/flight'
+import { Flight } from '../../../../models/Flight'
 
-interface FlightsInfoProps {
-	data: Flight[]
-}
+const ROOT_ELEMENT_KEY = '0-0'
 
-const FlightsInfo = ({ data }: FlightsInfoProps): JSX.Element => {
-	const treeData = [
-		{
-			title: <FlightIInfoItem title="Flights Info"/>,
-			key: '0-0',
-			children: data.map((flight) => ({
-				key: `flight-${flight.id}`,
-				title: <FlightIInfoItem title={`Flight ID: ${flight.id}`}/>
-			}))
-		}
-	]
+const FlightsInfo = (): JSX.Element => {
+	const flightsSelected: Flight[] = useStore($flightsSelected)
+	const [treeData, setTreeData] = useState<DataNode[]>([])
+
+	useEffect(() => {
+		setTreeData([
+			{
+				title: <span> {'Flights Info'}</span>,
+				key: ROOT_ELEMENT_KEY,
+				children: flightsSelected.map((flight) => ({
+					key: `flight-${flight.id}`,
+					title: <FlightIInfoItem title={`Flight ID: ${flight.id}`}/>
+				}))
+			}
+		])
+	}, [flightsSelected])
 
 	return (
 		<>
-			{data.length ? <Tree treeData={treeData}/> : <span>Рейсы не выбраны.</span>}
+			{flightsSelected.length
+				? <Tree treeData={treeData} expandedKeys={[ROOT_ELEMENT_KEY]}/>
+				: <span>No flights selected.</span>}
 		</>
 	)
 }

@@ -18,6 +18,7 @@ import StatsPage from './components/page/stats/StatsPage'
 import ErrorPage from './components/page/ErrorPage'
 import { Paths } from './components/header/Paths'
 import HomePage from './components/page/home/HomePage'
+import FlightPage from './components/page/flight/FlightPage'
 
 function App () {
 	const style = useStore($style)
@@ -47,6 +48,7 @@ function App () {
 					{ index: true, element: <HomePage/> },
 					{ path: Paths.MAIN, element: <MainPage/> },
 					{ path: Paths.SETTINGS, element: <SettingsPage/> },
+					{ path: Paths.FLIGHT, element: <FlightPage/> },
 					{ path: Paths.STATS, element: <StatsPage/> }
 				],
 			}

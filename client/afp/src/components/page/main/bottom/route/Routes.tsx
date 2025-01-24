@@ -83,12 +83,12 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 			<g id={'context-menu-layout'}>
 				{contextMenu && contextMenu.isFlight && <ContextMenu menuItems={[
 					{
-						title: 'Редактировать',
+						title: 'Edit',
 						action: (datum: Route | Flight) => {
 							routeClickFx(datum as Route)
 						}
 					}, {
-						title: 'Удалить',
+						title: 'Delete',
 						action: (datum: Route | Flight) => {
 							requestDeleteRouteFx((datum as Route).id)
 						}

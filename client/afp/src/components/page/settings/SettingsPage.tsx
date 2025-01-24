@@ -1,5 +1,5 @@
 /**
- * Компонент
+ * Компонент страницы настроек.
  *
  * @author Markitanov Vadim
  * @since 16.12.2024
@@ -26,7 +26,7 @@ const SettingsPage = (): JSX.Element => {
 	return (
 		<Space direction={'vertical'}>
 			<Space direction={'horizontal'}>
-				<span>Тёмная тема:</span>
+				<span>Dark theme:</span>
 				<Switch
 					checkedChildren={<CheckOutlined/>}
 					unCheckedChildren={<CloseOutlined/>}
@@ -35,7 +35,7 @@ const SettingsPage = (): JSX.Element => {
 				/>
 			</Space>
 			<Space direction={'horizontal'}>
-				<span>Режим редактирования рейса:</span>
+				<span>Flight editing mode:</span>
 				<FlightEditorModeSwitcher/>
 			</Space>
 		</Space>

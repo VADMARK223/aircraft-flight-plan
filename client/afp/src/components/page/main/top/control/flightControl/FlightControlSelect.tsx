@@ -71,9 +71,9 @@ const FlightControlSelect = (): JSX.Element => {
 
 	return (
 		<Space>
-			<span>ID контракта:</span>
+			<span>Reg. number:</span>
 			<Select
-				placeholder={'Выберите контракт'}
+				placeholder={'Select reg. number'}
 				style={{ width: '160px' }}
 				value={currentFlight.contract.value === -1 ? undefined : currentFlight.contract.value}
 				options={store}
@@ -90,7 +90,7 @@ const FlightControlSelect = (): JSX.Element => {
 						onClick={handleAddSaveFlight}
 						disabled={addSaveButtonDisabled}
 				>
-					{isEditMode ? 'Сохранить' : 'Добавить'}
+					{isEditMode ? 'Save' : 'Add'}
 				</Button>
 			</Tooltip>
 		</Space>

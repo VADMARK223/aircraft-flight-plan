@@ -9,23 +9,23 @@ import { DeleteOutlined } from '@ant-design/icons'
 import { requestDeleteFlightFx } from '../../../../../../api/flight'
 import { Button, Tooltip } from 'antd'
 import { useStore } from 'effector-react'
-import { $flightSelected } from '../../../../../../store/flight'
-import { Flight } from '../../../../../../models/Flight'
+import { $flightsSelected } from '../../../../../../store/flight'
 
 const DeleteButton = (): JSX.Element => {
-	const selectedFlight: Flight | null = useStore($flightSelected)
+	const flightsSelected = useStore($flightsSelected)
+	const lastFlightSelected = flightsSelected.at(-1)
 
 	return (
-		<Tooltip title={`Удалить рейс: ${selectedFlight?.contract.value}`}>
+		<Tooltip title={`Удалить рейс: ${lastFlightSelected?.contract.value}`}>
 			<Button type={'primary'}
 					style={{ minWidth: 150 }}
 					danger
 					icon={<DeleteOutlined/>}
 					onClick={() => {
-						if (selectedFlight) {
-							requestDeleteFlightFx(selectedFlight.id)
+						if (lastFlightSelected) {
+							requestDeleteFlightFx(lastFlightSelected.id)
 						}
-					}}>Удалить</Button>
+					}}>Delete</Button>
 		</Tooltip>
 	)
 }

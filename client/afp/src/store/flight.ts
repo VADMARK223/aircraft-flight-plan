@@ -176,11 +176,15 @@ $flightSelected
 	})
 
 export const flightsSelectAdded = createEffect<Flight, Flight[]>('Добавление рейса в выбранные.')
-export const flightsSelectReplaced = createEffect<Flight, Flight[]>('Замена выбранного рейса..')
+export const flightsSelectReplaced = createEffect<Flight, Flight[]>('Замена выбранного рейса.')
+export const flightsSelectReset = createEvent('Событие сброса выбранных рейсов.')
+
 export const $flightsSelected = createStore<Flight[]>([])
 $flightsSelected.on(flightsSelectAdded, (state, payload) => [...state, payload])
 $flightsSelected.on(flightsSelectReplaced, (_state, payload) => [payload])
-export const flightsSelectReset = createEvent('Событие сброса выбранных рейсов.')
+$flightsSelected.on(requestDeleteFlightFx, (state, flightId) => {
+	return state.filter((flight) => flight.id !== flightId);
+});
 $flightsSelected.reset(flightsSelectReset)
 
 export const flightSelectResetFx = createEvent('Событие сброса выбранного рейса.')

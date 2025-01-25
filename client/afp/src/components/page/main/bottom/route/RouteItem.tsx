@@ -12,10 +12,10 @@ import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, ROUTE_ITEM_HEIGHT } from '../../../../.
 import { $style, StyleStore } from '../../../../../store/style'
 import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText } from '../../../../../utils/utils'
-import { RouteType } from '../../../../../models/type/RouteType'
 import { greenColor } from '../../../../../utils/style'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
 import { $ui } from '../../../../../store/ui'
+import { RouteType, isMaintenance, RouteTypeNames } from './routeUtils'
 
 // Тип обрезки перелета
 export enum CropType {
@@ -104,7 +104,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		}
 
 		if (!isDefault) {
-			const routeTypeLabel = data.routeTypeId === RouteType.ROUTINE_MAINTENANCE ? 'Тех. обслуживание' : 'Срочный'
+			const routeTypeLabel = RouteTypeNames[data.routeTypeId as RouteType]
 			drawText(container, routeTypeLabel, x + width * 0.5, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
 		}
 

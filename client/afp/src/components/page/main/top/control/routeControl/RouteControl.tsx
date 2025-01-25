@@ -7,7 +7,7 @@
 import React, { JSX, useEffect, useState, useCallback } from 'react'
 import { useStore } from 'effector-react'
 import { $routeSelected } from '../../../../../../store/route'
-import { $flights, $flightSelected } from '../../../../../../store/flight'
+import { $flights, $flightsSelected } from '../../../../../../store/flight'
 import dayjs, { Dayjs } from 'dayjs'
 import { Button, DatePicker, Divider, Select, SelectProps, Space, Tooltip, TimePicker } from 'antd'
 import { combineDateTime } from '../../../../../../utils/utils'
@@ -28,7 +28,8 @@ import { Route } from '../../../../../../models/Route'
 
 const RouteControl = (): JSX.Element => {
 	const routeSelected = useStore($routeSelected)
-	const flightSelected = useStore($flightSelected)
+	const flightsSelected = useStore($flightsSelected)
+	const flightSelected = flightsSelected.at(-1)
 	const flights = useStore($flights)
 	const airports = useStore($airports)
 	const routeTypes = useStore($routeTypeDictStore)
@@ -86,7 +87,7 @@ const RouteControl = (): JSX.Element => {
 	}, [routeTypes])
 
 	useEffect(() => {
-		setFlightId(flightSelected !== null ? flightSelected.id : undefined)
+		setFlightId(flightSelected != null ? flightSelected.id : undefined)
 	}, [flightSelected])
 
 	const resetData = (): void => {

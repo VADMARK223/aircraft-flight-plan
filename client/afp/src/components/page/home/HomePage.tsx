@@ -17,14 +17,14 @@ import { fetchRouteTypeFx, fetchAircraftTypeFx } from '../../../api/dict'
 import Properties from './Properties'
 import BottomPanel from '../main/bottom/BottomPanel'
 import { PropertySafetyOutlined } from '@ant-design/icons'
-import HomeTable from './HomeTable'
+import HomeTable from './table/HomeTable'
 
 const { Footer } = Layout
 
 const HomePage = (): JSX.Element => {
 	const style = useStore($style)
 	const [showFooter, setShowFooter] = useState(false)
-	const [title, setTitle] = useState('Graph')
+	const [title, setTitle] = useState('Tables')
 
 	const [footerOptions, setFooterOptions] = useState({
 		main: true,
@@ -50,9 +50,9 @@ const HomePage = (): JSX.Element => {
 		}
 
 		if (isGraph()) {
-			setTitle('Graph')
+			setTitle('Tables')
 		} else {
-			setTitle('Table')
+			setTitle('Graph')
 		}
 	}, [footerOptions])
 

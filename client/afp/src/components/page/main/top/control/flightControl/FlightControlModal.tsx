@@ -12,7 +12,7 @@ import { ColumnsType } from 'antd/es/table'
 import { DictData } from '../../../../../../models/DictData'
 import { TableRowSelection, Key } from 'antd/es/table/interface'
 import { useStore } from 'effector-react'
-import { $flightSelected } from '../../../../../../store/flight'
+import { $flightsSelected } from '../../../../../../store/flight'
 import { Flight } from '../../../../../../models/Flight'
 import { showError } from '../../../../../../api/common'
 import { requestAddFlightFx, requestSaveFlightFx } from '../../../../../../api/flight'
@@ -25,7 +25,9 @@ const PAGE_SIZE = 5
 
 const FlightControlModal = (): JSX.Element => {
 	const store = useStore($contracts)
-	const selectedFlight = useStore($flightSelected)
+	const flightsSelected = useStore($flightsSelected)
+	const selectedFlight = flightsSelected.at(-1)
+
 	const [mainButtonLabel, setMainButtonLabel] = useState<string>(DEFAULT_BUTTON_LABEL)
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 	const [isEditMode, setIsEditMode] = useState<boolean>(false)

@@ -11,7 +11,6 @@ import { Flight } from '../../../../../models/Flight'
 import { useStore } from 'effector-react'
 import { $style } from '../../../../../store/style'
 import {
-	$flightSelected,
 	flightsSelectAdded,
 	$flightsSelected,
 	flightsSelectReplaced
@@ -30,8 +29,7 @@ interface BoardItemProps {
 const FlightItem = (props: BoardItemProps): JSX.Element => {
 	const { data, x, y, width, height } = props
 	const style = useStore($style)
-	const flightSelect = useStore($flightSelected)
-	const flightSelected = useStore($flightsSelected)
+	const flightsSelected = useStore($flightsSelected)
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const ui = useStore($ui)
 
@@ -57,13 +55,10 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			})
 
 		const isSelect = (): boolean => {
-			if (Array.isArray(flightSelected)) {
-				return flightSelected.some((flight) => flight.id === data.id)
+			if (Array.isArray(flightsSelected)) {
+				return flightsSelected.some((flight) => flight.id === data.id)
 			}
 
-			if (flightSelect) {
-				return data.id === flightSelect?.id
-			}
 			return false
 		}
 
@@ -114,7 +109,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 				.attr('stroke-width', selectStrokeWidth)
 		}
 
-	}, [ui.y, style, x, y, width, height, data.routes.length, data, flightSelect, flightSelected])
+	}, [ui.y, style, x, y, width, height, data.routes.length, data, flightsSelected])
 
 	return (
 		<g ref={gRef}/>

@@ -14,7 +14,6 @@ import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText } from '../../../../../utils/utils'
 import { lightGreenColor } from '../../../../../utils/style'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
-import { $ui } from '../../../../../store/ui'
 import { RouteType, RouteTypeNames } from './routeUtils'
 import { $settings } from '../../../../../store/settings'
 
@@ -38,7 +37,6 @@ const CROP_MARKER_COLOR = 'black'
 const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
 	const settings = useStore($settings)
-	const ui = useStore($ui)
 	const routeSelect = useStore($routeSelected)
 	const { x, y, width, data, cropType } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -132,10 +130,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		// Аэропорты
 		drawAirportText(container, style.textColor, data.aptDeptIata, x, TOP_Y + ROUTE_ITEM_HEIGHT, 'end')
 		drawAirportText(container, style.textColor, data.aptArrIata, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, 'start')
-		// const dateRotate = 0
-		// appendRotateText(container, style.textColor, x, TOP_Y + ROUTE_ITEM_HEIGHT, data.aptDeptIata, dateRotate, 'hanging')
-		// appendRotateText(container, style.textColor, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, data.aptArrIata, dateRotate, 'hanging')
-	}, [x, y, width, data, style, isDefault, isSelect, ui, settings])
+	}, [x, y, width, data, style, isDefault, isSelect, settings])
 
 	return (
 		<g ref={gRef} id={`flight-item-${data.id}`}/>

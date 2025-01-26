@@ -7,14 +7,22 @@ import { LocalStoreKey } from '../utils/localStorage'
  */
 interface Settings {
 	showDates: boolean
+	flightEditMode:boolean
 }
 
 const defaultStore: Settings = {
-	showDates: localStorage.getItem(LocalStoreKey.DATE_VISIBILITY) != null
+	showDates: localStorage.getItem(LocalStoreKey.DATE_VISIBILITY) != null,
+	flightEditMode: localStorage.getItem(LocalStoreKey.FLIGHT_EDIT_MODE) != null,
 }
 
 export const $settings = createStore<Settings>(defaultStore)
 export const showDatesChanged = createEvent<boolean>('Событие изменения настройки показа дат на канве.')
+export const flightEditModeChanged = createEvent<boolean>('Событие изменения настройки режима редактирования рейса.')
+
 $settings.on(showDatesChanged, (state, payload) => {
 	return { ...state, showDates: payload }
+})
+
+$settings.on(flightEditModeChanged, (state, payload) => {
+	return { ...state, flightEditMode: payload }
 })

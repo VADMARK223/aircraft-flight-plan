@@ -5,34 +5,34 @@
  * @since 08.01.2025
  */
 import React, { JSX } from 'react'
-import { Switch } from 'antd'
+import { Switch, Space } from 'antd'
 import { LocalStoreKey, LocalStoreValue } from '../../../utils/localStorage'
+import { flightEditModeChanged, $settings } from '../../../store/settings'
+import { useStore } from 'effector-react'
 
-interface FlightEditorModeSwitcherProps {
-	callback?: (value: boolean) => void
-}
+const FlightEditorModeSwitcher = (): JSX.Element => {
+	const settings = useStore($settings)
 
-const FlightEditorModeSwitcher = ({ callback }: FlightEditorModeSwitcherProps): JSX.Element => {
 	const changeHandler = (value: boolean) => {
+		flightEditModeChanged(true)
 		if (value) {
 			localStorage.setItem(LocalStoreKey.FLIGHT_EDIT_MODE, LocalStoreValue.FLIGHT_EDIT_MODE)
 		} else {
 			localStorage.removeItem(LocalStoreKey.FLIGHT_EDIT_MODE)
 		}
-
-		if (callback !== undefined) {
-			callback(value)
-		}
 	}
 
 	return (
-		<Switch
-			className={'monochromatic-switch'}
-			checkedChildren={'Select'}
-			unCheckedChildren={'Modal'}
-			onChange={changeHandler}
-			defaultChecked={!!localStorage.getItem(LocalStoreKey.FLIGHT_EDIT_MODE)}
-		/>
+		<Space direction={'horizontal'}>
+			<span>Flight editing mode:</span>
+			<Switch
+				className={'monochromatic-switch'}
+				checkedChildren={'Select'}
+				unCheckedChildren={'Modal'}
+				onChange={changeHandler}
+				defaultChecked={settings.flightEditMode}
+			/>
+		</Space>
 	)
 }
 

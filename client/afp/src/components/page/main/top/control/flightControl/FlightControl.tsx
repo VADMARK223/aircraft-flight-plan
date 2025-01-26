@@ -12,22 +12,17 @@ import DeleteAllButton from './DeleteAllButton'
 import DeleteButton from './DeleteButton'
 import FlightControlModal from './FlightControlModal'
 import FlightControlSelect from './FlightControlSelect'
-import FlightEditorModeSwitcher from '../../../../settings/FlightEditorModeSwitcher'
-import { LocalStoreKey } from '../../../../../../utils/localStorage'
+import { $settings } from '../../../../../../store/settings'
 
 const FlightControl = (): JSX.Element => {
+	const settings = useStore($settings)
 	const flightsSelected = useStore($flightsSelected)
 	const lastFlightSelected = flightsSelected.at(-1);
 	const [title, setTitle] = useState<string>()
-	const [selectorMode, setSelectorMode] = useState<boolean>(!!localStorage.getItem(LocalStoreKey.FLIGHT_EDIT_MODE))
 
 	useEffect((): void => {
 		setTitle(lastFlightSelected != null ? `Flight change ${lastFlightSelected.id} (Reg. number: ${lastFlightSelected.contract.label})` : 'Adding a flight')
 	}, [lastFlightSelected])
-
-	const onModeChangeHandler = (value: boolean) => {
-		setSelectorMode(value)
-	}
 
 	return (
 		<Space direction={'vertical'} style={{ width: '100%' }}>
@@ -35,8 +30,7 @@ const FlightControl = (): JSX.Element => {
 					 orientation={'left'}
 					 className={'control-panel-divider'}>{title}</Divider>
 			<Space>
-				<FlightEditorModeSwitcher callback={onModeChangeHandler}/>
-				{selectorMode ? <FlightControlSelect/> : <FlightControlModal/>}
+				{settings.flightEditMode ? <FlightControlSelect/> : <FlightControlModal/>}
 				{lastFlightSelected ? <DeleteButton/> : undefined}
 				<DeleteAllButton/>
 			</Space>

@@ -12,10 +12,11 @@ import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, ROUTE_ITEM_HEIGHT } from '../../../../.
 import { $style, StyleStore } from '../../../../../store/style'
 import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText } from '../../../../../utils/utils'
-import { greenColor } from '../../../../../utils/style'
+import { lightGreenColor } from '../../../../../utils/style'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
 import { $ui } from '../../../../../store/ui'
-import { RouteType, isMaintenance, RouteTypeNames } from './routeUtils'
+import { RouteType, RouteTypeNames } from './routeUtils'
+import { $settings } from '../../../../../store/settings'
 
 // Тип обрезки перелета
 export enum CropType {
@@ -36,12 +37,15 @@ const CROP_MARKER_COLOR = 'black'
 
 const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
+	const settings = useStore($settings)
 	const ui = useStore($ui)
 	const routeSelect = useStore($routeSelected)
 	const { x, y, width, data, cropType } = props
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const isSelect = data.id === routeSelect?.id
 	const isDefault = data.routeTypeId === RouteType.DEFAULT
+
+	console.log()
 
 	useEffect(() => {
 		const container = d3.select(gRef.current)
@@ -62,7 +66,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 
 		const getBackgroundColor = (): string => {
 			if (isDefault) {
-				return greenColor
+				return lightGreenColor
 			}
 
 			if (data.routeTypeId === RouteType.ROUTINE_MAINTENANCE) {
@@ -108,20 +112,30 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			drawText(container, routeTypeLabel, x + width * 0.5, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
 		}
 
-		const textSelection = drawAirportText(container, data.aptDeptIata ?? '', x + 2, TOP_Y + 1)
+		/*const textSelection = drawAirportText(container, data.aptDeptIata ?? '', x + 2, TOP_Y + 1)
 		const textSelectionBox: SVGRect | undefined = textSelection.node().getBBox()
 		if (textSelectionBox !== undefined) {
 			drawAirportText(container, data.aptArrIata ?? '', textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
+		}*/
+
+		if (settings.showDates) {
+			// Верхние даты
+			const timeRotate = -19
+			appendRotateText(container, style.textColor, x, TOP_Y, data.scheduledDepartureDate.format('HH:mm'), timeRotate)
+			appendRotateText(container, style.textColor, x + width, TOP_Y, data.scheduledArrivalDate.format('HH:mm'), timeRotate)
+
+			// Нижние даты
+			const dateRotate = 19
+			appendRotateText(container, style.textColor, x, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+			appendRotateText(container, style.textColor, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
 		}
-
-		const timeRotate = -19
-		appendRotateText(container, style.textColor, x, TOP_Y, data.scheduledDepartureDate.format('HH:mm'), timeRotate)
-		appendRotateText(container, style.textColor, x + width, TOP_Y, data.scheduledArrivalDate.format('HH:mm'), timeRotate)
-
-		const dateRotate = 19
-		appendRotateText(container, style.textColor, x, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-		appendRotateText(container, style.textColor, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-	}, [x, y, width, data, style, isDefault, isSelect, ui.x, ui.y])
+		// Аэропорты
+		drawAirportText(container, style.textColor, data.aptDeptIata, x, TOP_Y + ROUTE_ITEM_HEIGHT, 'end')
+		drawAirportText(container, style.textColor, data.aptArrIata, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, 'start')
+		// const dateRotate = 0
+		// appendRotateText(container, style.textColor, x, TOP_Y + ROUTE_ITEM_HEIGHT, data.aptDeptIata, dateRotate, 'hanging')
+		// appendRotateText(container, style.textColor, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, data.aptArrIata, dateRotate, 'hanging')
+	}, [x, y, width, data, style, isDefault, isSelect, ui, settings])
 
 	return (
 		<g ref={gRef} id={`flight-item-${data.id}`}/>

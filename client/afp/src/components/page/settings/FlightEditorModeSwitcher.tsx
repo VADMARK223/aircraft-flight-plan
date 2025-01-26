@@ -6,7 +6,7 @@
  */
 import React, { JSX } from 'react'
 import { Switch } from 'antd'
-import { LocalStoreKey, LocalStoreValue } from '../../../store/style'
+import { LocalStoreKey, LocalStoreValue } from '../../../utils/localStorage'
 
 interface FlightEditorModeSwitcherProps {
 	callback?: (value: boolean) => void

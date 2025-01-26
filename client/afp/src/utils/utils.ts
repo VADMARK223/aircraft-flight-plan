@@ -50,14 +50,14 @@ export const drawText = (svg: any, text: string, x: number, y: number, cursor: s
 		.text(text)
 }
 
-export const drawAirportText = (svg: any, text: string, x: number, y: number): any => {
+export const drawAirportText = (svg: any, textColor: string, text: string, x: number, y: number, textAnchor: 'start' | 'end'): any => {
 	const result = svg.append('text')
 	result.attr('x', x)
 	result.attr('y', y)
-	result.attr('font-size', 11)
+	result.attr('font-size', 12)
 	result.attr('font-weight', 'bold')
-	result.attr('fill', 'white')
-	result.attr('text-anchor', 'start')
+	result.attr('fill', textColor)
+	result.attr('text-anchor', textAnchor)
 	result.attr('dominant-baseline', 'hanging')
 	result.text(text)
 	return result
@@ -135,22 +135,22 @@ const checkDates = (start: Dayjs, end: Dayjs): string | undefined => {
 export const getDayNameByCount = (count: number): string => {
 	switch (count) {
 		case 0:
-			return 'Monday';
+			return 'Monday'
 		case 1:
-			return 'Tuesday';
+			return 'Tuesday'
 		case 2:
-			return 'Wednesday';
+			return 'Wednesday'
 		case 3:
-			return 'Thursday';
+			return 'Thursday'
 		case 4:
-			return 'Friday';
+			return 'Friday'
 		case 5:
-			return 'Saturday';
+			return 'Saturday'
 		case 6:
-			return 'Sunday';
+			return 'Sunday'
 		default:
-			return 'Unknown';
+			return 'Unknown'
 	}
-};
+}
 
 

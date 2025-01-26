@@ -1,19 +1,10 @@
 import { createStore, createEvent } from 'effector'
+import { LocalStoreKey, LocalStoreValue } from '../utils/localStorage'
 
 /**
  * @author Markitanov Vadim
  * @since 06.12.2023
  */
-export enum LocalStoreKey {
-	THEME = 'afp_theme',
-	FLIGHT_EDIT_MODE = 'afp_flight_edit_mode'
-}
-
-export enum LocalStoreValue {
-	THEME = 'dark',
-	FLIGHT_EDIT_MODE = 'selector'
-}
-
 export interface StyleStore {
 	isDarkTheme: boolean
 	backgroundColor: string,

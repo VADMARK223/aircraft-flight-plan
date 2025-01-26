@@ -12,8 +12,8 @@ import DeleteAllButton from './DeleteAllButton'
 import DeleteButton from './DeleteButton'
 import FlightControlModal from './FlightControlModal'
 import FlightControlSelect from './FlightControlSelect'
-import { LocalStoreKey } from '../../../../../../store/style'
 import FlightEditorModeSwitcher from '../../../../settings/FlightEditorModeSwitcher'
+import { LocalStoreKey } from '../../../../../../utils/localStorage'
 
 const FlightControl = (): JSX.Element => {
 	const flightsSelected = useStore($flightsSelected)

@@ -11,7 +11,7 @@ import { $routeSelected, routeClickFx } from '../../../../../store/route'
 import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, ROUTE_ITEM_HEIGHT } from '../../../../../utils/consts'
 import { $style, StyleStore } from '../../../../../store/style'
 import { useStore } from 'effector-react'
-import { appendRotateText, drawAirportText, drawText } from '../../../../../utils/utils'
+import { appendRotateText, drawAirportText, drawText, drawTextRotate } from '../../../../../utils/utils'
 import { lightGreenColor } from '../../../../../utils/style'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
 import { RouteType, RouteTypeNames } from './routeUtils'
@@ -130,6 +130,10 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		// Аэропорты
 		drawAirportText(container, style.textColor, data.aptDeptIata, x, TOP_Y + ROUTE_ITEM_HEIGHT, 'end')
 		drawAirportText(container, style.textColor, data.aptArrIata, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, 'start')
+		// Время
+		const SHIFT = 7
+		drawTextRotate(container, '12.00', x + width * 0.5 - SHIFT, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+		drawTextRotate(container, '12.30', x + width * 0.5 + SHIFT, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
 	}, [x, y, width, data, style, isDefault, isSelect, settings])
 
 	return (

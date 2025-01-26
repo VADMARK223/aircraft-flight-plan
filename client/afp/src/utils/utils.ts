@@ -50,6 +50,19 @@ export const drawText = (svg: any, text: string, x: number, y: number, cursor: s
 		.text(text)
 }
 
+export const drawTextRotate = (svg: any, text: string, x: number, y: number, cursor: string): any => {
+	svg.append('text')
+		.attr('x', x)
+		.attr('y', y)
+		.attr('fill', 'black')
+		.attr('font-weight', 'bold')
+		.attr('text-anchor', 'middle')
+		.attr('dominant-baseline', 'middle')
+		.attr('transform', `rotate(-90, ${x}, ${y})`)
+		.attr('cursor', cursor)
+		.text(text)
+}
+
 export const drawAirportText = (svg: any, textColor: string, text: string, x: number, y: number, textAnchor: 'start' | 'end'): any => {
 	const result = svg.append('text')
 	result.attr('x', x)

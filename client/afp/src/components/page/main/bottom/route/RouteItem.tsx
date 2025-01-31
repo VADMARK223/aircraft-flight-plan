@@ -11,11 +11,12 @@ import { $routeSelected, routeClickFx } from '../../../../../store/route'
 import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, ROUTE_ITEM_HEIGHT } from '../../../../../utils/consts'
 import { $style, StyleStore } from '../../../../../store/style'
 import { useStore } from 'effector-react'
-import { appendRotateText, drawAirportText, drawText, drawTextRotate } from '../../../../../utils/utils'
+import { appendRotateText, drawAirportText, drawText, drawTextRotate, drawTopText } from '../../../../../utils/utils'
 import { lightGreenColor } from '../../../../../utils/style'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
 import { RouteType, RouteTypeNames } from './routeUtils'
 import { $settings } from '../../../../../store/settings'
+import { Dayjs } from 'dayjs'
 
 // Тип обрезки перелета
 export enum CropType {
@@ -36,6 +37,7 @@ const CROP_MARKER_COLOR = 'black'
 
 const RouteItem = (props: FlightItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
+	const textColor = style.textColor
 	const settings = useStore($settings)
 	const routeSelect = useStore($routeSelected)
 	const { x, y, width, data, cropType } = props
@@ -46,11 +48,11 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 	console.log()
 
 	useEffect(() => {
-		const container = d3.select(gRef.current)
-		container.selectAll('*').remove()
+		const svg = d3.select(gRef.current)
+		svg.selectAll('*').remove()
 
-		container.attr('cursor', 'pointer')
-		container.on('click', () => {
+		svg.attr('cursor', 'pointer')
+		svg.on('click', () => {
 			routeClickFx(data)
 		}).on('contextmenu', (event: PointerEvent) => {
 			event.preventDefault()
@@ -75,9 +77,10 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		}
 
 		const TOP_Y = y + (CELL_HEIGHT - ROUTE_ITEM_HEIGHT) * 0.5
+		const CENTER_X = x + width * 0.5
 
 		// Заливка фона
-		container.append('rect')
+		svg.append('rect')
 			.attr('x', x)
 			.attr('y', TOP_Y)
 			.attr('width', width)
@@ -86,28 +89,30 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			.attr('stroke-width', isSelect ? '3' : '1')
 			.attr('fill', getBackgroundColor)
 
-		const ARROW_WIDTH = 30
+		// Верхний текст
+		drawTopText(svg, 'VDA 1234', CENTER_X, TOP_Y, 'pointer', textColor)
 
+		const CROP_ARROW_WIDTH = 30
 		// Если перелет обрезан рисуем треугольник
 		if (cropType === CropType.START) {
-			container.append('polygon')
+			svg.append('polygon')
 				.attr('points', `
 				${x},${y + (CELL_HEIGHT) * 0.5} 
-				${x + ARROW_WIDTH},${TOP_Y}
-				${x + ARROW_WIDTH},${TOP_Y + ROUTE_ITEM_HEIGHT}`)
+				${x + CROP_ARROW_WIDTH},${TOP_Y}
+				${x + CROP_ARROW_WIDTH},${TOP_Y + ROUTE_ITEM_HEIGHT}`)
 				.attr('fill', CROP_MARKER_COLOR)
 		} else if (cropType === CropType.END) {
-			container.append('polygon')
+			svg.append('polygon')
 				.attr('points', `
-				${x + width - ARROW_WIDTH},${TOP_Y}
+				${x + width - CROP_ARROW_WIDTH},${TOP_Y}
 				${x + width},${y + (CELL_HEIGHT) * 0.5}
-				${x + width - ARROW_WIDTH},${TOP_Y + ROUTE_ITEM_HEIGHT}`)
+				${x + width - CROP_ARROW_WIDTH},${TOP_Y + ROUTE_ITEM_HEIGHT}`)
 				.attr('fill', CROP_MARKER_COLOR)
 		}
 
 		if (!isDefault) {
 			const routeTypeLabel = RouteTypeNames[data.routeTypeId as RouteType]
-			drawText(container, routeTypeLabel, x + width * 0.5, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+			drawText(svg, routeTypeLabel, CENTER_X, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
 		}
 
 		/*const textSelection = drawAirportText(container, data.aptDeptIata ?? '', x + 2, TOP_Y + 1)
@@ -116,24 +121,80 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 			drawAirportText(container, data.aptArrIata ?? '', textSelectionBox.x, textSelectionBox.y + textSelectionBox.height)
 		}*/
 
+		const scheduledDepartureDay: Dayjs = data.scheduledDepartureDate
+		const scheduledDepartureTime: string = scheduledDepartureDay.format('HH:mm')
+		const scheduledDepartureDate: string = scheduledDepartureDay.format('DD.MM.YYYY')
+
+		const scheduledArrivalDay: Dayjs = data.scheduledArrivalDate
+		const scheduledArrivalTime: string = scheduledArrivalDay.format('HH:mm')
+		const scheduledArrivalDate: string = scheduledArrivalDay.format('DD.MM.YYYY')
+
 		if (settings.showDates) {
 			// Верхние даты
 			const timeRotate = -19
-			appendRotateText(container, style.textColor, x, TOP_Y, data.scheduledDepartureDate.format('HH:mm'), timeRotate)
-			appendRotateText(container, style.textColor, x + width, TOP_Y, data.scheduledArrivalDate.format('HH:mm'), timeRotate)
+			appendRotateText(svg, textColor, x, TOP_Y, scheduledDepartureTime, timeRotate)
+			appendRotateText(svg, textColor, x + width, TOP_Y, scheduledArrivalTime, timeRotate)
 
 			// Нижние даты
 			const dateRotate = 19
-			appendRotateText(container, style.textColor, x, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledDepartureDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
-			appendRotateText(container, style.textColor, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, data.scheduledArrivalDate.format('DD.MM.YYYY'), dateRotate, 'hanging')
+			appendRotateText(svg, textColor, x, TOP_Y + ROUTE_ITEM_HEIGHT, scheduledDepartureDate, dateRotate, 'hanging')
+			appendRotateText(svg, textColor, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, scheduledArrivalDate, dateRotate, 'hanging')
 		}
 		// Аэропорты
-		drawAirportText(container, style.textColor, data.aptDeptIata, x, TOP_Y + ROUTE_ITEM_HEIGHT, 'end')
-		drawAirportText(container, style.textColor, data.aptArrIata, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, 'start')
+		drawAirportText(svg, textColor, data.aptDeptIata, x, TOP_Y + ROUTE_ITEM_HEIGHT, 'end')
+		drawAirportText(svg, textColor, data.aptArrIata, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, 'start')
 		// Время
-		const SHIFT = 7
-		drawTextRotate(container, '12.00', x + width * 0.5 - SHIFT, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
-		drawTextRotate(container, '12.30', x + width * 0.5 + SHIFT, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+		const SHIFT_FOR_TIME = 7
+		drawTextRotate(svg, scheduledDepartureTime, CENTER_X - SHIFT_FOR_TIME, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+		drawTextRotate(svg, scheduledArrivalTime, CENTER_X + SHIFT_FOR_TIME, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+
+		// Стрелки
+		const SHIFT_FOR_ARROWS = 23
+		const ARROW_WIDTH = 6
+		const ARROW_HEIGHT = 6
+		// Вниз
+		svg.append('defs')
+			.append('marker')
+			.attr('id', 'arrow-up')
+			.attr('refX', ARROW_WIDTH * 0.5) // центр стрелки
+			.attr('refY', ARROW_HEIGHT) // поднимаем точку привязки
+			.attr('markerWidth', ARROW_WIDTH)
+			.attr('markerHeight', ARROW_HEIGHT)
+			.append('path')
+			.attr('d', `M 0 0 L ${ARROW_WIDTH} 0 L ${ARROW_WIDTH * 0.5} ${ARROW_HEIGHT} z`)
+			.attr('fill', 'black')
+
+		svg.append('line')
+			.attr('x1', CENTER_X - SHIFT_FOR_ARROWS)
+			.attr('y1', TOP_Y)
+			.attr('x2', CENTER_X - SHIFT_FOR_ARROWS)
+			.attr('y2', TOP_Y + ROUTE_ITEM_HEIGHT)
+			.attr('stroke', 'black')
+			.attr('stroke-width', 2)
+			.attr('marker-end', 'url(#arrow-up)')
+
+		// Вверх
+		svg.append('defs')
+			.append('marker')
+			.attr('id', 'arrow-down')
+			.attr('refX', ARROW_WIDTH * 0.5) // центр стрелки
+			.attr('refY', 0) // поднимаем точку привязки
+			.attr('markerWidth', ARROW_WIDTH)
+			.attr('markerHeight', ARROW_HEIGHT)
+			.append('path')
+			.attr('d', `M 0 0 L ${ARROW_WIDTH} 0 L ${ARROW_WIDTH * 0.5} ${ARROW_HEIGHT} z`)
+			.attr('fill', 'black')
+			.attr('transform', `rotate(180,${ARROW_WIDTH * 0.5},${ARROW_WIDTH * 0.5})`)
+
+		svg.append('line')
+			.attr('x1', CENTER_X + SHIFT_FOR_ARROWS)
+			.attr('y1', TOP_Y)
+			.attr('x2', CENTER_X + SHIFT_FOR_ARROWS)
+			.attr('y2', TOP_Y + ROUTE_ITEM_HEIGHT)
+			.attr('stroke', 'black')
+			.attr('stroke-width', 2)
+			.attr('marker-start', 'url(#arrow-down)')
+
 	}, [x, y, width, data, style, isDefault, isSelect, settings])
 
 	return (

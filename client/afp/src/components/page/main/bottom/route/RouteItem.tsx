@@ -14,7 +14,7 @@ import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText, drawTextRotate, drawTopText } from '../../../../../utils/utils'
 import { lightGreenColor } from '../../../../../utils/style'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
-import { RouteType, RouteTypeNames } from './routeUtils'
+import { RouteType, RouteTypeNames, drawArrows } from './routeUtils'
 import { $settings } from '../../../../../store/settings'
 import { Dayjs } from 'dayjs'
 
@@ -149,52 +149,7 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		drawTextRotate(svg, scheduledArrivalTime, CENTER_X + SHIFT_FOR_TIME, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
 
 		// Стрелки
-		const SHIFT_FOR_ARROWS = 23
-		const ARROW_WIDTH = 6
-		const ARROW_HEIGHT = 6
-		// Вниз
-		svg.append('defs')
-			.append('marker')
-			.attr('id', 'arrow-up')
-			.attr('refX', ARROW_WIDTH * 0.5) // центр стрелки
-			.attr('refY', ARROW_HEIGHT) // поднимаем точку привязки
-			.attr('markerWidth', ARROW_WIDTH)
-			.attr('markerHeight', ARROW_HEIGHT)
-			.append('path')
-			.attr('d', `M 0 0 L ${ARROW_WIDTH} 0 L ${ARROW_WIDTH * 0.5} ${ARROW_HEIGHT} z`)
-			.attr('fill', 'black')
-
-		svg.append('line')
-			.attr('x1', CENTER_X - SHIFT_FOR_ARROWS)
-			.attr('y1', TOP_Y)
-			.attr('x2', CENTER_X - SHIFT_FOR_ARROWS)
-			.attr('y2', TOP_Y + ROUTE_ITEM_HEIGHT)
-			.attr('stroke', 'black')
-			.attr('stroke-width', 2)
-			.attr('marker-end', 'url(#arrow-up)')
-
-		// Вверх
-		svg.append('defs')
-			.append('marker')
-			.attr('id', 'arrow-down')
-			.attr('refX', ARROW_WIDTH * 0.5) // центр стрелки
-			.attr('refY', 0) // поднимаем точку привязки
-			.attr('markerWidth', ARROW_WIDTH)
-			.attr('markerHeight', ARROW_HEIGHT)
-			.append('path')
-			.attr('d', `M 0 0 L ${ARROW_WIDTH} 0 L ${ARROW_WIDTH * 0.5} ${ARROW_HEIGHT} z`)
-			.attr('fill', 'black')
-			.attr('transform', `rotate(180,${ARROW_WIDTH * 0.5},${ARROW_WIDTH * 0.5})`)
-
-		svg.append('line')
-			.attr('x1', CENTER_X + SHIFT_FOR_ARROWS)
-			.attr('y1', TOP_Y)
-			.attr('x2', CENTER_X + SHIFT_FOR_ARROWS)
-			.attr('y2', TOP_Y + ROUTE_ITEM_HEIGHT)
-			.attr('stroke', 'black')
-			.attr('stroke-width', 2)
-			.attr('marker-start', 'url(#arrow-down)')
-
+		drawArrows(svg, CENTER_X, TOP_Y)
 	}, [x, y, width, data, style, isDefault, isSelect, settings])
 
 	return (

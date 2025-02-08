@@ -25,7 +25,7 @@ export enum CropType {
 	END // Конец обрезан
 }
 
-interface FlightItemProps {
+interface RouteItemProps {
 	x: number
 	y: number
 	width: number
@@ -35,7 +35,7 @@ interface FlightItemProps {
 
 const CROP_MARKER_COLOR = 'black'
 
-const RouteItem = (props: FlightItemProps): JSX.Element => {
+const RouteItem = (props: RouteItemProps): JSX.Element => {
 	const style: StyleStore = useStore($style)
 	const textColor = style.textColor
 	const settings = useStore($settings)

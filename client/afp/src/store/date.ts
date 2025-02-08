@@ -10,13 +10,13 @@ import { getWeekCount } from '../utils/utils'
 import { HOURS_IN_CELL } from '../utils/consts'
 import { DateModel } from '../models/DateModel'
 
-const updateDatesFx = createEffect<DateModel[], DateModel[]>()
-export const $dates = createStore<DateModel[]>([])
-	.on(updateDatesFx, (state, payload) => payload)
-
 export const updateDatesRangeFx = createEffect<RangeValueType<Dayjs>, RangeValueType<Dayjs>>()
 export const $datesRange = createStore<RangeValueType<Dayjs>>([dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')])
 $datesRange.on(updateDatesRangeFx, (_state, payload) => payload)
+
+const updateDatesFx = createEffect<DateModel[], DateModel[]>()
+export const $dates = createStore<DateModel[]>([])
+	.on(updateDatesFx, (_state, payload) => payload)
 $datesRange.watch((state) => {
 	if (state && state[0] && state[1]) {
 		const newStartDate = state[0]
@@ -25,7 +25,7 @@ $datesRange.watch((state) => {
 		for (let i = 0; i < diffHours; i++) {
 			const newDate = newStartDate.add(i * HOURS_IN_CELL, 'hours')
 			newDates.push({
-				date: newDate, title: `(W${getWeekCount(newDate)} / ${Math.floor(Math.random() * 1000)})`
+				date: newDate, title: `(W${getWeekCount(newDate)})`
 			})
 		}
 

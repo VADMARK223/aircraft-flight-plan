@@ -2,7 +2,7 @@
  * @author Markitanov Vadim
  * @since 08.02.2025
  */
-import { createStore } from 'effector'
+import { createStore, createEvent } from 'effector'
 
 export enum ZoomMode {
 	DAYS, // В ячейке по одному дню
@@ -18,4 +18,9 @@ const defaultState: CanvasStore = {
 	mode: ZoomMode.DAY
 }
 
+export const zoomModeChanged = createEvent<ZoomMode>('Событие изменения масштабирования канвы.')
+
 export const $canvas = createStore<CanvasStore>(defaultState)
+$canvas.on(zoomModeChanged, (state, payload) => {
+	return { ...state, mode: payload }
+})

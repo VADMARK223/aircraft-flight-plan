@@ -37,7 +37,7 @@ export const drawArrow = (id: typeof ARROW_DOWN | typeof ARROW_UP, svg: any, cen
 		.attr('markerHeight', ARROW_HEIGHT)
 		.append('path')
 		.attr('d', `M 0 0 L ${ARROW_WIDTH} 0 L ${ARROW_WIDTH * 0.5} ${ARROW_HEIGHT} z`)
-		.attr('fill', 'black')
+		.attr('fill', 'gray')
 
 	if (id === ARROW_UP) {
 		marker.attr('transform', `rotate(180,${ARROW_WIDTH * 0.5},${ARROW_WIDTH * 0.5})`)
@@ -53,7 +53,7 @@ const drawLine = (svg: any, x1: number, y1: number, x2: number, y2: number, id: 
 		.attr('y1', y1)
 		.attr('x2', x2)
 		.attr('y2', y2)
-		.attr('stroke', 'black')
+		.attr('stroke', 'gray')
 		.attr('stroke-width', 2)
 		.attr(id === ARROW_UP ? 'marker-start' : 'marker-end', `url(#${id})`)
 }

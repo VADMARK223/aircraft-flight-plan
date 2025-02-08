@@ -41,7 +41,6 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 					flightsSelectAdded(data)
 				} else {
 					flightsSelectReplaced(data)
-					// flightClickFx(data)
 				}
 			})
 			.on('contextmenu', (event: PointerEvent) => {
@@ -77,7 +76,7 @@ const FlightItem = (props: BoardItemProps): JSX.Element => {
 			.attr('font-weight', 'bold')
 			.attr('text-anchor', 'start')
 			.attr('dominant-baseline', 'hanging')
-			.text(`Flight ${data.id} (${data.contract.label})`)
+			.text(`${data.contract.label} (${data.id})`)
 
 		const lineShiftX = 5
 		const lineShiftY = 25

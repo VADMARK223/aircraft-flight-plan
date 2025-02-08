@@ -5,9 +5,9 @@ import { ROUTE_ITEM_HEIGHT } from '../../../../../utils/consts'
  * @since 25.01.2025
  */
 export enum RouteType {
-	ROUTINE_MAINTENANCE = 0,
-	DEFAULT = 1,
-	URGENT = 2
+	ROUTINE_MAINTENANCE = 0, // Технический
+	DEFAULT = 1, // Обычный
+	URGENT = 2 // Срочный
 }
 
 export const RouteTypeNames: Record<RouteType, string> = {

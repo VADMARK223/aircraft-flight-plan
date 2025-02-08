@@ -51,11 +51,8 @@ const RouteControl = (): JSX.Element => {
 	}, [])
 
 	useEffect(() => {
-		setFlightId(routeSelected?.flightId)
-
 		if (routeSelected) {
-			setTitle('Изменение перелета')
-			setRouteType(routeSelected.routeTypeId)
+			setTitle('Route change')
 			setDateRangeValue([routeSelected.scheduledDepartureDate, routeSelected.scheduledArrivalDate])
 			setStartTime(routeSelected.scheduledDepartureDate)
 			setEndTime(routeSelected.scheduledArrivalDate)
@@ -82,13 +79,21 @@ const RouteControl = (): JSX.Element => {
 	useEffect(() => {
 		if (routeTypes.length !== 0) {
 			setRouteTypeOptions(routeTypes)
-			setRouteType(routeTypes[1].value)
+			if (routeSelected) {
+				setRouteType(routeSelected.routeTypeId)
+			} else {
+				setRouteType(routeTypes[1].value)
+			}
 		}
-	}, [routeTypes])
+	}, [routeTypes, routeSelected])
 
 	useEffect(() => {
-		setFlightId(flightSelected != null ? flightSelected.id : undefined)
-	}, [flightSelected])
+		if (routeSelected) {
+			setFlightId(routeSelected.flightId)
+		} else {
+			setFlightId(flightSelected != null ? flightSelected.id : undefined)
+		}
+	}, [flightSelected, routeSelected])
 
 	const resetData = (): void => {
 		setDateRangeValue(null)

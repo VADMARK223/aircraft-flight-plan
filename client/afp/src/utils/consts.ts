@@ -11,7 +11,12 @@ export const CELL_HEIGHT = 80 // Высота ячейки в рабочей о�
 export const ROUTE_ITEM_HEIGHT = CELL_HEIGHT * 0.47 // Высота прямоугольников перелетов.
 export const DATE_ITEM_WIDTH = 180
 
-export const HOURS_IN_CELL = 6
-export const MINUTES_IN_CELL = HOURS_IN_CELL * 60
+/**
+ * 6 - для Day
+ * 12 - для Week
+ * 24 - для Days
+ * @type {number}
+ */
+export const HOURS_IN_CELL = 6 // Сколько часов в ячейке на канве
 export const DATE_FORMAT = 'DD.MM.YYYY'
 export const FULL_TIME_FORMAT = 'DD.MM.YYYY HH:mm'

@@ -15,8 +15,8 @@ import { fetchContractsFx } from '../../../api/contract'
 import { fetchFlightsFx } from '../../../api/flight'
 import { fetchRouteTypeFx, fetchAircraftTypeFx } from '../../../api/dict'
 import Properties from './Properties'
-import BottomPanel from '../main/bottom/BottomPanel'
-import { PropertySafetyOutlined } from '@ant-design/icons'
+import CanvasPanel from '../main/bottom/CanvasPanel'
+import { ProfileOutlined, TableOutlined, BarChartOutlined } from '@ant-design/icons'
 import HomeTable from './table/HomeTable'
 
 const { Footer } = Layout
@@ -25,6 +25,7 @@ const HomePage = (): JSX.Element => {
 	const style = useStore($style)
 	const [showFooter, setShowFooter] = useState(false)
 	const [title, setTitle] = useState('Tables')
+	const [mainIcon, setMainIcon] = useState(<TableOutlined/>)
 
 	const [footerOptions, setFooterOptions] = useState({
 		main: true,
@@ -51,8 +52,10 @@ const HomePage = (): JSX.Element => {
 
 		if (isGraph()) {
 			setTitle('Tables')
+			setMainIcon(<TableOutlined/>)
 		} else {
 			setTitle('Graph')
+			setMainIcon(<BarChartOutlined/>)
 		}
 	}, [footerOptions])
 
@@ -76,13 +79,14 @@ const HomePage = (): JSX.Element => {
 						type={'primary'}
 						onClick={() => handleCheckboxChange('main')}
 						block
+						icon={mainIcon}
 					>
 						{title}
 					</Button>
 					<Button
 						block
 						type={footerOptions.properties ? 'primary' : 'default'}
-						icon={<PropertySafetyOutlined/>}
+						icon={<ProfileOutlined/>}
 						onClick={() => handleCheckboxChange('properties')}
 					>
 						Properties
@@ -96,14 +100,15 @@ const HomePage = (): JSX.Element => {
 						overflow: 'auto'
 					}}
 				>
-					{isGraph() ? <BottomPanel/> : <HomeTable/>}
+					{isGraph() ? <CanvasPanel/> : <HomeTable/>}
 				</Content>
 
-				{(showFooter ?? false) && (<Footer style={{
-					textAlign: 'left'
-				}}>
-					<Properties/>
-				</Footer>)}
+				{(showFooter ?? false) && (
+					<Footer style={{
+						textAlign: 'left'
+					}}>
+						<Properties/>
+					</Footer>)}
 			</Layout>
 		</Layout>
 	)

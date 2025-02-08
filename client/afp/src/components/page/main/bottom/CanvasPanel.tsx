@@ -24,7 +24,7 @@ import Background from './Background'
 
 const SCROLL_SIZE = 20
 
-const BottomPanel = (): JSX.Element => {
+const CanvasPanel = (): JSX.Element => {
 	const dates = useStore($dates)
 	const boards = useStore($flights)
 	const bottomSvgContainerRef = useRef<any>(null)
@@ -79,4 +79,4 @@ const BottomPanel = (): JSX.Element => {
 	)
 }
 
-export default BottomPanel
+export default CanvasPanel

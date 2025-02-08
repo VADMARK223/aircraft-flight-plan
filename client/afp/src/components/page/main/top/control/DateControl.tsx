@@ -71,7 +71,7 @@ const DateControl = (): JSX.Element => {
 
   return (
     <Space>
-      <span>Date range::</span>
+      <span>Date range:</span>
       <DatePicker.RangePicker value={datesRange}
                               onChange={setDateChange}
                               style={{ minWidth: '300px' }}

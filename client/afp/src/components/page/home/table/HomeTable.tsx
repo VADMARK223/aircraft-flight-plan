@@ -20,7 +20,6 @@ const HomeTable = (): JSX.Element => {
 	useEffect(() => {
 		const result: HomeTableData[] = []
 		flightsSelected.forEach((flight: Flight) => {
-			console.log('flight:', flight)
 			flight.routes.forEach((route: Route) => {
 				result.push({
 					id: route.id,

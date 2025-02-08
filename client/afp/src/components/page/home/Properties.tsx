@@ -10,12 +10,14 @@ import { $routeSelected } from '../../../store/route'
 import FlightsInfo from './flights/FlightsInfo'
 import DateControl from '../main/top/control/DateControl'
 import { Space } from 'antd'
+import ZoomControl from './components/ZoomControl'
 
 const Properties = (): JSX.Element => {
 	const routeSelected = useStore($routeSelected)
 
 	return (
 		<Space direction={'vertical'}>
+			<ZoomControl/>
 			<DateControl/>
 			<FlightsInfo/>
 			{routeSelected == null

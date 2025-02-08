@@ -14,8 +14,11 @@ import { Route } from '../../../../models/Route'
 import { Flight } from '../../../../models/Flight'
 import { $flights, flightClickFx, flightDeleteFx } from '../../../../store/flight'
 import { $contextMenu } from '../../../../store/contextMenu'
+import { Paths } from '../../../header/Paths'
+import { useNavigate } from 'react-router-dom'
 
 const Flights = ({ x, y }: CommonProps): JSX.Element => {
+	const navigate = useNavigate()
 	const flights = useStore($flights)
 	const contextMenu = useStore($contextMenu)
 
@@ -35,6 +38,7 @@ const Flights = ({ x, y }: CommonProps): JSX.Element => {
 						title: 'Edit',
 						action: (datum: Route | Flight) => {
 							flightClickFx(datum as Flight)
+							navigate(Paths.ADMIN)
 						}
 					}, {
 						title: 'Delete',

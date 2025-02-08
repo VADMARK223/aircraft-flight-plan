@@ -57,3 +57,7 @@ const drawLine = (svg: any, x1: number, y1: number, x2: number, y2: number, id: 
 		.attr('stroke-width', 2)
 		.attr(id === ARROW_UP ? 'marker-start' : 'marker-end', `url(#${id})`)
 }
+
+export const isMaintenance = (routeTypeId: number): boolean => {
+	return routeTypeId === RouteType.ROUTINE_MAINTENANCE
+}

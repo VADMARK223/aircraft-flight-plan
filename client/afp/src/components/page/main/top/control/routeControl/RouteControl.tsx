@@ -198,8 +198,11 @@ const RouteControl = (): JSX.Element => {
 			}
 		}
 		setRouteType(routeTypes[getRandomNumber(0, routeTypes.length)].value)
-		const scheduledDepartureDate = dayjs().startOf('day').add(0, 'hours')
-		const scheduledArrivalDate = dayjs().startOf('day').add(6, 'hours')
+		const minDifference = getRandomNumber(3, 6)
+		const departureHours = getRandomNumber(3, 12)
+		const arrivalHours = departureHours + minDifference
+		const scheduledDepartureDate = dayjs().startOf('day').add(departureHours, 'hours')
+		const scheduledArrivalDate = dayjs().startOf('day').add(arrivalHours, 'hours')
 		setDateRangeValue([scheduledDepartureDate, scheduledArrivalDate])
 		setStartTime(scheduledDepartureDate)
 		setEndTime(scheduledArrivalDate)

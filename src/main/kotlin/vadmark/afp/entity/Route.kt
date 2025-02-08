@@ -5,6 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 import java.time.ZonedDateTime
 
@@ -12,7 +13,9 @@ import java.time.ZonedDateTime
 @Table(name = "route")
 class Route {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "route_sequence_generator")
+    @SequenceGenerator(name = "route_sequence_generator", sequenceName = "route_id_seq", allocationSize = 1)
     @Column(name = "id")
     var id: Int? = null
 

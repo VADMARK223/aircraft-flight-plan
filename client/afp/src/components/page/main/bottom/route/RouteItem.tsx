@@ -14,7 +14,7 @@ import { useStore } from 'effector-react'
 import { appendRotateText, drawAirportText, drawText, drawTextRotate, drawTopText } from '../../../../../utils/utils'
 import { lightGreenColor } from '../../../../../utils/style'
 import { setContextMenuFx } from '../../../../../store/contextMenu'
-import { RouteType, RouteTypeNames, drawArrows } from './routeUtils'
+import { RouteType, RouteTypeNames, drawArrows, isMaintenance } from './routeUtils'
 import { $settings } from '../../../../../store/settings'
 import { Dayjs } from 'dayjs'
 
@@ -110,9 +110,12 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 				.attr('fill', CROP_MARKER_COLOR)
 		}
 
+		// Рисуем текс по центру
 		if (!isDefault) {
-			const routeTypeLabel = RouteTypeNames[data.routeTypeId as RouteType]
-			drawText(svg, routeTypeLabel, CENTER_X, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+			if (isMaintenance(data.routeTypeId)) {
+				const routeTypeLabel = RouteTypeNames[data.routeTypeId as RouteType]
+				drawText(svg, routeTypeLabel, CENTER_X, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+			}
 		}
 
 		/*const textSelection = drawAirportText(container, data.aptDeptIata ?? '', x + 2, TOP_Y + 1)
@@ -144,12 +147,16 @@ const RouteItem = (props: FlightItemProps): JSX.Element => {
 		drawAirportText(svg, textColor, data.aptDeptIata, x, TOP_Y + ROUTE_ITEM_HEIGHT, 'end')
 		drawAirportText(svg, textColor, data.aptArrIata, x + width, TOP_Y + ROUTE_ITEM_HEIGHT, 'start')
 		// Время
-		const SHIFT_FOR_TIME = 7
-		drawTextRotate(svg, scheduledDepartureTime, CENTER_X - SHIFT_FOR_TIME, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
-		drawTextRotate(svg, scheduledArrivalTime, CENTER_X + SHIFT_FOR_TIME, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+		if (!isMaintenance(data.routeTypeId)) {
+			const SHIFT_FOR_TIME = 7
+			drawTextRotate(svg, scheduledDepartureTime, CENTER_X - SHIFT_FOR_TIME, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+			drawTextRotate(svg, scheduledArrivalTime, CENTER_X + SHIFT_FOR_TIME, y + CELL_HEIGHT * 0.5 + 1, 'pointer')
+		}
 
 		// Стрелки
-		drawArrows(svg, CENTER_X, TOP_Y)
+		if (!isMaintenance(data.routeTypeId)) {
+			drawArrows(svg, CENTER_X, TOP_Y)
+		}
 	}, [x, y, width, data, style, isDefault, isSelect, settings])
 
 	return (

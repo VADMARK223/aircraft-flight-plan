@@ -18,8 +18,11 @@ import { $flights } from '../../../../../store/flight'
 import { $dates, $datesRange } from '../../../../../store/date'
 import { CommonProps } from '../../../../common/CommonProps'
 import { requestDeleteRouteFx } from '../../../../../api/route'
+import { useNavigate } from 'react-router-dom'
+import { Paths } from '../../../../header/Paths'
 
 const Routes = ({ x, y }: CommonProps): JSX.Element => {
+	const navigate = useNavigate()
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const contextMenu = useStore($contextMenu)
 	const flights: Flight[] = useStore($flights)
@@ -86,6 +89,7 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 						title: 'Edit',
 						action: (datum: Route | Flight) => {
 							routeClickFx(datum as Route)
+							navigate(Paths.ADMIN)
 						}
 					}, {
 						title: 'Delete',

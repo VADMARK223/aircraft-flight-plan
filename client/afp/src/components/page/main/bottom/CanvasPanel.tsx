@@ -15,12 +15,12 @@ import {
 	HEADER_HEIGHT
 } from '../../../../utils/consts'
 import { useStore } from 'effector-react'
-import { $dates } from '../../../../store/date'
 import DatesPanel from './DatesPanel'
 import Flights from './Flights'
 import { $flights } from '../../../../store/flight'
 import Routes from './route/Routes'
 import Background from './Background'
+import { $dates } from '../../../../store/canvas'
 
 const SCROLL_SIZE = 20
 

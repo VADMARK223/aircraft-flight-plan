@@ -9,9 +9,8 @@ import { DatePicker, Space, CheckboxOptionType, Radio } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { DATE_FORMAT } from '../../../../../utils/consts'
-import { $datesRange, updateDatesRangeFx } from '../../../../../store/date'
 import { useStore } from 'effector-react'
-import { $canvas, ZoomMode } from '../../../../../store/canvas'
+import { $canvas, ZoomMode, datesRangeChanged } from '../../../../../store/canvas'
 
 enum DateControlMode {
 	TODAY_TOMORROW,
@@ -23,7 +22,6 @@ enum DateControlMode {
 const defaultDateControlMode = DateControlMode.TODAY_TOMORROW
 
 const DateControl = (): JSX.Element => {
-	const datesRange = useStore($datesRange)
 	const canvas = useStore($canvas)
 	const [dateControlMode, setDateControlMode] = useState<DateControlMode>(defaultDateControlMode)
 
@@ -42,8 +40,8 @@ const DateControl = (): JSX.Element => {
 	}, [dateControlMode])
 
 	useEffect(() => {
-		const startDate = datesRange[0]
-		const finishDate = datesRange[1]
+		const startDate = canvas.dateRange[0]
+		const finishDate = canvas.dateRange[1]
 		const isToday = dayjs().isSame(startDate, 'day') && dayjs().isSame(finishDate, 'day')
 		const isTodayTomorrow = dayjs().isSame(startDate, 'day') && dayjs().add(1, 'days').isSame(finishDate, 'day')
 		const isTomorrow = dayjs().add(1, 'days').isSame(startDate, 'day') && dayjs().add(1, 'days').isSame(finishDate, 'day')
@@ -56,11 +54,11 @@ const DateControl = (): JSX.Element => {
 		} else {
 			setDateControlMode(DateControlMode.CUSTOM)
 		}
-	}, [datesRange])
+	}, [canvas.dateRange])
 
 	const setDateChange = (values: RangeValueType<dayjs.Dayjs> | null): void => {
 		if (values && values[0] && values[1]) {
-			updateDatesRangeFx([values[0].startOf('day'), values[1].startOf('day')])
+			datesRangeChanged([values[0].startOf('day'), values[1].startOf('day')])
 		}
 	}
 
@@ -76,7 +74,7 @@ const DateControl = (): JSX.Element => {
 			{canvas.mode === ZoomMode.DAY
 				? <Space>
 					<span>Date range:</span>
-					<DatePicker.RangePicker value={datesRange}
+					<DatePicker.RangePicker value={canvas.dateRange}
 											onChange={setDateChange}
 											style={{ minWidth: '300px' }}
 											format={DATE_FORMAT}

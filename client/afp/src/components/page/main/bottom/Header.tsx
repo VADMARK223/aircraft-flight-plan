@@ -10,7 +10,7 @@ import { $style } from '../../../../store/style'
 import { DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../../../../utils/consts'
 import * as d3 from 'd3'
 import { CommonProps } from '../../../common/CommonProps'
-import { $dates } from '../../../../store/date'
+import { $dates } from '../../../../store/canvas'
 
 const Header = ({ x, y }: CommonProps): JSX.Element => {
   const style = useStore($style)

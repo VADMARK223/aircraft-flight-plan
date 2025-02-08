@@ -15,11 +15,11 @@ import { routeClickFx } from '../../../../../store/route'
 import { useStore } from 'effector-react'
 import { $contextMenu } from '../../../../../store/contextMenu'
 import { $flights } from '../../../../../store/flight'
-import { $dates, $datesRange } from '../../../../../store/date'
 import { CommonProps } from '../../../../common/CommonProps'
 import { requestDeleteRouteFx } from '../../../../../api/route'
 import { useNavigate } from 'react-router-dom'
 import { Paths } from '../../../../header/Paths'
+import { $canvas,$dates } from '../../../../../store/canvas'
 
 const Routes = ({ x, y }: CommonProps): JSX.Element => {
 	const navigate = useNavigate()
@@ -27,7 +27,7 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 	const contextMenu = useStore($contextMenu)
 	const flights: Flight[] = useStore($flights)
 	const dates = useStore($dates)
-	const datesRange = useStore($datesRange)
+	const canvas = useStore($canvas)
 
 	return (
 		<g ref={gRef} id={'routes'} transform={`translate(${x}, ${y})`}>
@@ -35,16 +35,16 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 					return (
 						<g key={flight.id} id={`flight-row-${flight.id}`}>
 							{flight.routes.map((flight: Route) => {
-									if (!datesRange || !datesRange.every(date => date)) {
+									if (!canvas.dateRange || !canvas.dateRange.every(date => date)) {
 										return
 									}
 
-									if (datesRange[0] == null || datesRange[1] == null) {
+									if (canvas.dateRange[0] == null || canvas.dateRange[1] == null) {
 										return
 									}
 
-									const startDate = datesRange[0].toDate()
-									const endDate = datesRange[1].add(1, 'day').toDate()
+									const startDate = canvas.dateRange[0].toDate()
+									const endDate = canvas.dateRange[1].add(1, 'day').toDate()
 									const rangeEnd = DATE_ITEM_WIDTH * dates.length
 									const scaleTime = d3.scaleTime([startDate, endDate], [0, rangeEnd])
 									let startX = scaleTime(flight.scheduledDepartureDate.toDate())

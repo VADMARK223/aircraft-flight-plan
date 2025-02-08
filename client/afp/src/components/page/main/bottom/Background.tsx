@@ -9,10 +9,10 @@ import * as d3 from 'd3'
 import { CELL_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
 import { $flights, flightSelectResetFx, flightsSelectReset } from '../../../../store/flight'
 import { useStore } from 'effector-react'
-import { $dates } from '../../../../store/date'
 import { $style } from '../../../../store/style'
 import { CommonProps } from '../../../common/CommonProps'
 import { routeSelectReset } from '../../../../store/route'
+import { $dates } from '../../../../store/canvas'
 
 const Background = ({x,y}:CommonProps): JSX.Element => {
   const svgRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
@@ -50,7 +50,7 @@ const Background = ({x,y}:CommonProps): JSX.Element => {
       routeSelectReset()
     })
 
-  }, [style, x, y, width, height, boards, dates])
+  }, [style, x, y, width, height, boards, dates.length])
 
   return (
     <g ref={svgRef} id={'background'}></g>

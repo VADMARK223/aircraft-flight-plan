@@ -16,7 +16,6 @@ const Navigation = (): JSX.Element => {
 		<nav>
 			<Space align={'center'}>
 				<NavigationLink to={Paths.HOME} icon={<HomeOutlined/>} label={'Home'}/>
-				<NavigationLink to={Paths.MAIN} icon={<HomeOutlined/>} label={'Main'}/>
 				<NavigationLink to={Paths.ADMIN} icon={<CrownOutlined/>} label={'Admin'}/>
 				<NavigationLink to={Paths.SETTINGS} icon={<SettingOutlined/>} label={'Settings'}/>
 				<NavigationLink to={Paths.STATS} icon={<BarsOutlined/>} label={'Stats'}/>

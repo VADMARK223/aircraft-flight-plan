@@ -11,7 +11,6 @@ import {
 } from './store/style'
 import { RouterProvider, createBrowserRouter, Outlet } from 'react-router-dom'
 import Header from './components/header/Header'
-import MainPage from './components/page/main/MainPage'
 import SettingsPage from './components/page/settings/SettingsPage'
 import StatsPage from './components/page/stats/StatsPage'
 import ErrorPage from './components/page/ErrorPage'
@@ -45,7 +44,6 @@ function App () {
 				errorElement: <ErrorPage/>,
 				children: [
 					{ index: true, element: <HomePage/> },
-					{ path: Paths.MAIN, element: <MainPage/> },
 					{ path: Paths.ADMIN, element: <AdminPage/> },
 					{ path: Paths.SETTINGS, element: <SettingsPage/> },
 					{ path: Paths.STATS, element: <StatsPage/> }

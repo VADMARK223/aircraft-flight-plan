@@ -33,6 +33,7 @@ export const drawTopText = (svg: any, text: string, x: number, y: number, cursor
 		.attr('text-anchor', 'middle')
 		.attr('dominant-baseline', 'baseline')
 		.attr('cursor', cursor)
+		.style('user-select', 'none')
 		.text(text)
 }
 
@@ -47,6 +48,7 @@ export const drawTextRotate = (svg: any, text: string, x: number, y: number, cur
 		.attr('dominant-baseline', 'middle')
 		.attr('transform', `rotate(-90, ${x}, ${y})`)
 		.attr('cursor', cursor)
+		.style('user-select', 'none')
 		.text(text)
 }
 
@@ -60,6 +62,7 @@ export const drawAirportText = (svg: any, textColor: string, text: string, x: nu
 	result.attr('text-anchor', textAnchor)
 	result.attr('dominant-baseline', 'hanging')
 	result.text(text)
+	result.style('user-select', 'none')
 	return result
 }
 

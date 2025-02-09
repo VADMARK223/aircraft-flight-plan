@@ -12,11 +12,11 @@ import { useStore } from 'effector-react'
 import { $style } from '../../../../store/style'
 import { CommonProps } from '../../../common/CommonProps'
 import { routeSelectReset } from '../../../../store/route'
-import { $dates } from '../../../../store/canvas'
+import { $canvas } from '../../../../store/canvas'
 
 const Background = ({x,y}:CommonProps): JSX.Element => {
   const svgRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
-  const dates = useStore($dates)
+  const dates = useStore($canvas).dates
   const boards = useStore($flights)
   const width = DATE_ITEM_WIDTH * dates.length
   const height = CELL_HEIGHT * boards.length

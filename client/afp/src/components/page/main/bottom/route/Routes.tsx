@@ -19,14 +19,15 @@ import { CommonProps } from '../../../../common/CommonProps'
 import { requestDeleteRouteFx } from '../../../../../api/route'
 import { useNavigate } from 'react-router-dom'
 import { Paths } from '../../../../header/Paths'
-import { $canvas,$dates } from '../../../../../store/canvas'
+import { $canvas } from '../../../../../store/canvas'
+import { getRandomNumber } from '../../../../../utils/math'
 
 const Routes = ({ x, y }: CommonProps): JSX.Element => {
 	const navigate = useNavigate()
 	const gRef: LegacyRef<SVGGElement> = useRef<SVGGElement>(null)
 	const contextMenu = useStore($contextMenu)
 	const flights: Flight[] = useStore($flights)
-	const dates = useStore($dates)
+	const dates = useStore($canvas).dates
 	const canvas = useStore($canvas)
 
 	return (
@@ -75,6 +76,7 @@ const Routes = ({ x, y }: CommonProps): JSX.Element => {
 											width={w}
 											data={flight}
 											cropType={cropType}
+											vda={getRandomNumber(100, 1234)}
 										/>)
 								}
 							)

@@ -10,48 +10,48 @@ import { $style } from '../../../../store/style'
 import { DATE_ITEM_WIDTH, HEADER_HEIGHT } from '../../../../utils/consts'
 import * as d3 from 'd3'
 import { CommonProps } from '../../../common/CommonProps'
-import { $dates } from '../../../../store/canvas'
+import { $canvas } from '../../../../store/canvas'
 
 const Header = ({ x, y }: CommonProps): JSX.Element => {
-  const style = useStore($style)
-  const svgRef = useRef<SVGSVGElement>(null)
-  const dates = useStore($dates)
-  const width = DATE_ITEM_WIDTH * dates.length
-  const height = HEADER_HEIGHT
+	const style = useStore($style)
+	const svgRef = useRef<SVGSVGElement>(null)
+	const dates = useStore($canvas).dates
+	const width = DATE_ITEM_WIDTH * dates.length
+	const height = HEADER_HEIGHT
 
-  useEffect(() => {
-    const svgElement = svgRef.current
-    if (!svgElement) {
-      return
-    }
-    const svg = d3.select(svgElement)
+	useEffect(() => {
+		const svgElement = svgRef.current
+		if (!svgElement) {
+			return
+		}
+		const svg = d3.select(svgElement)
 
-    svg.append('rect')
-      .attr('width', width)
-      .attr('height', height)
-      .attr('stroke', style.lineColor)
-      .attr('fill', style.backgroundColor)
-    svg.append('text')
-      .attr('transform', 'translate(5,7)')
-      .attr('fill', style.textColor)
-      .attr('text-anchor', 'start')
-      .attr('dominant-baseline', 'hanging')
-      .attr('font-weight', 'bold')
-      .attr('font-size', 18)
-      .text('AIRCRAFT FLIGHT PLAN')
+		svg.append('rect')
+			.attr('width', width)
+			.attr('height', height)
+			.attr('stroke', style.lineColor)
+			.attr('fill', style.backgroundColor)
+		svg.append('text')
+			.attr('transform', 'translate(5,7)')
+			.attr('fill', style.textColor)
+			.attr('text-anchor', 'start')
+			.attr('dominant-baseline', 'hanging')
+			.attr('font-weight', 'bold')
+			.attr('font-size', 18)
+			.text('AIRCRAFT FLIGHT PLAN')
 
-  }, [style, width, height])
+	}, [style, width, height])
 
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <svg id={'header'}
-           ref={svgRef}
-           width={width}
-           height={height}
-      />
-    </g>
+	return (
+		<g transform={`translate(${x},${y})`}>
+			<svg id={'header'}
+				 ref={svgRef}
+				 width={width}
+				 height={height}
+			/>
+		</g>
 
-  )
+	)
 }
 
 export default Header

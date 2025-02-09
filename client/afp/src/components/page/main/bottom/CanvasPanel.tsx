@@ -20,12 +20,12 @@ import Flights from './Flights'
 import { $flights } from '../../../../store/flight'
 import Routes from './route/Routes'
 import Background from './Background'
-import { $dates } from '../../../../store/canvas'
+import { $canvas } from '../../../../store/canvas'
 
 const SCROLL_SIZE = 20
 
 const CanvasPanel = (): JSX.Element => {
-	const dates = useStore($dates)
+	const dates = useStore($canvas).dates
 	const boards = useStore($flights)
 	const bottomSvgContainerRef = useRef<any>(null)
 	const [bottomSvgContainerHeight, setBottomSvgContainerHeight] = useState('10px')

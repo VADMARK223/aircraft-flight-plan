@@ -31,6 +31,7 @@ interface RouteItemProps {
 	width: number
 	data: Route
 	cropType: CropType
+	vda: number
 }
 
 const CROP_MARKER_COLOR = 'black'
@@ -90,7 +91,7 @@ const RouteItem = (props: RouteItemProps): JSX.Element => {
 			.attr('fill', getBackgroundColor)
 
 		// Верхний текст
-		drawTopText(svg, 'VDA 1234', CENTER_X, TOP_Y, 'pointer', textColor)
+		drawTopText(svg, `VDA ${props.vda}`, CENTER_X, TOP_Y, 'pointer', textColor)
 
 		const CROP_ARROW_WIDTH = 30
 		// Если перелет обрезан рисуем треугольник

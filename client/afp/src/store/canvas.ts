@@ -19,15 +19,18 @@ export enum ZoomMode {
 interface CanvasStore {
 	zoomMode: ZoomMode
 	dateRange: RangeValueType<Dayjs>
+	dates: DateModel[]
 }
 
 const defaultState: CanvasStore = {
 	zoomMode: ZoomMode.DAY,
-	dateRange: [dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')]
+	dateRange: [dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')],
+	dates: []
 }
 
 export const zoomModeChanged = createEvent<ZoomMode>('Событие изменения масштабирования канвы.')
 export const datesRangeChanged = createEvent<RangeValueType<Dayjs>>('Событие изменения периода.')
+const updateDatesFx = createEffect<DateModel[], DateModel[]>()
 
 export const $canvas = createStore<CanvasStore>(defaultState)
 $canvas.on(zoomModeChanged, (state, payload) => {
@@ -36,13 +39,13 @@ $canvas.on(zoomModeChanged, (state, payload) => {
 $canvas.on(datesRangeChanged, (state, payload) => {
 	return { ...state, dateRange: payload }
 })
+$canvas.on(updateDatesFx, (state, payload) => {
+	return { ...state, dates: payload }
+})
 
-const updateDatesFx = createEffect<DateModel[], DateModel[]>()
-export const $dates = createStore<DateModel[]>([])
-	.on(updateDatesFx, (_state, payload) => payload)
 $canvas.watch((state) => {
 	if (state.dateRange && state.dateRange[0] && state.dateRange[1]) {
-		const newStartDate:Dayjs = state.dateRange[0]
+		const newStartDate: Dayjs = state.dateRange[0]
 		const diffHours = state.dateRange[1].add(1, 'day').diff(newStartDate, 'hours') / HOURS_IN_CELL
 		const newDates: DateModel[] = []
 		for (let i = 0; i < diffHours; i++) {
@@ -51,9 +54,6 @@ $canvas.watch((state) => {
 				date: newDate, title: `(W${getWeekCount(newDate)})`
 			})
 		}
-
-		console.log('newDates:', newDates)
-
 		updateDatesFx(newDates)
 	}
 })

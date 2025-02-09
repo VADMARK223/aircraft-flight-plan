@@ -9,12 +9,12 @@ import { useStore } from 'effector-react'
 import { DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
 import { CommonProps } from '../../../common/CommonProps'
 import DateItem from './DateItem'
-import { $canvas, $dates } from '../../../../store/canvas'
+import { $canvas } from '../../../../store/canvas'
 
 const DatesPanel = ({ x, y }: CommonProps): JSX.Element => {
-  const svgRef = useRef<SVGSVGElement>(null)
-  const dates = useStore($dates)
-  const width = DATE_ITEM_WIDTH * dates.length
+	const svgRef = useRef<SVGSVGElement>(null)
+	const dates = useStore($canvas).dates
+	const width = DATE_ITEM_WIDTH * dates.length
 
 	return (
 		<g transform={`translate(${x},${y})`}>

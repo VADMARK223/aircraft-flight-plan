@@ -94,21 +94,21 @@ const HomePage = (): JSX.Element => {
 				</Space>
 			</Sider>
 			<Layout>
-				<Content
-					style={{
-						backgroundColor: style.backgroundColor,
-						overflow: 'auto'
-					}}
-				>
+				<Content style={{ backgroundColor: style.backgroundColor, overflow: 'auto' }}>
 					{isGraph() ? <CanvasPanel/> : <HomeTable/>}
 				</Content>
 
 				{(showFooter ?? false) && (
 					<Footer style={{
-						textAlign: 'left'
+						paddingTop: '12px',
+						paddingLeft: '12px',
+						backgroundColor: `${style.backgroundColor}`,
+						border: `1px solid ${style.lineColor}`,
+						borderRadius: '8px'
 					}}>
 						<Properties/>
-					</Footer>)}
+					</Footer>
+				)}
 			</Layout>
 		</Layout>
 	)

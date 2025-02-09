@@ -10,6 +10,7 @@ import { Space, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import { HomeOutlined, SettingOutlined, BarsOutlined, CrownOutlined  } from '@ant-design/icons'
 import { Paths } from './Paths'
+import DateRangeControl from './controls/DateRangeControl'
 
 const Navigation = (): JSX.Element => {
 	return (
@@ -19,6 +20,7 @@ const Navigation = (): JSX.Element => {
 				<NavigationLink to={Paths.ADMIN} icon={<CrownOutlined/>} label={'Admin'}/>
 				<NavigationLink to={Paths.SETTINGS} icon={<SettingOutlined/>} label={'Settings'}/>
 				<NavigationLink to={Paths.STATS} icon={<BarsOutlined/>} label={'Stats'}/>
+				<DateRangeControl/>
 			</Space>
 		</nav>
 	)

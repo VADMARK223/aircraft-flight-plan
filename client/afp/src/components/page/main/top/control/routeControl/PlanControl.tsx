@@ -6,7 +6,7 @@
  */
 import React, { JSX } from 'react'
 import { Divider, Space } from 'antd'
-import DateControl from '../DateControl'
+import DateControl from '../../../../../header/controls/DateControl'
 
 const PlanControl = (): JSX.Element => {
 	return (

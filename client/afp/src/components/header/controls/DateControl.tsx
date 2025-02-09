@@ -8,9 +8,9 @@ import React, { JSX, useEffect, useState } from 'react'
 import { DatePicker, Space } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
-import { DATE_FORMAT } from '../../../../../utils/consts'
+import { DATE_FORMAT } from '../../../utils/consts'
 import { useStore } from 'effector-react'
-import { $canvas, ZoomMode, datesRangeChanged } from '../../../../../store/canvas'
+import { $canvas, ZoomMode, datesRangeChanged } from '../../../store/canvas'
 
 enum DateControlMode {
 	TODAY_TOMORROW,

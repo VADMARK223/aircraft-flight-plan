@@ -6,11 +6,10 @@
  */
 export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
-export const FIRST_CELL_WIDTH = 150 // Ширина первой ячейки
-export const FLIGHT_CELL_WIDTH = 150 // Ширина ячейки перелетов
+export const FLIGHT_CELL_WIDTH = 110 // Ширина ячейки перелетов
 export const CELL_HEIGHT = 80 // Высота ячейки в рабочей области
 export const ROUTE_ITEM_HEIGHT = CELL_HEIGHT * 0.47 // Высота прямоугольников перелетов.
-export const DATE_ITEM_WIDTH = 180
+export const DATE_ITEM_WIDTH = 120
 
 /**
  * 6 - для Day

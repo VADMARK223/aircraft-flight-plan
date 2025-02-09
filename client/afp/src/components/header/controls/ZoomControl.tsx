@@ -6,9 +6,11 @@
  */
 import React, { JSX, useState, useEffect } from 'react'
 import { CheckboxOptionType, Space, Radio, Button } from 'antd'
-import { ZoomMode, $canvas, zoomModeChanged } from '../../../../store/canvas'
+import { ZoomMode, $canvas, zoomModeChanged } from '../../../store/canvas'
 import { useStore } from 'effector-react'
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
+
+const SHOW_TOGGLE_BUTTONS = false
 
 const ZoomControl = (): JSX.Element => {
 	const canvas = useStore($canvas)
@@ -52,13 +54,13 @@ const ZoomControl = (): JSX.Element => {
 
 	return (
 		<Space>
-			<Radio.Group
+			{SHOW_TOGGLE_BUTTONS && (<Radio.Group
 				options={dateControlModeOptions}
 				value={zoomMode}
 				onChange={(e) => setZoomMode(e.target.value)}
 				optionType={'button'}
 				buttonStyle={'solid'}
-			/>
+			/>)}
 			<Space.Compact>
 				<Button type={'primary'}
 						icon={<MinusCircleOutlined/>}

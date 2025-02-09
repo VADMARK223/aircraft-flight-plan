@@ -14,17 +14,18 @@ import { DATE_FORMAT } from '../../../utils/consts'
 
 const RangeViewer = (): JSX.Element => {
 	const canvas = useStore($canvas)
+	const dateRange = canvas.dateRange
 
 	useEffect(() => {
 		switch (canvas.zoomMode) {
 			case ZoomMode.WEEKS:
-				setDateChange([dayjs(), dayjs().add(2, 'weeks')])
+				setDateChange([dateRange[0], dateRange[0]?.add(2, 'weeks')])
 				break
 			case ZoomMode.WEEK:
-				setDateChange([dayjs(), dayjs().add(1, 'weeks')])
+				setDateChange([dateRange[0], dateRange[0]?.add(1, 'weeks')])
 				break
 			case ZoomMode.DAY:
-				setDateChange([dayjs(), dayjs().add(1, 'days')])
+				setDateChange([dateRange[0], dateRange[0]?.add(1, 'days')])
 				break
 		}
 	}, [canvas.zoomMode])

@@ -6,14 +6,7 @@
  */
 import React, { JSX, useRef, useState, useEffect } from 'react'
 import InfoPanel from './InfoPanel'
-import Header from './Header'
-import {
-	CELL_HEIGHT,
-	FLIGHT_CELL_WIDTH,
-	DATE_ITEM_HEIGHT,
-	DATE_ITEM_WIDTH,
-	HEADER_HEIGHT
-} from '../../../../utils/consts'
+import { CELL_HEIGHT, FLIGHT_CELL_WIDTH, DATE_ITEM_HEIGHT, DATE_ITEM_WIDTH } from '../../../../utils/consts'
 import { useStore } from 'effector-react'
 import DatesPanel from './DatesPanel'
 import Flights from './Flights'
@@ -49,13 +42,12 @@ const CanvasPanel = (): JSX.Element => {
 	}, [])
 
 	return (
-		<>
+		<div style={{marginTop: '10px'}}>
 			<svg id={'viewer-top'} width={FLIGHT_CELL_WIDTH + DATE_ITEM_WIDTH * dates.length}
-				 height={HEADER_HEIGHT + DATE_ITEM_HEIGHT}>
+				 height={DATE_ITEM_HEIGHT}>
 				<rect width={'100%'} height={'100%'} fill={'gray'}/>
 				<InfoPanel x={0} y={0}/>
-				<Header x={FLIGHT_CELL_WIDTH} y={0}/>
-				<DatesPanel x={FLIGHT_CELL_WIDTH} y={HEADER_HEIGHT}/>
+				<DatesPanel x={FLIGHT_CELL_WIDTH} y={0}/>
 			</svg>
 			<div
 				ref={bottomSvgContainerRef}
@@ -75,7 +67,7 @@ const CanvasPanel = (): JSX.Element => {
 					<Routes x={FLIGHT_CELL_WIDTH} y={0}/>
 				</svg>
 			</div>
-		</>
+		</div>
 	)
 }
 

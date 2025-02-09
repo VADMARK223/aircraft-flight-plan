@@ -4,7 +4,6 @@
  * @author Markitanov Vadim
  * @since 22.11.2023
  */
-export const HEADER_HEIGHT = 30
 export const DATE_ITEM_HEIGHT = 45
 export const FLIGHT_CELL_WIDTH = 110 // Ширина ячейки перелетов
 export const CELL_HEIGHT = 80 // Высота ячейки в рабочей области

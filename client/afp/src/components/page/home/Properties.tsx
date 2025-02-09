@@ -17,8 +17,10 @@ const Properties = (): JSX.Element => {
 
 	return (
 		<Space direction={'vertical'}>
-			<ZoomControl/>
-			<DateControl/>
+			<Space direction={'horizontal'}>
+				<ZoomControl/>
+				<DateControl/>
+			</Space>
 			<FlightsInfo/>
 			{routeSelected == null
 				? <span>Route not selected.</span>

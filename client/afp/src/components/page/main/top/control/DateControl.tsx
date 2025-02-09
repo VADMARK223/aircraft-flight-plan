@@ -5,7 +5,7 @@
  * @since 04.12.2023
  */
 import React, { JSX, useEffect, useState } from 'react'
-import { DatePicker, Space, CheckboxOptionType, Radio } from 'antd'
+import { DatePicker, Space } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
 import { DATE_FORMAT } from '../../../../../utils/consts'
@@ -26,18 +26,29 @@ const DateControl = (): JSX.Element => {
 	const [dateControlMode, setDateControlMode] = useState<DateControlMode>(defaultDateControlMode)
 
 	useEffect(() => {
-		switch (dateControlMode) {
-			case DateControlMode.TODAY_TOMORROW:
+		switch (canvas.zoomMode) {
+			case ZoomMode.WEEKS:
+				setDateChange([dayjs(), dayjs().add(2, 'weeks')])
+				break
+			case ZoomMode.WEEK:
+				setDateChange([dayjs(), dayjs().add(1, 'weeks')])
+				break
+			case ZoomMode.DAY:
 				setDateChange([dayjs(), dayjs().add(1, 'days')])
-				break
-			case DateControlMode.TODAY:
-				setDateChange([dayjs(), dayjs()])
-				break
-			case DateControlMode.TOMORROW:
-				setDateChange([dayjs().add(1, 'days'), dayjs().add(1, 'days')])
+				/*switch (dateControlMode) {
+					case DateControlMode.TODAY_TOMORROW:
+						setDateChange([dayjs(), dayjs().add(1, 'days')])
+						break
+					case DateControlMode.TODAY:
+						setDateChange([dayjs(), dayjs()])
+						break
+					case DateControlMode.TOMORROW:
+						setDateChange([dayjs().add(1, 'days'), dayjs().add(1, 'days')])
+						break
+				}*/
 				break
 		}
-	}, [dateControlMode])
+	}, [canvas.zoomMode, dateControlMode])
 
 	useEffect(() => {
 		const startDate = canvas.dateRange[0]
@@ -62,36 +73,33 @@ const DateControl = (): JSX.Element => {
 		}
 	}
 
-	const dateControlModeOptions: CheckboxOptionType[] = [
+	/*const dateControlModeOptions: CheckboxOptionType[] = [
 		{ label: 'Today-tomorrow', value: DateControlMode.TODAY_TOMORROW },
 		{ label: 'Today', value: DateControlMode.TODAY },
 		{ label: 'Tomorrow', value: DateControlMode.TOMORROW },
 		{ label: 'Custom', value: DateControlMode.CUSTOM, disabled: true }
-	]
+	]*/
 
 	return (
-		<>
-			{canvas.mode === ZoomMode.DAY
-				? <Space>
-					<span>Date range:</span>
-					<DatePicker.RangePicker value={canvas.dateRange}
-											onChange={setDateChange}
-											style={{ minWidth: '300px' }}
-											format={DATE_FORMAT}
-											picker={'date'}
-											allowClear={false}
-					/>
-					<Radio.Group
-						options={dateControlModeOptions}
-						value={dateControlMode}
-						onChange={(e) => setDateControlMode(e.target.value)}
-						optionType={'button'}
-						buttonStyle={'solid'}
-					/>
-				</Space> : null}
+		<Space>
+			<DatePicker.RangePicker value={canvas.dateRange}
+									onChange={setDateChange}
+									style={{ minWidth: '300px' }}
+									format={DATE_FORMAT}
+									picker={'date'}
+									disabled
+									allowClear={false}
+			/>
+			{/*{canvas.zoomMode === ZoomMode.DAY
+				? <Radio.Group
+					options={dateControlModeOptions}
+					value={dateControlMode}
+					onChange={(e) => setDateControlMode(e.target.value)}
+					optionType={'button'}
+					buttonStyle={'solid'}
+				/> : null}*/}
 
-		</>
-
+		</Space>
 	)
 }
 

@@ -11,18 +11,18 @@ import { HOURS_IN_CELL } from '../utils/consts'
 import { getWeekCount } from '../utils/utils'
 
 export enum ZoomMode {
-	DAYS, // В ячейке по одному дню
+	WEEKS, // В ячейке по одному дню
 	WEEK, // В ячейке пол дня
 	DAY, // В ячейке четверть дня
 }
 
 interface CanvasStore {
-	mode: ZoomMode
+	zoomMode: ZoomMode
 	dateRange: RangeValueType<Dayjs>
 }
 
 const defaultState: CanvasStore = {
-	mode: ZoomMode.DAY,
+	zoomMode: ZoomMode.DAY,
 	dateRange: [dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')]
 }
 
@@ -31,7 +31,7 @@ export const datesRangeChanged = createEvent<RangeValueType<Dayjs>>('Событ�
 
 export const $canvas = createStore<CanvasStore>(defaultState)
 $canvas.on(zoomModeChanged, (state, payload) => {
-	return { ...state, mode: payload }
+	return { ...state, zoomMode: payload }
 })
 $canvas.on(datesRangeChanged, (state, payload) => {
 	return { ...state, dateRange: payload }

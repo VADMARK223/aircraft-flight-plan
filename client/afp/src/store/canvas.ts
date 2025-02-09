@@ -27,17 +27,12 @@ const defaultState: CanvasStore = {
 	zoomMode: ZoomMode.DAY,
 	dateRange: [dayjs().startOf('day'), dayjs().add(1, 'days').startOf('day')],
 	dates: [],
-	/**
-	 * 6 - для Day
-	 * 12 - для Week
-	 * 24 - для Days
-	 * @type {number}
-	 */
 	hoursInCell: 6
 }
 
 export const zoomModeChanged = createEvent<ZoomMode>('Событие изменения масштабирования канвы.')
 export const datesRangeChanged = createEvent<RangeValueType<Dayjs>>('Событие изменения периода.')
+const hoursInCellChanged = createEvent<number>('Событие изменения кол-ва часов в ячейке на канве.')
 
 export const $canvas = createStore<CanvasStore>(defaultState)
 $canvas.on(zoomModeChanged, (state, payload) => {
@@ -57,4 +52,29 @@ $canvas.on(datesRangeChanged, (state, datesRange) => {
 	}
 
 	return { ...state, dateRange: datesRange, dates: newDates }
+})
+$canvas.on(hoursInCellChanged, (state, payload) => {
+	return { ...state, hoursInCell: payload }
+})
+
+zoomModeChanged.watch(payload => {
+	let hoursInCell = 0
+	// let rangeResult: RangeValueType<dayjs.Dayjs> | null = null
+	switch (payload) {
+		case ZoomMode.DAY:
+			hoursInCell = 6
+			// rangeResult = [dayjs(), dayjs().add(1, 'days')]
+			break
+		case ZoomMode.WEEK:
+			hoursInCell = 12
+			// rangeResult = [dayjs(), dayjs().add(1, 'weeks')]
+			break
+		case ZoomMode.WEEKS:
+			hoursInCell = 24
+			// rangeResult = [dayjs(), dayjs().add(2, 'weeks')]
+			break
+	}
+
+	hoursInCellChanged(hoursInCell)
+	// datesRangeChanged(rangeResult)
 })

@@ -43,10 +43,10 @@ $canvas.on(updateDatesFx, (state, payload) => {
 	return { ...state, dates: payload }
 })
 
-$canvas.watch((state) => {
-	if (state.dateRange && state.dateRange[0] && state.dateRange[1]) {
-		const newStartDate: Dayjs = state.dateRange[0]
-		const diffHours = state.dateRange[1].add(1, 'day').diff(newStartDate, 'hours') / HOURS_IN_CELL
+datesRangeChanged.watch((datesRange) => {
+	if (datesRange && datesRange[0] && datesRange[1]) {
+		const newStartDate: Dayjs = datesRange[0]
+		const diffHours = datesRange[1].add(1, 'day').diff(newStartDate, 'hours') / HOURS_IN_CELL
 		const newDates: DateModel[] = []
 		for (let i = 0; i < diffHours; i++) {
 			const newDate = newStartDate.add(i * HOURS_IN_CELL, 'hours')

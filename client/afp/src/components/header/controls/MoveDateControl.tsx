@@ -4,7 +4,7 @@
  * @author Markitanov Vadim
  * @since 09.02.2025
  */
-import React, { JSX, useState } from 'react'
+import React, { JSX, useState, useEffect } from 'react'
 import { Button, Space, Tooltip } from 'antd'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons'
 import { ZoomMode, $canvas, datesRangeChanged } from '../../../store/canvas'
@@ -16,6 +16,23 @@ const MoveDateControl = (): JSX.Element => {
 	const dateRange = canvas.dateRange
 	const [forwardButtonTooltip, setForwardButtonTooltip] = useState<string>('Вперед')
 	const [backButtonTooltip, setBackButtonTooltip] = useState<string>('Назад')
+
+	useEffect(() => {
+		switch (zoomMode) {
+			case ZoomMode.DAY:
+				setForwardButtonTooltip('Вперед на день')
+				setBackButtonTooltip('Назад на день')
+				break
+			case ZoomMode.WEEK:
+				setForwardButtonTooltip('Вперед на неделю')
+				setBackButtonTooltip('Назад на неделю')
+				break
+			case ZoomMode.WEEKS:
+				setForwardButtonTooltip('Вперед на две недели')
+				setBackButtonTooltip('Назад на две недели')
+				break
+		}
+	}, [zoomMode])
 
 	const handlerMinusClick = (): void => {
 		const start = dateRange[0]

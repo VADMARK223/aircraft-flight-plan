@@ -15,8 +15,8 @@ const SHOW_TOGGLE_BUTTONS = false
 const ZoomControl = (): JSX.Element => {
 	const canvas = useStore($canvas)
 	const [zoomMode, setZoomMode] = useState<ZoomMode>(canvas.zoomMode)
-	const [minusDisabled, setMinusDisabled] = useState<boolean>(false)
-	const [plusDisabled, setPlusDisabled] = useState<boolean>(false)
+	const [minusDisabled, setMinusDisabled] = useState<boolean>(true)
+	const [plusDisabled, setPlusDisabled] = useState<boolean>(true)
 
 	useEffect(() => {
 		zoomModeChanged(zoomMode)

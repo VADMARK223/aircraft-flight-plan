@@ -1,10 +1,10 @@
 /**
- * Компонент контроля диапазона дат отображения полетов
+ * Компонент контроллера диапазона дат отображения полетов
  *
  * @author Markitanov Vadim
  * @since 04.12.2023
  */
-import React, { JSX, useEffect, useState } from 'react'
+import React, { JSX, useEffect } from 'react'
 import { DatePicker, Space } from 'antd'
 import dayjs from 'dayjs'
 import type { RangeValueType } from 'rc-picker/lib/PickerInput/RangePicker'
@@ -12,18 +12,18 @@ import { DATE_FORMAT } from '../../../utils/consts'
 import { useStore } from 'effector-react'
 import { $canvas, ZoomMode, datesRangeChanged } from '../../../store/canvas'
 
-enum DateControlMode {
+/*enum DateControlMode {
 	TODAY_TOMORROW,
 	TODAY,
 	TOMORROW,
 	CUSTOM
-}
+}*/
 
-const defaultDateControlMode = DateControlMode.TODAY_TOMORROW
+// const defaultDateControlMode = DateControlMode.TODAY_TOMORROW
 
 const DateControl = (): JSX.Element => {
 	const canvas = useStore($canvas)
-	const [dateControlMode, setDateControlMode] = useState<DateControlMode>(defaultDateControlMode)
+	// const [dateControlMode, setDateControlMode] = useState<DateControlMode>(defaultDateControlMode)
 
 	useEffect(() => {
 		switch (canvas.zoomMode) {
@@ -48,9 +48,9 @@ const DateControl = (): JSX.Element => {
 				}*/
 				break
 		}
-	}, [canvas.zoomMode, dateControlMode])
+	}, [canvas.zoomMode/*, dateControlMode*/])
 
-	useEffect(() => {
+	/*useEffect(() => {
 		const startDate = canvas.dateRange[0]
 		const finishDate = canvas.dateRange[1]
 		const isToday = dayjs().isSame(startDate, 'day') && dayjs().isSame(finishDate, 'day')
@@ -65,7 +65,7 @@ const DateControl = (): JSX.Element => {
 		} else {
 			setDateControlMode(DateControlMode.CUSTOM)
 		}
-	}, [canvas.dateRange])
+	}, [canvas.dateRange])*/
 
 	const setDateChange = (values: RangeValueType<dayjs.Dayjs> | null): void => {
 		if (values && values[0] && values[1]) {
@@ -84,12 +84,13 @@ const DateControl = (): JSX.Element => {
 		<Space>
 			<DatePicker.RangePicker value={canvas.dateRange}
 									onChange={setDateChange}
-									style={{ minWidth: '300px' }}
+									style={{ width: '210px' }}
 									format={DATE_FORMAT}
 									picker={'date'}
 									disabled
 									allowClear={false}
 			/>
+
 			{/*{canvas.zoomMode === ZoomMode.DAY
 				? <Radio.Group
 					options={dateControlModeOptions}
